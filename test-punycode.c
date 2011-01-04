@@ -208,6 +208,15 @@ main (void)
   int rc;
   size_t i, outlen;
 
+  if (!libidna_check_version (LIBIDNA_VERSION))
+    fail ("libidna_check_version(%s) failed\n", LIBIDNA_VERSION);
+
+  if (!libidna_check_version (NULL))
+    fail ("libidna_check_version(NULL) failed\n");
+
+  if (libidna_check_version ("100.100"))
+    fail ("libidna_check_version(\"100.100\") failed\n");
+
   p = malloc (sizeof (*p) * BUFSIZ);
   if (p == NULL)
     fail ("malloc() returned NULL\n");

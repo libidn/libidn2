@@ -27,7 +27,9 @@ lib_LTLIBRARIES = libidna.la
 libidna_includedir=$(includedir)/libidna
 libidna_include_HEADERS = libidna.h
 
-libidna_la_SOURCES = libidna.map libidna.h punycode.c
+libidna_la_SOURCES = libidna.map libidna.h
+libidna_la_SOURCES += version.c
+libidna_la_SOURCES += punycode.c
 libidna_la_LIBADD = lib/libgnu.la
 libidna_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) -no-undefined

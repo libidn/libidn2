@@ -18,9 +18,6 @@
 
 LIBIDNA_1.0.0 {
   global:
-    libidna_init;
-    libidna_done;
-
     libidna_check_version;
 
     libidna_punycode_encode;
