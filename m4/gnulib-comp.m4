@@ -27,6 +27,10 @@ AC_DEFUN([gl_EARLY],
   m4_pattern_allow([^gl_LTLIBOBJS$])dnl a variable
   AC_REQUIRE([AC_PROG_RANLIB])
   # Code from module git-version-gen:
+  # Code from module gnumakefile:
+  # Code from module maintainer-makefile:
+  # Code from module useless-if-before-free:
+  # Code from module vc-list-files:
 ])
 
 # This macro should be invoked from ./configure.ac, in the section
@@ -44,6 +48,22 @@ AC_DEFUN([gl_INIT],
   gl_COMMON
   gl_source_base='lib'
   # Code from module git-version-gen:
+  # Code from module gnumakefile:
+  # Autoconf 2.61a.99 and earlier don't support linking a file only
+  # in VPATH builds.  But since GNUmakefile is for maintainer use
+  # only, it does not matter if we skip the link with older autoconf.
+  # Automake 1.10.1 and earlier try to remove GNUmakefile in non-VPATH
+  # builds, so use a shell variable to bypass this.
+  GNUmakefile=GNUmakefile
+  m4_if(m4_version_compare([2.61a.100],
+  	m4_defn([m4_PACKAGE_VERSION])), [1], [],
+        [AC_CONFIG_LINKS([$GNUmakefile:$GNUmakefile], [],
+  	[GNUmakefile=$GNUmakefile])])
+  # Code from module maintainer-makefile:
+  AC_CONFIG_COMMANDS_PRE([m4_ifdef([AH_HEADER],
+    [AC_SUBST([CONFIG_INCLUDE], m4_defn([AH_HEADER]))])])
+  # Code from module useless-if-before-free:
+  # Code from module vc-list-files:
   # Code from module dummy:
   # End of code from modules
   m4_ifval(gl_LIBSOURCES_LIST, [
@@ -182,8 +202,12 @@ AC_DEFUN([gltests_LIBSOURCES], [
 # gnulib-tool and may be removed by future gnulib-tool invocations.
 AC_DEFUN([gl_FILE_LIST], [
   build-aux/git-version-gen
+  build-aux/useless-if-before-free
+  build-aux/vc-list-files
   lib/dummy.c
   m4/00gnulib.m4
   m4/gnulib-common.m4
   m4/onceonly.m4
+  top/GNUmakefile
+  top/maint.mk
 ])
