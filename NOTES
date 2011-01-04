@@ -1,0 +1,6 @@
+Comments on the specification:
+
+* The [Unicode] reference needs to be a normative reference.  In
+  section 4.2.3.2 there is a MUST requirement to reject strings that
+  begin with combining mark/character.  The exact definition of what a
+  combining mark/character is only given in [Unicode].
