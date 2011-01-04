@@ -76,6 +76,13 @@ typedef enum
 
 extern LIBIDNA_API const char *libidna_check_version (const char *req_version);
 
+/* IDNA */
+
+extern LIBIDNA_API int
+libidna_process_u8 (const char *what,
+		    const uint8_t *src, size_t srclen,
+		    uint8_t **dst, size_t *dstlen);
+
 /* NFC */
 
 extern LIBIDNA_API int

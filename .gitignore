@@ -19,6 +19,8 @@ config.status
 configure
 free.lo
 free.o
+idna.lo
+idna.o
 lib/.deps/
 lib/.libs/
 lib/Makefile
