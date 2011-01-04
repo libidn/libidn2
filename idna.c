@@ -1,5 +1,5 @@
 /*
- * nfc.c - Unicode NFC
+ * idna.c - implementation of high-level IDNA processing function
  * Copyright (C) 2011 Simon Josefsson
  *
  * This library is free software; you can redistribute it and/or
