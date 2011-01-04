@@ -30,9 +30,16 @@ libidna_include_HEADERS = libidna.h
 libidna_la_SOURCES = libidna.map libidna.h
 libidna_la_SOURCES += version.c
 libidna_la_SOURCES += punycode.c
+libidna_la_SOURCES += tables.c
 libidna_la_LIBADD = lib/libgnu.la
 libidna_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) -no-undefined
+
+BUILT_SOURCES = tables.c
+EXTRA_DIST = gen-tables.pl
+tables.c: $(srcdir)/gen-tables.pl
+	wget -O - -q http://www.ietf.org/rfc/rfc5892.txt | \
+		$(srcdir)/gen-tables.pl
 
 if HAVE_LD_VERSION_SCRIPT
 libidna_la_LDFLAGS += -Wl,--version-script=$(srcdir)/libidna.map
