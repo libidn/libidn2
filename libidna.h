@@ -34,10 +34,8 @@
 #  endif
 # endif
 
-#include <stdbool.h>		/* For bool. */
-#include <stdint.h>		/* For uint64_t, SIZE_MAX. */
+#include <stdint.h>		/* For uint32_t. */
 #include <string.h>		/* For size_t.t */
-#include <time.h>		/* For time_t. */
 
 /**
  * LIBIDNA_VERSION
@@ -76,5 +74,28 @@ typedef enum
 /* Global */
 
 extern LIBIDNA_API const char *libidna_check_version (const char *req_version);
+
+/* Punycode */
+
+enum Libidna_punycode_status {
+  LIBIDNA_PUNYCODE_SUCCESS,
+  LIBIDNA_PUNYCODE_BAD_INPUT,   /* Input is invalid.                       */
+  LIBIDNA_PUNYCODE_BIG_OUTPUT,  /* Output would exceed the space provided. */
+  LIBIDNA_PUNYCODE_OVERFLOW     /* Input needs wider integers to process.  */
+};
+
+extern LIBIDNA_API int
+libidna_punycode_encode (size_t input_length,
+			 const uint32_t input[],
+			 const unsigned char case_flags[],
+			 size_t *output_length,
+			 char output[]);
+
+extern LIBIDNA_API int
+libidna_punycode_decode(size_t input_length,
+			const char input[],
+			size_t *output_length,
+			uint32_t output[],
+			unsigned char case_flags[]);
 
 #endif /* LIBIDNA_H */

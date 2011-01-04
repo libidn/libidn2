@@ -18,10 +18,13 @@
 
 LIBIDNA_1.0.0 {
   global:
-    idna_init;
-    idna_done;
+    libidna_init;
+    libidna_done;
 
-    idna_check_version;
+    libidna_check_version;
+
+    libidna_punycode_encode;
+    libidna_punycode_decode;
 
   local:
     *;

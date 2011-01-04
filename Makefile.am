@@ -27,7 +27,7 @@ lib_LTLIBRARIES = libidna.la
 libidna_includedir=$(includedir)/libidna
 libidna_include_HEADERS = libidna.h
 
-libidna_la_SOURCES = libidna.map libidna.h
+libidna_la_SOURCES = libidna.map libidna.h punycode.c
 libidna_la_LIBADD = lib/libgnu.la
 libidna_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) -no-undefined
@@ -37,3 +37,8 @@ libidna_la_LDFLAGS += -Wl,--version-script=$(srcdir)/libidna.map
 else
 libidna_la_LDFLAGS += -export-symbols-regex '^idna_.*'
 endif
+
+LDADD = libidna.la
+
+TESTS = test-punycode
+check_PROGRAMS = test-punycode
