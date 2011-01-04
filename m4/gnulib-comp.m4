@@ -26,12 +26,29 @@ AC_DEFUN([gl_EARLY],
   m4_pattern_allow([^gl_LIBOBJS$])dnl a variable
   m4_pattern_allow([^gl_LTLIBOBJS$])dnl a variable
   AC_REQUIRE([AC_PROG_RANLIB])
+  AC_REQUIRE([AM_PROG_CC_C_O])
+  # Code from module arg-nonnull:
+  # Code from module c++defs:
   # Code from module git-version-gen:
   # Code from module gnumakefile:
+  # Code from module gperf:
+  # Code from module include_next:
   # Code from module lib-symbol-versions:
   # Code from module maintainer-makefile:
+  # Code from module multiarch:
+  # Code from module stddef:
+  # Code from module stdint:
+  # Code from module uninorm/base:
+  # Code from module uninorm/canonical-decomposition:
+  # Code from module uninorm/composition:
+  # Code from module uninorm/decomposition-table:
+  # Code from module uninorm/nfc:
+  # Code from module uninorm/nfd:
+  # Code from module unitypes:
   # Code from module useless-if-before-free:
   # Code from module vc-list-files:
+  # Code from module warn-on-use:
+  # Code from module wchar:
 ])
 
 # This macro should be invoked from ./configure.ac, in the section
@@ -48,6 +65,8 @@ AC_DEFUN([gl_INIT],
   m4_pushdef([gl_LIBSOURCES_DIR], [])
   gl_COMMON
   gl_source_base='lib'
+  # Code from module arg-nonnull:
+  # Code from module c++defs:
   # Code from module git-version-gen:
   # Code from module gnumakefile:
   # Autoconf 2.61a.99 and earlier don't support linking a file only
@@ -60,14 +79,38 @@ AC_DEFUN([gl_INIT],
   	m4_defn([m4_PACKAGE_VERSION])), [1], [],
         [AC_CONFIG_LINKS([$GNUmakefile:$GNUmakefile], [],
   	[GNUmakefile=$GNUmakefile])])
+  # Code from module gperf:
+  # Code from module include_next:
   # Code from module lib-symbol-versions:
   gl_LD_VERSION_SCRIPT
   # Code from module maintainer-makefile:
   AC_CONFIG_COMMANDS_PRE([m4_ifdef([AH_HEADER],
     [AC_SUBST([CONFIG_INCLUDE], m4_defn([AH_HEADER]))])])
+  # Code from module multiarch:
+  gl_MULTIARCH
+  # Code from module stddef:
+  gl_STDDEF_H
+  # Code from module stdint:
+  gl_STDINT_H
+  # Code from module uninorm/base:
+  gl_LIBUNISTRING_LIBHEADER([0.9], [uninorm.h])
+  # Code from module uninorm/canonical-decomposition:
+  gl_LIBUNISTRING_MODULE([0.9], [uninorm/canonical-decomposition])
+  # Code from module uninorm/composition:
+  gl_LIBUNISTRING_MODULE([0.9], [uninorm/composition])
+  # Code from module uninorm/decomposition-table:
+  AC_REQUIRE([AC_C_INLINE])
+  # Code from module uninorm/nfc:
+  gl_LIBUNISTRING_MODULE([0.9], [uninorm/nfc])
+  # Code from module uninorm/nfd:
+  gl_LIBUNISTRING_MODULE([0.9], [uninorm/nfd])
+  # Code from module unitypes:
+  gl_LIBUNISTRING_LIBHEADER([0.9], [unitypes.h])
   # Code from module useless-if-before-free:
   # Code from module vc-list-files:
-  # Code from module dummy:
+  # Code from module warn-on-use:
+  # Code from module wchar:
+  gl_WCHAR_H
   # End of code from modules
   m4_ifval(gl_LIBSOURCES_LIST, [
     m4_syscmd([test ! -d ]m4_defn([gl_LIBSOURCES_DIR])[ ||
@@ -204,14 +247,41 @@ AC_DEFUN([gltests_LIBSOURCES], [
 # This macro records the list of files which have been installed by
 # gnulib-tool and may be removed by future gnulib-tool invocations.
 AC_DEFUN([gl_FILE_LIST], [
+  build-aux/arg-nonnull.h
+  build-aux/c++defs.h
   build-aux/git-version-gen
   build-aux/useless-if-before-free
   build-aux/vc-list-files
-  lib/dummy.c
+  build-aux/warn-on-use.h
+  lib/stddef.in.h
+  lib/stdint.in.h
+  lib/uninorm.in.h
+  lib/uninorm/canonical-decomposition.c
+  lib/uninorm/composition-table.gperf
+  lib/uninorm/composition.c
+  lib/uninorm/decomposition-table.c
+  lib/uninorm/decomposition-table.h
+  lib/uninorm/decomposition-table1.h
+  lib/uninorm/decomposition-table2.h
+  lib/uninorm/nfc.c
+  lib/uninorm/nfd.c
+  lib/uninorm/normalize-internal.h
+  lib/unitypes.in.h
+  lib/wchar.in.h
   m4/00gnulib.m4
   m4/gnulib-common.m4
+  m4/include_next.m4
   m4/ld-version-script.m4
+  m4/libunistring-base.m4
+  m4/longlong.m4
+  m4/multiarch.m4
   m4/onceonly.m4
+  m4/stddef_h.m4
+  m4/stdint.m4
+  m4/warn-on-use.m4
+  m4/wchar_h.m4
+  m4/wchar_t.m4
+  m4/wint_t.m4
   top/GNUmakefile
   top/maint.mk
 ])

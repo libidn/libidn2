@@ -20,8 +20,6 @@ lib/.deps/
 lib/.libs/
 lib/Makefile
 lib/Makefile.in
-lib/dummy.lo
-lib/dummy.o
 lib/libgnu.la
 libidna.la
 libtool
