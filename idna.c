@@ -30,6 +30,7 @@ enum
   {
     CHECK_ENCODING = 0,
     CHECK_NFC,
+    CHECK_2HYPHEN,
     NFC,
     THE_END
   };
@@ -37,6 +38,7 @@ enum
 static char *const opts[] = {
   "check-encoding",
   "check-nfc",
+  "check-2hyphen",
   "nfc",
   NULL
 };
@@ -53,18 +55,8 @@ process1 (char *opt, uint8_t **str, size_t *strlen)
 	{
 	case CHECK_ENCODING:
 	  if (u8_check (*str, *strlen) != NULL)
-	    return LIBIDNA_ENCODING_CHECK_FAIL;
+	    return LIBIDNA_CHECK_ENCODING_FAIL;
 	  break;
-
-	case NFC:
-	  {
-	    uint8_t *p = u8_normalize (UNINORM_NFC, *str, *strlen,
-				       NULL, strlen);
-	    if (p == NULL)
-	      return LIBIDNA_NFC_FAIL;
-	    free (*str);
-	    *str = p;
-	  }
 
 	case CHECK_NFC:
 	  {
@@ -77,8 +69,23 @@ process1 (char *opt, uint8_t **str, size_t *strlen)
 	    ok = *strlen == plen && memcmp (*str, p, plen) == 0;
 	    free (p);
 	    if (!ok)
-	      return LIBIDNA_NFC_CHECK_FAIL;
+	      return LIBIDNA_CHECK_NFC_FAIL;
 	    break;
+	  }
+
+	case CHECK_2HYPHEN:
+	  if (*strlen >= 4 && (*str)[2] == '-' && (*str)[3] == '-')
+	    return LIBIDNA_CHECK_2HYPHEN_FAIL;
+	  break;
+
+	case NFC:
+	  {
+	    uint8_t *p = u8_normalize (UNINORM_NFC, *str, *strlen,
+				       NULL, strlen);
+	    if (p == NULL)
+	      return LIBIDNA_NFC_FAIL;
+	    free (*str);
+	    *str = p;
 	  }
 
 	case -1:

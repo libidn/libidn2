@@ -40,12 +40,14 @@ struct idna_tv
 
 static struct idna_tv tv[] = {
   {"check-encoding", LIBIDNA_OK, 2, "\xce\xa9", 2, "\xce\xa9"},
-  {"check-encoding", LIBIDNA_ENCODING_CHECK_FAIL, 6,
+  {"check-encoding", LIBIDNA_CHECK_ENCODING_FAIL, 6,
    "\xd0\x94\xd0\xb0\xc1\x80", 0, NULL},
-  {"check-nfc", LIBIDNA_NFC_CHECK_FAIL, 3, "\xe2\x84\xa6", 0, NULL},
+  {"check-nfc", LIBIDNA_CHECK_NFC_FAIL, 3, "\xe2\x84\xa6", 0, NULL},
   {"check-nfc", LIBIDNA_OK, 2, "\xC3\x85", 2, "\xC3\x85"},
-  {"check-nfc", LIBIDNA_NFC_CHECK_FAIL, 3, "\xe2\x84\xa6", 0, NULL},
+  {"check-nfc", LIBIDNA_CHECK_NFC_FAIL, 3, "\xe2\x84\xa6", 0, NULL},
   {"check-nfc", LIBIDNA_OK, 2, "\xce\xa9", 2, "\xce\xa9"},
+  {"check-2hyphen", LIBIDNA_CHECK_2HYPHEN_FAIL, 4, "ab--", 0, NULL},
+  {"check-2hyphen", LIBIDNA_OK, 2, "--", 2, "--"},
   {"nfc", LIBIDNA_OK, 3, "\xe2\x84\xab", 2, "\xC3\x85"},
   {"nfc", LIBIDNA_OK, 3, "\xe2\x84\xa6", 2, "\xce\xa9"},
 };
@@ -137,6 +139,7 @@ main (void)
 	  fail ("IDNA entry %d failed\n", i);
 	  if (debug)
 	    printf ("ERROR\n");
+	  break;
 	}
       else if (debug)
 	printf ("OK\n");
