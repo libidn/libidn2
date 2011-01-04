@@ -46,7 +46,7 @@
  * version number.  Used together with libidna_check_version() to verify
  * header file and run-time library consistency.
  */
-# define LIBIDNA_VERSION "1.4.0"
+# define LIBIDNA_VERSION "1.0.0"
 
 /**
  * LIBIDNA_VERSION_NUMBER
@@ -55,7 +55,7 @@
  * header file version number.  For example, when the header version
  * is 1.2.3 this symbol will have the value 0x010203.
  */
-# define LIBIDNA_VERSION_NUMBER 0x010400
+# define LIBIDNA_VERSION_NUMBER 0x010000
 
 /**
  * libidna_rc:
