@@ -33,6 +33,9 @@ m4/lt~obsolete.m4
 punycode.lo
 punycode.o
 stamp-h1
+tables.c
+tables.lo
+tables.o
 test-punycode
 test-punycode.o
 version.lo

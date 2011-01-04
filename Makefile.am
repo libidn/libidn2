@@ -36,10 +36,15 @@ libidna_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) -no-undefined
 
 BUILT_SOURCES = tables.c
-EXTRA_DIST = gen-tables.pl
-tables.c: $(srcdir)/gen-tables.pl
-	wget -O - -q http://www.ietf.org/rfc/rfc5892.txt | \
-		$(srcdir)/gen-tables.pl
+EXTRA_DIST = gen-tables-from-rfc5892.pl gen-tables-from-iana.pl
+IANA_URL = http://www.iana.org/assignments/idnabis-tables/idnabis-tables.txt
+RFC5982_URL = http://www.ietf.org/rfc/rfc5892.txt
+tables.c: $(srcdir)/gen-tables-from-rfc5892.pl $(srcdir)/gen-tables-from-iana.pl
+	wget -O - -q $(RFC5892_URL) | $(srcdir)/gen-tables-from-rfc5892.pl
+	mv tables.c tmp.c
+	wget -O - -q $(IANA_URL) | $(srcdir)/gen-tables-from-iana.pl
+	diff -u tables.c tmp.c
+	rm tmp.c
 
 if HAVE_LD_VERSION_SCRIPT
 libidna_la_LDFLAGS += -Wl,--version-script=$(srcdir)/libidna.map
