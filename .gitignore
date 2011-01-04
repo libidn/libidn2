@@ -59,6 +59,8 @@ lib/unistr.h
 lib/unistr/.deps/
 lib/unistr/.dirstamp
 lib/unistr/.libs/
+lib/unistr/u8-check.lo
+lib/unistr/u8-check.o
 lib/unistr/u8-cpy-alloc.lo
 lib/unistr/u8-cpy-alloc.o
 lib/unistr/u8-cpy.lo
