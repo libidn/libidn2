@@ -1,3 +1,4 @@
+*~
 .deps/
 .libs/
 Makefile
@@ -34,3 +35,5 @@ punycode.o
 stamp-h1
 test-punycode
 test-punycode.o
+version.lo
+version.o
