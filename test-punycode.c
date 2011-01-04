@@ -1,6 +1,5 @@
 /* test-punycode.c --- Self tests for Libidna punycode.
- * Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010
- * Simon Josefsson
+ * Copyright (C) 2002-2011 Simon Josefsson
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
