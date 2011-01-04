@@ -28,6 +28,7 @@ AC_DEFUN([gl_EARLY],
   AC_REQUIRE([AC_PROG_RANLIB])
   # Code from module git-version-gen:
   # Code from module gnumakefile:
+  # Code from module lib-symbol-versions:
   # Code from module maintainer-makefile:
   # Code from module useless-if-before-free:
   # Code from module vc-list-files:
@@ -59,6 +60,8 @@ AC_DEFUN([gl_INIT],
   	m4_defn([m4_PACKAGE_VERSION])), [1], [],
         [AC_CONFIG_LINKS([$GNUmakefile:$GNUmakefile], [],
   	[GNUmakefile=$GNUmakefile])])
+  # Code from module lib-symbol-versions:
+  gl_LD_VERSION_SCRIPT
   # Code from module maintainer-makefile:
   AC_CONFIG_COMMANDS_PRE([m4_ifdef([AH_HEADER],
     [AC_SUBST([CONFIG_INCLUDE], m4_defn([AH_HEADER]))])])
@@ -207,6 +210,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/dummy.c
   m4/00gnulib.m4
   m4/gnulib-common.m4
+  m4/ld-version-script.m4
   m4/onceonly.m4
   top/GNUmakefile
   top/maint.mk
