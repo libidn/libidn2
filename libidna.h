@@ -80,7 +80,7 @@ extern LIBIDNA_API const char *libidna_check_version (const char *req_version);
 
 extern LIBIDNA_API int
 libidna_nfc_u8 (const uint8_t *src, size_t srclen,
-		uint8_t *dst, size_t *dstlen);
+		uint8_t **dst, size_t *dstlen);
 
 /* Punycode */
 

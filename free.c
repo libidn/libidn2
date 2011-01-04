@@ -1,5 +1,5 @@
 /*
- * nfc.c - Unicode NFC
+ * free.c - implement stub free() caller, typically for Windows
  * Copyright (C) 2011 Simon Josefsson
  *
  * This library is free software; you can redistribute it and/or
@@ -19,22 +19,18 @@
  *
  */
 
+#include <config.h>
+
 #include "libidna.h"
 
-#include <errno.h>
-
-#include "uninorm.h"
-
-int
-libidna_nfc_u8 (const uint8_t *src, size_t srclen,
-		uint8_t **dst, size_t *dstlen)
+/**
+ * libidna_free:
+ * @ptr: pointer to deallocate
+ *
+ * Call free(3) on the given pointer.
+ **/
+void
+libidna_free (void *ptr)
 {
-  uint8_t *p = u8_normalize (UNINORM_NFC, src, srclen, NULL, dstlen);
-  if (p == NULL)
-    {
-      printf ("failed %d\n", errno);
-      return LIBIDNA_NFC_FAIL;
-    }
-  *dst = p;
-  return LIBIDNA_OK;
+  free (ptr);
 }

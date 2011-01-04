@@ -25,17 +25,19 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
+#include <stdint.h>
 
 #include <libidna.h>
 
 struct nfc
 {
-  const char *in;
-  const char *out;
+  const uint8_t *in;
+  const uint8_t *out;
 };
 
 static struct nfc nfc[] = {
-  {"\xC2\xB5", "\xCE\xBC"},
+  {"\xe2\x84\xab", "\xC3\x85"},
+  {"\xe2\x84\xa6", "\xce\xa9"}
 };
 
 int debug = 1;
@@ -56,89 +58,28 @@ fail (const char *format, ...)
 }
 
 void
-escapeprint (const char *str, size_t len)
-{
-  size_t i;
-
-  printf (" (length %d bytes):\n\t", len);
-  for (i = 0; i < len; i++)
-    {
-      if (((str[i] & 0xFF) >= 'A' && (str[i] & 0xFF) <= 'Z') ||
-	  ((str[i] & 0xFF) >= 'a' && (str[i] & 0xFF) <= 'z') ||
-	  ((str[i] & 0xFF) >= '0' && (str[i] & 0xFF) <= '9')
-	  || (str[i] & 0xFF) == ' ' || (str[i] & 0xFF) == '.')
-	printf ("%c", (str[i] & 0xFF));
-      else
-	printf ("\\x%02X", (str[i] & 0xFF));
-      if ((i + 1) % 16 == 0 && (i + 1) < len)
-	printf ("'\n\t'");
-    }
-  printf ("\n");
-}
-
-void
 hexprint (const char *str, size_t len)
 {
   size_t i;
 
   printf ("\t;; ");
-  for (i = 0; i < len; i++)
-    {
-      printf ("%02x ", (str[i] & 0xFF));
-      if ((i + 1) % 8 == 0)
-	printf (" ");
-      if ((i + 1) % 16 == 0 && i + 1 < len)
-	printf ("\n\t;; ");
-    }
+  if (str && len)
+    for (i = 0; i < len; i++)
+      {
+	printf ("%02x ", (str[i] & 0xFF));
+	if ((i + 1) % 8 == 0)
+	  printf (" ");
+	if ((i + 1) % 16 == 0 && i + 1 < len)
+	  printf ("\n\t;; ");
+      }
   printf ("\n");
-}
-
-void
-binprint (const char *str, size_t len)
-{
-  size_t i;
-
-  printf ("\t;; ");
-  for (i = 0; i < len; i++)
-    {
-      printf ("%d%d%d%d%d%d%d%d ",
-	      (str[i] & 0xFF) & 0x80 ? 1 : 0,
-	      (str[i] & 0xFF) & 0x40 ? 1 : 0,
-	      (str[i] & 0xFF) & 0x20 ? 1 : 0,
-	      (str[i] & 0xFF) & 0x10 ? 1 : 0,
-	      (str[i] & 0xFF) & 0x08 ? 1 : 0,
-	      (str[i] & 0xFF) & 0x04 ? 1 : 0,
-	      (str[i] & 0xFF) & 0x02 ? 1 : 0, (str[i] & 0xFF) & 0x01 ? 1 : 0);
-      if ((i + 1) % 3 == 0)
-	printf (" ");
-      if ((i + 1) % 6 == 0 && i + 1 < len)
-	printf ("\n\t;; ");
-    }
-  printf ("\n");
-}
-
-void
-ucs4print (const uint32_t * str, size_t len)
-{
-  size_t i;
-
-  printf ("\t;; ");
-  for (i = 0; i < len; i++)
-    {
-      printf ("U+%04x ", str[i]);
-      if ((i + 1) % 4 == 0)
-	printf (" ");
-      if ((i + 1) % 8 == 0 && i + 1 < len)
-	printf ("\n\t;; ");
-    }
-  puts ("");
 }
 
 int
 main (void)
 {
-  char *out = NULL;
-  size_t outlen = 0;
+  uint8_t *out;
+  size_t outlen;
   size_t i;
   int rc;
 
@@ -147,6 +88,8 @@ main (void)
       if (debug)
 	printf ("NFC entry %d\n", i);
 
+      out = NULL;
+      outlen = 0;
       rc = libidna_nfc_u8 (nfc[i].in, strlen (nfc[i].in),
 			   &out, &outlen);
       if (rc != LIBIDNA_OK)
@@ -161,19 +104,13 @@ main (void)
 	  size_t len;
 
 	  printf ("in:\n");
-	  escapeprint (nfc[i].in, strlen (nfc[i].in));
 	  hexprint (nfc[i].in, strlen (nfc[i].in));
-	  binprint (nfc[i].in, strlen (nfc[i].in));
 
 	  printf ("out:\n");
-	  escapeprint (out, outlen);
 	  hexprint (out, outlen);
-	  binprint (out, outlen);
 
 	  printf ("expected out:\n");
-	  escapeprint (nfc[i].out, strlen (nfc[i].out));
 	  hexprint (nfc[i].out, strlen (nfc[i].out));
-	  binprint (nfc[i].out, strlen (nfc[i].out));
 	}
 
       if (out == NULL || outlen == 0)

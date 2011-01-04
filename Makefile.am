@@ -33,6 +33,7 @@ libidna_la_SOURCES += version.c
 libidna_la_SOURCES += punycode.c
 libidna_la_SOURCES += tables.c
 libidna_la_SOURCES += nfc.c
+libidna_la_SOURCES += free.c
 libidna_la_LIBADD = lib/libgnu.la
 libidna_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) -no-undefined
