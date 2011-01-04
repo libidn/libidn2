@@ -40,7 +40,7 @@ static struct nfc nfc[] = {
   {"\xe2\x84\xa6", "\xce\xa9"}
 };
 
-int debug = 1;
+int debug = 0;
 int error_count = 0;
 int break_on_error = 0;
 
