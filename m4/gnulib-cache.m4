@@ -15,7 +15,7 @@
 
 
 # Specification in the form of a command-line invocation:
-#   gnulib-tool --import --dir=. --lib=libgnu --source-base=lib --m4-base=m4 --doc-base=doc --tests-base=tests --aux-dir=build-aux --libtool --macro-prefix=gl --no-vc-files git-version-gen lib-symbol-versions maintainer-makefile uninorm/nfc
+#   gnulib-tool --import --dir=. --lib=libgnu --source-base=lib --m4-base=m4 --doc-base=doc --tests-base=tests --aux-dir=build-aux --libtool --macro-prefix=gl --no-vc-files git-version-gen lib-symbol-versions maintainer-makefile uninorm/nfc uninorm/u8-normalize
 
 # Specification in the form of a few gnulib-tool.m4 macro invocations:
 gl_LOCAL_DIR([])
@@ -24,6 +24,7 @@ gl_MODULES([
   lib-symbol-versions
   maintainer-makefile
   uninorm/nfc
+  uninorm/u8-normalize
 ])
 gl_AVOID([])
 gl_SOURCE_BASE([lib])

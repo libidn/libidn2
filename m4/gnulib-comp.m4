@@ -28,23 +28,35 @@ AC_DEFUN([gl_EARLY],
   AC_REQUIRE([AC_PROG_RANLIB])
   AC_REQUIRE([AM_PROG_CC_C_O])
   # Code from module arg-nonnull:
+  # Code from module array-mergesort:
   # Code from module c++defs:
   # Code from module git-version-gen:
   # Code from module gnumakefile:
   # Code from module gperf:
   # Code from module include_next:
+  # Code from module inline:
   # Code from module lib-symbol-versions:
   # Code from module maintainer-makefile:
   # Code from module multiarch:
+  # Code from module stdbool:
   # Code from module stddef:
   # Code from module stdint:
+  # Code from module unictype/base:
+  # Code from module unictype/combining-class:
   # Code from module uninorm/base:
   # Code from module uninorm/canonical-decomposition:
   # Code from module uninorm/composition:
+  # Code from module uninorm/decompose-internal:
   # Code from module uninorm/decomposition-table:
   # Code from module uninorm/nfc:
   # Code from module uninorm/nfd:
+  # Code from module uninorm/u8-normalize:
+  # Code from module unistr/base:
+  # Code from module unistr/u8-cpy:
+  # Code from module unistr/u8-mbtouc-unsafe:
+  # Code from module unistr/u8-uctomb:
   # Code from module unitypes:
+  # Code from module unused-parameter:
   # Code from module useless-if-before-free:
   # Code from module vc-list-files:
   # Code from module warn-on-use:
@@ -66,6 +78,7 @@ AC_DEFUN([gl_INIT],
   gl_COMMON
   gl_source_base='lib'
   # Code from module arg-nonnull:
+  # Code from module array-mergesort:
   # Code from module c++defs:
   # Code from module git-version-gen:
   # Code from module gnumakefile:
@@ -81,6 +94,8 @@ AC_DEFUN([gl_INIT],
   	[GNUmakefile=$GNUmakefile])])
   # Code from module gperf:
   # Code from module include_next:
+  # Code from module inline:
+  gl_INLINE
   # Code from module lib-symbol-versions:
   gl_LD_VERSION_SCRIPT
   # Code from module maintainer-makefile:
@@ -88,24 +103,45 @@ AC_DEFUN([gl_INIT],
     [AC_SUBST([CONFIG_INCLUDE], m4_defn([AH_HEADER]))])])
   # Code from module multiarch:
   gl_MULTIARCH
+  # Code from module stdbool:
+  AM_STDBOOL_H
   # Code from module stddef:
   gl_STDDEF_H
   # Code from module stdint:
   gl_STDINT_H
+  # Code from module unictype/base:
+  gl_LIBUNISTRING_LIBHEADER([0.9], [unictype.h])
+  # Code from module unictype/combining-class:
+  gl_LIBUNISTRING_MODULE([0.9], [unictype/combining-class])
   # Code from module uninorm/base:
   gl_LIBUNISTRING_LIBHEADER([0.9], [uninorm.h])
   # Code from module uninorm/canonical-decomposition:
   gl_LIBUNISTRING_MODULE([0.9], [uninorm/canonical-decomposition])
   # Code from module uninorm/composition:
   gl_LIBUNISTRING_MODULE([0.9], [uninorm/composition])
+  # Code from module uninorm/decompose-internal:
   # Code from module uninorm/decomposition-table:
   AC_REQUIRE([AC_C_INLINE])
   # Code from module uninorm/nfc:
   gl_LIBUNISTRING_MODULE([0.9], [uninorm/nfc])
   # Code from module uninorm/nfd:
   gl_LIBUNISTRING_MODULE([0.9], [uninorm/nfd])
+  # Code from module uninorm/u8-normalize:
+  gl_MODULE_INDICATOR_FOR_TESTS([uninorm/u8-normalize])
+  gl_LIBUNISTRING_MODULE([0.9], [uninorm/u8-normalize])
+  # Code from module unistr/base:
+  gl_LIBUNISTRING_LIBHEADER([0.9.2], [unistr.h])
+  # Code from module unistr/u8-cpy:
+  gl_LIBUNISTRING_MODULE([0.9], [unistr/u8-cpy])
+  # Code from module unistr/u8-mbtouc-unsafe:
+  gl_MODULE_INDICATOR([unistr/u8-mbtouc-unsafe])
+  gl_LIBUNISTRING_MODULE([0.9.4], [unistr/u8-mbtouc-unsafe])
+  # Code from module unistr/u8-uctomb:
+  gl_MODULE_INDICATOR([unistr/u8-uctomb])
+  gl_LIBUNISTRING_MODULE([0.9], [unistr/u8-uctomb])
   # Code from module unitypes:
   gl_LIBUNISTRING_LIBHEADER([0.9], [unitypes.h])
+  # Code from module unused-parameter:
   # Code from module useless-if-before-free:
   # Code from module vc-list-files:
   # Code from module warn-on-use:
@@ -250,15 +286,23 @@ AC_DEFUN([gl_FILE_LIST], [
   build-aux/arg-nonnull.h
   build-aux/c++defs.h
   build-aux/git-version-gen
+  build-aux/unused-parameter.h
   build-aux/useless-if-before-free
   build-aux/vc-list-files
   build-aux/warn-on-use.h
+  lib/array-mergesort.h
+  lib/stdbool.in.h
   lib/stddef.in.h
   lib/stdint.in.h
+  lib/unictype.in.h
+  lib/unictype/combining.c
+  lib/unictype/combining.h
   lib/uninorm.in.h
   lib/uninorm/canonical-decomposition.c
   lib/uninorm/composition-table.gperf
   lib/uninorm/composition.c
+  lib/uninorm/decompose-internal.c
+  lib/uninorm/decompose-internal.h
   lib/uninorm/decomposition-table.c
   lib/uninorm/decomposition-table.h
   lib/uninorm/decomposition-table1.h
@@ -266,16 +310,27 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/uninorm/nfc.c
   lib/uninorm/nfd.c
   lib/uninorm/normalize-internal.h
+  lib/uninorm/u-normalize-internal.h
+  lib/uninorm/u8-normalize.c
+  lib/unistr.in.h
+  lib/unistr/u-cpy.h
+  lib/unistr/u8-cpy.c
+  lib/unistr/u8-mbtouc-unsafe-aux.c
+  lib/unistr/u8-mbtouc-unsafe.c
+  lib/unistr/u8-uctomb-aux.c
+  lib/unistr/u8-uctomb.c
   lib/unitypes.in.h
   lib/wchar.in.h
   m4/00gnulib.m4
   m4/gnulib-common.m4
   m4/include_next.m4
+  m4/inline.m4
   m4/ld-version-script.m4
   m4/libunistring-base.m4
   m4/longlong.m4
   m4/multiarch.m4
   m4/onceonly.m4
+  m4/stdbool.m4
   m4/stddef_h.m4
   m4/stdint.m4
   m4/warn-on-use.m4

@@ -69,11 +69,18 @@
 typedef enum
 {
   LIBIDNA_OK = 0,
+  LIBIDNA_NFC_FAIL = -100,
 } libidna_rc;
 
 /* Global */
 
 extern LIBIDNA_API const char *libidna_check_version (const char *req_version);
+
+/* NFC */
+
+extern LIBIDNA_API int
+libidna_nfc_u8 (const uint8_t *src, size_t srclen,
+		uint8_t *dst, size_t *dstlen);
 
 /* Punycode */
 
