@@ -24,56 +24,57 @@
 #include <stdlib.h> /* getsubopt */
 #include "unistr.h" /* u8_cpy_alloc */
 #include "uninorm.h" /* u8_normalize */
+#include "unistr.h" /* u8_normalize */
 
 enum
   {
-    NFC = 0,
+    CHECK_ENCODING = 0,
     CHECK_NFC,
+    NFC,
     THE_END
   };
 
 static char *const opts[] = {
-  "nfc",
+  "check-encoding",
   "check-nfc",
+  "nfc",
   NULL
 };
 
 static int
-process (char *opt,
-	 const uint8_t *src, size_t srclen,
-	 uint8_t **dst, size_t *dstlen)
+process1 (char *opt, uint8_t **str, size_t *strlen)
 {
   char *p = opt;
   char *value;
-  uint8_t *tmp = u8_cpy_alloc (src, srclen);
-  size_t tmplen = srclen;
-
-  if (tmp == NULL)
-    return LIBIDNA_MALLOC_ERROR;
 
   while (p != NULL && *p != '\0')
     {
       switch (getsubopt (&p, (char *const *) opts, &value))
 	{
+	case CHECK_ENCODING:
+	  if (u8_check (*str, *strlen) != NULL)
+	    return LIBIDNA_ENCODING_CHECK_FAIL;
+	  break;
+
 	case NFC:
 	  {
-	    uint8_t *p = u8_normalize (UNINORM_NFC, tmp, tmplen,
-				       NULL, &tmplen);
-	    free (tmp);
+	    uint8_t *p = u8_normalize (UNINORM_NFC, *str, *strlen,
+				       NULL, strlen);
 	    if (p == NULL)
 	      return LIBIDNA_NFC_FAIL;
-	    tmp = p;
+	    free (*str);
+	    *str = p;
 	  }
 
 	case CHECK_NFC:
 	  {
 	    size_t plen;
-	    uint8_t *p = u8_normalize (UNINORM_NFC, tmp, tmplen,
+	    uint8_t *p = u8_normalize (UNINORM_NFC, *str, *strlen,
 				       NULL, &plen);
 	    int ok;
 	    if (p == NULL)
 	      return LIBIDNA_NFC_FAIL;
-	    ok = tmplen == plen && memcmp (tmp, p, plen) == 0;
+	    ok = *strlen == plen && memcmp (*str, p, plen) == 0;
 	    free (p);
 	    if (!ok)
 	      return LIBIDNA_NFC_CHECK_FAIL;
@@ -88,6 +89,28 @@ process (char *opt,
 	  return LIBIDNA_UNKNOWN_WHAT;
 	  break;
 	}
+    }
+
+  return LIBIDNA_OK;
+}
+
+static int
+process (char *opt,
+	 const uint8_t *src, size_t srclen,
+	 uint8_t **dst, size_t *dstlen)
+{
+  uint8_t *tmp = u8_cpy_alloc (src, srclen);
+  size_t tmplen = srclen;
+  int rc;
+
+  if (tmp == NULL)
+    return LIBIDNA_MALLOC_ERROR;
+
+  rc = process1 (opt, &tmp, &tmplen);
+  if (rc != LIBIDNA_OK)
+    {
+      free (tmp);
+      return rc;
     }
 
   *dst = tmp;

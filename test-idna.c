@@ -39,12 +39,15 @@ struct idna_tv
 };
 
 static struct idna_tv tv[] = {
-  {"nfc", LIBIDNA_OK, 3, "\xe2\x84\xab", 2, "\xC3\x85"},
-  {"nfc", LIBIDNA_OK, 3, "\xe2\x84\xa6", 2, "\xce\xa9"},
+  {"check-encoding", LIBIDNA_OK, 2, "\xce\xa9", 2, "\xce\xa9"},
+  {"check-encoding", LIBIDNA_ENCODING_CHECK_FAIL, 6,
+   "\xd0\x94\xd0\xb0\xc1\x80", 0, NULL},
   {"check-nfc", LIBIDNA_NFC_CHECK_FAIL, 3, "\xe2\x84\xa6", 0, NULL},
   {"check-nfc", LIBIDNA_OK, 2, "\xC3\x85", 2, "\xC3\x85"},
   {"check-nfc", LIBIDNA_NFC_CHECK_FAIL, 3, "\xe2\x84\xa6", 0, NULL},
-  {"check-nfc", LIBIDNA_OK, 2, "\xce\xa9", 2, "\xce\xa9"}
+  {"check-nfc", LIBIDNA_OK, 2, "\xce\xa9", 2, "\xce\xa9"},
+  {"nfc", LIBIDNA_OK, 3, "\xe2\x84\xab", 2, "\xC3\x85"},
+  {"nfc", LIBIDNA_OK, 3, "\xe2\x84\xa6", 2, "\xce\xa9"},
 };
 
 int debug = 1;

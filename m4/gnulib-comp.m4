@@ -55,6 +55,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module uninorm/u8-normalize:
   # Code from module unistd:
   # Code from module unistr/base:
+  # Code from module unistr/u8-check:
   # Code from module unistr/u8-cpy:
   # Code from module unistr/u8-cpy-alloc:
   # Code from module unistr/u8-mbtouc-unsafe:
@@ -142,6 +143,8 @@ AC_DEFUN([gl_INIT],
   gl_UNISTD_H
   # Code from module unistr/base:
   gl_LIBUNISTRING_LIBHEADER([0.9.2], [unistr.h])
+  # Code from module unistr/u8-check:
+  gl_LIBUNISTRING_MODULE([0.9], [unistr/u8-check])
   # Code from module unistr/u8-cpy:
   gl_LIBUNISTRING_MODULE([0.9], [unistr/u8-cpy])
   # Code from module unistr/u8-cpy-alloc:
@@ -331,6 +334,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/unistr.in.h
   lib/unistr/u-cpy-alloc.h
   lib/unistr/u-cpy.h
+  lib/unistr/u8-check.c
   lib/unistr/u8-cpy-alloc.c
   lib/unistr/u8-cpy.c
   lib/unistr/u8-mbtouc-unsafe-aux.c
