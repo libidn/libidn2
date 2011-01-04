@@ -38,7 +38,7 @@ libidna_la_LDFLAGS = \
 BUILT_SOURCES = tables.c
 EXTRA_DIST = gen-tables-from-rfc5892.pl gen-tables-from-iana.pl
 IANA_URL = http://www.iana.org/assignments/idnabis-tables/idnabis-tables.txt
-RFC5982_URL = http://www.ietf.org/rfc/rfc5892.txt
+RFC5892_URL = http://www.ietf.org/rfc/rfc5892.txt
 tables.c: $(srcdir)/gen-tables-from-rfc5892.pl $(srcdir)/gen-tables-from-iana.pl
 	wget -O - -q $(RFC5892_URL) | $(srcdir)/gen-tables-from-rfc5892.pl
 	mv tables.c tmp.c
