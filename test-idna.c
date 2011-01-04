@@ -28,15 +28,23 @@
 
 #include <libidna.h>
 
-struct nfc
+struct idna_tv
 {
+  const char *what;
+  int rc;
+  size_t inlen;
   const uint8_t *in;
+  size_t outlen;
   const uint8_t *out;
 };
 
-static struct nfc nfc[] = {
-  {"\xe2\x84\xab", "\xC3\x85"},
-  {"\xe2\x84\xa6", "\xce\xa9"}
+static struct idna_tv tv[] = {
+  {"nfc", LIBIDNA_OK, 3, "\xe2\x84\xab", 2, "\xC3\x85"},
+  {"nfc", LIBIDNA_OK, 3, "\xe2\x84\xa6", 2, "\xce\xa9"},
+  {"check-nfc", LIBIDNA_NFC_CHECK_FAIL, 3, "\xe2\x84\xa6", 0, NULL},
+  {"check-nfc", LIBIDNA_OK, 2, "\xC3\x85", 2, "\xC3\x85"},
+  {"check-nfc", LIBIDNA_NFC_CHECK_FAIL, 3, "\xe2\x84\xa6", 0, NULL},
+  {"check-nfc", LIBIDNA_OK, 2, "\xce\xa9", 2, "\xce\xa9"}
 };
 
 int debug = 1;
@@ -82,18 +90,18 @@ main (void)
   size_t i;
   int rc;
 
-  for (i = 0; i < sizeof (nfc) / sizeof (nfc[0]); i++)
+  for (i = 0; i < sizeof (tv) / sizeof (tv[0]); i++)
     {
       if (debug)
-	printf ("NFC entry %d\n", i);
+	printf ("IDNA entry %d\n", i);
 
       out = NULL;
       outlen = 0;
-      rc = libidna_process_u8 ("nfc", nfc[i].in, strlen (nfc[i].in),
+      rc = libidna_process_u8 (tv[i].what, tv[i].in, tv[i].inlen,
 			       &out, &outlen);
-      if (rc != LIBIDNA_OK)
+      if (rc != tv[i].rc)
 	{
-	  fail ("NFC entry %d failed fatally %d\n", i, rc);
+	  fail ("NFC entry %d failed got %d expected %d\n", i, rc, tv[i].rc);
 	  continue;
 	}
 
@@ -102,22 +110,28 @@ main (void)
 	  uint32_t *t;
 	  size_t len;
 
+	  printf ("what: %s\n", tv[i].what);
+
 	  printf ("in:\n");
-	  hexprint (nfc[i].in, strlen (nfc[i].in));
+	  hexprint (tv[i].in, tv[i].inlen);
 
-	  printf ("out:\n");
-	  hexprint (out, outlen);
+	  if (rc == LIBIDNA_OK)
+	    {
+	      printf ("got out:\n");
+	      hexprint (out, outlen);
+	    }
 
-	  printf ("expected out:\n");
-	  hexprint (nfc[i].out, strlen (nfc[i].out));
+	  if (tv[i].out)
+	    {
+	      printf ("expected out:\n");
+	      hexprint (tv[i].out, tv[i].outlen);
+	    }
 	}
 
-      if (out == NULL || outlen == 0)
-	fail ("NFC entry %d returned NULL?!\n", i);
-      else if (strlen (nfc[i].out) != outlen ||
-	  memcmp (nfc[i].out, out, outlen) != 0)
+      if (rc == LIBIDNA_OK &&
+	  (tv[i].outlen != outlen || memcmp (tv[i].out, out, outlen)) != 0)
 	{
-	  fail ("NFC entry %d failed\n", i);
+	  fail ("IDNA entry %d failed\n", i);
 	  if (debug)
 	    printf ("ERROR\n");
 	}

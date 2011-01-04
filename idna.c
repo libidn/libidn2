@@ -28,11 +28,13 @@
 enum
   {
     NFC = 0,
+    CHECK_NFC,
     THE_END
   };
 
 static char *const opts[] = {
   "nfc",
+  "check-nfc",
   NULL
 };
 
@@ -61,6 +63,21 @@ process (char *opt,
 	    if (p == NULL)
 	      return LIBIDNA_NFC_FAIL;
 	    tmp = p;
+	  }
+
+	case CHECK_NFC:
+	  {
+	    size_t plen;
+	    uint8_t *p = u8_normalize (UNINORM_NFC, tmp, tmplen,
+				       NULL, &plen);
+	    int ok;
+	    if (p == NULL)
+	      return LIBIDNA_NFC_FAIL;
+	    ok = tmplen == plen && memcmp (tmp, p, plen) == 0;
+	    free (p);
+	    if (!ok)
+	      return LIBIDNA_NFC_CHECK_FAIL;
+	    break;
 	  }
 
 	case -1:
