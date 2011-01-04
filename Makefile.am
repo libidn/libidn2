@@ -15,9 +15,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301 USA
 
+# Gnulib
 SUBDIRS = lib
-
 ACLOCAL_AMFLAGS = -I m4
+EXTRA_DIST = m4/gnulib-cache.m4
 
 AM_CPPFLAGS = -DLIBIDNA_BUILDING
 AM_CPPFLAGS += -I$(srcdir)/lib -I$(builddir)/lib
@@ -36,7 +37,7 @@ libidna_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) -no-undefined
 
 BUILT_SOURCES = tables.c
-EXTRA_DIST = gen-tables-from-rfc5892.pl gen-tables-from-iana.pl
+EXTRA_DIST += gen-tables-from-rfc5892.pl gen-tables-from-iana.pl
 IANA_URL = http://www.iana.org/assignments/idnabis-tables/idnabis-tables.txt
 RFC5892_URL = http://www.ietf.org/rfc/rfc5892.txt
 tables.c: $(srcdir)/gen-tables-from-rfc5892.pl $(srcdir)/gen-tables-from-iana.pl
