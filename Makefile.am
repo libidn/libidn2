@@ -58,5 +58,5 @@ endif
 
 LDADD = libidna.la
 
-TESTS = test-punycode test-nfc
-check_PROGRAMS = test-punycode test-nfc
+TESTS = test-punycode test-nfc test-idna
+check_PROGRAMS = test-punycode test-nfc test-idna

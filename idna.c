@@ -21,25 +21,82 @@
 
 #include "libidna.h"
 
-#include <errno.h>
+#include <stdlib.h> /* getsubopt */
+#include "unistr.h" /* u8_cpy_alloc */
+#include "uninorm.h" /* u8_normalize */
+
+enum
+  {
+    NFC = 0,
+    THE_END
+  };
+
+static char *const opts[] = {
+  "nfc",
+  NULL
+};
+
+static int
+process (char *opt,
+	 const uint8_t *src, size_t srclen,
+	 uint8_t **dst, size_t *dstlen)
+{
+  char *p = opt;
+  char *value;
+  uint8_t *tmp = u8_cpy_alloc (src, srclen);
+  size_t tmplen = srclen;
+
+  if (tmp == NULL)
+    return LIBIDNA_MALLOC_ERROR;
+
+  while (p != NULL && *p != '\0')
+    {
+      switch (getsubopt (&p, (char *const *) opts, &value))
+	{
+	case NFC:
+	  {
+	    uint8_t *p = u8_normalize (UNINORM_NFC, tmp, tmplen,
+				       NULL, &tmplen);
+	    free (tmp);
+	    if (p == NULL)
+	      return LIBIDNA_NFC_FAIL;
+	    tmp = p;
+	  }
+
+	case -1:
+	  if (!value)
+	    break;
+
+	default:
+	  return LIBIDNA_UNKNOWN_WHAT;
+	  break;
+	}
+    }
+
+  *dst = tmp;
+  *dstlen = tmplen;
+
+  return LIBIDNA_OK;
+}
 
 int
 libidna_process_u8 (const char *what,
 		    const uint8_t *src, size_t srclen,
 		    uint8_t **dst, size_t *dstlen)
 {
-#if 0
+  char *opt;
   int rc;
-  uint8_t *tmp;
-  size_t tmplen;
 
-  /* For char* version do lc->u8 conversion here. */
+  if (what == NULL)
+    return LIBIDNA_UNKNOWN_WHAT;
 
-  tmp = NULL; tmplen = 0;
-  rc = libidna_nfc_u8 (src, srclen, &tmp, &tmplen);
-  if (rc != LIBIDNA_OK)
-    return rc;
-#endif
+  opt = strdup (what);
+  if (opt == NULL)
+    return LIBIDNA_MALLOC_ERROR;
 
-  return LIBIDNA_OK;  
+  rc = process (opt, src, srclen, dst, dstlen);
+
+  free (opt);
+
+  return rc;
 }

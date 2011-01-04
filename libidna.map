@@ -25,6 +25,8 @@ LIBIDNA_1.0.0 {
 
     libidna_free;
 
+    libidna_process_u8;
+
     libidna_nfc_u8;
 
   local:

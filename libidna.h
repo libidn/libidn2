@@ -69,7 +69,9 @@
 typedef enum
 {
   LIBIDNA_OK = 0,
-  LIBIDNA_NFC_FAIL = -100,
+  LIBIDNA_MALLOC_ERROR = -100,
+  LIBIDNA_NFC_FAIL = -101,
+  LIBIDNA_UNKNOWN_WHAT = -102
 } libidna_rc;
 
 /* Global */

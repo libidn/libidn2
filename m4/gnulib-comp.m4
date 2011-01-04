@@ -37,10 +37,12 @@ AC_DEFUN([gl_EARLY],
   # Code from module inline:
   # Code from module lib-symbol-versions:
   # Code from module maintainer-makefile:
+  # Code from module malloc-posix:
   # Code from module multiarch:
   # Code from module stdbool:
   # Code from module stddef:
   # Code from module stdint:
+  # Code from module stdlib:
   # Code from module unictype/base:
   # Code from module unictype/combining-class:
   # Code from module uninorm/base:
@@ -51,8 +53,10 @@ AC_DEFUN([gl_EARLY],
   # Code from module uninorm/nfc:
   # Code from module uninorm/nfd:
   # Code from module uninorm/u8-normalize:
+  # Code from module unistd:
   # Code from module unistr/base:
   # Code from module unistr/u8-cpy:
+  # Code from module unistr/u8-cpy-alloc:
   # Code from module unistr/u8-mbtouc-unsafe:
   # Code from module unistr/u8-uctomb:
   # Code from module unitypes:
@@ -101,6 +105,9 @@ AC_DEFUN([gl_INIT],
   # Code from module maintainer-makefile:
   AC_CONFIG_COMMANDS_PRE([m4_ifdef([AH_HEADER],
     [AC_SUBST([CONFIG_INCLUDE], m4_defn([AH_HEADER]))])])
+  # Code from module malloc-posix:
+  gl_FUNC_MALLOC_POSIX
+  gl_STDLIB_MODULE_INDICATOR([malloc-posix])
   # Code from module multiarch:
   gl_MULTIARCH
   # Code from module stdbool:
@@ -109,6 +116,8 @@ AC_DEFUN([gl_INIT],
   gl_STDDEF_H
   # Code from module stdint:
   gl_STDINT_H
+  # Code from module stdlib:
+  gl_STDLIB_H
   # Code from module unictype/base:
   gl_LIBUNISTRING_LIBHEADER([0.9], [unictype.h])
   # Code from module unictype/combining-class:
@@ -129,10 +138,14 @@ AC_DEFUN([gl_INIT],
   # Code from module uninorm/u8-normalize:
   gl_MODULE_INDICATOR_FOR_TESTS([uninorm/u8-normalize])
   gl_LIBUNISTRING_MODULE([0.9], [uninorm/u8-normalize])
+  # Code from module unistd:
+  gl_UNISTD_H
   # Code from module unistr/base:
   gl_LIBUNISTRING_LIBHEADER([0.9.2], [unistr.h])
   # Code from module unistr/u8-cpy:
   gl_LIBUNISTRING_MODULE([0.9], [unistr/u8-cpy])
+  # Code from module unistr/u8-cpy-alloc:
+  gl_LIBUNISTRING_MODULE([0.9], [unistr/u8-cpy-alloc])
   # Code from module unistr/u8-mbtouc-unsafe:
   gl_MODULE_INDICATOR([unistr/u8-mbtouc-unsafe])
   gl_LIBUNISTRING_MODULE([0.9.4], [unistr/u8-mbtouc-unsafe])
@@ -291,9 +304,11 @@ AC_DEFUN([gl_FILE_LIST], [
   build-aux/vc-list-files
   build-aux/warn-on-use.h
   lib/array-mergesort.h
+  lib/malloc.c
   lib/stdbool.in.h
   lib/stddef.in.h
   lib/stdint.in.h
+  lib/stdlib.in.h
   lib/unictype.in.h
   lib/unictype/combining.c
   lib/unictype/combining.h
@@ -312,8 +327,11 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/uninorm/normalize-internal.h
   lib/uninorm/u-normalize-internal.h
   lib/uninorm/u8-normalize.c
+  lib/unistd.in.h
   lib/unistr.in.h
+  lib/unistr/u-cpy-alloc.h
   lib/unistr/u-cpy.h
+  lib/unistr/u8-cpy-alloc.c
   lib/unistr/u8-cpy.c
   lib/unistr/u8-mbtouc-unsafe-aux.c
   lib/unistr/u8-mbtouc-unsafe.c
@@ -328,11 +346,14 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/ld-version-script.m4
   m4/libunistring-base.m4
   m4/longlong.m4
+  m4/malloc.m4
   m4/multiarch.m4
   m4/onceonly.m4
   m4/stdbool.m4
   m4/stddef_h.m4
   m4/stdint.m4
+  m4/stdlib_h.m4
+  m4/unistd_h.m4
   m4/warn-on-use.m4
   m4/wchar_h.m4
   m4/wchar_t.m4
