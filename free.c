@@ -23,6 +23,8 @@
 
 #include "libidna.h"
 
+#include <stdlib.h> /* free */
+
 /**
  * libidna_free:
  * @ptr: pointer to deallocate
