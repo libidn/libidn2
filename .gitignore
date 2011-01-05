@@ -12,6 +12,8 @@ build-aux/depcomp
 build-aux/install-sh
 build-aux/ltmain.sh
 build-aux/missing
+check.lo
+check.o
 config.h
 config.h.in
 config.log
@@ -35,6 +37,8 @@ lib/unictype/.dirstamp
 lib/unictype/.libs/
 lib/unictype/combining.lo
 lib/unictype/combining.o
+lib/unictype/pr_combining.lo
+lib/unictype/pr_combining.o
 lib/uninorm.h
 lib/uninorm/.deps/
 lib/uninorm/.dirstamp

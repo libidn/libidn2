@@ -1,4 +1,4 @@
-/* tables.h - IDNA tables
+/* check.h - IDNA table checking functions
    Copyright (C) 2011 Simon Josefsson
 
    This program is free software: you can redistribute it and/or modify it
@@ -16,14 +16,5 @@
 
 #include <stdint.h>
 
-enum {
-  PVALID, CONTEXTJ, CONTEXTO, DISALLOWED, UNASSIGNED
-};
-
-struct idna_table {
-  uint32_t start;
-  uint32_t end;
-  int state;
-};
-
-const struct idna_table idna_table[];
+int
+_libidna_disallowed_p (uint32_t cp);

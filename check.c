@@ -1,4 +1,4 @@
-/* tables.h - IDNA tables
+/* check.c - IDNA table checking functions
    Copyright (C) 2011 Simon Josefsson
 
    This program is free software: you can redistribute it and/or modify it
@@ -14,16 +14,31 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
-#include <stdint.h>
+#include "check.h"
 
-enum {
-  PVALID, CONTEXTJ, CONTEXTO, DISALLOWED, UNASSIGNED
-};
+#include <stdlib.h> /* abort */
 
-struct idna_table {
-  uint32_t start;
-  uint32_t end;
-  int state;
-};
+#include "tables.h"
 
-const struct idna_table idna_table[];
+static int
+property (uint32_t cp)
+{
+  const struct idna_table *p = idna_table;
+  
+  while (p->start != 0 && p->end != 0)
+    {
+      if (p->end == 0 && p->start == cp)
+	return p->state;
+      else if (p->start <= cp && p->end >= cp)
+	return p->state;
+      p++;
+    }
+
+  abort ();
+}
+
+int
+_libidna_disallowed_p (uint32_t cp)
+{
+  return property (cp) == DISALLOWED;
+}
