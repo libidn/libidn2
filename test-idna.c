@@ -59,6 +59,9 @@ static struct idna_tv tv[] = {
   {"check-combining", LIBIDNA_CHECK_COMBINING_FAIL, 2, "\xcc\x80", 0, NULL},
   /* CCC!=0 GC=Mc */
   {"check-combining", LIBIDNA_CHECK_COMBINING_FAIL, 3, "\xe1\xad\x84", 0, NULL},
+  {"check-disallowed", LIBIDNA_CHECK_DISALLOWED_FAIL, 1, "\x00", 0, NULL},
+  {"check-disallowed", LIBIDNA_CHECK_DISALLOWED_FAIL, 2, "\xc2\xb8", 0, NULL},
+  {"check-disallowed", LIBIDNA_CHECK_DISALLOWED_FAIL, 4, "\xf4\x8f\xbf\xbf", 0, NULL},
 };
 
 int debug = 1;
@@ -115,7 +118,7 @@ main (void)
 			       &out, &outlen);
       if (rc != tv[i].rc)
 	{
-	  fail ("NFC entry %d failed got %d expected %d\n", i, rc, tv[i].rc);
+	  fail ("IDNA entry %d failed got %d expected %d\n", i, rc, tv[i].rc);
 	  continue;
 	}
 

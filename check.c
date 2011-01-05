@@ -25,7 +25,7 @@ property (uint32_t cp)
 {
   const struct idna_table *p = idna_table;
   
-  while (p->start != 0 && p->end != 0)
+  while (p->start != 0 || p->end != 0)
     {
       if (p->end == 0 && p->start == cp)
 	return p->state;

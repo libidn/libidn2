@@ -19,6 +19,8 @@
 #include <stdlib.h> /* getsubopt */
 #include <errno.h> /* errno */
 
+#include "check.h"
+
 #include "unistr.h" /* u32_cpy_alloc */
 #include "uninorm.h" /* u32_normalize */
 #include "unistr.h" /* u32_normalize */
@@ -28,6 +30,7 @@ enum
     CHECK_NFC,
     CHECK_2HYPHEN,
     CHECK_COMBINING,
+    CHECK_DISALLOWED,
     NFC,
     THE_END
   };
@@ -36,6 +39,7 @@ static char *const opts[] = {
   "check-nfc",
   "check-2hyphen",
   "check-combining",
+  "check-disallowed",
   "nfc",
   NULL
 };
@@ -71,8 +75,13 @@ process1 (char *opt, uint32_t **str, size_t *strlen)
 	  break;
 
 	case CHECK_COMBINING:
-	  if (*strlen > 0 && uc_is_property_combining (*str[0]))
+	  if (*strlen > 0 && uc_is_property_combining ((*str)[0]))
 	    return LIBIDNA_CHECK_COMBINING_FAIL;
+	  break;
+
+	case CHECK_DISALLOWED:
+	  if (*strlen > 0 && _libidna_disallowed_p ((*str)[0]))
+	    return LIBIDNA_CHECK_DISALLOWED_FAIL;
 	  break;
 
 	case NFC:
