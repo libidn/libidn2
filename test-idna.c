@@ -39,9 +39,10 @@ struct idna_tv
 };
 
 static struct idna_tv tv[] = {
-  {"check-encoding", LIBIDNA_OK, 2, "\xce\xa9", 2, "\xce\xa9"},
+#if 0
   {"check-encoding", LIBIDNA_CHECK_ENCODING_FAIL, 6,
    "\xd0\x94\xd0\xb0\xc1\x80", 0, NULL},
+#endif
   {"check-nfc", LIBIDNA_CHECK_NFC_FAIL, 3, "\xe2\x84\xa6", 0, NULL},
   {"check-nfc", LIBIDNA_OK, 2, "\xC3\x85", 2, "\xC3\x85"},
   {"check-nfc", LIBIDNA_CHECK_NFC_FAIL, 3, "\xe2\x84\xa6", 0, NULL},

@@ -1,6 +1,6 @@
-/* Normalization of UTF-8 strings.
-   Copyright (C) 2009-2011 Free Software Foundation, Inc.
-   Written by Bruno Haible <bruno@clisp.org>, 2009.
+/* Store a character in UTF-32 string.
+   Copyright (C) 2002, 2005-2006, 2009-2011 Free Software Foundation, Inc.
+   Written by Bruno Haible <bruno@clisp.org>, 2002.
 
    This program is free software: you can redistribute it and/or modify it
    under the terms of the GNU General Public License as published
@@ -17,22 +17,31 @@
 
 #include <config.h>
 
+#if defined IN_LIBUNISTRING
+/* Tell unistr.h to declare u32_uctomb as 'extern', not 'static inline'.  */
+# include "unistring-notinline.h"
+#endif
+
 /* Specification.  */
-#include "uninorm.h"
-
-#include <errno.h>
-#include <stddef.h>
-#include <stdlib.h>
-#include <string.h>
-
 #include "unistr.h"
-#include "unictype.h"
-#include "normalize-internal.h"
-#include "decompose-internal.h"
 
-#define FUNC u8_normalize
-#define UNIT uint8_t
-#define U_MBTOUC_UNSAFE u8_mbtouc_unsafe
-#define U_UCTOMB u8_uctomb
-#define U_CPY u8_cpy
-#include "u-normalize-internal.h"
+#if !HAVE_INLINE
+
+int
+u32_uctomb (uint32_t *s, ucs4_t uc, int n)
+{
+  if (uc < 0xd800 || (uc >= 0xe000 && uc < 0x110000))
+    {
+      if (n > 0)
+        {
+          *s = uc;
+          return 1;
+        }
+      else
+        return -2;
+    }
+  else
+    return -1;
+}
+
+#endif

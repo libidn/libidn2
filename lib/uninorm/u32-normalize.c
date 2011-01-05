@@ -1,6 +1,6 @@
-/* Copy piece of UTF-8 string.
-   Copyright (C) 2002, 2006, 2009-2011 Free Software Foundation, Inc.
-   Written by Bruno Haible <bruno@clisp.org>, 2002.
+/* Normalization of UTF-32 strings.
+   Copyright (C) 2009-2011 Free Software Foundation, Inc.
+   Written by Bruno Haible <bruno@clisp.org>, 2009.
 
    This program is free software: you can redistribute it and/or modify it
    under the terms of the GNU General Public License as published
@@ -18,8 +18,21 @@
 #include <config.h>
 
 /* Specification.  */
-#include "unistr.h"
+#include "uninorm.h"
 
-#define FUNC u8_cpy
-#define UNIT uint8_t
-#include "u-cpy.h"
+#include <errno.h>
+#include <stddef.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "unistr.h"
+#include "unictype.h"
+#include "normalize-internal.h"
+#include "decompose-internal.h"
+
+#define FUNC u32_normalize
+#define UNIT uint32_t
+#define U_MBTOUC_UNSAFE u32_mbtouc_unsafe
+#define U_UCTOMB u32_uctomb
+#define U_CPY u32_cpy
+#include "u-normalize-internal.h"

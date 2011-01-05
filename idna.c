@@ -22,13 +22,14 @@
 #include "libidna.h"
 
 #include <stdlib.h> /* getsubopt */
-#include "unistr.h" /* u8_cpy_alloc */
-#include "uninorm.h" /* u8_normalize */
-#include "unistr.h" /* u8_normalize */
+#include <errno.h> /* errno */
+
+#include "unistr.h" /* u32_cpy_alloc */
+#include "uninorm.h" /* u32_normalize */
+#include "unistr.h" /* u32_normalize */
 
 enum
   {
-    CHECK_ENCODING = 0,
     CHECK_NFC,
     CHECK_2HYPHEN,
     NFC,
@@ -36,7 +37,6 @@ enum
   };
 
 static char *const opts[] = {
-  "check-encoding",
   "check-nfc",
   "check-2hyphen",
   "nfc",
@@ -44,7 +44,7 @@ static char *const opts[] = {
 };
 
 static int
-process1 (char *opt, uint8_t **str, size_t *strlen)
+process1 (char *opt, uint32_t **str, size_t *strlen)
 {
   char *p = opt;
   char *value;
@@ -53,15 +53,10 @@ process1 (char *opt, uint8_t **str, size_t *strlen)
     {
       switch (getsubopt (&p, (char *const *) opts, &value))
 	{
-	case CHECK_ENCODING:
-	  if (u8_check (*str, *strlen) != NULL)
-	    return LIBIDNA_CHECK_ENCODING_FAIL;
-	  break;
-
 	case CHECK_NFC:
 	  {
 	    size_t plen;
-	    uint8_t *p = u8_normalize (UNINORM_NFC, *str, *strlen,
+	    uint32_t *p = u32_normalize (UNINORM_NFC, *str, *strlen,
 				       NULL, &plen);
 	    int ok;
 	    if (p == NULL)
@@ -80,7 +75,7 @@ process1 (char *opt, uint8_t **str, size_t *strlen)
 
 	case NFC:
 	  {
-	    uint8_t *p = u8_normalize (UNINORM_NFC, *str, *strlen,
+	    uint32_t *p = u32_normalize (UNINORM_NFC, *str, *strlen,
 				       NULL, strlen);
 	    if (p == NULL)
 	      return LIBIDNA_NFC_FAIL;
@@ -103,10 +98,10 @@ process1 (char *opt, uint8_t **str, size_t *strlen)
 
 static int
 process (char *opt,
-	 const uint8_t *src, size_t srclen,
-	 uint8_t **dst, size_t *dstlen)
+	 const uint32_t *src, size_t srclen,
+	 uint32_t **dst, size_t *dstlen)
 {
-  uint8_t *tmp = u8_cpy_alloc (src, srclen);
+  uint32_t *tmp = u32_cpy_alloc (src, srclen);
   size_t tmplen = srclen;
   int rc;
 
@@ -127,9 +122,9 @@ process (char *opt,
 }
 
 int
-libidna_process_u8 (const char *what,
-		    const uint8_t *src, size_t srclen,
-		    uint8_t **dst, size_t *dstlen)
+libidna_process_u32 (const char *what,
+		     const uint32_t *src, size_t srclen,
+		     uint32_t **dst, size_t *dstlen)
 {
   char *opt;
   int rc;
@@ -146,4 +141,34 @@ libidna_process_u8 (const char *what,
   free (opt);
 
   return rc;
+}
+
+int
+libidna_process_u8 (const char *what,
+		     const uint8_t *src, size_t srclen,
+		     uint8_t **dst, size_t *dstlen)
+{
+  size_t plen, u32dstlen;
+  uint32_t *p = u8_to_u32 (src, srclen, NULL, &plen);
+  uint32_t *u32dst = NULL;
+  int rc;
+
+  if (p == NULL)
+    {
+      if (errno == ENOMEM)
+	return LIBIDNA_MALLOC_ERROR;
+      return LIBIDNA_ENCODING_ERROR;
+    }
+
+  rc = libidna_process_u32 (what, p, plen, &u32dst, &u32dstlen);
+  free (p);
+  if (rc != LIBIDNA_OK)
+    return rc;
+
+  *dst = u32_to_u8 (u32dst, u32dstlen, NULL, dstlen);
+
+  if (*dst == NULL)
+    return LIBIDNA_MALLOC_ERROR;
+
+  return LIBIDNA_OK;
 }

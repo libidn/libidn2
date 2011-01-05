@@ -52,13 +52,16 @@ AC_DEFUN([gl_EARLY],
   # Code from module uninorm/decomposition-table:
   # Code from module uninorm/nfc:
   # Code from module uninorm/nfd:
-  # Code from module uninorm/u8-normalize:
+  # Code from module uninorm/u32-normalize:
   # Code from module unistd:
   # Code from module unistr/base:
-  # Code from module unistr/u8-check:
-  # Code from module unistr/u8-cpy:
-  # Code from module unistr/u8-cpy-alloc:
-  # Code from module unistr/u8-mbtouc-unsafe:
+  # Code from module unistr/u32-cpy:
+  # Code from module unistr/u32-cpy-alloc:
+  # Code from module unistr/u32-mbtouc-unsafe:
+  # Code from module unistr/u32-to-u8:
+  # Code from module unistr/u32-uctomb:
+  # Code from module unistr/u8-mbtoucr:
+  # Code from module unistr/u8-to-u32:
   # Code from module unistr/u8-uctomb:
   # Code from module unitypes:
   # Code from module unused-parameter:
@@ -136,22 +139,30 @@ AC_DEFUN([gl_INIT],
   gl_LIBUNISTRING_MODULE([0.9], [uninorm/nfc])
   # Code from module uninorm/nfd:
   gl_LIBUNISTRING_MODULE([0.9], [uninorm/nfd])
-  # Code from module uninorm/u8-normalize:
-  gl_MODULE_INDICATOR_FOR_TESTS([uninorm/u8-normalize])
-  gl_LIBUNISTRING_MODULE([0.9], [uninorm/u8-normalize])
+  # Code from module uninorm/u32-normalize:
+  gl_MODULE_INDICATOR_FOR_TESTS([uninorm/u32-normalize])
+  gl_LIBUNISTRING_MODULE([0.9], [uninorm/u32-normalize])
   # Code from module unistd:
   gl_UNISTD_H
   # Code from module unistr/base:
   gl_LIBUNISTRING_LIBHEADER([0.9.2], [unistr.h])
-  # Code from module unistr/u8-check:
-  gl_LIBUNISTRING_MODULE([0.9], [unistr/u8-check])
-  # Code from module unistr/u8-cpy:
-  gl_LIBUNISTRING_MODULE([0.9], [unistr/u8-cpy])
-  # Code from module unistr/u8-cpy-alloc:
-  gl_LIBUNISTRING_MODULE([0.9], [unistr/u8-cpy-alloc])
-  # Code from module unistr/u8-mbtouc-unsafe:
-  gl_MODULE_INDICATOR([unistr/u8-mbtouc-unsafe])
-  gl_LIBUNISTRING_MODULE([0.9.4], [unistr/u8-mbtouc-unsafe])
+  # Code from module unistr/u32-cpy:
+  gl_LIBUNISTRING_MODULE([0.9], [unistr/u32-cpy])
+  # Code from module unistr/u32-cpy-alloc:
+  gl_LIBUNISTRING_MODULE([0.9], [unistr/u32-cpy-alloc])
+  # Code from module unistr/u32-mbtouc-unsafe:
+  gl_MODULE_INDICATOR([unistr/u32-mbtouc-unsafe])
+  gl_LIBUNISTRING_MODULE([0.9], [unistr/u32-mbtouc-unsafe])
+  # Code from module unistr/u32-to-u8:
+  gl_LIBUNISTRING_MODULE([0.9], [unistr/u32-to-u8])
+  # Code from module unistr/u32-uctomb:
+  gl_MODULE_INDICATOR([unistr/u32-uctomb])
+  gl_LIBUNISTRING_MODULE([0.9], [unistr/u32-uctomb])
+  # Code from module unistr/u8-mbtoucr:
+  gl_MODULE_INDICATOR([unistr/u8-mbtoucr])
+  gl_LIBUNISTRING_MODULE([0.9], [unistr/u8-mbtoucr])
+  # Code from module unistr/u8-to-u32:
+  gl_LIBUNISTRING_MODULE([0.9.3], [unistr/u8-to-u32])
   # Code from module unistr/u8-uctomb:
   gl_MODULE_INDICATOR([unistr/u8-uctomb])
   gl_LIBUNISTRING_MODULE([0.9], [unistr/u8-uctomb])
@@ -329,16 +340,18 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/uninorm/nfd.c
   lib/uninorm/normalize-internal.h
   lib/uninorm/u-normalize-internal.h
-  lib/uninorm/u8-normalize.c
+  lib/uninorm/u32-normalize.c
   lib/unistd.in.h
   lib/unistr.in.h
   lib/unistr/u-cpy-alloc.h
   lib/unistr/u-cpy.h
-  lib/unistr/u8-check.c
-  lib/unistr/u8-cpy-alloc.c
-  lib/unistr/u8-cpy.c
-  lib/unistr/u8-mbtouc-unsafe-aux.c
-  lib/unistr/u8-mbtouc-unsafe.c
+  lib/unistr/u32-cpy-alloc.c
+  lib/unistr/u32-cpy.c
+  lib/unistr/u32-mbtouc-unsafe.c
+  lib/unistr/u32-to-u8.c
+  lib/unistr/u32-uctomb.c
+  lib/unistr/u8-mbtoucr.c
+  lib/unistr/u8-to-u32.c
   lib/unistr/u8-uctomb-aux.c
   lib/unistr/u8-uctomb.c
   lib/unitypes.in.h

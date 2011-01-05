@@ -29,9 +29,5 @@ int
 libidna_nfc_u8 (const uint8_t *src, size_t srclen,
 		uint8_t **dst, size_t *dstlen)
 {
-  uint8_t *p = u8_normalize (UNINORM_NFC, src, srclen, NULL, dstlen);
-  if (p == NULL)
-    return LIBIDNA_NFC_FAIL;
-  *dst = p;
-  return LIBIDNA_OK;
+  return LIBIDNA_NFC_FAIL;
 }
