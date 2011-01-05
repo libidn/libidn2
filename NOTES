@@ -4,3 +4,13 @@ Comments on the specification:
   section 4.2.3.2 there is a MUST requirement to reject strings that
   begin with combining mark/character.  The exact definition of what a
   combining mark/character is only given in [Unicode].
+
+  Strictly speaking, without a normative and stable definition of what
+  a combining mark/character is it is not possible to implement
+  IDNA2008.
+
+* The [Unicode-UAX15] reference is not to a stable document, the link
+  goes to a living document that is actively modified.
+
+  Strictly speaking, without a normative and stable definition of the
+  NFC algorithm it is not possible to implement IDNA2008.
