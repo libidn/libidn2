@@ -32,6 +32,7 @@ enum
   {
     CHECK_NFC,
     CHECK_2HYPHEN,
+    CHECK_COMBINING,
     NFC,
     THE_END
   };
@@ -39,6 +40,7 @@ enum
 static char *const opts[] = {
   "check-nfc",
   "check-2hyphen",
+  "check-combining",
   "nfc",
   NULL
 };
@@ -71,6 +73,11 @@ process1 (char *opt, uint32_t **str, size_t *strlen)
 	case CHECK_2HYPHEN:
 	  if (*strlen >= 4 && (*str)[2] == '-' && (*str)[3] == '-')
 	    return LIBIDNA_CHECK_2HYPHEN_FAIL;
+	  break;
+
+	case CHECK_COMBINING:
+	  if (*strlen > 0 && uc_is_property_combining (*str[0]))
+	    return LIBIDNA_CHECK_COMBINING_FAIL;
 	  break;
 
 	case NFC:
