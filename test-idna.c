@@ -39,6 +39,8 @@ struct idna_tv
 };
 
 static struct idna_tv tv[] = {
+  {"", LIBIDNA_UNKNOWN_WHAT, 0, NULL, 0, NULL},
+  {"foo", LIBIDNA_UNKNOWN_WHAT, 0, NULL, 0, NULL},
 #if 0
   {"check-encoding", LIBIDNA_CHECK_ENCODING_FAIL, 6,
    "\xd0\x94\xd0\xb0\xc1\x80", 0, NULL},
@@ -62,11 +64,12 @@ static struct idna_tv tv[] = {
   {"check-disallowed", LIBIDNA_CHECK_DISALLOWED_FAIL, 1, "\x00", 0, NULL},
   {"check-disallowed", LIBIDNA_CHECK_DISALLOWED_FAIL, 2, "\xc2\xb8", 0, NULL},
   {"check-disallowed", LIBIDNA_CHECK_DISALLOWED_FAIL, 4, "\xf4\x8f\xbf\xbf", 0, NULL},
+  {"check-contextj", LIBIDNA_CHECK_CONTEXTJ_FAIL, 3, "\xe2\x80\x8d", 0, NULL},
 };
 
 int debug = 1;
 int error_count = 0;
-int break_on_error = 0;
+int break_on_error = 1;
 
 void
 fail (const char *format, ...)

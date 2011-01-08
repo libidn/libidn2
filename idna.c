@@ -31,6 +31,7 @@ enum
     CHECK_2HYPHEN,
     CHECK_COMBINING,
     CHECK_DISALLOWED,
+    CHECK_CONTEXTJ,
     NFC,
     THE_END
   };
@@ -40,6 +41,7 @@ static char *const opts[] = {
   "check-2hyphen",
   "check-combining",
   "check-disallowed",
+  "check-contextj",
   "nfc",
   NULL
 };
@@ -82,6 +84,11 @@ process1 (char *opt, uint32_t **str, size_t *strlen)
 	case CHECK_DISALLOWED:
 	  if (*strlen > 0 && _libidna_disallowed_p ((*str)[0]))
 	    return LIBIDNA_CHECK_DISALLOWED_FAIL;
+	  break;
+
+	case CHECK_CONTEXTJ:
+	  if (*strlen > 0 && _libidna_contextj_p ((*str)[0]))
+	    return LIBIDNA_CHECK_CONTEXTJ_FAIL;
 	  break;
 
 	case NFC:
@@ -140,7 +147,7 @@ libidna_process_u32 (const char *what,
   char *opt;
   int rc;
 
-  if (what == NULL)
+  if (what == NULL || *what == '\0')
     return LIBIDNA_UNKNOWN_WHAT;
 
   opt = strdup (what);

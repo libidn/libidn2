@@ -42,3 +42,9 @@ _libidna_disallowed_p (uint32_t cp)
 {
   return property (cp) == DISALLOWED;
 }
+
+int
+_libidna_contextj_p (uint32_t cp)
+{
+  return property (cp) == CONTEXTJ;
+}
