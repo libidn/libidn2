@@ -103,6 +103,8 @@ nfc.o
 punycode.lo
 punycode.o
 stamp-h1
+tables.lo
+tables.o
 test-idna
 test-idna.o
 test-punycode
