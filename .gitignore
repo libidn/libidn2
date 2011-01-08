@@ -19,6 +19,11 @@ config.h.in
 config.log
 config.status
 configure
+context.lo
+context.o
+data.c
+data.lo
+data.o
 free.lo
 free.o
 idna.lo
@@ -98,9 +103,6 @@ nfc.o
 punycode.lo
 punycode.o
 stamp-h1
-tables.c
-tables.lo
-tables.o
 test-idna
 test-idna.o
 test-punycode

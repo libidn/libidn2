@@ -21,7 +21,7 @@
 #include <stdlib.h> /* getsubopt */
 #include <errno.h> /* errno */
 
-#include "check.h"
+#include "tables.h"
 #include "context.h"
 
 #include "unistr.h" /* u32_cpy_alloc */

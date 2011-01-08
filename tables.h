@@ -1,4 +1,4 @@
-/* check.h - IDNA table checking functions
+/* tables.h - IDNA table checking functions
    Copyright (C) 2011 Simon Josefsson
 
    This program is free software: you can redistribute it and/or modify it
