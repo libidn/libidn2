@@ -46,22 +46,22 @@ static struct idna_tv tv[] = {
   {"check-nfc", LIBIDNA_OK, 2, "\xC3\x85", 2, "\xC3\x85"},
   {"check-nfc", LIBIDNA_NOT_NFC, 3, "\xe2\x84\xa6", 0, NULL},
   {"check-nfc", LIBIDNA_OK, 2, "\xce\xa9", 2, "\xce\xa9"},
-  {"check-2hyphen", LIBIDNA_CHECK_2HYPHEN_FAIL, 4, "ab--", 0, NULL},
+  {"check-2hyphen", LIBIDNA_2HYPHEN, 4, "ab--", 0, NULL},
   {"check-2hyphen", LIBIDNA_OK, 2, "--", 2, "--"},
   {"nfc", LIBIDNA_OK, 3, "\xe2\x84\xab", 2, "\xC3\x85"},
   {"nfc", LIBIDNA_OK, 3, "\xe2\x84\xa6", 2, "\xce\xa9"},
   /* CCC=0 GC=M */
-  {"check-combining", LIBIDNA_CHECK_COMBINING_FAIL, 2, "\xcd\x8f", 0, NULL},
+  {"check-combining", LIBIDNA_COMBINING, 2, "\xcd\x8f", 0, NULL},
   /* CCC=0 GC=M */
-  {"check-combining", LIBIDNA_CHECK_COMBINING_FAIL, 2, "\xd2\x88", 0, NULL},
+  {"check-combining", LIBIDNA_COMBINING, 2, "\xd2\x88", 0, NULL},
   /* CCC!=0 GC=Mn */
-  {"check-combining", LIBIDNA_CHECK_COMBINING_FAIL, 2, "\xcc\x80", 0, NULL},
+  {"check-combining", LIBIDNA_COMBINING, 2, "\xcc\x80", 0, NULL},
   /* CCC!=0 GC=Mc */
-  {"check-combining", LIBIDNA_CHECK_COMBINING_FAIL, 3, "\xe1\xad\x84", 0, NULL},
-  {"check-disallowed", LIBIDNA_CHECK_DISALLOWED_FAIL, 1, "\x00", 0, NULL},
-  {"check-disallowed", LIBIDNA_CHECK_DISALLOWED_FAIL, 2, "\xc2\xb8", 0, NULL},
-  {"check-disallowed", LIBIDNA_CHECK_DISALLOWED_FAIL, 4, "\xf4\x8f\xbf\xbf", 0, NULL},
-  {"check-contextj", LIBIDNA_CHECK_CONTEXTJ_FAIL, 3, "\xe2\x80\x8d", 0, NULL},
+  {"check-combining", LIBIDNA_COMBINING, 3, "\xe1\xad\x84", 0, NULL},
+  {"check-disallowed", LIBIDNA_DISALLOWED, 1, "\x00", 0, NULL},
+  {"check-disallowed", LIBIDNA_DISALLOWED, 2, "\xc2\xb8", 0, NULL},
+  {"check-disallowed", LIBIDNA_DISALLOWED, 4, "\xf4\x8f\xbf\xbf", 0, NULL},
+  {"check-contextj", LIBIDNA_CONTEXTJ, 3, "\xe2\x80\x8d", 0, NULL},
 };
 
 int debug = 1;

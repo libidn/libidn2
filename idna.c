@@ -77,22 +77,22 @@ process1 (char *opt, uint32_t **str, size_t *strlen)
 
 	case CHECK_2HYPHEN:
 	  if (*strlen >= 4 && (*str)[2] == '-' && (*str)[3] == '-')
-	    return LIBIDNA_CHECK_2HYPHEN_FAIL;
+	    return LIBIDNA_2HYPHEN;
 	  break;
 
 	case CHECK_COMBINING:
 	  if (*strlen > 0 && uc_is_property_combining ((*str)[0]))
-	    return LIBIDNA_CHECK_COMBINING_FAIL;
+	    return LIBIDNA_COMBINING;
 	  break;
 
 	case CHECK_DISALLOWED:
 	  if (*strlen > 0 && _libidna_disallowed_p ((*str)[0]))
-	    return LIBIDNA_CHECK_DISALLOWED_FAIL;
+	    return LIBIDNA_DISALLOWED;
 	  break;
 
 	case CHECK_CONTEXTJ:
 	  if (*strlen > 0 && _libidna_contextj_p ((*str)[0]))
-	    return LIBIDNA_CHECK_CONTEXTJ_FAIL;
+	    return LIBIDNA_CONTEXTJ;
 	  break;
 
 	case NFC:
