@@ -86,13 +86,21 @@ process1 (char *opt, uint32_t **str, size_t *strlen)
 	  break;
 
 	case CHECK_DISALLOWED:
-	  if (*strlen > 0 && _libidna_disallowed_p ((*str)[0]))
-	    return LIBIDNA_DISALLOWED;
+	  {
+	    size_t i;
+	    for (i = 0; i < *strlen; i++)
+	      if (_libidna_disallowed_p ((*str)[i]))
+		return LIBIDNA_DISALLOWED;
+	  }
 	  break;
 
 	case CHECK_CONTEXTJ:
-	  if (*strlen > 0 && _libidna_contextj_p ((*str)[0]))
-	    return LIBIDNA_CONTEXTJ;
+	  {
+	    size_t i;
+	    for (i = 0; i < *strlen; i++)
+	      if (_libidna_contextj_p ((*str)[i]))
+		return LIBIDNA_CONTEXTJ;
+	  }
 	  break;
 
 	case NFC:

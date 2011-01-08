@@ -59,6 +59,7 @@ static struct idna_tv tv[] = {
   /* CCC!=0 GC=Mc */
   {"check-combining", LIBIDNA_COMBINING, 3, "\xe1\xad\x84", 0, NULL},
   {"check-disallowed", LIBIDNA_DISALLOWED, 1, "\x00", 0, NULL},
+  {"check-disallowed", LIBIDNA_DISALLOWED, 2, "a\x00", 0, NULL},
   {"check-disallowed", LIBIDNA_DISALLOWED, 2, "\xc2\xb8", 0, NULL},
   {"check-disallowed", LIBIDNA_DISALLOWED, 4, "\xf4\x8f\xbf\xbf", 0, NULL},
   {"check-contextj", LIBIDNA_CONTEXTJ, 3, "\xe2\x80\x8d", 0, NULL},
