@@ -85,12 +85,6 @@ libidna_process_u8 (const char *what,
 		    const uint8_t *src, size_t srclen,
 		    uint8_t **dst, size_t *dstlen);
 
-/* NFC */
-
-extern LIBIDNA_API int
-libidna_nfc_u8 (const uint8_t *src, size_t srclen,
-		uint8_t **dst, size_t *dstlen);
-
 /* Punycode */
 
 enum Libidna_punycode_status {

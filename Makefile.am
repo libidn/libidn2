@@ -30,7 +30,6 @@ libidna_la_SOURCES = libidna.map libidna.h
 libidna_la_SOURCES += version.c
 libidna_la_SOURCES += punycode.c
 libidna_la_SOURCES += tables.c
-libidna_la_SOURCES += nfc.c
 libidna_la_SOURCES += free.c
 libidna_la_SOURCES += idna.c
 libidna_la_SOURCES += check.h check.c
