@@ -52,7 +52,7 @@ static char *const opts[] = {
 };
 
 static int
-process1 (char *opt, uint32_t **str, size_t *strlen)
+process1 (char *opt, uint32_t **label, size_t *llen)
 {
   char *p = opt;
   char *value;
@@ -64,8 +64,8 @@ process1 (char *opt, uint32_t **str, size_t *strlen)
 	case CHECK_NFC:
 	  {
 	    size_t plen;
-	    uint32_t *p = u32_normalize (UNINORM_NFC, *str, *strlen,
-				       NULL, &plen);
+	    uint32_t *p = u32_normalize (UNINORM_NFC, *label, *llen,
+					 NULL, &plen);
 	    int ok;
 	    if (p == NULL)
 	      {
@@ -73,7 +73,7 @@ process1 (char *opt, uint32_t **str, size_t *strlen)
 		  return LIBIDNA_MALLOC_ERROR;
 		return LIBIDNA_NFC;
 	      }
-	    ok = *strlen == plen && memcmp (*str, p, plen) == 0;
+	    ok = *llen == plen && memcmp (*label, p, plen) == 0;
 	    free (p);
 	    if (!ok)
 	      return LIBIDNA_NOT_NFC;
@@ -81,20 +81,20 @@ process1 (char *opt, uint32_t **str, size_t *strlen)
 	  }
 
 	case CHECK_2HYPHEN:
-	  if (*strlen >= 4 && (*str)[2] == '-' && (*str)[3] == '-')
+	  if (*llen >= 4 && (*label)[2] == '-' && (*label)[3] == '-')
 	    return LIBIDNA_2HYPHEN;
 	  break;
 
 	case CHECK_COMBINING:
-	  if (*strlen > 0 && uc_is_property_combining ((*str)[0]))
+	  if (*llen > 0 && uc_is_property_combining ((*label)[0]))
 	    return LIBIDNA_COMBINING;
 	  break;
 
 	case CHECK_DISALLOWED:
 	  {
 	    size_t i;
-	    for (i = 0; i < *strlen; i++)
-	      if (_libidna_disallowed_p ((*str)[i]))
+	    for (i = 0; i < *llen; i++)
+	      if (_libidna_disallowed_p ((*label)[i]))
 		return LIBIDNA_DISALLOWED;
 	  }
 	  break;
@@ -102,8 +102,8 @@ process1 (char *opt, uint32_t **str, size_t *strlen)
 	case CHECK_CONTEXTJ:
 	  {
 	    size_t i;
-	    for (i = 0; i < *strlen; i++)
-	      if (_libidna_contextj_p ((*str)[i]))
+	    for (i = 0; i < *llen; i++)
+	      if (_libidna_contextj_p ((*label)[i]))
 		return LIBIDNA_CONTEXTJ;
 	  }
 	  break;
@@ -111,22 +111,25 @@ process1 (char *opt, uint32_t **str, size_t *strlen)
 	case CHECK_CONTEXTJ_RULE:
 	  {
 	    size_t i;
-	    for (i = 0; i < *strlen; i++)
-	      if (_libidna_contextj_p ((*str)[i])
-		  && !_libidna_contextual_rule_ok_p ((*str)[i],
-						     *str, *strlen))
-		return LIBIDNA_CONTEXTJ_RULE;
+	    int rc;
+
+	    for (i = 0; i < *llen; i++)
+	      {
+		rc = _libidna_contextual_rule ((*label)[i], *label, *llen);
+		if (rc != LIBIDNA_OK)
+		  return rc;
+	      }
 	  }
 	  break;
 
 	case NFC:
 	  {
-	    uint32_t *p = u32_normalize (UNINORM_NFC, *str, *strlen,
-				       NULL, strlen);
+	    uint32_t *p = u32_normalize (UNINORM_NFC, *label, *llen,
+					 NULL, llen);
 	    if (p == NULL)
 	      return LIBIDNA_NFC;
-	    free (*str);
-	    *str = p;
+	    free (*label);
+	    *label = p;
 	  }
 
 	case -1:
