@@ -14,12 +14,15 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
+#include "config.h"
+
 #include "libidna.h"
 
 #include <stdlib.h> /* getsubopt */
 #include <errno.h> /* errno */
 
 #include "check.h"
+#include "context.h"
 
 #include "unistr.h" /* u32_cpy_alloc */
 #include "uninorm.h" /* u32_normalize */
@@ -32,6 +35,7 @@ enum
     CHECK_COMBINING,
     CHECK_DISALLOWED,
     CHECK_CONTEXTJ,
+    CHECK_CONTEXTJ_RULE,
     NFC,
     THE_END
   };
@@ -42,6 +46,7 @@ static char *const opts[] = {
   "check-combining",
   "check-disallowed",
   "check-contextj",
+  "check-contextj-rule",
   "nfc",
   NULL
 };
@@ -100,6 +105,17 @@ process1 (char *opt, uint32_t **str, size_t *strlen)
 	    for (i = 0; i < *strlen; i++)
 	      if (_libidna_contextj_p ((*str)[i]))
 		return LIBIDNA_CONTEXTJ;
+	  }
+	  break;
+
+	case CHECK_CONTEXTJ_RULE:
+	  {
+	    size_t i;
+	    for (i = 0; i < *strlen; i++)
+	      if (_libidna_contextj_p ((*str)[i])
+		  && !_libidna_contextual_rule_ok_p ((*str)[i],
+						     *str, *strlen))
+		return LIBIDNA_CONTEXTJ_RULE;
 	  }
 	  break;
 

@@ -33,6 +33,7 @@ libidna_la_SOURCES += tables.h tables.c
 libidna_la_SOURCES += free.c
 libidna_la_SOURCES += idna.c
 libidna_la_SOURCES += check.h check.c
+libidna_la_SOURCES += context.h context.c
 libidna_la_LIBADD = lib/libgnu.la
 libidna_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) -no-undefined
