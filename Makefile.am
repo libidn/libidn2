@@ -29,7 +29,7 @@ libidna_include_HEADERS = libidna.h
 libidna_la_SOURCES = libidna.map libidna.h
 libidna_la_SOURCES += version.c
 libidna_la_SOURCES += punycode.c
-libidna_la_SOURCES += tables.h tables.c
+libidna_la_SOURCES += data.h data.c
 libidna_la_SOURCES += free.c
 libidna_la_SOURCES += idna.c
 libidna_la_SOURCES += check.h check.c
@@ -38,16 +38,16 @@ libidna_la_LIBADD = lib/libgnu.la
 libidna_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) -no-undefined
 
-BUILT_SOURCES = tables.c
+BUILT_SOURCES = data.c
 EXTRA_DIST += gen-tables-from-rfc5892.pl gen-tables-from-iana.pl
 IANA_URL = http://www.iana.org/assignments/idnabis-tables/idnabis-tables.txt
 RFC5892_URL = http://www.ietf.org/rfc/rfc5892.txt
-tables.c: $(srcdir)/gen-tables-from-rfc5892.pl $(srcdir)/gen-tables-from-iana.pl
-	wget -O - $(RFC5892_URL) | $(srcdir)/gen-tables-from-rfc5892.pl
-	mv tables.c tmp.c
-	wget -O - $(IANA_URL) | $(srcdir)/gen-tables-from-iana.pl
-	diff -u tables.c tmp.c
-	rm tmp.c
+data.c: $(srcdir)/gen-tables-from-rfc5892.pl $(srcdir)/gen-tables-from-iana.pl
+	wget -O - $(RFC5892_URL) | $(srcdir)/gen-tables-from-rfc5892.pl > tmp
+	wget -O - $(IANA_URL) | $(srcdir)/gen-tables-from-iana.pl > tmp2
+	diff -u tmp tmp2
+	rm -f tmp2
+	mv tmp data.c
 
 if HAVE_LD_VERSION_SCRIPT
 libidna_la_LDFLAGS += -Wl,--version-script=$(srcdir)/libidna.map
