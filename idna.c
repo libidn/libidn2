@@ -63,11 +63,15 @@ process1 (char *opt, uint32_t **str, size_t *strlen)
 				       NULL, &plen);
 	    int ok;
 	    if (p == NULL)
-	      return LIBIDNA_NFC_FAIL;
+	      {
+		if (errno == ENOMEM)
+		  return LIBIDNA_MALLOC_ERROR;
+		return LIBIDNA_NFC;
+	      }
 	    ok = *strlen == plen && memcmp (*str, p, plen) == 0;
 	    free (p);
 	    if (!ok)
-	      return LIBIDNA_CHECK_NFC_FAIL;
+	      return LIBIDNA_NOT_NFC;
 	    break;
 	  }
 
@@ -96,7 +100,7 @@ process1 (char *opt, uint32_t **str, size_t *strlen)
 	    uint32_t *p = u32_normalize (UNINORM_NFC, *str, *strlen,
 				       NULL, strlen);
 	    if (p == NULL)
-	      return LIBIDNA_NFC_FAIL;
+	      return LIBIDNA_NFC;
 	    free (*str);
 	    *str = p;
 	  }
