@@ -21,9 +21,18 @@
 #include "context.h"
 
 int
-_libidna_contextual_rule (uint32_t cp, uint32_t *label, size_t llen)
+_libidna_contextj_rule (uint32_t cp, uint32_t *label, size_t llen)
 {
   if (!_libidna_contextj_p (cp))
+    return LIBIDNA_OK;
+
+  return LIBIDNA_CONTEXTJ_NO_RULE;
+}
+
+int
+_libidna_contexto_rule (uint32_t cp, uint32_t *label, size_t llen)
+{
+  if (!_libidna_contexto_p (cp))
     return LIBIDNA_OK;
 
   return LIBIDNA_CONTEXTJ_NO_RULE;

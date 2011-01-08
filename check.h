@@ -18,3 +18,4 @@
 
 int _libidna_disallowed_p (uint32_t cp);
 int _libidna_contextj_p (uint32_t cp);
+int _libidna_contexto_p (uint32_t cp);

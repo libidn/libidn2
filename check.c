@@ -48,3 +48,9 @@ _libidna_contextj_p (uint32_t cp)
 {
   return property (cp) == CONTEXTJ;
 }
+
+int
+_libidna_contexto_p (uint32_t cp)
+{
+  return property (cp) == CONTEXTO;
+}

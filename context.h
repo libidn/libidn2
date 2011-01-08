@@ -17,4 +17,7 @@
 #include <stdint.h>
 
 int
-_libidna_contextual_rule (uint32_t cp, uint32_t *label, size_t llen);
+_libidna_contextj_rule (uint32_t cp, uint32_t *label, size_t llen);
+
+int
+_libidna_contexto_rule (uint32_t cp, uint32_t *label, size_t llen);

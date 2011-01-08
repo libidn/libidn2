@@ -36,6 +36,9 @@ enum
     CHECK_DISALLOWED,
     CHECK_CONTEXTJ,
     CHECK_CONTEXTJ_RULE,
+    CHECK_CONTEXTO,
+    CHECK_CONTEXTO_HAS_RULE,
+    CHECK_CONTEXTO_RULE,
     NFC,
     THE_END
   };
@@ -47,6 +50,9 @@ static char *const opts[] = {
   "check-disallowed",
   "check-contextj",
   "check-contextj-rule",
+  "check-contexto",
+  "check-contexto-has-rule",
+  "check-contexto-rule",
   "nfc",
   NULL
 };
@@ -115,7 +121,30 @@ process1 (char *opt, uint32_t **label, size_t *llen)
 
 	    for (i = 0; i < *llen; i++)
 	      {
-		rc = _libidna_contextual_rule ((*label)[i], *label, *llen);
+		rc = _libidna_contextj_rule ((*label)[i], *label, *llen);
+		if (rc != LIBIDNA_OK)
+		  return rc;
+	      }
+	  }
+	  break;
+
+	case CHECK_CONTEXTO:
+	  {
+	    size_t i;
+	    for (i = 0; i < *llen; i++)
+	      if (_libidna_contexto_p ((*label)[i]))
+		return LIBIDNA_CONTEXTJ;
+	  }
+	  break;
+
+	case CHECK_CONTEXTO_RULE:
+	  {
+	    size_t i;
+	    int rc;
+
+	    for (i = 0; i < *llen; i++)
+	      {
+		rc = _libidna_contexto_rule ((*label)[i], *label, *llen);
 		if (rc != LIBIDNA_OK)
 		  return rc;
 	      }
