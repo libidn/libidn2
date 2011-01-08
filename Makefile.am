@@ -43,11 +43,11 @@ EXTRA_DIST += gen-tables-from-rfc5892.pl gen-tables-from-iana.pl
 IANA_URL = http://www.iana.org/assignments/idnabis-tables/idnabis-tables.txt
 RFC5892_URL = http://www.ietf.org/rfc/rfc5892.txt
 data.c: $(srcdir)/gen-tables-from-rfc5892.pl $(srcdir)/gen-tables-from-iana.pl
-	wget -O - $(RFC5892_URL) | $(srcdir)/gen-tables-from-rfc5892.pl > tmp
-	wget -O - $(IANA_URL) | $(srcdir)/gen-tables-from-iana.pl > tmp2
-	diff -u tmp tmp2
-	rm -f tmp2
-	mv tmp data.c
+	wget -O - $(RFC5892_URL) | $(srcdir)/gen-tables-from-rfc5892.pl
+	mv data.c tmp
+	wget -O - $(IANA_URL) | $(srcdir)/gen-tables-from-iana.pl
+	diff -u tmp data.c
+	rm -f tmp
 
 if HAVE_LD_VERSION_SCRIPT
 libidna_la_LDFLAGS += -Wl,--version-script=$(srcdir)/libidna.map
