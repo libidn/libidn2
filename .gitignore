@@ -42,6 +42,8 @@ lib/unictype.h
 lib/unictype/.deps/
 lib/unictype/.dirstamp
 lib/unictype/.libs/
+lib/unictype/bidi_of.lo
+lib/unictype/bidi_of.o
 lib/unictype/combining.lo
 lib/unictype/combining.o
 lib/unictype/pr_combining.lo
