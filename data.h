@@ -26,4 +26,4 @@ struct idna_table {
   int state;
 };
 
-const struct idna_table idna_table[];
+extern const struct idna_table idna_table[];
