@@ -65,6 +65,8 @@ static struct idna_tv tv[] = {
   {"check-contextj", LIBIDNA_CONTEXTJ, 3, "\xe2\x80\x8d", 0, NULL},
   {"check-contexto-with-rule", LIBIDNA_OK, 2, "AA", 2, "AA"},
   {"check-contexto-with-rule", LIBIDNA_OK, 2, "\xc2\xb7", 2, "\xc2\xb7"},
+  {"check-unassigned", LIBIDNA_UNASSIGNED, 2, "\xcd\xb8", 0, NULL},
+  {"check-unassigned", LIBIDNA_UNASSIGNED, 2, "\xcd\xb9", 0, NULL},
 };
 
 int debug = 1;

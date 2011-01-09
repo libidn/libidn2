@@ -54,3 +54,9 @@ _libidna_contexto_p (uint32_t cp)
 {
   return property (cp) == CONTEXTO;
 }
+
+int
+_libidna_unassigned_p (uint32_t cp)
+{
+  return property (cp) == UNASSIGNED;
+}
