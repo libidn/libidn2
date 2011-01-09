@@ -180,5 +180,8 @@ main (void)
       free (out);
     }
 
+  rc = libidna_convert_u8 ("nfc", "www.räksmörgås.com", &out);
+  printf ("rc %d str %s\n", rc, rc == LIBIDNA_OK ? out : "<null>");
+
   return error_count;
 }

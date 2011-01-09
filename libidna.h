@@ -94,6 +94,9 @@ libidna_process_u8 (const char *what,
 		    const uint8_t *src, size_t srclen,
 		    uint8_t **dst, size_t *dstlen);
 
+extern LIBIDNA_API int
+libidna_convert_u8 (const char *what, const uint8_t *src, uint8_t **dst);
+
 /* Punycode */
 
 enum Libidna_punycode_status {

@@ -288,3 +288,39 @@ libidna_process_u8 (const char *what,
 
   return LIBIDNA_OK;
 }
+
+int
+libidna_convert_u8 (const char *what, const uint8_t *src, uint8_t **dst)
+{
+  uint8_t *p;
+
+  *dst = NULL;
+
+  if (src == NULL)
+    return LIBIDNA_OK;
+
+  while (*src)
+    {
+      for (p = src; *p != '\0' && *p != '.'; p++)
+	;
+
+      {
+	int rc;
+	uint8_t *tmp;
+	size_t tmplen;
+
+	printf ("label %.*s\n", p - src, src);
+
+	rc = libidna_process_u8 (what, p, p - src, &tmp, &tmplen);
+	if (rc != LIBIDNA_OK)
+	  return rc;
+      }
+
+      if (*p == '\0')
+	break;
+
+      src = p + 1;
+    }
+
+  return LIBIDNA_OK;
+}
