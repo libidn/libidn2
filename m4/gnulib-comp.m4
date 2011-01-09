@@ -127,28 +127,28 @@ AC_DEFUN([gl_INIT],
   # Code from module unictype/base:
   gl_LIBUNISTRING_LIBHEADER([0.9], [unictype.h])
   # Code from module unictype/bidicategory-of:
-  gl_LIBUNISTRING_MODULE([0.9], [unictype/bidicategory-of])
+  gl_LIBUNISTRING_MODULE([0.9.4], [unictype/bidicategory-of])
   # Code from module unictype/combining-class:
-  gl_LIBUNISTRING_MODULE([0.9], [unictype/combining-class])
+  gl_LIBUNISTRING_MODULE([0.9.4], [unictype/combining-class])
   # Code from module unictype/property-combining:
   AC_REQUIRE([AC_C_INLINE])
-  gl_LIBUNISTRING_MODULE([0.9], [unictype/property-combining])
+  gl_LIBUNISTRING_MODULE([0.9.4], [unictype/property-combining])
   # Code from module uninorm/base:
   gl_LIBUNISTRING_LIBHEADER([0.9], [uninorm.h])
   # Code from module uninorm/canonical-decomposition:
-  gl_LIBUNISTRING_MODULE([0.9], [uninorm/canonical-decomposition])
+  gl_LIBUNISTRING_MODULE([0.9.4], [uninorm/canonical-decomposition])
   # Code from module uninorm/composition:
-  gl_LIBUNISTRING_MODULE([0.9], [uninorm/composition])
+  gl_LIBUNISTRING_MODULE([0.9.4], [uninorm/composition])
   # Code from module uninorm/decompose-internal:
   # Code from module uninorm/decomposition-table:
   AC_REQUIRE([AC_C_INLINE])
   # Code from module uninorm/nfc:
-  gl_LIBUNISTRING_MODULE([0.9], [uninorm/nfc])
+  gl_LIBUNISTRING_MODULE([0.9.4], [uninorm/nfc])
   # Code from module uninorm/nfd:
-  gl_LIBUNISTRING_MODULE([0.9], [uninorm/nfd])
+  gl_LIBUNISTRING_MODULE([0.9.4], [uninorm/nfd])
   # Code from module uninorm/u32-normalize:
   gl_MODULE_INDICATOR_FOR_TESTS([uninorm/u32-normalize])
-  gl_LIBUNISTRING_MODULE([0.9], [uninorm/u32-normalize])
+  gl_LIBUNISTRING_MODULE([0.9.4], [uninorm/u32-normalize])
   # Code from module unistd:
   gl_UNISTD_H
   # Code from module unistr/base:
