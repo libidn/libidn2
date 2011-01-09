@@ -32,6 +32,7 @@ enum
   {
     CHECK_NFC,
     CHECK_2HYPHEN,
+    CHECK_HYPHEN_STARTEND,
     CHECK_COMBINING,
     CHECK_DISALLOWED,
     CHECK_CONTEXTJ,
@@ -48,6 +49,7 @@ enum
 static char *const opts[] = {
   "check-nfc",
   "check-2hyphen",
+  "check-hyphen-startend",
   "check-combining",
   "check-disallowed",
   "check-contextj",
@@ -93,6 +95,11 @@ process1 (char *opt, uint32_t **label, size_t *llen)
 	case CHECK_2HYPHEN:
 	  if (*llen >= 4 && (*label)[2] == '-' && (*label)[3] == '-')
 	    return LIBIDNA_2HYPHEN;
+	  break;
+
+	case CHECK_HYPHEN_STARTEND:
+	  if (*llen > 0 && (*label)[0] == '-' || (*label)[*llen - 1] == '-')
+	    return LIBIDNA_HYPHEN_STARTEND;
 	  break;
 
 	case CHECK_COMBINING:

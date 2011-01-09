@@ -51,6 +51,11 @@ static struct idna_tv tv[] = {
   {"check-nfc", LIBIDNA_OK, 2, "\xce\xa9", 2, "\xce\xa9"},
   {"check-2hyphen", LIBIDNA_2HYPHEN, 4, "ab--", 0, NULL},
   {"check-2hyphen", LIBIDNA_OK, 2, "--", 2, "--"},
+  {"check-hyphen-startend", LIBIDNA_HYPHEN_STARTEND, 1, "-", 0, NULL},
+  {"check-hyphen-startend", LIBIDNA_HYPHEN_STARTEND, 2, "-a", 0, NULL},
+  {"check-hyphen-startend", LIBIDNA_HYPHEN_STARTEND, 2, "a-", 0, NULL},
+  {"check-hyphen-startend", LIBIDNA_HYPHEN_STARTEND, 3, "-a-", 0, NULL},
+  {"check-hyphen-startend", LIBIDNA_OK, 3, "foo", 3, "foo"},
   {"nfc", LIBIDNA_OK, 3, "\xe2\x84\xab", 2, "\xC3\x85"},
   {"nfc", LIBIDNA_OK, 3, "\xe2\x84\xa6", 2, "\xce\xa9"},
   /* CCC=0 GC=M */
