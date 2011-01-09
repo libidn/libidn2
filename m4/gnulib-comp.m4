@@ -44,6 +44,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module stdint:
   # Code from module stdlib:
   # Code from module unictype/base:
+  # Code from module unictype/bidicategory-of:
   # Code from module unictype/combining-class:
   # Code from module unictype/property-combining:
   # Code from module uninorm/base:
@@ -125,6 +126,8 @@ AC_DEFUN([gl_INIT],
   gl_STDLIB_H
   # Code from module unictype/base:
   gl_LIBUNISTRING_LIBHEADER([0.9], [unictype.h])
+  # Code from module unictype/bidicategory-of:
+  gl_LIBUNISTRING_MODULE([0.9], [unictype/bidicategory-of])
   # Code from module unictype/combining-class:
   gl_LIBUNISTRING_MODULE([0.9], [unictype/combining-class])
   # Code from module unictype/property-combining:
@@ -328,6 +331,8 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/stdint.in.h
   lib/stdlib.in.h
   lib/unictype.in.h
+  lib/unictype/bidi_of.c
+  lib/unictype/bidi_of.h
   lib/unictype/bitmap.h
   lib/unictype/combining.c
   lib/unictype/combining.h
