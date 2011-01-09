@@ -27,22 +27,41 @@ AC_DEFUN([gl_EARLY],
   m4_pattern_allow([^gl_LTLIBOBJS$])dnl a variable
   AC_REQUIRE([AC_PROG_RANLIB])
   AC_REQUIRE([AM_PROG_CC_C_O])
+  # Code from module alloca-opt:
   # Code from module arg-nonnull:
   # Code from module array-mergesort:
   # Code from module c++defs:
+  # Code from module c-ctype:
+  # Code from module c-strcase:
+  # Code from module c-strcaseeq:
+  # Code from module configmake:
+  # Code from module extensions:
+  AC_REQUIRE([gl_USE_SYSTEM_EXTENSIONS])
   # Code from module git-version-gen:
   # Code from module gnumakefile:
   # Code from module gperf:
+  # Code from module havelib:
+  # Code from module iconv:
+  # Code from module iconv-h:
+  # Code from module iconv_open:
   # Code from module include_next:
   # Code from module inline:
   # Code from module lib-symbol-versions:
+  # Code from module localcharset:
   # Code from module maintainer-makefile:
   # Code from module malloc-posix:
+  # Code from module malloca:
   # Code from module multiarch:
   # Code from module stdbool:
   # Code from module stddef:
   # Code from module stdint:
   # Code from module stdlib:
+  # Code from module striconveh:
+  # Code from module striconveha:
+  # Code from module uniconv/base:
+  # Code from module uniconv/u8-conv-from-enc:
+  # Code from module uniconv/u8-strconv-from-enc:
+  # Code from module uniconv/u8-strconv-from-locale:
   # Code from module unictype/base:
   # Code from module unictype/bidicategory-of:
   # Code from module unictype/combining-class:
@@ -62,13 +81,20 @@ AC_DEFUN([gl_EARLY],
   # Code from module unistr/u32-mbtouc-unsafe:
   # Code from module unistr/u32-to-u8:
   # Code from module unistr/u32-uctomb:
+  # Code from module unistr/u8-check:
+  # Code from module unistr/u8-mblen:
+  # Code from module unistr/u8-mbtouc:
+  # Code from module unistr/u8-mbtouc-unsafe:
   # Code from module unistr/u8-mbtoucr:
+  # Code from module unistr/u8-prev:
+  # Code from module unistr/u8-strlen:
   # Code from module unistr/u8-to-u32:
   # Code from module unistr/u8-uctomb:
   # Code from module unitypes:
   # Code from module unused-parameter:
   # Code from module useless-if-before-free:
   # Code from module vc-list-files:
+  # Code from module verify:
   # Code from module warn-on-use:
   # Code from module wchar:
 ])
@@ -87,9 +113,17 @@ AC_DEFUN([gl_INIT],
   m4_pushdef([gl_LIBSOURCES_DIR], [])
   gl_COMMON
   gl_source_base='lib'
+  # Code from module alloca-opt:
+  gl_FUNC_ALLOCA
   # Code from module arg-nonnull:
   # Code from module array-mergesort:
   # Code from module c++defs:
+  # Code from module c-ctype:
+  # Code from module c-strcase:
+  # Code from module c-strcaseeq:
+  # Code from module configmake:
+  gl_CONFIGMAKE_PREP
+  # Code from module extensions:
   # Code from module git-version-gen:
   # Code from module gnumakefile:
   # Autoconf 2.61a.99 and earlier don't support linking a file only
@@ -103,17 +137,32 @@ AC_DEFUN([gl_INIT],
         [AC_CONFIG_LINKS([$GNUmakefile:$GNUmakefile], [],
   	[GNUmakefile=$GNUmakefile])])
   # Code from module gperf:
+  # Code from module havelib:
+  # Code from module iconv:
+  AM_ICONV
+  m4_ifdef([gl_ICONV_MODULE_INDICATOR],
+    [gl_ICONV_MODULE_INDICATOR([iconv])])
+  # Code from module iconv-h:
+  gl_ICONV_H
+  # Code from module iconv_open:
+  gl_FUNC_ICONV_OPEN
   # Code from module include_next:
   # Code from module inline:
   gl_INLINE
   # Code from module lib-symbol-versions:
   gl_LD_VERSION_SCRIPT
+  # Code from module localcharset:
+  gl_LOCALCHARSET
+  LOCALCHARSET_TESTS_ENVIRONMENT="CHARSETALIASDIR=\"\$(top_builddir)/$gl_source_base\""
+  AC_SUBST([LOCALCHARSET_TESTS_ENVIRONMENT])
   # Code from module maintainer-makefile:
   AC_CONFIG_COMMANDS_PRE([m4_ifdef([AH_HEADER],
     [AC_SUBST([CONFIG_INCLUDE], m4_defn([AH_HEADER]))])])
   # Code from module malloc-posix:
   gl_FUNC_MALLOC_POSIX
   gl_STDLIB_MODULE_INDICATOR([malloc-posix])
+  # Code from module malloca:
+  gl_MALLOCA
   # Code from module multiarch:
   gl_MULTIARCH
   # Code from module stdbool:
@@ -124,6 +173,20 @@ AC_DEFUN([gl_INIT],
   gl_STDINT_H
   # Code from module stdlib:
   gl_STDLIB_H
+  # Code from module striconveh:
+  if test $gl_cond_libtool = false; then
+    gl_ltlibdeps="$gl_ltlibdeps $LTLIBICONV"
+    gl_libdeps="$gl_libdeps $LIBICONV"
+  fi
+  # Code from module striconveha:
+  # Code from module uniconv/base:
+  gl_LIBUNISTRING_LIBHEADER([0.9], [uniconv.h])
+  # Code from module uniconv/u8-conv-from-enc:
+  gl_LIBUNISTRING_MODULE([0.9], [uniconv/u8-conv-from-enc])
+  # Code from module uniconv/u8-strconv-from-enc:
+  gl_LIBUNISTRING_MODULE([0.9], [uniconv/u8-strconv-from-enc])
+  # Code from module uniconv/u8-strconv-from-locale:
+  gl_LIBUNISTRING_MODULE([0.9], [uniconv/u8-strconv-from-locale])
   # Code from module unictype/base:
   gl_LIBUNISTRING_LIBHEADER([0.9], [unictype.h])
   # Code from module unictype/bidicategory-of:
@@ -165,9 +228,23 @@ AC_DEFUN([gl_INIT],
   # Code from module unistr/u32-uctomb:
   gl_MODULE_INDICATOR([unistr/u32-uctomb])
   gl_LIBUNISTRING_MODULE([0.9], [unistr/u32-uctomb])
+  # Code from module unistr/u8-check:
+  gl_LIBUNISTRING_MODULE([0.9], [unistr/u8-check])
+  # Code from module unistr/u8-mblen:
+  gl_LIBUNISTRING_MODULE([0.9], [unistr/u8-mblen])
+  # Code from module unistr/u8-mbtouc:
+  gl_MODULE_INDICATOR([unistr/u8-mbtouc])
+  gl_LIBUNISTRING_MODULE([0.9.4], [unistr/u8-mbtouc])
+  # Code from module unistr/u8-mbtouc-unsafe:
+  gl_MODULE_INDICATOR([unistr/u8-mbtouc-unsafe])
+  gl_LIBUNISTRING_MODULE([0.9.4], [unistr/u8-mbtouc-unsafe])
   # Code from module unistr/u8-mbtoucr:
   gl_MODULE_INDICATOR([unistr/u8-mbtoucr])
   gl_LIBUNISTRING_MODULE([0.9], [unistr/u8-mbtoucr])
+  # Code from module unistr/u8-prev:
+  gl_LIBUNISTRING_MODULE([0.9], [unistr/u8-prev])
+  # Code from module unistr/u8-strlen:
+  gl_LIBUNISTRING_MODULE([0.9], [unistr/u8-strlen])
   # Code from module unistr/u8-to-u32:
   gl_LIBUNISTRING_MODULE([0.9.3], [unistr/u8-to-u32])
   # Code from module unistr/u8-uctomb:
@@ -178,6 +255,7 @@ AC_DEFUN([gl_INIT],
   # Code from module unused-parameter:
   # Code from module useless-if-before-free:
   # Code from module vc-list-files:
+  # Code from module verify:
   # Code from module warn-on-use:
   # Code from module wchar:
   gl_WCHAR_H
@@ -319,17 +397,50 @@ AC_DEFUN([gltests_LIBSOURCES], [
 AC_DEFUN([gl_FILE_LIST], [
   build-aux/arg-nonnull.h
   build-aux/c++defs.h
+  build-aux/config.rpath
   build-aux/git-version-gen
   build-aux/unused-parameter.h
   build-aux/useless-if-before-free
   build-aux/vc-list-files
   build-aux/warn-on-use.h
+  lib/alloca.in.h
   lib/array-mergesort.h
+  lib/c-ctype.c
+  lib/c-ctype.h
+  lib/c-strcase.h
+  lib/c-strcasecmp.c
+  lib/c-strcaseeq.h
+  lib/c-strncasecmp.c
+  lib/config.charset
+  lib/iconv.in.h
+  lib/iconv_open-aix.gperf
+  lib/iconv_open-hpux.gperf
+  lib/iconv_open-irix.gperf
+  lib/iconv_open-osf.gperf
+  lib/iconv_open-solaris.gperf
+  lib/iconv_open.c
+  lib/iconveh.h
+  lib/localcharset.c
+  lib/localcharset.h
   lib/malloc.c
+  lib/malloca.c
+  lib/malloca.h
+  lib/malloca.valgrind
+  lib/ref-add.sin
+  lib/ref-del.sin
   lib/stdbool.in.h
   lib/stddef.in.h
   lib/stdint.in.h
   lib/stdlib.in.h
+  lib/striconveh.c
+  lib/striconveh.h
+  lib/striconveha.c
+  lib/striconveha.h
+  lib/uniconv.in.h
+  lib/uniconv/u-strconv-from-enc.h
+  lib/uniconv/u8-conv-from-enc.c
+  lib/uniconv/u8-strconv-from-enc.c
+  lib/uniconv/u8-strconv-from-locale.c
   lib/unictype.in.h
   lib/unictype/bidi_of.c
   lib/unictype/bidi_of.h
@@ -362,20 +473,44 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/unistr/u32-mbtouc-unsafe.c
   lib/unistr/u32-to-u8.c
   lib/unistr/u32-uctomb.c
+  lib/unistr/u8-check.c
+  lib/unistr/u8-mblen.c
+  lib/unistr/u8-mbtouc-aux.c
+  lib/unistr/u8-mbtouc-unsafe-aux.c
+  lib/unistr/u8-mbtouc-unsafe.c
+  lib/unistr/u8-mbtouc.c
   lib/unistr/u8-mbtoucr.c
+  lib/unistr/u8-prev.c
+  lib/unistr/u8-strlen.c
   lib/unistr/u8-to-u32.c
   lib/unistr/u8-uctomb-aux.c
   lib/unistr/u8-uctomb.c
   lib/unitypes.in.h
+  lib/verify.h
   lib/wchar.in.h
   m4/00gnulib.m4
+  m4/alloca.m4
+  m4/codeset.m4
+  m4/configmake.m4
+  m4/eealloc.m4
+  m4/extensions.m4
+  m4/fcntl-o.m4
+  m4/glibc21.m4
   m4/gnulib-common.m4
+  m4/iconv.m4
+  m4/iconv_h.m4
+  m4/iconv_open.m4
   m4/include_next.m4
   m4/inline.m4
   m4/ld-version-script.m4
+  m4/lib-ld.m4
+  m4/lib-link.m4
+  m4/lib-prefix.m4
   m4/libunistring-base.m4
+  m4/localcharset.m4
   m4/longlong.m4
   m4/malloc.m4
+  m4/malloca.m4
   m4/multiarch.m4
   m4/onceonly.m4
   m4/stdbool.m4
