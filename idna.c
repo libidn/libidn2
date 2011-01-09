@@ -37,7 +37,7 @@ enum
     CHECK_CONTEXTJ,
     CHECK_CONTEXTJ_RULE,
     CHECK_CONTEXTO,
-    CHECK_CONTEXTO_HAS_RULE,
+    CHECK_CONTEXTO_WITH_RULE,
     CHECK_CONTEXTO_RULE,
     NFC,
     THE_END
@@ -51,7 +51,7 @@ static char *const opts[] = {
   "check-contextj",
   "check-contextj-rule",
   "check-contexto",
-  "check-contexto-has-rule",
+  "check-contexto-with-rule",
   "check-contexto-rule",
   "nfc",
   NULL
@@ -137,12 +137,12 @@ process1 (char *opt, uint32_t **label, size_t *llen)
 	  }
 	  break;
 
-	case CHECK_CONTEXTO_HAS_RULE:
+	case CHECK_CONTEXTO_WITH_RULE:
 	  {
 	    size_t i;
 	    for (i = 0; i < *llen; i++)
 	      if (_libidna_contexto_p ((*label)[i])
-		  && !_libidna_has_contexto_rule ((*label)[i]))
+		  && !_libidna_contexto_with_rule ((*label)[i]))
 		return LIBIDNA_CONTEXTO_NO_RULE;
 	  }
 	  break;

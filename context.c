@@ -85,7 +85,7 @@ _libidna_contexto_rule (uint32_t cp, uint32_t *label, size_t llen)
 }
 
 bool
-_libidna_has_contexto_rule (uint32_t cp)
+_libidna_contexto_with_rule (uint32_t cp)
 {
   switch (cp)
     {
