@@ -40,6 +40,7 @@ enum
     CHECK_CONTEXTO_WITH_RULE,
     CHECK_CONTEXTO_RULE,
     CHECK_UNASSIGNED,
+    CHECK_BIDI,
     NFC,
     THE_END
   };
@@ -55,6 +56,7 @@ static char *const opts[] = {
   "check-contexto-with-rule",
   "check-contexto-rule",
   "check-unassigned",
+  "check-bidi",
   "nfc",
   NULL
 };
@@ -169,6 +171,14 @@ process1 (char *opt, uint32_t **label, size_t *llen)
 	    for (i = 0; i < *llen; i++)
 	      if (_libidna_unassigned_p ((*label)[i]))
 		return LIBIDNA_UNASSIGNED;
+	  }
+	  break;
+
+	case CHECK_BIDI:
+	  {
+	    int rc = _libidna_bidi (*label, *llen);
+	    if (rc != LIBIDNA_OK)
+	      return rc;
 	  }
 	  break;
 

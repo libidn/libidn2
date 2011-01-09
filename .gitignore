@@ -5,6 +5,8 @@ Makefile
 Makefile.in
 aclocal.m4
 autom4te.cache/
+bidi.lo
+bidi.o
 build-aux/compile
 build-aux/config.guess
 build-aux/config.sub
