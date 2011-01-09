@@ -38,6 +38,9 @@ struct idna_tv
   const uint8_t *out;
 };
 
+#define REKA "\x72\xc3\xa4\x6b\x73\x6d\xc3\xb6\x72\x67\xc3\xa5\x73"
+#define REKA_LEN 13
+
 static struct idna_tv tv[] = {
   {"", LIBIDNA_UNKNOWN_WHAT, 0, NULL, 0, NULL},
   {"", LIBIDNA_ENCODING_ERROR, 6, "\xd0\x94\xd0\xb0\xc1\x80", 0, NULL},
@@ -67,7 +70,14 @@ static struct idna_tv tv[] = {
   {"check-contexto-with-rule", LIBIDNA_OK, 2, "\xc2\xb7", 2, "\xc2\xb7"},
   {"check-unassigned", LIBIDNA_UNASSIGNED, 2, "\xcd\xb8", 0, NULL},
   {"check-unassigned", LIBIDNA_UNASSIGNED, 2, "\xcd\xb9", 0, NULL},
+  /* Check that bidi handles ascii strings ok. */
+  {"check-bidi", LIBIDNA_OK, 3, "foo", 3, "foo"},
+  /* Check that bidi handles non-bidi strings ok. */
+  {"check-bidi", LIBIDNA_OK, REKA_LEN, REKA, REKA_LEN, REKA },
+  /* Check that bidi rejects leading non-L/R/AL characters in bidi strings */
   {"check-bidi", LIBIDNA_BIDI, 3, "1\xde\x86", 0, NULL},
+  /* check that ltr string cannot contain R character */
+  {"check-bidi", LIBIDNA_BIDI, 3, "f\xd7\x99", 0, NULL},
 };
 
 int debug = 1;

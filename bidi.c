@@ -24,8 +24,13 @@
 
 #include "unictype.h"
 
+/* The entire bidi rule could be rewritten in a way to only pass
+   through the string once and collecting necessary information as it
+   goes along.  However, recall Knuth's premature optimization is the
+   root of all evil. */
+
 static bool
-bidi_p (uint32_t *label, size_t llen)
+rtl_ralanenescsetonbnnsm_ok (uint32_t *label, size_t llen)
 {
   int bc;
 
@@ -35,31 +40,6 @@ bidi_p (uint32_t *label, size_t llen)
 
       switch (bc)
 	{
-	  /* An RTL label is a label that contains at least one
-	     character of type R, AL, or AN. */
-	case UC_BIDI_R:
-	case UC_BIDI_AL:
-	case UC_BIDI_AN:
-	  return true;
-	}
-    }
-
-  return false;
-}
-
-static bool
-rtl_ralanenescsetonbnnsm_p (uint32_t *label, size_t llen)
-{
-  int bc;
-
-  for (; llen > 0; label++, llen--)
-    {
-      bc = uc_bidi_category (*label);
-
-      switch (bc)
-	{
-	  /* In an RTL label, only characters with the Bidi properties R, AL,
-	     AN, EN, ES, CS, ET, ON, BN, or NSM are allowed. */
 	case UC_BIDI_R:
 	case UC_BIDI_AL:
 	case UC_BIDI_AN:
@@ -80,19 +60,152 @@ rtl_ralanenescsetonbnnsm_p (uint32_t *label, size_t llen)
   return true;
 }
 
-static int
-_libidna_rtl (uint32_t *label, size_t llen)
+static bool
+rtl_ends_ok (uint32_t *label, size_t llen)
 {
-  if (!rtl_ralanenescsetonbnnsm_p (label, llen))
-    return LIBIDNA_BIDI;
+  uint32_t *p;
+  int bc;
 
-  return LIBIDNA_OK;
+  for (p = label + llen; llen > 0; llen--, p--)
+    {
+      bc = uc_bidi_category (*p);
+      switch (bc)
+	{
+	case UC_BIDI_NSM:
+	  continue;
+
+	case UC_BIDI_R:
+	case UC_BIDI_AL:
+	case UC_BIDI_EN:
+	case UC_BIDI_AN:
+	  return true;
+
+	default:
+	  return false;
+	}
+    }
+
+  return false;
+}
+
+static bool
+rtl_enan_ok (uint32_t *label, size_t llen)
+{
+  bool en = false;
+  bool an = false;
+  uint32_t *p;
+  int bc;
+
+  for (p = label + llen; llen > 0; llen--, p--)
+    {
+      bc = uc_bidi_category (*p);
+      switch (bc)
+	{
+	case UC_BIDI_EN:
+	  en = true;
+	  break;
+
+	case UC_BIDI_AN:
+	  an = true;
+	  break;
+	}
+    }
+
+  return !(en && an);
 }
 
 static int
-_libidna_ltr (uint32_t *label, size_t llen)
+rtl (uint32_t *label, size_t llen)
 {
-  return LIBIDNA_OK;
+  if (rtl_ralanenescsetonbnnsm_ok (label, llen)
+      && rtl_ends_ok (label, llen)
+      && rtl_enan_ok (label, llen))
+    return LIBIDNA_OK;
+  return LIBIDNA_BIDI;
+}
+
+static bool
+ltr_lenescsetonbnnsm_ok (uint32_t *label, size_t llen)
+{
+  int bc;
+
+  for (; llen > 0; label++, llen--)
+    {
+      bc = uc_bidi_category (*label);
+      switch (bc)
+	{
+	case UC_BIDI_L:
+	case UC_BIDI_EN:
+	case UC_BIDI_ES:
+	case UC_BIDI_CS:
+	case UC_BIDI_ET:
+	case UC_BIDI_ON:
+	case UC_BIDI_BN:
+	case UC_BIDI_NSM:
+	  break;
+
+	default:
+	  return false;
+	}
+    }
+
+  return true;
+}
+
+static bool
+ltr_ends_ok (uint32_t *label, size_t llen)
+{
+  uint32_t *p;
+  int bc;
+
+  for (p = label + llen; llen > 0; llen--, p--)
+    {
+      bc = uc_bidi_category (*p);
+      switch (bc)
+	{
+	case UC_BIDI_NSM:
+	  continue;
+
+	case UC_BIDI_L:
+	case UC_BIDI_EN:
+	  return true;
+
+	default:
+	  return false;
+	}
+    }
+
+  return false;
+}
+
+static int
+ltr (uint32_t *label, size_t llen)
+{
+  if (ltr_lenescsetonbnnsm_ok (label, llen)
+      && ltr_ends_ok (label, llen))
+    return LIBIDNA_OK;
+  return LIBIDNA_BIDI;
+}
+
+static bool
+bidi_p (uint32_t *label, size_t llen)
+{
+  int bc;
+
+  for (; llen > 0; label++, llen--)
+    {
+      bc = uc_bidi_category (*label);
+
+      switch (bc)
+	{
+	case UC_BIDI_R:
+	case UC_BIDI_AL:
+	case UC_BIDI_AN:
+	  return true;
+	}
+    }
+
+  return false;
 }
 
 int
@@ -100,22 +213,18 @@ _libidna_bidi (uint32_t *label, size_t llen)
 {
   int bc;
 
-  /* A "Bidi domain name" is a domain name that contains at least one
-     RTL label. */
   if (!bidi_p (label, llen))
     return LIBIDNA_OK;
 
-  /* The first character must be a character with Bidi property L, R,
-     or AL. */
   bc = uc_bidi_category (*label);
   switch (bc)
     {
     case UC_BIDI_L:
-      return _libidna_ltr (label, llen);
+      return ltr (label, llen);
 
     case UC_BIDI_R:
     case UC_BIDI_AL:
-      return _libidna_rtl (label, llen);
+      return rtl (label, llen);
     }
 
   return LIBIDNA_BIDI;
