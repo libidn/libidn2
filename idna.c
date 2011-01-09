@@ -137,6 +137,16 @@ process1 (char *opt, uint32_t **label, size_t *llen)
 	  }
 	  break;
 
+	case CHECK_CONTEXTO_HAS_RULE:
+	  {
+	    size_t i;
+	    for (i = 0; i < *llen; i++)
+	      if (_libidna_contexto_p ((*label)[i])
+		  && !_libidna_has_contexto_rule ((*label)[i]))
+		return LIBIDNA_CONTEXTO_NO_RULE;
+	  }
+	  break;
+
 	case CHECK_CONTEXTO_RULE:
 	  {
 	    size_t i;

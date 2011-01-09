@@ -15,9 +15,13 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 #include <stdint.h>
+#include <stdbool.h>
 
 int
 _libidna_contextj_rule (uint32_t cp, uint32_t *label, size_t llen);
 
 int
 _libidna_contexto_rule (uint32_t cp, uint32_t *label, size_t llen);
+
+bool
+_libidna_has_contexto_rule (uint32_t cp);

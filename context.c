@@ -83,3 +83,47 @@ _libidna_contexto_rule (uint32_t cp, uint32_t *label, size_t llen)
 
   return LIBIDNA_CONTEXTO_NO_RULE;
 }
+
+bool
+_libidna_has_contexto_rule (uint32_t cp)
+{
+  switch (cp)
+    {
+    case 0x00B7:
+      /* MIDDLE DOT */
+    case 0x0375:
+      /* GREEK LOWER NUMERAL SIGN (KERAIA) */
+    case 0x05F3:
+      /* HEBREW PUNCTUATION GERESH */
+    case 0x05F4:
+      /* HEBREW PUNCTUATION GERSHAYIM */
+    case 0x0660:
+    case 0x0661:
+    case 0x0662:
+    case 0x0663:
+    case 0x0664:
+    case 0x0665:
+    case 0x0666:
+    case 0x0667:
+    case 0x0668:
+    case 0x0669:
+      /* ARABIC-INDIC DIGITS */
+    case 0x06F0:
+    case 0x06F1:
+    case 0x06F2:
+    case 0x06F3:
+    case 0x06F4:
+    case 0x06F5:
+    case 0x06F6:
+    case 0x06F7:
+    case 0x06F8:
+    case 0x06F9:
+      /* EXTENDED ARABIC-INDIC DIGITS */
+    case 0x30FB:
+      /* KATAKANA MIDDLE DOT */
+      return true;
+      break;
+    }
+
+  return false;
+}
