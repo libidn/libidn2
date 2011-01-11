@@ -82,7 +82,7 @@ process1 (char *opt, uint32_t **label, size_t *llen)
 	    if (p == NULL)
 	      {
 		if (errno == ENOMEM)
-		  return IDN2_MALLOC_ERROR;
+		  return IDN2_MALLOC;
 		return IDN2_NFC;
 	      }
 	    ok = *llen == plen && memcmp (*label, p, plen) == 0;
@@ -222,7 +222,7 @@ process (char *opt,
   int rc;
 
   if (tmp == NULL)
-    return IDN2_MALLOC_ERROR;
+    return IDN2_MALLOC;
 
   rc = process1 (opt, &tmp, &tmplen);
   if (rc != IDN2_OK)
@@ -250,7 +250,7 @@ idn2_process_u32 (const char *what,
 
   opt = strdup (what);
   if (opt == NULL)
-    return IDN2_MALLOC_ERROR;
+    return IDN2_MALLOC;
 
   rc = process (opt, src, srclen, dst, dstlen);
 
@@ -272,7 +272,7 @@ idn2_process_u8 (const char *what,
   if (p == NULL)
     {
       if (errno == ENOMEM)
-	return IDN2_MALLOC_ERROR;
+	return IDN2_MALLOC;
       return IDN2_ENCODING_ERROR;
     }
 
@@ -284,7 +284,7 @@ idn2_process_u8 (const char *what,
   *dst = u32_to_u8 (u32dst, u32dstlen, NULL, dstlen);
 
   if (*dst == NULL)
-    return IDN2_MALLOC_ERROR;
+    return IDN2_MALLOC;
 
   return IDN2_OK;
 }
