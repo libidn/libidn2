@@ -16,7 +16,7 @@
 
 #include "config.h"
 
-#include "libidna.h"
+#include "idn2.h"
 
 #include <stdbool.h>
 
@@ -120,8 +120,8 @@ rtl (uint32_t *label, size_t llen)
   if (rtl_ralanenescsetonbnnsm_ok (label, llen)
       && rtl_ends_ok (label, llen)
       && rtl_enan_ok (label, llen))
-    return LIBIDNA_OK;
-  return LIBIDNA_BIDI;
+    return IDN2_OK;
+  return IDN2_BIDI;
 }
 
 static bool
@@ -183,8 +183,8 @@ ltr (uint32_t *label, size_t llen)
 {
   if (ltr_lenescsetonbnnsm_ok (label, llen)
       && ltr_ends_ok (label, llen))
-    return LIBIDNA_OK;
-  return LIBIDNA_BIDI;
+    return IDN2_OK;
+  return IDN2_BIDI;
 }
 
 static bool
@@ -209,12 +209,12 @@ bidi_p (uint32_t *label, size_t llen)
 }
 
 int
-_libidna_bidi (uint32_t *label, size_t llen)
+_idn2_bidi (uint32_t *label, size_t llen)
 {
   int bc;
 
   if (!bidi_p (label, llen))
-    return LIBIDNA_OK;
+    return IDN2_OK;
 
   bc = uc_bidi_category (*label);
   switch (bc)
@@ -227,5 +227,5 @@ _libidna_bidi (uint32_t *label, size_t llen)
       return rtl (label, llen);
     }
 
-  return LIBIDNA_BIDI;
+  return IDN2_BIDI;
 }

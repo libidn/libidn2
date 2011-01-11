@@ -94,8 +94,8 @@ lib/unitypes.h
 lib/unused-parameter.h
 lib/warn-on-use.h
 lib/wchar.h
-libidna-*.tar.gz
-libidna.la
+libidn2-*.tar.gz
+libidn2.la
 libtool
 m4/libtool.m4
 m4/ltoptions.m4

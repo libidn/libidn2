@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-AC_INIT([libidna],
+AC_INIT([libidn2],
 	m4_esyscmd([build-aux/git-version-gen .tarball-version \
 		's/[a-z-]*-\([0-9]*\)-\([0-9]*\)-\([0-9]*\)/v\1.\2.\3/']),
 	[simon@josefsson.org])

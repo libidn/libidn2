@@ -16,18 +16,18 @@
 
 #include <config.h>
 
-#include "libidna.h"
+#include "idn2.h"
 
 #include <stdlib.h> /* free */
 
 /**
- * libidna_free:
+ * idn2_free:
  * @ptr: pointer to deallocate
  *
  * Call free(3) on the given pointer.
  **/
 void
-libidna_free (void *ptr)
+idn2_free (void *ptr)
 {
   free (ptr);
 }

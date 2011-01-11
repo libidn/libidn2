@@ -18,10 +18,10 @@
 #include <stdbool.h>
 
 int
-_libidna_contextj_rule (uint32_t cp, uint32_t *label, size_t llen);
+_idn2_contextj_rule (uint32_t cp, uint32_t *label, size_t llen);
 
 int
-_libidna_contexto_rule (uint32_t cp, uint32_t *label, size_t llen);
+_idn2_contexto_rule (uint32_t cp, uint32_t *label, size_t llen);
 
 bool
-_libidna_contexto_with_rule (uint32_t cp);
+_idn2_contexto_with_rule (uint32_t cp);

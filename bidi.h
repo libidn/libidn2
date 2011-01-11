@@ -16,4 +16,4 @@
 
 #include <stdint.h>
 
-int _libidna_bidi (uint32_t *label, size_t llen);
+int _idn2_bidi (uint32_t *label, size_t llen);

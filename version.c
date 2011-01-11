@@ -16,17 +16,17 @@
 
 #include <config.h>
 
-#include "libidna.h"
+#include "idn2.h"
 
 #include <string.h>		/* For strverscmp. */
 
 /**
- * libidna_check_version:
+ * idn2_check_version:
  * @req_version: version string to compare with, or NULL.
  *
- * Check LIBIDNA library version.
+ * Check IDN2 library version.
  *
- * See %LIBIDNA_VERSION for a suitable @req_version string.
+ * See %IDN2_VERSION for a suitable @req_version string.
  *
  * Return value: Check that the version of the library is at
  *   minimum the one given as a string in @req_version and return the
@@ -35,10 +35,10 @@
  *   check is done and only the version string is returned.
  **/
 const char *
-libidna_check_version (const char *req_version)
+idn2_check_version (const char *req_version)
 {
-  if (!req_version || strverscmp (req_version, LIBIDNA_VERSION) <= 0)
-    return LIBIDNA_VERSION;
+  if (!req_version || strverscmp (req_version, IDN2_VERSION) <= 0)
+    return IDN2_VERSION;
 
   return NULL;
 }

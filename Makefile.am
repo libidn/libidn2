@@ -18,25 +18,24 @@ SUBDIRS = lib
 ACLOCAL_AMFLAGS = -I m4
 EXTRA_DIST = m4/gnulib-cache.m4
 
-AM_CPPFLAGS = -DLIBIDNA_BUILDING
+AM_CPPFLAGS = -DLIBIDN2_BUILDING
 AM_CPPFLAGS += -I$(srcdir)/lib -I$(builddir)/lib
 
-lib_LTLIBRARIES = libidna.la
+lib_LTLIBRARIES = libidn2.la
 
-libidna_includedir=$(includedir)/libidna
-libidna_include_HEADERS = libidna.h
+include_HEADERS = idn2.h
 
-libidna_la_SOURCES = libidna.map libidna.h
-libidna_la_SOURCES += version.c
-libidna_la_SOURCES += punycode.c
-libidna_la_SOURCES += data.h data.c
-libidna_la_SOURCES += free.c
-libidna_la_SOURCES += idna.c
-libidna_la_SOURCES += tables.h tables.c
-libidna_la_SOURCES += context.h context.c
-libidna_la_SOURCES += bidi.h bidi.c
-libidna_la_LIBADD = lib/libgnu.la
-libidna_la_LDFLAGS = \
+libidn2_la_SOURCES = idn2.map idn2.h
+libidn2_la_SOURCES += version.c
+libidn2_la_SOURCES += punycode.c
+libidn2_la_SOURCES += data.h data.c
+libidn2_la_SOURCES += free.c
+libidn2_la_SOURCES += idna.c
+libidn2_la_SOURCES += tables.h tables.c
+libidn2_la_SOURCES += context.h context.c
+libidn2_la_SOURCES += bidi.h bidi.c
+libidn2_la_LIBADD = lib/libgnu.la
+libidn2_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) -no-undefined
 
 BUILT_SOURCES = data.c
@@ -51,12 +50,12 @@ data.c: $(srcdir)/gen-tables-from-rfc5892.pl $(srcdir)/gen-tables-from-iana.pl
 	rm -f tmp
 
 if HAVE_LD_VERSION_SCRIPT
-libidna_la_LDFLAGS += -Wl,--version-script=$(srcdir)/libidna.map
+libidn2_la_LDFLAGS += -Wl,--version-script=$(srcdir)/idn2.map
 else
-libidna_la_LDFLAGS += -export-symbols-regex '^idna_.*'
+libidn2_la_LDFLAGS += -export-symbols-regex '^idn2_.*'
 endif
 
-LDADD = libidna.la
+LDADD = libidn2.la
 
 TESTS = test-punycode test-idna
 check_PROGRAMS = test-punycode test-idna

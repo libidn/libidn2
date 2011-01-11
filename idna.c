@@ -16,7 +16,7 @@
 
 #include "config.h"
 
-#include "libidna.h"
+#include "idn2.h"
 
 #include <stdlib.h> /* getsubopt */
 #include <errno.h> /* errno */
@@ -82,37 +82,37 @@ process1 (char *opt, uint32_t **label, size_t *llen)
 	    if (p == NULL)
 	      {
 		if (errno == ENOMEM)
-		  return LIBIDNA_MALLOC_ERROR;
-		return LIBIDNA_NFC;
+		  return IDN2_MALLOC_ERROR;
+		return IDN2_NFC;
 	      }
 	    ok = *llen == plen && memcmp (*label, p, plen) == 0;
 	    free (p);
 	    if (!ok)
-	      return LIBIDNA_NOT_NFC;
+	      return IDN2_NOT_NFC;
 	    break;
 	  }
 
 	case CHECK_2HYPHEN:
 	  if (*llen >= 4 && (*label)[2] == '-' && (*label)[3] == '-')
-	    return LIBIDNA_2HYPHEN;
+	    return IDN2_2HYPHEN;
 	  break;
 
 	case CHECK_HYPHEN_STARTEND:
 	  if (*llen > 0 && (*label)[0] == '-' || (*label)[*llen - 1] == '-')
-	    return LIBIDNA_HYPHEN_STARTEND;
+	    return IDN2_HYPHEN_STARTEND;
 	  break;
 
 	case CHECK_COMBINING:
 	  if (*llen > 0 && uc_is_property_combining ((*label)[0]))
-	    return LIBIDNA_COMBINING;
+	    return IDN2_COMBINING;
 	  break;
 
 	case CHECK_DISALLOWED:
 	  {
 	    size_t i;
 	    for (i = 0; i < *llen; i++)
-	      if (_libidna_disallowed_p ((*label)[i]))
-		return LIBIDNA_DISALLOWED;
+	      if (_idn2_disallowed_p ((*label)[i]))
+		return IDN2_DISALLOWED;
 	  }
 	  break;
 
@@ -120,8 +120,8 @@ process1 (char *opt, uint32_t **label, size_t *llen)
 	  {
 	    size_t i;
 	    for (i = 0; i < *llen; i++)
-	      if (_libidna_contextj_p ((*label)[i]))
-		return LIBIDNA_CONTEXTJ;
+	      if (_idn2_contextj_p ((*label)[i]))
+		return IDN2_CONTEXTJ;
 	  }
 	  break;
 
@@ -132,8 +132,8 @@ process1 (char *opt, uint32_t **label, size_t *llen)
 
 	    for (i = 0; i < *llen; i++)
 	      {
-		rc = _libidna_contextj_rule ((*label)[i], *label, *llen);
-		if (rc != LIBIDNA_OK)
+		rc = _idn2_contextj_rule ((*label)[i], *label, *llen);
+		if (rc != IDN2_OK)
 		  return rc;
 	      }
 	  }
@@ -143,8 +143,8 @@ process1 (char *opt, uint32_t **label, size_t *llen)
 	  {
 	    size_t i;
 	    for (i = 0; i < *llen; i++)
-	      if (_libidna_contexto_p ((*label)[i]))
-		return LIBIDNA_CONTEXTJ;
+	      if (_idn2_contexto_p ((*label)[i]))
+		return IDN2_CONTEXTJ;
 	  }
 	  break;
 
@@ -152,9 +152,9 @@ process1 (char *opt, uint32_t **label, size_t *llen)
 	  {
 	    size_t i;
 	    for (i = 0; i < *llen; i++)
-	      if (_libidna_contexto_p ((*label)[i])
-		  && !_libidna_contexto_with_rule ((*label)[i]))
-		return LIBIDNA_CONTEXTO_NO_RULE;
+	      if (_idn2_contexto_p ((*label)[i])
+		  && !_idn2_contexto_with_rule ((*label)[i]))
+		return IDN2_CONTEXTO_NO_RULE;
 	  }
 	  break;
 
@@ -165,8 +165,8 @@ process1 (char *opt, uint32_t **label, size_t *llen)
 
 	    for (i = 0; i < *llen; i++)
 	      {
-		rc = _libidna_contexto_rule ((*label)[i], *label, *llen);
-		if (rc != LIBIDNA_OK)
+		rc = _idn2_contexto_rule ((*label)[i], *label, *llen);
+		if (rc != IDN2_OK)
 		  return rc;
 	      }
 	  }
@@ -176,15 +176,15 @@ process1 (char *opt, uint32_t **label, size_t *llen)
 	  {
 	    size_t i;
 	    for (i = 0; i < *llen; i++)
-	      if (_libidna_unassigned_p ((*label)[i]))
-		return LIBIDNA_UNASSIGNED;
+	      if (_idn2_unassigned_p ((*label)[i]))
+		return IDN2_UNASSIGNED;
 	  }
 	  break;
 
 	case CHECK_BIDI:
 	  {
-	    int rc = _libidna_bidi (*label, *llen);
-	    if (rc != LIBIDNA_OK)
+	    int rc = _idn2_bidi (*label, *llen);
+	    if (rc != IDN2_OK)
 	      return rc;
 	  }
 	  break;
@@ -194,7 +194,7 @@ process1 (char *opt, uint32_t **label, size_t *llen)
 	    uint32_t *p = u32_normalize (UNINORM_NFC, *label, *llen,
 					 NULL, llen);
 	    if (p == NULL)
-	      return LIBIDNA_NFC;
+	      return IDN2_NFC;
 	    free (*label);
 	    *label = p;
 	  }
@@ -204,12 +204,12 @@ process1 (char *opt, uint32_t **label, size_t *llen)
 	    break;
 
 	default:
-	  return LIBIDNA_UNKNOWN_WHAT;
+	  return IDN2_UNKNOWN_WHAT;
 	  break;
 	}
     }
 
-  return LIBIDNA_OK;
+  return IDN2_OK;
 }
 
 static int
@@ -222,10 +222,10 @@ process (char *opt,
   int rc;
 
   if (tmp == NULL)
-    return LIBIDNA_MALLOC_ERROR;
+    return IDN2_MALLOC_ERROR;
 
   rc = process1 (opt, &tmp, &tmplen);
-  if (rc != LIBIDNA_OK)
+  if (rc != IDN2_OK)
     {
       free (tmp);
       return rc;
@@ -234,11 +234,11 @@ process (char *opt,
   *dst = tmp;
   *dstlen = tmplen;
 
-  return LIBIDNA_OK;
+  return IDN2_OK;
 }
 
 int
-libidna_process_u32 (const char *what,
+idn2_process_u32 (const char *what,
 		     const uint32_t *src, size_t srclen,
 		     uint32_t **dst, size_t *dstlen)
 {
@@ -246,11 +246,11 @@ libidna_process_u32 (const char *what,
   int rc;
 
   if (what == NULL || *what == '\0')
-    return LIBIDNA_UNKNOWN_WHAT;
+    return IDN2_UNKNOWN_WHAT;
 
   opt = strdup (what);
   if (opt == NULL)
-    return LIBIDNA_MALLOC_ERROR;
+    return IDN2_MALLOC_ERROR;
 
   rc = process (opt, src, srclen, dst, dstlen);
 
@@ -260,7 +260,7 @@ libidna_process_u32 (const char *what,
 }
 
 int
-libidna_process_u8 (const char *what,
+idn2_process_u8 (const char *what,
 		     const uint8_t *src, size_t srclen,
 		     uint8_t **dst, size_t *dstlen)
 {
@@ -272,32 +272,32 @@ libidna_process_u8 (const char *what,
   if (p == NULL)
     {
       if (errno == ENOMEM)
-	return LIBIDNA_MALLOC_ERROR;
-      return LIBIDNA_ENCODING_ERROR;
+	return IDN2_MALLOC_ERROR;
+      return IDN2_ENCODING_ERROR;
     }
 
-  rc = libidna_process_u32 (what, p, plen, &u32dst, &u32dstlen);
+  rc = idn2_process_u32 (what, p, plen, &u32dst, &u32dstlen);
   free (p);
-  if (rc != LIBIDNA_OK)
+  if (rc != IDN2_OK)
     return rc;
 
   *dst = u32_to_u8 (u32dst, u32dstlen, NULL, dstlen);
 
   if (*dst == NULL)
-    return LIBIDNA_MALLOC_ERROR;
+    return IDN2_MALLOC_ERROR;
 
-  return LIBIDNA_OK;
+  return IDN2_OK;
 }
 
 int
-libidna_convert_u8 (const char *what, const uint8_t *src, uint8_t **dst)
+idn2_convert_u8 (const char *what, const uint8_t *src, uint8_t **dst)
 {
   uint8_t *p;
 
   *dst = NULL;
 
   if (src == NULL)
-    return LIBIDNA_OK;
+    return IDN2_OK;
 
   while (*src)
     {
@@ -311,8 +311,8 @@ libidna_convert_u8 (const char *what, const uint8_t *src, uint8_t **dst)
 
 	printf ("label %.*s\n", p - src, src);
 
-	rc = libidna_process_u8 (what, p, p - src, &tmp, &tmplen);
-	if (rc != LIBIDNA_OK)
+	rc = idn2_process_u8 (what, p, p - src, &tmp, &tmplen);
+	if (rc != IDN2_OK)
 	  return rc;
       }
 
@@ -322,5 +322,5 @@ libidna_convert_u8 (const char *what, const uint8_t *src, uint8_t **dst)
       src = p + 1;
     }
 
-  return LIBIDNA_OK;
+  return IDN2_OK;
 }

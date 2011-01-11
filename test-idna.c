@@ -26,7 +26,7 @@
 #include <string.h>
 #include <stdint.h>
 
-#include <libidna.h>
+#include <idn2.h>
 
 struct idna_tv
 {
@@ -42,47 +42,47 @@ struct idna_tv
 #define REKA_LEN 13
 
 static struct idna_tv tv[] = {
-  {"", LIBIDNA_UNKNOWN_WHAT, 0, NULL, 0, NULL},
-  {"", LIBIDNA_ENCODING_ERROR, 6, "\xd0\x94\xd0\xb0\xc1\x80", 0, NULL},
-  {"foo", LIBIDNA_UNKNOWN_WHAT, 0, NULL, 0, NULL},
-  {"check-nfc", LIBIDNA_NOT_NFC, 3, "\xe2\x84\xa6", 0, NULL},
-  {"check-nfc", LIBIDNA_OK, 2, "\xC3\x85", 2, "\xC3\x85"},
-  {"check-nfc", LIBIDNA_NOT_NFC, 3, "\xe2\x84\xa6", 0, NULL},
-  {"check-nfc", LIBIDNA_OK, 2, "\xce\xa9", 2, "\xce\xa9"},
-  {"check-2hyphen", LIBIDNA_2HYPHEN, 4, "ab--", 0, NULL},
-  {"check-2hyphen", LIBIDNA_OK, 2, "--", 2, "--"},
-  {"check-hyphen-startend", LIBIDNA_HYPHEN_STARTEND, 1, "-", 0, NULL},
-  {"check-hyphen-startend", LIBIDNA_HYPHEN_STARTEND, 2, "-a", 0, NULL},
-  {"check-hyphen-startend", LIBIDNA_HYPHEN_STARTEND, 2, "a-", 0, NULL},
-  {"check-hyphen-startend", LIBIDNA_HYPHEN_STARTEND, 3, "-a-", 0, NULL},
-  {"check-hyphen-startend", LIBIDNA_OK, 3, "foo", 3, "foo"},
-  {"nfc", LIBIDNA_OK, 3, "\xe2\x84\xab", 2, "\xC3\x85"},
-  {"nfc", LIBIDNA_OK, 3, "\xe2\x84\xa6", 2, "\xce\xa9"},
+  {"", IDN2_UNKNOWN_WHAT, 0, NULL, 0, NULL},
+  {"", IDN2_ENCODING_ERROR, 6, "\xd0\x94\xd0\xb0\xc1\x80", 0, NULL},
+  {"foo", IDN2_UNKNOWN_WHAT, 0, NULL, 0, NULL},
+  {"check-nfc", IDN2_NOT_NFC, 3, "\xe2\x84\xa6", 0, NULL},
+  {"check-nfc", IDN2_OK, 2, "\xC3\x85", 2, "\xC3\x85"},
+  {"check-nfc", IDN2_NOT_NFC, 3, "\xe2\x84\xa6", 0, NULL},
+  {"check-nfc", IDN2_OK, 2, "\xce\xa9", 2, "\xce\xa9"},
+  {"check-2hyphen", IDN2_2HYPHEN, 4, "ab--", 0, NULL},
+  {"check-2hyphen", IDN2_OK, 2, "--", 2, "--"},
+  {"check-hyphen-startend", IDN2_HYPHEN_STARTEND, 1, "-", 0, NULL},
+  {"check-hyphen-startend", IDN2_HYPHEN_STARTEND, 2, "-a", 0, NULL},
+  {"check-hyphen-startend", IDN2_HYPHEN_STARTEND, 2, "a-", 0, NULL},
+  {"check-hyphen-startend", IDN2_HYPHEN_STARTEND, 3, "-a-", 0, NULL},
+  {"check-hyphen-startend", IDN2_OK, 3, "foo", 3, "foo"},
+  {"nfc", IDN2_OK, 3, "\xe2\x84\xab", 2, "\xC3\x85"},
+  {"nfc", IDN2_OK, 3, "\xe2\x84\xa6", 2, "\xce\xa9"},
   /* CCC=0 GC=M */
-  {"check-combining", LIBIDNA_COMBINING, 2, "\xcd\x8f", 0, NULL},
+  {"check-combining", IDN2_COMBINING, 2, "\xcd\x8f", 0, NULL},
   /* CCC=0 GC=M */
-  {"check-combining", LIBIDNA_COMBINING, 2, "\xd2\x88", 0, NULL},
+  {"check-combining", IDN2_COMBINING, 2, "\xd2\x88", 0, NULL},
   /* CCC!=0 GC=Mn */
-  {"check-combining", LIBIDNA_COMBINING, 2, "\xcc\x80", 0, NULL},
+  {"check-combining", IDN2_COMBINING, 2, "\xcc\x80", 0, NULL},
   /* CCC!=0 GC=Mc */
-  {"check-combining", LIBIDNA_COMBINING, 3, "\xe1\xad\x84", 0, NULL},
-  {"check-disallowed", LIBIDNA_DISALLOWED, 1, "\x00", 0, NULL},
-  {"check-disallowed", LIBIDNA_DISALLOWED, 2, "a\x00", 0, NULL},
-  {"check-disallowed", LIBIDNA_DISALLOWED, 2, "\xc2\xb8", 0, NULL},
-  {"check-disallowed", LIBIDNA_DISALLOWED, 4, "\xf4\x8f\xbf\xbf", 0, NULL},
-  {"check-contextj", LIBIDNA_CONTEXTJ, 3, "\xe2\x80\x8d", 0, NULL},
-  {"check-contexto-with-rule", LIBIDNA_OK, 2, "AA", 2, "AA"},
-  {"check-contexto-with-rule", LIBIDNA_OK, 2, "\xc2\xb7", 2, "\xc2\xb7"},
-  {"check-unassigned", LIBIDNA_UNASSIGNED, 2, "\xcd\xb8", 0, NULL},
-  {"check-unassigned", LIBIDNA_UNASSIGNED, 2, "\xcd\xb9", 0, NULL},
+  {"check-combining", IDN2_COMBINING, 3, "\xe1\xad\x84", 0, NULL},
+  {"check-disallowed", IDN2_DISALLOWED, 1, "\x00", 0, NULL},
+  {"check-disallowed", IDN2_DISALLOWED, 2, "a\x00", 0, NULL},
+  {"check-disallowed", IDN2_DISALLOWED, 2, "\xc2\xb8", 0, NULL},
+  {"check-disallowed", IDN2_DISALLOWED, 4, "\xf4\x8f\xbf\xbf", 0, NULL},
+  {"check-contextj", IDN2_CONTEXTJ, 3, "\xe2\x80\x8d", 0, NULL},
+  {"check-contexto-with-rule", IDN2_OK, 2, "AA", 2, "AA"},
+  {"check-contexto-with-rule", IDN2_OK, 2, "\xc2\xb7", 2, "\xc2\xb7"},
+  {"check-unassigned", IDN2_UNASSIGNED, 2, "\xcd\xb8", 0, NULL},
+  {"check-unassigned", IDN2_UNASSIGNED, 2, "\xcd\xb9", 0, NULL},
   /* Check that bidi handles ascii strings ok. */
-  {"check-bidi", LIBIDNA_OK, 3, "foo", 3, "foo"},
+  {"check-bidi", IDN2_OK, 3, "foo", 3, "foo"},
   /* Check that bidi handles non-bidi strings ok. */
-  {"check-bidi", LIBIDNA_OK, REKA_LEN, REKA, REKA_LEN, REKA },
+  {"check-bidi", IDN2_OK, REKA_LEN, REKA, REKA_LEN, REKA },
   /* Check that bidi rejects leading non-L/R/AL characters in bidi strings */
-  {"check-bidi", LIBIDNA_BIDI, 3, "1\xde\x86", 0, NULL},
+  {"check-bidi", IDN2_BIDI, 3, "1\xde\x86", 0, NULL},
   /* check that ltr string cannot contain R character */
-  {"check-bidi", LIBIDNA_BIDI, 3, "f\xd7\x99", 0, NULL},
+  {"check-bidi", IDN2_BIDI, 3, "f\xd7\x99", 0, NULL},
 };
 
 int debug = 1;
@@ -135,7 +135,7 @@ main (void)
 
       out = NULL;
       outlen = 0;
-      rc = libidna_process_u8 (tv[i].what, tv[i].in, tv[i].inlen,
+      rc = idn2_process_u8 (tv[i].what, tv[i].in, tv[i].inlen,
 			       &out, &outlen);
       if (rc != tv[i].rc)
 	{
@@ -153,7 +153,7 @@ main (void)
 	  printf ("in:\n");
 	  hexprint (tv[i].in, tv[i].inlen);
 
-	  if (rc == LIBIDNA_OK)
+	  if (rc == IDN2_OK)
 	    {
 	      printf ("got out:\n");
 	      hexprint (out, outlen);
@@ -166,7 +166,7 @@ main (void)
 	    }
 	}
 
-      if (rc == LIBIDNA_OK &&
+      if (rc == IDN2_OK &&
 	  (tv[i].outlen != outlen || memcmp (tv[i].out, out, outlen)) != 0)
 	{
 	  fail ("IDNA entry %d failed\n", i);
@@ -180,8 +180,8 @@ main (void)
       free (out);
     }
 
-  rc = libidna_convert_u8 ("nfc", "www.räksmörgås.com", &out);
-  printf ("rc %d str %s\n", rc, rc == LIBIDNA_OK ? out : "<null>");
+  rc = idn2_convert_u8 ("nfc", "www.räksmörgås.com", &out);
+  printf ("rc %d str %s\n", rc, rc == IDN2_OK ? out : "<null>");
 
   return error_count;
 }

@@ -18,7 +18,7 @@
   Code copied from http://www.nicemice.net/idn/punycode-spec.gz on
   2011-01-04 with SHA-1 a966a8017f6be579d74a50a226accc7607c40133
   labeled punycode-spec 1.0.3 (2006-Mar-23-Thu).  It is modified for
-  Libidna by Simon Josefsson.  License on the original code:
+  Libidn2 by Simon Josefsson.  License on the original code:
 
   punycode-sample.c 2.0.0 (2004-Mar-21-Sun)
   http://www.nicemice.net/idn/
@@ -38,7 +38,7 @@
   terms.
 */
 
-#include "libidna.h"
+#include "idn2.h"
 
 /*** Bootstring parameters for Punycode ***/
 
@@ -125,7 +125,7 @@ adapt (uint32_t delta, uint32_t numpoints, int firsttime)
 /*** Main encode function ***/
 
 /**
- * libidna_punycode_encode:
+ * idn2_punycode_encode:
  * @input_length: The number of code points in the @input array and
  *   the number of flags in the @case_flags array.
  * @input: An array of code points.  They are presumed to be Unicode
@@ -156,12 +156,12 @@ adapt (uint32_t delta, uint32_t numpoints, int firsttime)
  * Converts a sequence of code points (presumed to be Unicode code
  * points) to Punycode.
  *
- * Return value: Any of the #Libidna_punycode_status values except
- *   %LIBIDNA_PUNYCODE_BAD_INPUT.  If not %LIBIDNA_PUNYCODE_SUCCESS,
+ * Return value: Any of the #Idn2_punycode_status values except
+ *   %IDN2_PUNYCODE_BAD_INPUT.  If not %IDN2_PUNYCODE_SUCCESS,
  *   then @output_size and @output might contain garbage.
  **/
 int
-libidna_punycode_encode (size_t input_length_orig,
+idn2_punycode_encode (size_t input_length_orig,
 			 const uint32_t input[],
 			 const unsigned char case_flags[],
 			 size_t * output_length, char output[])
@@ -174,7 +174,7 @@ libidna_punycode_encode (size_t input_length_orig,
   /* a uint32_t, which could overflow.                           */
 
   if (input_length_orig > maxint)
-    return LIBIDNA_PUNYCODE_OVERFLOW;
+    return IDN2_PUNYCODE_OVERFLOW;
   input_length = (uint32_t) input_length_orig;
 
   /* Initialize the state: */
@@ -192,11 +192,11 @@ libidna_punycode_encode (size_t input_length_orig,
       if (basic (input[j]))
 	{
 	  if (max_out - out < 2)
-	    return LIBIDNA_PUNYCODE_BIG_OUTPUT;
+	    return IDN2_PUNYCODE_BIG_OUTPUT;
 	  output[out++] = case_flags ?
 	    encode_basic (input[j], case_flags[j]) : (char) input[j];
 	}
-      /* else if (input[j] < n) return LIBIDNA_PUNYCODE_BAD_INPUT; */
+      /* else if (input[j] < n) return IDN2_PUNYCODE_BAD_INPUT; */
       /* (not needed for Punycode with unsigned code points) */
     }
 
@@ -229,7 +229,7 @@ libidna_punycode_encode (size_t input_length_orig,
       /* <n,i> state to <m,0>, but guard against overflow: */
 
       if (m - n > (maxint - delta) / (h + 1))
-	return LIBIDNA_PUNYCODE_OVERFLOW;
+	return IDN2_PUNYCODE_OVERFLOW;
       delta += (m - n) * (h + 1);
       n = m;
 
@@ -239,7 +239,7 @@ libidna_punycode_encode (size_t input_length_orig,
 	  if (input[j] < n /* || basic(input[j]) */ )
 	    {
 	      if (++delta == 0)
-		return LIBIDNA_PUNYCODE_OVERFLOW;
+		return IDN2_PUNYCODE_OVERFLOW;
 	    }
 
 	  if (input[j] == n)
@@ -249,7 +249,7 @@ libidna_punycode_encode (size_t input_length_orig,
 	      for (q = delta, k = base;; k += base)
 		{
 		  if (out >= max_out)
-		    return LIBIDNA_PUNYCODE_BIG_OUTPUT;
+		    return IDN2_PUNYCODE_BIG_OUTPUT;
 		  t = k <= bias /* + tmin */ ? tmin :	/* +tmin not needed */
 		    k >= bias + tmax ? tmax : k - bias;
 		  if (q < t)
@@ -269,13 +269,13 @@ libidna_punycode_encode (size_t input_length_orig,
     }
 
   *output_length = out;
-  return LIBIDNA_PUNYCODE_SUCCESS;
+  return IDN2_PUNYCODE_SUCCESS;
 }
 
 /*** Main decode function ***/
 
 /**
- * libidna_punycode_decode:
+ * idn2_punycode_decode:
  * @input_length: The number of ASCII code points in the @input array.
  * @input: An array of ASCII code points (0..7F).
  * @output_length: The caller passes in the maximum number of code
@@ -304,13 +304,13 @@ libidna_punycode_encode (size_t input_length_orig,
  * Converts Punycode to a sequence of code points (presumed to be
  * Unicode code points).
  *
- * Return value: Any of the #Libidna_punycode_status values.  If not
- *   %LIBIDNA_PUNYCODE_SUCCESS, then @output_length, @output, and
+ * Return value: Any of the #Idn2_punycode_status values.  If not
+ *   %IDN2_PUNYCODE_SUCCESS, then @output_length, @output, and
  *   @case_flags might contain garbage.
  *
  **/
 int
-libidna_punycode_decode (size_t input_length,
+idn2_punycode_decode (size_t input_length,
 			 const char input[],
 			 size_t * output_length,
 			 uint32_t output[], unsigned char case_flags[])
@@ -333,14 +333,14 @@ libidna_punycode_decode (size_t input_length,
     if (delim (input[j]))
       b = j;
   if (b > max_out)
-    return LIBIDNA_PUNYCODE_BIG_OUTPUT;
+    return IDN2_PUNYCODE_BIG_OUTPUT;
 
   for (j = 0; j < b; ++j)
     {
       if (case_flags)
 	case_flags[out] = flagged (input[j]);
       if (!basic (input[j]))
-	return LIBIDNA_PUNYCODE_BAD_INPUT;
+	return IDN2_PUNYCODE_BAD_INPUT;
       output[out++] = input[j];
     }
 
@@ -361,19 +361,19 @@ libidna_punycode_decode (size_t input_length,
       for (oldi = i, w = 1, k = base;; k += base)
 	{
 	  if (in >= input_length)
-	    return LIBIDNA_PUNYCODE_BAD_INPUT;
+	    return IDN2_PUNYCODE_BAD_INPUT;
 	  digit = decode_digit (input[in++]);
 	  if (digit >= base)
-	    return LIBIDNA_PUNYCODE_BAD_INPUT;
+	    return IDN2_PUNYCODE_BAD_INPUT;
 	  if (digit > (maxint - i) / w)
-	    return LIBIDNA_PUNYCODE_OVERFLOW;
+	    return IDN2_PUNYCODE_OVERFLOW;
 	  i += digit * w;
 	  t = k <= bias /* + tmin */ ? tmin :	/* +tmin not needed */
 	    k >= bias + tmax ? tmax : k - bias;
 	  if (digit < t)
 	    break;
 	  if (w > maxint / (base - t))
-	    return LIBIDNA_PUNYCODE_OVERFLOW;
+	    return IDN2_PUNYCODE_OVERFLOW;
 	  w *= (base - t);
 	}
 
@@ -383,16 +383,16 @@ libidna_punycode_decode (size_t input_length,
       /* incrementing n each time, so we'll fix that now: */
 
       if (i / (out + 1) > maxint - n)
-	return LIBIDNA_PUNYCODE_OVERFLOW;
+	return IDN2_PUNYCODE_OVERFLOW;
       n += i / (out + 1);
       i %= (out + 1);
 
       /* Insert n at position i of the output: */
 
       /* not needed for Punycode: */
-      /* if (basic(n)) return LIBIDNA_PUNYCODE_BAD_INPUT; */
+      /* if (basic(n)) return IDN2_PUNYCODE_BAD_INPUT; */
       if (out >= max_out)
-	return LIBIDNA_PUNYCODE_BIG_OUTPUT;
+	return IDN2_PUNYCODE_BIG_OUTPUT;
 
       if (case_flags)
 	{
@@ -407,5 +407,5 @@ libidna_punycode_decode (size_t input_length,
 
   *output_length = (size_t) out;
   /* cannot overflow because out <= old value of *output_length */
-  return LIBIDNA_PUNYCODE_SUCCESS;
+  return IDN2_PUNYCODE_SUCCESS;
 }

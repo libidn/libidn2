@@ -1,4 +1,4 @@
-/* test-punycode.c --- Self tests for Libidna punycode.
+/* test-punycode.c --- Self tests for Libidn2 punycode.
  * Copyright (C) 2002-2011 Simon Josefsson
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,7 +27,7 @@
 #include <stdarg.h>
 #include <string.h>
 
-#include <libidna.h>
+#include <idn2.h>
 
 struct punycode
 {
@@ -44,31 +44,31 @@ const struct punycode punycode[] = {
    {
     0x0644, 0x064A, 0x0647, 0x0645, 0x0627, 0x0628, 0x062A, 0x0643,
     0x0644, 0x0645, 0x0648, 0x0634, 0x0639, 0x0631, 0x0628, 0x064A,
-    0x061F}, "egbpdaj6bu4bxfgehfvwxn", LIBIDNA_PUNYCODE_SUCCESS},
+    0x061F}, "egbpdaj6bu4bxfgehfvwxn", IDN2_PUNYCODE_SUCCESS},
   {
    "(B) Chinese (simplified)", 9,
    {
     0x4ED6, 0x4EEC, 0x4E3A, 0x4EC0, 0x4E48, 0x4E0D, 0x8BF4, 0x4E2D,
-    0x6587}, "ihqwcrb4cv8a8dqg056pqjye", LIBIDNA_PUNYCODE_SUCCESS},
+    0x6587}, "ihqwcrb4cv8a8dqg056pqjye", IDN2_PUNYCODE_SUCCESS},
   {
    "(C) Chinese (traditional)", 9,
    {
     0x4ED6, 0x5011, 0x7232, 0x4EC0, 0x9EBD, 0x4E0D, 0x8AAA, 0x4E2D,
-    0x6587}, "ihqwctvzc91f659drss3x8bo0yb", LIBIDNA_PUNYCODE_SUCCESS},
+    0x6587}, "ihqwctvzc91f659drss3x8bo0yb", IDN2_PUNYCODE_SUCCESS},
   {
    "(D) Czech: Pro<ccaron>prost<ecaron>nemluv<iacute><ccaron>esky", 22,
    {
     0x0050, 0x0072, 0x006F, 0x010D, 0x0070, 0x0072, 0x006F, 0x0073,
     0x0074, 0x011B, 0x006E, 0x0065, 0x006D, 0x006C, 0x0075, 0x0076,
     0x00ED, 0x010D, 0x0065, 0x0073, 0x006B, 0x0079},
-   "Proprostnemluvesky-uyb24dma41a", LIBIDNA_PUNYCODE_SUCCESS},
+   "Proprostnemluvesky-uyb24dma41a", IDN2_PUNYCODE_SUCCESS},
   {
    "(E) Hebrew:", 22,
    {
     0x05DC, 0x05DE, 0x05D4, 0x05D4, 0x05DD, 0x05E4, 0x05E9, 0x05D5,
     0x05D8, 0x05DC, 0x05D0, 0x05DE, 0x05D3, 0x05D1, 0x05E8, 0x05D9,
     0x05DD, 0x05E2, 0x05D1, 0x05E8, 0x05D9, 0x05EA},
-   "4dbcagdahymbxekheh6e0a7fei0b", LIBIDNA_PUNYCODE_SUCCESS},
+   "4dbcagdahymbxekheh6e0a7fei0b", IDN2_PUNYCODE_SUCCESS},
   {
    "(F) Hindi (Devanagari):", 30,
    {
@@ -76,14 +76,14 @@ const struct punycode punycode[] = {
     0x094D, 0x0926, 0x0940, 0x0915, 0x094D, 0x092F, 0x094B, 0x0902,
     0x0928, 0x0939, 0x0940, 0x0902, 0x092C, 0x094B, 0x0932, 0x0938,
     0x0915, 0x0924, 0x0947, 0x0939, 0x0948, 0x0902},
-   "i1baa7eci9glrd9b2ae1bj0hfcgg6iyaf8o0a1dig0cd", LIBIDNA_PUNYCODE_SUCCESS},
+   "i1baa7eci9glrd9b2ae1bj0hfcgg6iyaf8o0a1dig0cd", IDN2_PUNYCODE_SUCCESS},
   {
    "(G) Japanese (kanji and hiragana):", 18,
    {
     0x306A, 0x305C, 0x307F, 0x3093, 0x306A, 0x65E5, 0x672C, 0x8A9E,
     0x3092, 0x8A71, 0x3057, 0x3066, 0x304F, 0x308C, 0x306A, 0x3044,
     0x306E, 0x304B},
-   "n8jok5ay5dzabd5bym9f0cm5685rrjetr6pdxa", LIBIDNA_PUNYCODE_SUCCESS},
+   "n8jok5ay5dzabd5bym9f0cm5685rrjetr6pdxa", IDN2_PUNYCODE_SUCCESS},
   {
    "(H) Korean (Hangul syllables):", 24,
    {
@@ -91,7 +91,7 @@ const struct punycode punycode[] = {
     0xC774, 0xD55C, 0xAD6D, 0xC5B4, 0xB97C, 0xC774, 0xD574, 0xD55C,
     0xB2E4, 0xBA74, 0xC5BC, 0xB9C8, 0xB098, 0xC88B, 0xC744, 0xAE4C},
    "989aomsvi5e83db1d2a355cv1e0vak1dwrv93d5xbh15a0dt30a5jpsd879ccm6fea98c",
-   LIBIDNA_PUNYCODE_SUCCESS},
+   IDN2_PUNYCODE_SUCCESS},
   {
    "(I) Russian (Cyrillic):", 28,
    {
@@ -99,7 +99,7 @@ const struct punycode punycode[] = {
     0x043E, 0x043D, 0x0438, 0x043D, 0x0435, 0x0433, 0x043E, 0x0432,
     0x043E, 0x0440, 0x044F, 0x0442, 0x043F, 0x043E, 0x0440, 0x0443,
     0x0441, 0x0441, 0x043A, 0x0438},
-   "b1abfaaepdrnnbgefbadotcwatmq2g4l", LIBIDNA_PUNYCODE_SUCCESS},
+   "b1abfaaepdrnnbgefbadotcwatmq2g4l", IDN2_PUNYCODE_SUCCESS},
   {
    "(J) Spanish: Porqu<eacute>nopuedensimplementehablarenEspa<ntilde>ol", 40,
    {
@@ -108,7 +108,7 @@ const struct punycode punycode[] = {
     0x006D, 0x0070, 0x006C, 0x0065, 0x006D, 0x0065, 0x006E, 0x0074,
     0x0065, 0x0068, 0x0061, 0x0062, 0x006C, 0x0061, 0x0072, 0x0065,
     0x006E, 0x0045, 0x0073, 0x0070, 0x0061, 0x00F1, 0x006F, 0x006C},
-   "PorqunopuedensimplementehablarenEspaol-fmd56a", LIBIDNA_PUNYCODE_SUCCESS},
+   "PorqunopuedensimplementehablarenEspaol-fmd56a", IDN2_PUNYCODE_SUCCESS},
   {
    "(K) Vietnamese:", 31,
    {
@@ -116,19 +116,19 @@ const struct punycode punycode[] = {
     0x006B, 0x0068, 0x00F4, 0x006E, 0x0067, 0x0074, 0x0068, 0x1EC3,
     0x0063, 0x0068, 0x1EC9, 0x006E, 0x00F3, 0x0069, 0x0074, 0x0069,
     0x1EBF, 0x006E, 0x0067, 0x0056, 0x0069, 0x1EC7, 0x0074},
-   "TisaohkhngthchnitingVit-kjcr8268qyxafd2f1b9g", LIBIDNA_PUNYCODE_SUCCESS},
+   "TisaohkhngthchnitingVit-kjcr8268qyxafd2f1b9g", IDN2_PUNYCODE_SUCCESS},
   {
    "(L) 3<nen>B<gumi><kinpachi><sensei>", 8,
    {
     0x0033, 0x5E74, 0x0042, 0x7D44, 0x91D1, 0x516B, 0x5148, 0x751F},
-   "3B-ww4c5e180e575a65lsy2b", LIBIDNA_PUNYCODE_SUCCESS},
+   "3B-ww4c5e180e575a65lsy2b", IDN2_PUNYCODE_SUCCESS},
   {
    "(M) <amuro><namie>-with-SUPER-MONKEYS", 24,
    {
     0x5B89, 0x5BA4, 0x5948, 0x7F8E, 0x6075, 0x002D, 0x0077, 0x0069,
     0x0074, 0x0068, 0x002D, 0x0053, 0x0055, 0x0050, 0x0045, 0x0052,
     0x002D, 0x004D, 0x004F, 0x004E, 0x004B, 0x0045, 0x0059, 0x0053},
-   "-with-SUPER-MONKEYS-pc58ag80a8qai00g7n9n", LIBIDNA_PUNYCODE_SUCCESS},
+   "-with-SUPER-MONKEYS-pc58ag80a8qai00g7n9n", IDN2_PUNYCODE_SUCCESS},
   {
    "(N) Hello-Another-Way-<sorezore><no><basho>", 25,
    {
@@ -136,33 +136,33 @@ const struct punycode punycode[] = {
     0x006F, 0x0074, 0x0068, 0x0065, 0x0072, 0x002D, 0x0057, 0x0061,
     0x0079, 0x002D, 0x305D, 0x308C, 0x305E, 0x308C, 0x306E, 0x5834,
     0x6240},
-   "Hello-Another-Way--fc4qua05auwb3674vfr0b", LIBIDNA_PUNYCODE_SUCCESS},
+   "Hello-Another-Way--fc4qua05auwb3674vfr0b", IDN2_PUNYCODE_SUCCESS},
   {
    "(O) <hitotsu><yane><no><shita>2", 8,
    {
     0x3072, 0x3068, 0x3064, 0x5C4B, 0x6839, 0x306E, 0x4E0B, 0x0032},
-   "2-u9tlzr9756bt3uc0v", LIBIDNA_PUNYCODE_SUCCESS},
+   "2-u9tlzr9756bt3uc0v", IDN2_PUNYCODE_SUCCESS},
   {
    "(P) Maji<de>Koi<suru>5<byou><mae>", 13,
    {
     0x004D, 0x0061, 0x006A, 0x0069, 0x3067, 0x004B, 0x006F, 0x0069,
     0x3059, 0x308B, 0x0035, 0x79D2, 0x524D},
-   "MajiKoi5-783gue6qz075azm5e", LIBIDNA_PUNYCODE_SUCCESS},
+   "MajiKoi5-783gue6qz075azm5e", IDN2_PUNYCODE_SUCCESS},
   {
    "(Q) <pafii>de<runba>", 9,
    {
     0x30D1, 0x30D5, 0x30A3, 0x30FC, 0x0064, 0x0065, 0x30EB, 0x30F3, 0x30D0},
-   "de-jg4avhby1noc0d", LIBIDNA_PUNYCODE_SUCCESS},
+   "de-jg4avhby1noc0d", IDN2_PUNYCODE_SUCCESS},
   {
    "(R) <sono><supiido><de>", 7,
    {
     0x305D, 0x306E, 0x30B9, 0x30D4, 0x30FC, 0x30C9, 0x3067},
-   "d9juau41awczczp", LIBIDNA_PUNYCODE_SUCCESS},
+   "d9juau41awczczp", IDN2_PUNYCODE_SUCCESS},
   {
    "(S) -> $1.00 <-", 11,
    {
     0x002D, 0x003E, 0x0020, 0x0024, 0x0031, 0x002E, 0x0030, 0x0030,
-    0x0020, 0x003C, 0x002D}, "-> $1.00 <--", LIBIDNA_PUNYCODE_SUCCESS}
+    0x0020, 0x003C, 0x002D}, "-> $1.00 <--", IDN2_PUNYCODE_SUCCESS}
 };
 
 int debug = 0;
@@ -207,14 +207,14 @@ main (void)
   int rc;
   size_t i, outlen;
 
-  if (!libidna_check_version (LIBIDNA_VERSION))
-    fail ("libidna_check_version(%s) failed\n", LIBIDNA_VERSION);
+  if (!idn2_check_version (IDN2_VERSION))
+    fail ("idn2_check_version(%s) failed\n", IDN2_VERSION);
 
-  if (!libidna_check_version (NULL))
-    fail ("libidna_check_version(NULL) failed\n");
+  if (!idn2_check_version (NULL))
+    fail ("idn2_check_version(NULL) failed\n");
 
-  if (libidna_check_version ("100.100"))
-    fail ("libidna_check_version(\"100.100\") failed\n");
+  if (idn2_check_version ("100.100"))
+    fail ("idn2_check_version(\"100.100\") failed\n");
 
   p = malloc (sizeof (*p) * BUFSIZ);
   if (p == NULL)
@@ -236,7 +236,7 @@ main (void)
 	}
 
       outlen = BUFSIZ;
-      rc = libidna_punycode_encode (punycode[i].inlen, punycode[i].in,
+      rc = idn2_punycode_encode (punycode[i].inlen, punycode[i].in,
 				    NULL, &outlen, p);
       if (rc != punycode[i].rc)
 	{
@@ -246,10 +246,10 @@ main (void)
 	  continue;
 	}
 
-      if (rc == LIBIDNA_PUNYCODE_SUCCESS)
+      if (rc == IDN2_PUNYCODE_SUCCESS)
 	p[outlen] = '\0';
 
-      if (debug && rc == LIBIDNA_PUNYCODE_SUCCESS)
+      if (debug && rc == IDN2_PUNYCODE_SUCCESS)
 	{
 	  printf ("computed out: %s\n", p);
 	  printf ("expected out: %s\n", punycode[i].out);
@@ -257,7 +257,7 @@ main (void)
       else if (debug)
 	printf ("returned %d expected %d\n", rc, punycode[i].rc);
 
-      if (rc == LIBIDNA_PUNYCODE_SUCCESS)
+      if (rc == IDN2_PUNYCODE_SUCCESS)
 	{
 	  if (strlen (punycode[i].out) != strlen (p) ||
 	      memcmp (punycode[i].out, p, strlen (p)) != 0)
@@ -278,7 +278,7 @@ main (void)
 	}
 
       outlen = BUFSIZ;
-      rc = libidna_punycode_decode (strlen (punycode[i].out), punycode[i].out,
+      rc = idn2_punycode_decode (strlen (punycode[i].out), punycode[i].out,
 				    &outlen, q, NULL);
       if (rc != punycode[i].rc)
 	{
@@ -288,7 +288,7 @@ main (void)
 	  continue;
 	}
 
-      if (debug && rc == LIBIDNA_PUNYCODE_SUCCESS)
+      if (debug && rc == IDN2_PUNYCODE_SUCCESS)
 	{
 	  printf ("computed out:\n");
 	  ucs4print (q, outlen);
@@ -298,7 +298,7 @@ main (void)
       else if (debug)
 	printf ("returned %d expected %d\n", rc, punycode[i].rc);
 
-      if (rc == LIBIDNA_PUNYCODE_SUCCESS)
+      if (rc == IDN2_PUNYCODE_SUCCESS)
 	{
 	  if (punycode[i].inlen != outlen ||
 	      memcmp (punycode[i].in, q, outlen) != 0)

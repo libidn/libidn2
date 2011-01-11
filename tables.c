@@ -38,25 +38,25 @@ property (uint32_t cp)
 }
 
 int
-_libidna_disallowed_p (uint32_t cp)
+_idn2_disallowed_p (uint32_t cp)
 {
   return property (cp) == DISALLOWED;
 }
 
 int
-_libidna_contextj_p (uint32_t cp)
+_idn2_contextj_p (uint32_t cp)
 {
   return property (cp) == CONTEXTJ;
 }
 
 int
-_libidna_contexto_p (uint32_t cp)
+_idn2_contexto_p (uint32_t cp)
 {
   return property (cp) == CONTEXTO;
 }
 
 int
-_libidna_unassigned_p (uint32_t cp)
+_idn2_unassigned_p (uint32_t cp)
 {
   return property (cp) == UNASSIGNED;
 }

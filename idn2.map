@@ -1,4 +1,4 @@
-# libidna.map - linker version script for libidna
+# idn2.map - linker version script for idn2
 # Copyright (C) 2011  Simon Josefsson
 #
 # This program is free software: you can redistribute it and/or modify
@@ -14,18 +14,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-LIBIDNA_1.0.0 {
+IDN2_1.0.0 {
   global:
-    libidna_check_version;
+    idn2_check_version;
 
-    libidna_punycode_encode;
-    libidna_punycode_decode;
+    idn2_punycode_encode;
+    idn2_punycode_decode;
 
-    libidna_free;
+    idn2_free;
 
-    libidna_process_u8;
+    idn2_process_u8;
 
-    libidna_convert_u8;
+    idn2_convert_u8;
 
   local:
     *;

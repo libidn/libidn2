@@ -16,15 +16,15 @@
 
 #include "config.h"
 
-#include "libidna.h"
+#include "idn2.h"
 
 #include "context.h"
 
 int
-_libidna_contextj_rule (uint32_t cp, uint32_t *label, size_t llen)
+_idn2_contextj_rule (uint32_t cp, uint32_t *label, size_t llen)
 {
-  if (!_libidna_contextj_p (cp))
-    return LIBIDNA_OK;
+  if (!_idn2_contextj_p (cp))
+    return IDN2_OK;
 
   switch (cp)
     {
@@ -35,14 +35,14 @@ _libidna_contextj_rule (uint32_t cp, uint32_t *label, size_t llen)
       break;
     }
 
-  return LIBIDNA_CONTEXTJ_NO_RULE;
+  return IDN2_CONTEXTJ_NO_RULE;
 }
 
 int
-_libidna_contexto_rule (uint32_t cp, uint32_t *label, size_t llen)
+_idn2_contexto_rule (uint32_t cp, uint32_t *label, size_t llen)
 {
-  if (!_libidna_contexto_p (cp))
-    return LIBIDNA_OK;
+  if (!_idn2_contexto_p (cp))
+    return IDN2_OK;
 
   switch (cp)
     {
@@ -81,11 +81,11 @@ _libidna_contexto_rule (uint32_t cp, uint32_t *label, size_t llen)
       break;
     }
 
-  return LIBIDNA_CONTEXTO_NO_RULE;
+  return IDN2_CONTEXTO_NO_RULE;
 }
 
 bool
-_libidna_contexto_with_rule (uint32_t cp)
+_idn2_contexto_with_rule (uint32_t cp)
 {
   switch (cp)
     {
