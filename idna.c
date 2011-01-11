@@ -311,7 +311,7 @@ idn2_convert_u8 (const char *what, const uint8_t *src, uint8_t **dst)
 
 	printf ("label %.*s\n", p - src, src);
 
-	rc = idn2_process_u8 (what, p, p - src, &tmp, &tmplen);
+	rc = idn2_process_u8 (what, src, p - src, &tmp, &tmplen);
 	if (rc != IDN2_OK)
 	  return rc;
       }
