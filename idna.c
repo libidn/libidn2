@@ -309,11 +309,35 @@ idn2_convert_u8 (const char *what, const uint8_t *src, uint8_t **dst)
 	uint8_t *tmp;
 	size_t tmplen;
 
-	printf ("label %.*s\n", p - src, src);
+	printf ("label %.*s\n", (int) (p - src), src);
 
 	rc = idn2_process_u8 (what, src, p - src, &tmp, &tmplen);
 	if (rc != IDN2_OK)
 	  return rc;
+
+	if (*dst == NULL)
+	  {
+	    *dst = malloc (tmplen + 1);
+	    if (*dst == NULL)
+	      return IDN2_MALLOC;
+
+	    memcpy (*dst, tmp, tmplen);
+	    (*dst)[tmplen] = '\0';
+	  }
+	else
+	  {
+	    size_t l = strlen (*dst);
+	    uint8_t *p = realloc (*dst, l + tmplen + 2);
+	    if (*p == NULL)
+	      {
+		free (*dst);
+		return IDN2_MALLOC;
+	      }
+
+	    (*dst)[l] = '.';
+	    memcpy (*dst + l + 1, tmp, tmplen);
+	    (*dst)[l + tmplen + 1] = '\0';
+	  }
       }
 
       if (*p == '\0')
