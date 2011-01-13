@@ -180,7 +180,7 @@ main (void)
       free (out);
     }
 
-  rc = idn2_convert_u8 ("nfc", "www.räksmörgås.com", &out);
+  rc = idn2_convert_u8 ("nfc,ace", "www.räksmörgås.com", &out);
   printf ("rc %d str %s\n", rc, rc == IDN2_OK ? out : "<null>");
 
   return error_count;

@@ -42,6 +42,7 @@ enum
     CHECK_CONTEXTO_RULE,
     CHECK_UNASSIGNED,
     CHECK_BIDI,
+    ACE,
     NFC,
     THE_END
   };
@@ -59,6 +60,7 @@ static char *const opts[] = {
   "check-contexto-rule",
   "check-unassigned",
   "check-bidi",
+  "ace",
   "nfc",
   NULL
 };
@@ -189,6 +191,47 @@ process1 (char *opt, uint32_t **label, size_t *llen)
 	  }
 	  break;
 
+	case ACE:
+	  {
+	    size_t i;
+	    bool ascii = true;
+	    int rc;
+
+	    for (i = 0; i < *llen; i++)
+	      if ((*label)[i] >= 0x80)
+		ascii = false;
+
+	    if (!ascii)
+	      {
+		char out[63];
+		size_t tmpl;
+		uint32_t *l;
+
+		tmpl = sizeof (out);
+		rc = idn2_punycode_encode (*llen, *label, NULL,
+					   &tmpl, out);
+		if (rc != IDN2_OK)
+		  return rc;
+
+		l = malloc (sizeof (*l) * (tmpl + 4));
+		if (l == NULL)
+		  return IDN2_MALLOC;
+
+		l[0] = 'x';
+		l[1] = 'n';
+		l[2] = '-';
+		l[3] = '-';
+
+		for (i = 0; i < tmpl; i++)
+		  l[i + 4] = out[i];
+
+		free (*label);
+		*label = l;
+		*llen = tmpl + 4;
+	      }
+	  }
+	  break;
+
 	case NFC:
 	  {
 	    uint32_t *p = u32_normalize (UNINORM_NFC, *label, *llen,
@@ -198,6 +241,7 @@ process1 (char *opt, uint32_t **label, size_t *llen)
 	    free (*label);
 	    *label = p;
 	  }
+	  break;
 
 	case -1:
 	  if (!value)
@@ -328,15 +372,18 @@ idn2_convert_u8 (const char *what, const uint8_t *src, uint8_t **dst)
 	  {
 	    size_t l = strlen (*dst);
 	    uint8_t *p = realloc (*dst, l + tmplen + 2);
+
 	    if (*p == NULL)
 	      {
 		free (*dst);
 		return IDN2_MALLOC;
 	      }
 
-	    (*dst)[l] = '.';
-	    memcpy (*dst + l + 1, tmp, tmplen);
-	    (*dst)[l + tmplen + 1] = '\0';
+	    p[l] = '.';
+	    memcpy (p + l + 1, tmp, tmplen);
+	    p[l + tmplen + 1] = '\0';
+
+	    *dst = p;
 	  }
       }
 
