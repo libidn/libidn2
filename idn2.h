@@ -80,7 +80,10 @@ typedef enum
   IDN2_UNASSIGNED = -112,
   IDN2_BIDI = -113,
   IDN2_NFC = -150,
-  IDN2_UNKNOWN_WHAT = -160
+  IDN2_UNKNOWN_WHAT = -160,
+  IDN2_PUNYCODE_BAD_INPUT = -161,
+  IDN2_PUNYCODE_BIG_OUTPUT = -162,
+  IDN2_PUNYCODE_OVERFLOW = -163,
 } idn2_rc;
 
 /* Global */
@@ -98,13 +101,6 @@ extern IDN2_API int
 idn2_convert_u8 (const char *what, const uint8_t *src, uint8_t **dst);
 
 /* Punycode */
-
-enum Idn2_punycode_status {
-  IDN2_PUNYCODE_SUCCESS,
-  IDN2_PUNYCODE_BAD_INPUT,   /* Input is invalid.                       */
-  IDN2_PUNYCODE_BIG_OUTPUT,  /* Output would exceed the space provided. */
-  IDN2_PUNYCODE_OVERFLOW     /* Input needs wider integers to process.  */
-};
 
 extern IDN2_API int
 idn2_punycode_encode (size_t input_length,
