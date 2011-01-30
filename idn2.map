@@ -18,14 +18,15 @@ IDN2_1.0.0 {
   global:
     idn2_check_version;
 
-    idn2_punycode_encode;
-    idn2_punycode_decode;
-
     idn2_free;
 
-    idn2_process_u8;
+    idn2_label_u8;
+    idn2_label_u32;
 
-    idn2_convert_u8;
+    idn2_domain_u8;
+
+    idn2_punycode_encode;
+    idn2_punycode_decode;
 
   local:
     *;

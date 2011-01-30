@@ -135,7 +135,7 @@ main (void)
 
       out = NULL;
       outlen = 0;
-      rc = idn2_process_u8 (tv[i].what, tv[i].in, tv[i].inlen,
+      rc = idn2_label_u8 (tv[i].what, tv[i].in, tv[i].inlen,
 			       &out, &outlen);
       if (rc != tv[i].rc)
 	{
@@ -180,13 +180,13 @@ main (void)
       free (out);
     }
 
-  rc = idn2_convert_u8 ("nfc,ace", "www.räksmörgås.com", &out);
+  rc = idn2_domain_u8 ("nfc,ace", "www.räksmörgås.com", &out);
   printf ("rc %d str %s\n", rc, rc == IDN2_OK ? out : "<null>");
 
-  rc = idn2_convert_u8 ("nfc,ace", "faß.de", &out);
+  rc = idn2_domain_u8 ("nfc,ace", "faß.de", &out);
   printf ("rc %d str %s\n", rc, rc == IDN2_OK ? out : "<null>");
 
-  rc = idn2_convert_u8 ("nfc,ace", "FASS.de", &out);
+  rc = idn2_domain_u8 ("nfc,ace", "FASS.de", &out);
   printf ("rc %d str %s\n", rc, rc == IDN2_OK ? out : "<null>");
 
   return error_count;

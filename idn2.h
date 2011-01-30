@@ -93,12 +93,17 @@ extern IDN2_API const char *idn2_check_version (const char *req_version);
 /* IDNA */
 
 extern IDN2_API int
-idn2_process_u8 (const char *what,
-		    const uint8_t *src, size_t srclen,
-		    uint8_t **dst, size_t *dstlen);
+idn2_label_u8 (const char *what,
+	       const uint8_t *src, size_t srclen,
+	       uint8_t **dst, size_t *dstlen);
 
 extern IDN2_API int
-idn2_convert_u8 (const char *what, const uint8_t *src, uint8_t **dst);
+idn2_label_u32 (const char *what,
+		const uint32_t *src, size_t srclen,
+		uint32_t **dst, size_t *dstlen);
+
+extern IDN2_API int
+idn2_domain_u8 (const char *what, const uint8_t *src, uint8_t **dst);
 
 /* Punycode */
 

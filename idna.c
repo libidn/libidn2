@@ -317,9 +317,9 @@ process (char *opt,
 }
 
 int
-idn2_process_u32 (const char *what,
-		     const uint32_t *src, size_t srclen,
-		     uint32_t **dst, size_t *dstlen)
+idn2_label_u32 (const char *what,
+		const uint32_t *src, size_t srclen,
+		uint32_t **dst, size_t *dstlen)
 {
   char *opt;
   int rc;
@@ -339,9 +339,9 @@ idn2_process_u32 (const char *what,
 }
 
 int
-idn2_process_u8 (const char *what,
-		     const uint8_t *src, size_t srclen,
-		     uint8_t **dst, size_t *dstlen)
+idn2_label_u8 (const char *what,
+	       const uint8_t *src, size_t srclen,
+	       uint8_t **dst, size_t *dstlen)
 {
   size_t plen, u32dstlen;
   uint32_t *p = u8_to_u32 (src, srclen, NULL, &plen);
@@ -355,7 +355,7 @@ idn2_process_u8 (const char *what,
       return IDN2_ENCODING_ERROR;
     }
 
-  rc = idn2_process_u32 (what, p, plen, &u32dst, &u32dstlen);
+  rc = idn2_label_u32 (what, p, plen, &u32dst, &u32dstlen);
   free (p);
   if (rc != IDN2_OK)
     return rc;
@@ -369,7 +369,7 @@ idn2_process_u8 (const char *what,
 }
 
 int
-idn2_convert_u8 (const char *what, const uint8_t *src, uint8_t **dst)
+idn2_domain_u8 (const char *what, const uint8_t *src, uint8_t **dst)
 {
   uint8_t *p;
 
@@ -390,7 +390,7 @@ idn2_convert_u8 (const char *what, const uint8_t *src, uint8_t **dst)
 
 	printf ("label %.*s\n", (int) (p - src), src);
 
-	rc = idn2_process_u8 (what, src, p - src, &tmp, &tmplen);
+	rc = idn2_label_u8 (what, src, p - src, &tmp, &tmplen);
 	if (rc != IDN2_OK)
 	  return rc;
 
