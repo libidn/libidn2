@@ -183,5 +183,11 @@ main (void)
   rc = idn2_convert_u8 ("nfc,ace", "www.räksmörgås.com", &out);
   printf ("rc %d str %s\n", rc, rc == IDN2_OK ? out : "<null>");
 
+  rc = idn2_convert_u8 ("nfc,ace", "faß.de", &out);
+  printf ("rc %d str %s\n", rc, rc == IDN2_OK ? out : "<null>");
+
+  rc = idn2_convert_u8 ("nfc,ace", "FASS.de", &out);
+  printf ("rc %d str %s\n", rc, rc == IDN2_OK ? out : "<null>");
+
   return error_count;
 }
