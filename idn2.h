@@ -109,7 +109,8 @@ idn2_domain_u8 (const char *what, const uint8_t *src, uint8_t **dst);
 
 typedef enum
   {
-    IDN2_REJECT_NON_NFC_INPUTS = 1
+    IDN2_TO_UNICODE = 1,
+    IDN2_NFC_INPUT = 2
   } idn2_flags;
 
 extern IDN2_API int
