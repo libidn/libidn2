@@ -430,3 +430,19 @@ idn2_domain_u8 (const char *what, const uint8_t *src, uint8_t **dst)
 
   return IDN2_OK;
 }
+
+int
+idn2_lookup_u8 (const uint8_t *src, uint8_t **alabel, int flags)
+{
+  const char *what;
+  int rc;
+
+  if (flags & IDN2_REJECT_NON_NFC_INPUTS)
+    what = "check-nfc,ace";
+  else
+    what = "nfc,ace";
+
+  rc = idn2_domain_u8 (what, src, alabel);
+
+  return rc;
+}

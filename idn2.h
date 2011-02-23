@@ -90,7 +90,7 @@ typedef enum
 
 extern IDN2_API const char *idn2_check_version (const char *req_version);
 
-/* IDNA */
+/* Low-level label/domain processing interfaces. */
 
 extern IDN2_API int
 idn2_label_u8 (const char *what,
@@ -104,6 +104,20 @@ idn2_label_u32 (const char *what,
 
 extern IDN2_API int
 idn2_domain_u8 (const char *what, const uint8_t *src, uint8_t **dst);
+
+/* IDNA high-level interfaces. */
+
+typedef enum
+  {
+    IDN2_REJECT_NON_NFC_INPUTS = 1
+  } idn2_flags;
+
+extern IDN2_API int
+idn2_register_u8 (const uint32_t *ulabel, const uint8_t *alabel,
+		  uint8_t **lookupname, int flags);
+
+extern IDN2_API int
+idn2_lookup_u8 (const uint8_t *src, uint8_t **alabel, int flags);
 
 /* Punycode */
 
