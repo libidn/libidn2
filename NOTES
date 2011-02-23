@@ -14,3 +14,6 @@ Comments on the specification:
 
   Strictly speaking, without a normative and stable definition of the
   NFC algorithm it is not possible to implement IDNA2008.
+
+* Section 5.5 of RFC 5891 is performed on A-labels too, causing double
+  ACE encoding.
