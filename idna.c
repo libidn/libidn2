@@ -378,7 +378,7 @@ idn2_domain_u8 (const char *what, const uint8_t *src, uint8_t **dst)
   if (src == NULL)
     return IDN2_OK;
 
-  while (*src)
+  do
     {
       for (p = src; *p != '\0' && *p != '.'; p++)
 	;
@@ -425,6 +425,7 @@ idn2_domain_u8 (const char *what, const uint8_t *src, uint8_t **dst)
 
       src = p + 1;
     }
+  while (*src);
 
   return IDN2_OK;
 }
