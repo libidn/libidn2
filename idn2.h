@@ -110,7 +110,8 @@ idn2_domain_u8 (const char *what, const uint8_t *src, uint8_t **dst);
 typedef enum
   {
     IDN2_TO_UNICODE = 1,
-    IDN2_NFC_INPUT = 2
+    IDN2_NFC_INPUT = 2,
+    IDN2_ALABEL_ROUNDTRIP = 4,
   } idn2_flags;
 
 extern IDN2_API int
@@ -118,7 +119,7 @@ idn2_register_u8 (const uint32_t *ulabel, const uint8_t *alabel,
 		  uint8_t **lookupname, int flags);
 
 extern IDN2_API int
-idn2_lookup_u8 (const uint8_t *src, uint8_t **alabel, int flags);
+idn2_lookup_u8 (const uint8_t *src, uint8_t **lookupname, int flags);
 
 /* Punycode */
 
