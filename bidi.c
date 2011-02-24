@@ -66,7 +66,7 @@ rtl_ends_ok (uint32_t *label, size_t llen)
   uint32_t *p;
   int bc;
 
-  for (p = label + llen; llen > 0; llen--, p--)
+  for (p = label + llen - 1; llen > 0; llen--, p--)
     {
       bc = uc_bidi_category (*p);
       switch (bc)
@@ -96,7 +96,7 @@ rtl_enan_ok (uint32_t *label, size_t llen)
   uint32_t *p;
   int bc;
 
-  for (p = label + llen; llen > 0; llen--, p--)
+  for (p = label + llen - 1; llen > 0; llen--, p--)
     {
       bc = uc_bidi_category (*p);
       switch (bc)
@@ -158,7 +158,7 @@ ltr_ends_ok (uint32_t *label, size_t llen)
   uint32_t *p;
   int bc;
 
-  for (p = label + llen; llen > 0; llen--, p--)
+  for (p = label + llen - 1; llen > 0; llen--, p--)
     {
       bc = uc_bidi_category (*p);
       switch (bc)
