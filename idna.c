@@ -35,11 +35,11 @@ enum
     CHECK_HYPHEN_STARTEND,
     CHECK_COMBINING,
     CHECK_DISALLOWED,
-    CHECK_CONTEXTJ,
-    CHECK_CONTEXTJ_RULE,
-    CHECK_CONTEXTO,
-    CHECK_CONTEXTO_WITH_RULE,
-    CHECK_CONTEXTO_RULE,
+    CHECK_CONTEXTJ, /* is code point a CONTEXTJ code point? */
+    CHECK_CONTEXTJ_RULE, /* does code point pass CONTEXTJ rule? */
+    CHECK_CONTEXTO, /* is code point a CONTEXTO code point? */
+    CHECK_CONTEXTO_WITH_RULE, /* is there a CONTEXTO rule for code point? */
+    CHECK_CONTEXTO_RULE, /* does code point pass CONTEXTO rule? */
     CHECK_UNASSIGNED,
     CHECK_BIDI,
     ACE,
@@ -148,7 +148,7 @@ process1 (char *opt, uint32_t **label, size_t *llen)
 	    size_t i;
 	    for (i = 0; i < *llen; i++)
 	      if (_idn2_contexto_p ((*label)[i]))
-		return IDN2_CONTEXTJ;
+		return IDN2_CONTEXTO;
 	  }
 	  break;
 
@@ -388,8 +388,6 @@ idn2_domain_u8 (const char *what, const uint8_t *src, uint8_t **dst)
 	uint8_t *tmp;
 	size_t tmplen;
 
-	printf ("label %.*s\n", (int) (p - src), src);
-
 	rc = idn2_label_u8 (what, src, p - src, &tmp, &tmplen);
 	if (rc != IDN2_OK)
 	  return rc;
@@ -432,17 +430,21 @@ idn2_domain_u8 (const char *what, const uint8_t *src, uint8_t **dst)
 }
 
 int
-idn2_lookup_u8 (const uint8_t *src, uint8_t **alabel, int flags)
+idn2_lookup_u8 (const uint8_t *src, uint8_t **lookupname, int flags)
 {
-  const char *what;
+  const char *what = "check-nfc,check-2hyphen,check-combining,"
+    "check-disallowed,check-contextj-rule,check-contexto-with-rule,"
+    "check-unassigned,check-bidi,ace";
   int rc;
 
-  if (flags & IDN2_NFC_INPUT)
-    what = "nfc,ace";
-  else
-    what = "check-nfc,ace";
+  /* FIXME: Conversion from the A-label and testing that the result is
+     a U-label SHOULD be performed if the domain name will later be
+     presented to the user in native character form */
 
-  rc = idn2_domain_u8 (what, src, alabel);
+  if (flags & IDN2_NFC_INPUT)
+    what += strlen ("check-");
+
+  rc = idn2_domain_u8 (what, src, lookupname);
 
   return rc;
 }
