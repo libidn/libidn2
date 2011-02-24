@@ -49,6 +49,10 @@ data.c: $(srcdir)/gen-tables-from-rfc5892.pl $(srcdir)/gen-tables-from-iana.pl
 	diff -u tmp data.c
 	rm -f tmp
 
+TLD_URL = http://www.iana.org/domains/root/db/
+tv.c: $(srcdir)/gen-idn-tld-tv.pl
+	(cat tld-cache || wget -O - $(TLD_URL)) | $(srcdir)/gen-idn-tld-tv.pl
+
 if HAVE_LD_VERSION_SCRIPT
 libidn2_la_LDFLAGS += -Wl,--version-script=$(srcdir)/idn2.map
 else
