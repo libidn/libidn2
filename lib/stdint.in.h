@@ -3,16 +3,16 @@
    This file is part of gnulib.
 
    This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU Lesser General Public License as published by
-   the Free Software Foundation; either version 2, or (at your option)
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 3, or (at your option)
    any later version.
 
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU Lesser General Public License for more details.
+   GNU General Public License for more details.
 
-   You should have received a copy of the GNU Lesser General Public License
+   You should have received a copy of the GNU General Public License
    along with this program; if not, write to the Free Software Foundation,
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
 
@@ -107,6 +107,8 @@
         is a nop in the unsigned case and avoids "signed integer overflow" \
         warnings in the signed case.  */ \
      ((((zero) + 1) << ((bits) ? (bits) - 1 - (signed) : 0)) - 1) * 2 + 1)
+
+#if !GNULIB_defined_stdint_types
 
 /* 7.18.1.1. Exact-width integer types */
 
@@ -295,6 +297,9 @@ typedef unsigned long int gl_uintmax_t;
    to be found in the autoconf macros.  */
 typedef int _verify_intmax_size[sizeof (intmax_t) == sizeof (uintmax_t)
                                 ? 1 : -1];
+
+#define GNULIB_defined_stdint_types 1
+#endif /* !GNULIB_defined_stdint_types */
 
 /* 7.18.2. Limits of specified-width integer types */
 
@@ -492,7 +497,12 @@ typedef int _verify_intmax_size[sizeof (intmax_t) == sizeof (uintmax_t)
    sequence of nested includes
    <wchar.h> -> <stdio.h> -> <getopt.h> -> <stdlib.h>, and the latter includes
    <stdint.h> and assumes its types are already defined.  */
-#if ! (defined WCHAR_MIN && defined WCHAR_MAX)
+#if @HAVE_WCHAR_H@ && ! (defined WCHAR_MIN && defined WCHAR_MAX)
+  /* BSD/OS 4.0.1 has a bug: <stddef.h>, <stdio.h> and <time.h> must be
+     included before <wchar.h>.  */
+# include <stddef.h>
+# include <stdio.h>
+# include <time.h>
 # define _GL_JUST_INCLUDE_SYSTEM_WCHAR_H
 # include <wchar.h>
 # undef _GL_JUST_INCLUDE_SYSTEM_WCHAR_H

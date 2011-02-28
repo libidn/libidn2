@@ -96,7 +96,6 @@ AC_DEFUN([gl_EARLY],
   # Code from module vc-list-files:
   # Code from module verify:
   # Code from module warn-on-use:
-  # Code from module wchar:
 ])
 
 # This macro should be invoked from ./configure.ac, in the section
@@ -257,8 +256,6 @@ AC_DEFUN([gl_INIT],
   # Code from module vc-list-files:
   # Code from module verify:
   # Code from module warn-on-use:
-  # Code from module wchar:
-  gl_WCHAR_H
   # End of code from modules
   m4_ifval(gl_LIBSOURCES_LIST, [
     m4_syscmd([test ! -d ]m4_defn([gl_LIBSOURCES_DIR])[ ||
@@ -487,7 +484,6 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/unistr/u8-uctomb.c
   lib/unitypes.in.h
   lib/verify.h
-  lib/wchar.in.h
   m4/00gnulib.m4
   m4/alloca.m4
   m4/codeset.m4
@@ -519,9 +515,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/stdlib_h.m4
   m4/unistd_h.m4
   m4/warn-on-use.m4
-  m4/wchar_h.m4
   m4/wchar_t.m4
-  m4/wint_t.m4
   top/GNUmakefile
   top/maint.mk
 ])
