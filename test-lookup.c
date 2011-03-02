@@ -29,15 +29,20 @@ struct idna
 {
   const char *in;
   const char *out;
+  int rc;
 };
 
 static const struct idna idna[] = {
+  /* These comes from http://www.iana.org/domains/root/db see
+     gen-idn-tld-tv.pl */
   {"\xe6\xb5\x8b\xe8\xaf\x95", "xn--0zwm56d" },
   {"\xe0\xa4\xaa\xe0\xa4\xb0\xe0\xa5\x80\xe0\xa4\x95\xe0\xa5\x8d\xe0\xa4\xb7\xe0\xa4\xbe", "xn--11b5bs3a9aj6g" },
   {"\xed\x95\x9c\xea\xb5\xad", "xn--3e0b707e" },
   {"\xe0\xa6\xad\xe0\xa6\xbe\xe0\xa6\xb0\xe0\xa6\xa4", "xn--45brj9c" },
-  {"\xd0\x98\xd0\xa1\xd0\x9f\xd0\xab\xd0\xa2\xd0\x90\xd0\x9d\xd0\x98\xd0\x95", "xn--80akhbyknj4f" },
-  {"\xd0\xa1\xd0\xa0\xd0\x91", "xn--90a3ac" },
+  {"\xd0\x98\xd0\xa1\xd0\x9f\xd0\xab\xd0\xa2\xd0\x90\xd0\x9d\xd0\x98\xd0\x95", "xn--80akhbyknj4f", IDN2_DISALLOWED }, /* iana bug */
+  {"испытание", "xn--80akhbyknj4f" }, /* corrected */
+  {"\xd0\xa1\xd0\xa0\xd0\x91", "xn--90a3ac", IDN2_DISALLOWED }, /* iana bug */
+  {"срб", "xn--90a3ac" }, /* corrected */
   {"\xed\x85\x8c\xec\x8a\xa4\xed\x8a\xb8", "xn--9t4b11yi5a" },
   {"\xe0\xae\x9a\xe0\xae\xbf\xe0\xae\x99\xe0\xaf\x8d\xe0\xae\x95\xe0\xae\xaa\xe0\xaf\x8d\xe0\xae\xaa\xe0\xaf\x82\xe0\xae\xb0\xe0\xaf\x8d", "xn--clchc0ea0b2g2a9gcd" },
   {"\xd7\x98\xd7\xa2\xd7\xa1\xd7\x98", "xn--deba0ad" },
@@ -51,7 +56,8 @@ static const struct idna idna[] = {
   {"\xd8\xa2\xd8\xb2\xd9\x85\xd8\xa7\xdb\x8c\xd8\xb4\xdb\x8c", "xn--hgbk6aj7f53bba" },
   {"\xe0\xae\xaa\xe0\xae\xb0\xe0\xae\xbf\xe0\xae\x9f\xe0\xaf\x8d\xe0\xae\x9a\xe0\xaf\x88", "xn--hlcj6aya9esc7a" },
   {"\xe9\xa6\x99\xe6\xb8\xaf", "xn--j6w193g" },
-  {"\xce\x94\xce\x9f\xce\x9a\xce\x99\xce\x9c\xce\x89", "xn--jxalpdlp" },
+  {"\xce\x94\xce\x9f\xce\x9a\xce\x99\xce\x9c\xce\x89", "xn--jxalpdlp", IDN2_DISALLOWED }, /* iana bug */
+  {"δοκιμή", "xn--jxalpdlp" },
   {"\xd8\xa5\xd8\xae\xd8\xaa\xd8\xa8\xd8\xa7\xd8\xb1", "xn--kgbechtv" },
   {"\xe5\x8f\xb0\xe6\xb9\xbe", "xn--kprw13d" },
   {"\xe5\x8f\xb0\xe7\x81\xa3", "xn--kpry57d" },
@@ -66,7 +72,8 @@ static const struct idna idna[] = {
   {"\xe1\x83\x92\xe1\x83\x94", "xn--node" },
   {"\xe0\xb9\x84\xe0\xb8\x97\xe0\xb8\xa2", "xn--o3cw4h" },
   {"\xd8\xb3\xd9\x88\xd8\xb1\xd9\x8a\xd8\xa9", "xn--ogbpf8fl" },
-  {"\xd0\xa0\xd0\xa4", "xn--p1ai" },
+  {"\xd0\xa0\xd0\xa4", "xn--p1ai", IDN2_DISALLOWED }, /* iana bug */
+  {"рф", "xn--p1ai" }, /* corrected */
   {"\xd8\xaa\xd9\x88\xd9\x86\xd8\xb3", "xn--pgbs0dh" },
   {"\xe0\xa8\xad\xe0\xa8\xbe\xe0\xa8\xb0\xe0\xa8\xa4", "xn--s9brj9c" },
   {"\xd9\x85\xd8\xb5\xd8\xb1", "xn--wgbh1c" },
@@ -76,10 +83,8 @@ static const struct idna idna[] = {
   {"\xe6\x96\xb0\xe5\x8a\xa0\xe5\x9d\xa1", "xn--yfro4i67o" },
   {"\xd9\x81\xd9\x84\xd8\xb3\xd8\xb7\xd9\x8a\xd9\x86", "xn--ygbi2ammx" },
   {"\xe3\x83\x86\xe3\x82\xb9\xe3\x83\x88", "xn--zckzah" },
-  {"\xe6\xb5\x8b\xe8\xaf\x95", "foo"
-  },
-  {"\xe2\x80\xab\xd7\x90\xd7\xa8\xd7\x92\xe2\x80\xac", "foo"
-  },
+  /* end of IANA strings */
+  /* the following comes from IDNA2003 libidn */
   {"\x65\x78\x61\x6d\x70\x6c\x65\x2e\xc3\xad\x64\x6e", "example.xn--dn-mja"
    /* 1-1-1 Has an IDN in just the TLD */
   },
@@ -115,7 +120,8 @@ static const struct idna idna[] = {
    /* 1-3-3 Katakana TLD */
   },
   {"\x65\x78\x61\x6d\x70\x6c\x65\x2e\xe1\x84\x80\xe1\x85\xa1\xe1\x86\xa8",
-   "example.xn--p39a"
+   "example.xn--p39a",
+   IDN2_NOT_NFC
    /* 1-3-4 Hangul Jamo TLD */
    /* Don't resolve as example.xn--ypd8qrh */
   },
@@ -148,8 +154,9 @@ static const struct idna idna[] = {
    /* 1-3-11 Georgian TLD */
   },
   {"\x65\x78\x61\x6d\x70\x6c\x65\x2e\xe2\x88\xa1\xe2\x86\xba\xe2\x8a\x82",
-   "example.xn--b7gxomk"
+   "example.xn--b7gxomk",
    /* 1-4-1 Symbols TLD */
+   IDN2_DISALLOWED /* valid IDNA2003 invalid IDNA2008 */
   },
   {"\x65\x78\x61\x6d\x70\x6c\x65\x2e\xe0\xa4\x95\xe0\xa4\x96\xe0\xa4\x97",
    "example.xn--11bcd"
@@ -235,15 +242,18 @@ static const struct idna idna[] = {
    "example.xn--5cae2e328wfag"
    /* 1-7-2 Latin (non-ASCII) and non-Latin TLD */
   },
-  {"\xc3\xad\x21\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65", ""
+  {"\xc3\xad\x21\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65", "",
+   IDN2_DISALLOWED
    /* 2-3-1-1 Includes ! before Nameprep */
    /* Don't resolve as xn--!dn-qma.example */
   },
-  {"\xc3\xad\x24\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65", ""
+  {"\xc3\xad\x24\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65", "",
+   IDN2_DISALLOWED
    /* 2-3-1-2 Includes $ before Nameprep */
    /* Don't resolve as xn--$dn-qma.example */
   },
-  {"\xc3\xad\x2b\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65", ""
+  {"\xc3\xad\x2b\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65", "",
+   IDN2_DISALLOWED
    /* 2-3-1-3 Includes + before Nameprep */
    /* Don't resolve as xn--+dn-qma.example */
   },
@@ -497,7 +507,10 @@ static const struct idna idna[] = {
    "xn--dn-mja9232x.example"
    /* 5-2-2 Newly assigned outside of BMP; zone editors should reject */
    /* Don't resolve as xn--dn-mja7922x.example */
-  }
+  },
+
+  {"\xe2\x80\xab\xd7\x90\xd7\xa8\xd7\x92\xe2\x80\xac", "foo"
+  },
 };
 
 int debug = 1;
@@ -542,15 +555,19 @@ main (void)
   size_t i;
   int rc;
 
+  puts ("  #  Result                         ACE                   "
+	"         Unicode input");
+  puts ("-----------------------------------------------------------"
+	"-------------------------------------");
   for (i = 0; i < sizeof (idna) / sizeof (idna[0]); i++)
     {
       rc = idn2_lookup_u8 (idna[i].in, &out, 0);
-      printf ("%-23s cmp %d in %s str %s == %s\n",
-	      idn2_strerror_name (rc),
-	      rc == IDN2_OK ? strcmp (out, idna[i].out) : 42,
-	      idna[i].in,
-	      rc == IDN2_OK ? out : "<null>",
-	      idna[i].out);
+      printf ("%3d  %-30s %-30s %-30s\n", i, idn2_strerror_name (rc),
+	      rc == IDN2_OK ? idna[i].out : "", idna[i].in);
+      if (rc != idna[i].rc)
+	fail ("expected rc %d got rc %d\n", idna[i].rc, rc);
+      else if (rc == IDN2_OK && strcmp (out, idna[i].out) != 0)
+	fail ("expected: %s\ngot: %s\n", idna[i].out, out);
     }
 
   return error_count;
