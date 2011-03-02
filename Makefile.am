@@ -62,5 +62,5 @@ endif
 
 LDADD = libidn2.la
 
-TESTS = test-punycode test-idna
-check_PROGRAMS = test-punycode test-idna
+TESTS = test-punycode test-lookup test-low
+check_PROGRAMS = test-punycode test-lookup test-low
