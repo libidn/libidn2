@@ -48,7 +48,7 @@
   This is ANSI C code (C89) implementing Punycode 1.0.x.
 */
 
-#include "config.h"
+#include <config.h>
 
 #include "idn2.h" /* IDN2_OK, ... */
 

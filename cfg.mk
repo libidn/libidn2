@@ -19,9 +19,10 @@ endif
 
 # Re-add when we have translation
 local-checks-to-skip += sc_unmarked_diagnostics sc_bindtextdomain
+local-checks-to-skip += sc_immutable_NEWS
 
 # Ignore gnulib files.
-VC_LIST_ALWAYS_EXCLUDE_REGEX = ^lib/.*$
+VC_LIST_ALWAYS_EXCLUDE_REGEX = ^(lib|m4)/.*$
 
 update-copyright-env = UPDATE_COPYRIGHT_HOLDER="Simon Josefsson"
 

@@ -15,6 +15,8 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <config.h>
+
 #include "tables.h"
 
 #include <stdlib.h> /* abort */
@@ -25,7 +27,7 @@ static int
 property (uint32_t cp)
 {
   const struct idna_table *p = idna_table;
-  
+
   while (p->start != 0 || p->end != 0)
     {
       if (p->end == 0 && p->start == cp)
