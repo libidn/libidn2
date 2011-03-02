@@ -20,6 +20,9 @@ endif
 # Re-add when we have translation
 local-checks-to-skip += sc_unmarked_diagnostics sc_bindtextdomain
 
+# Ignore gnulib files.
+VC_LIST_ALWAYS_EXCLUDE_REGEX = ^lib/.*$
+
 update-copyright-env = UPDATE_COPYRIGHT_HOLDER="Simon Josefsson"
 
 buildit:
