@@ -26,14 +26,15 @@ lib_LTLIBRARIES = libidn2.la
 include_HEADERS = idn2.h
 
 libidn2_la_SOURCES = idn2.map idn2.h
-libidn2_la_SOURCES += version.c
-libidn2_la_SOURCES += punycode.c
-libidn2_la_SOURCES += data.h data.c
-libidn2_la_SOURCES += free.c
 libidn2_la_SOURCES += idna.c
+libidn2_la_SOURCES += bidi.h bidi.c
+libidn2_la_SOURCES += version.c
+libidn2_la_SOURCES += error.c
+libidn2_la_SOURCES += punycode.c
+libidn2_la_SOURCES += free.c
+libidn2_la_SOURCES += data.h data.c
 libidn2_la_SOURCES += tables.h tables.c
 libidn2_la_SOURCES += context.h context.c
-libidn2_la_SOURCES += bidi.h bidi.c
 libidn2_la_LIBADD = lib/libgnu.la
 libidn2_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) -no-undefined

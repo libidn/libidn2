@@ -652,20 +652,12 @@ main (void)
       free (out);
     }
 
-  rc = idn2_domain_u8 ("nfc,ace", "www.räksmörgås.com", &out);
-  printf ("rc %d str %s\n", rc, rc == IDN2_OK ? out : "<null>");
-
-  rc = idn2_domain_u8 ("nfc,ace", "faß.de", &out);
-  printf ("rc %d str %s\n", rc, rc == IDN2_OK ? out : "<null>");
-
-  rc = idn2_domain_u8 ("nfc,ace", "FASS.de", &out);
-  printf ("rc %d str %s\n", rc, rc == IDN2_OK ? out : "<null>");
-
   for (i = 0; i < sizeof (idna) / sizeof (idna[0]); i++)
     {
       rc = idn2_lookup_u8 (idna[i].in, &out, 0);
-      printf ("rc %d cmp %d in %s str %s == %s\n",
-	      rc, rc == IDN2_OK ? strcmp (out, idna[i].out) : 42,
+      printf ("%-23s cmp %d in %s str %s == %s\n",
+	      idn2_strerror_name (rc),
+	      rc == IDN2_OK ? strcmp (out, idna[i].out) : 42,
 	      idna[i].in,
 	      rc == IDN2_OK ? out : "<null>",
 	      idna[i].out);

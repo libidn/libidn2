@@ -30,6 +30,9 @@ IDN2_1.0.0 {
     idn2_punycode_encode;
     idn2_punycode_decode;
 
+    idn2_strerror;
+    idn2_strerror_name;
+
   local:
     *;
 };

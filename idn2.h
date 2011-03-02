@@ -91,6 +91,9 @@ typedef enum
 
 extern IDN2_API const char *idn2_check_version (const char *req_version);
 
+extern IDN2_API const char *idn2_strerror (int rc);
+extern IDN2_API const char *idn2_strerror_name (int rc);
+
 /* Low-level label/domain processing interfaces. */
 
 extern IDN2_API int
