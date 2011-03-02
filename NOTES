@@ -21,3 +21,7 @@ Comments on the specification:
 * There is no discussion of how strings are separated into labels.
   For example section 5 of RFC 5891 discuss entire strings in section
   5.1 and 5.2 and section 5.3 onwards discuss labels only.
+
+Example domains valid under IDNA2003 but not under IDNA2008:
+
+* example.xn--b7gxomk
