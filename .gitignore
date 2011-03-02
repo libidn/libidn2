@@ -162,6 +162,10 @@ tables.lo
 tables.o
 test-idna
 test-idna.o
+test-lookup
+test-lookup.o
+test-low
+test-low.o
 test-punycode
 test-punycode.o
 version.lo
