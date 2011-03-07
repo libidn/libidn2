@@ -42,6 +42,7 @@ AC_CONFIG_FILES([
   Makefile
   doc/Makefile
   doc/reference/Makefile
+  doc/reference/version.xml
   gl/Makefile
   tests/Makefile
 ])

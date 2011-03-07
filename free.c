@@ -26,6 +26,10 @@
  * @ptr: pointer to deallocate
  *
  * Call free(3) on the given pointer.
+ *
+ * This function is typically only useful on systems where the library
+ * malloc heap is different from the library caller malloc heap, which
+ * happens on Windows when the library is a separate DLL.
  **/
 void
 idn2_free (void *ptr)
