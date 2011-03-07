@@ -61,7 +61,7 @@ idn2_lookup_u8 (const uint8_t *src, uint8_t **lookupname, int flags)
   if (flags & IDN2_NFC_INPUT)
     what += strlen ("check-");
 
-  rc = domain_u8 (what, src, lookupname);
+  rc = _idn2_domain_u8 (what, src, lookupname);
 
   return rc;
 }
