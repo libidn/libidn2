@@ -21,6 +21,7 @@
 
 #include <stdlib.h> /* getsubopt */
 #include <errno.h> /* errno */
+#include <langinfo.h> /* nl_langinfo */
 
 #include "bidi.h"
 #include "tables.h"
@@ -446,9 +447,9 @@ idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
  * @lookupname: newly allocated output variable with name to lookup in DNS.
  * @flags: optional #Idn2_flags to modify behaviour.
  *
- * Perform IDNA2008 lookup string conversion on input, as described in
- * section 5 of RFC 5891.  Note that the input must be in UTF-8 and
- * Unicode NFC form.
+ * Perform IDNA2008 lookup string conversion on input @src, as
+ * described in section 5 of RFC 5891.  Note that the input string
+ * must be encoded in UTF-8 and be in Unicode NFC form.
  *
  * Pass %IDN2_NFC_INPUT in @flags to convert input to NFC form before
  * further processing.  Pass %IDN2_ALABEL_ROUNDTRIP in @flags to
@@ -490,9 +491,36 @@ idn2_register_ul (const char *ulabel, const char *alabel,
 			   flags | IDN2_NFC_INPUT);
 }
 
+/**
+ * idn2_lookup_ul:
+ * @src: input zero-terminated locale encoded string.
+ * @lookupname: newly allocated output variable with name to lookup in DNS.
+ * @flags: optional #Idn2_flags to modify behaviour.
+ *
+ * Perform IDNA2008 lookup string conversion on input @src, as
+ * described in section 5 of RFC 5891.  Note that the input is assumed
+ * to be encoded in the locale's default coding system, and will be
+ * transcoded to UTF-8 and NFC normalized by this function.
+ *
+ * Pass %IDN2_ALABEL_ROUNDTRIP in @flags to convert any input A-labels
+ * to U-labels and perform additional testing.
+ *
+ * Returns: On successful conversion %IDN2_OK is returned, otherwise
+ *   an error code is returned.
+ **/
 int
 idn2_lookup_ul (const char *src, char **lookupname, int flags)
 {
-  /* FIXME locale -> utf8 */
-  return idn2_lookup_u8 (src, lookupname, flags | IDN2_NFC_INPUT);
+  char *locale_codeset = nl_langinfo (CODESET);
+
+  if (locale_codeset == NULL || *locale_codeset == '\0')
+    return IDN2_NO_CODESET;
+
+  uint8_t *utf8src = str_iconv (src, locale_codeset, "UTF-8");
+
+  int rc = idn2_lookup_u8 (utf8src, lookupname, flags | IDN2_NFC_INPUT);
+
+  free (utf8src);
+
+  return rc;
 }

@@ -90,6 +90,7 @@ idn2_lookup_ul (const char *src, char **lookupname, int flags);
  * @IDN2_OK: Successful return
  * @IDN2_INTERNAL_ERROR: Indicates an internal error in the library.
  * @IDN2_MALLOC: Memory allocation error.
+ * @IDN2_NO_CODESET: Could not determine locale string encoding format.
  * @IDN2_ENCODING_ERROR: Unicode data encoding error.
  * @IDN2_NFC: Error normalizing string.
  * @IDN2_PUNYCODE_BAD_INPUT: Punycode invalid input.
@@ -119,6 +120,7 @@ typedef enum
   IDN2_OK = 0,
   IDN2_INTERNAL_ERROR = -1,
   IDN2_MALLOC = -100,
+  IDN2_NO_CODESET = -101,
   IDN2_ENCODING_ERROR = -200,
   IDN2_NFC = -201,
   IDN2_PUNYCODE_BAD_INPUT = -202,
