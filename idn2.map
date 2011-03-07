@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-IDN2_1.0.0 {
+IDN2_0.0.0 {
   global:
     idn2_check_version;
 

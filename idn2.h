@@ -40,7 +40,7 @@
  * version number.  Used together with idn2_check_version() to verify
  * header file and run-time library consistency.
  */
-# define IDN2_VERSION "1.0.0"
+# define IDN2_VERSION "0.0.0"
 
 /**
  * IDN2_VERSION_NUMBER
@@ -49,7 +49,7 @@
  * header file version number.  For example, when the header version
  * is 1.2.3 this symbol will have the value 0x010203.
  */
-# define IDN2_VERSION_NUMBER 0x010000
+# define IDN2_VERSION_NUMBER 0x000000
 
 /* IDNA2008 flags */
 
