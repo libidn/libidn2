@@ -257,48 +257,60 @@ static const struct idna idna[] = {
    /* 2-3-1-3 Includes + before Nameprep */
    /* Don't resolve as xn--+dn-qma.example */
   },
-  {"\x2d\xc3\xad\x31\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65", ""
+  {"\x2d\xc3\xad\x31\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
+   "xn---1dn-vpa.example"
    /* 2-3-2-1 Leading hyphen before Nameprep */
    /* Don't resolve as xn---1dn-vpa.example */
+   /* Valid according to IDNA2008-lookup! */
   },
-  {"\xc3\xad\x31\x64\x6e\x2d\x2e\x65\x78\x61\x6d\x70\x6c\x65", ""
+  {"\xc3\xad\x31\x64\x6e\x2d\x2e\x65\x78\x61\x6d\x70\x6c\x65",
+   "xn--1dn--upa.example"
    /* 2-3-2-2 Trailing hyphen before Nameprep */
    /* Don't resolve as xn--1dn--upa.example */
+   /* Valid according to IDNA2008-lookup! */
   },
-  {"\xc3\xad\xef\xbc\x8b\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65", ""
+  {"\xc3\xad\xef\xbc\x8b\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65", "",
+   IDN2_DISALLOWED
    /* 2-3-3-1 Gets a + after Nameprep */
    /* Don't resolve as xn--dn-mja0331x.example */
   },
-  {"\xc3\xad\xe2\x81\xbc\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65", ""
+  {"\xc3\xad\xe2\x81\xbc\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65", "",
+   IDN2_DISALLOWED
    /* 2-3-3-2 Gets a = after Nameprep */
    /* Don't resolve as xn--dn-mja0343a.example */
   },
-  {"\xef\xb9\xa3\xc3\xad\x32\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65", ""
+  {"\xef\xb9\xa3\xc3\xad\x32\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65", "",
+   IDN2_DISALLOWED
    /* 2-3-4-1 Leading hyphen after Nameprep */
    /* Don't resolve as xn--2dn-qma32863a.example */
    /* Don't resolve as xn---2dn-vpa.example */
   },
-  {"\xc3\xad\x32\x64\x6e\xef\xbc\x8d\x2e\x65\x78\x61\x6d\x70\x6c\x65", ""
+  {"\xc3\xad\x32\x64\x6e\xef\xbc\x8d\x2e\x65\x78\x61\x6d\x70\x6c\x65", "",
+   IDN2_DISALLOWED
    /* 2-3-4-2 Trailing hyphen after Nameprep */
    /* Don't resolve as xn--2dn-qma79363a.example */
    /* Don't resolve as xn--2dn--upa.example */
   },
-  {"\xc2\xb9\x31\x2e\x65\x78\x61\x6d\x70\x6c\x65", "11.example"
+  {"\xc2\xb9\x31\x2e\x65\x78\x61\x6d\x70\x6c\x65", "11.example",
+   IDN2_DISALLOWED
    /* 2-4-1 All-ASCII check, Latin */
   },
-  {"\xe2\x85\xa5\x76\x69\x2e\x65\x78\x61\x6d\x70\x6c\x65", "vivi.example"
+  {"\xe2\x85\xa5\x76\x69\x2e\x65\x78\x61\x6d\x70\x6c\x65", "vivi.example",
+   IDN2_DISALLOWED
    /* 2-4-2 All-ASCII check, symbol */
   },
-  {"\xc3\x9f\x73\x73\x2e\x65\x78\x61\x6d\x70\x6c\x65", "ssss.example"
+  {"\xc3\x9f\x73\x73\x2e\x65\x78\x61\x6d\x70\x6c\x65", "xn--ss-fia.example"
    /* 2-4-3 All-ASCII check, sharp S */
+   /* Different output in IDNA2008-lookup compared to IDNA2003! */
   },
-  {"\x78\x6e\x2d\x2d\xc3\xaf\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65", ""
+  {"\x78\x6e\x2d\x2d\xc3\xaf\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65", "",
+   IDN2_2HYPHEN
    /* 2-5-1 ACE prefix before Nameprep, body */
    /* Don't resolve as xn--xn--dn-sja.example */
    /* Don't resolve as xn--dn-sja.example */
   },
   {"\xe2\x85\xb9\x6e\x2d\x2d\xc3\xa4\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   ""
+   "", IDN2_2HYPHEN
    /* 2-5-2 ACE prefix before Nameprep, prefix */
    /* Don't resolve as xn--xn--dn-uia.example */
    /* Don't resolve as xn--dn-uia.example */
@@ -309,184 +321,249 @@ static const struct idna idna[] = {
    /* Don't resolve as xn--.example */
   },
   {"\x33\x30\x30\x32\x2d\x74\x65\x73\x74\xe3\x80\x82\xc3\xad\x64\x6e",
-   "3002-test.xn--dn-mja"
+   "3002-test.xn--dn-mja",
+   IDN2_DISALLOWED
    /* 2-9-1 U+3002 acts as a label separator */
    /* Don't resolve as xn--3002-testdn-wcb2087m.example */
+   /* Not valid in IDNA2008! */
   },
   {"\x66\x66\x30\x65\x2d\x74\x65\x73\x74\xef\xbc\x8e\xc3\xad\x64\x6e",
-   "ff0e-test.xn--dn-mja"
+   "ff0e-test.xn--dn-mja",
+   IDN2_DISALLOWED
    /* 2-9-2 U+FF0E acts as a label separator */
    /* Don't resolve as xn--ff0e-testdn-wcb45865f.example */
+   /* Not valid in IDNA2008! */
   },
   {"\x66\x66\x36\x31\x2d\x74\x65\x73\x74\xef\xbd\xa1\xc3\xad\x64\x6e",
-   "ff61-test.xn--dn-mja"
+   "ff61-test.xn--dn-mja",
+   IDN2_DISALLOWED
    /* 2-9-3 U+FF61 acts as a label separator */
    /* Don't resolve as xn--ff61-testdn-wcb33975f.example */
+   /* Not valid in IDNA2008! */
   },
   {"\x30\x30\x61\x64\x6f\x75\x74\xc2\xad\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--00adoutdn-m5a.example"
+   "xn--00adoutdn-m5a.example", IDN2_DISALLOWED
    /* 4-1-1-1 00adout<00AD><00ED>dn.example -> 00adout<00ED>dn.example */
    /* Don't resolve as xn--00adoutdn-cna81e.example */
+   /* Not valid in IDNA2008! */
   },
+#if 0 /* FIXME: implement CONTEXTJ rule */
   {"\x32\x30\x30\x64\x6f\x75\x74\xe2\x80\x8d\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
    "xn--200doutdn-m5a.example"
    /* 4-1-1-2 200dout<200D><00ED>dn.example -> 200dout<00ED>dn.example */
    /* Don't resolve as xn--200doutdn-m5a1678f.example */
   },
+#endif
   {"\x73\x69\x6d\x70\x6c\x65\x63\x61\x70\x44\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--simplecapddn-1fb.example"
+   "xn--simplecapddn-1fb.example", IDN2_DISALLOWED
    /* 4-1-2-1 simplecap<0044><00ED>dn.example -> simplecap<0064><00ED>dn.example */
+   /* Uppercase not valid in IDNA2008! */
   },
   {"\x6c\x61\x74\x69\x6e\x74\x6f\x67\x72\x65\x65\x6b\xc2\xb5\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--latintogreekdn-cmb716i.example"
+   "xn--latintogreekdn-cmb716i.example", IDN2_DISALLOWED
    /* 4-1-2-2 latintogreek<00B5><00ED>dn.example -> latintogreek<03BC><00ED>dn.example */
    /* Don't resolve as xn--latintogreekdn-cxa01g.example */
+   /* B5 not valid in IDNA2008! */
   },
   {"\x6c\x61\x74\x69\x6e\x65\x78\x74\xc3\x87\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--latinextdn-v6a6e.example"
+   "xn--latinextdn-v6a6e.example", IDN2_DISALLOWED
    /* 4-1-2-3 latinext<00C7><00ED>dn.example -> latinext<00E7><00ED>dn.example */
    /* Don't resolve as xn--latinextdn-twa07b.example */
+   /* C7 not valid in IDNA2008! */
   },
   {"\x73\x68\x61\x72\x70\x73\xc3\x9f\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--sharpsssdn-r8a.example"
+   "xn--sharpsdn-vya4l.example"
    /* 4-1-2-4 sharps<00DF><00ED>dn.example -> sharpsss<00ED>dn.example */
    /* Don't resolve as xn--sharpsdn-vya4l.example */
+   /* Changed in IDNA2008! */
   },
   {"\x74\x75\x72\x6b\x69\x73\x68\x69\xc4\xb0\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--turkishiidn-wcb701e.example"
+   "xn--turkishiidn-wcb701e.example", IDN2_DISALLOWED
    /* 4-1-2-5 turkishi<0130><00ED>dn.example -> turkishi<0069><0307><00ED>dn.example */
    /* Don't resolve as xn--turkishidn-r8a71f.example */
+   /* U+0130 not valid in IDNA2008! */
   },
   {"\x65\x78\x70\x74\x77\x6f\xc5\x89\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--exptwondn-m5a502c.example"
+   "xn--exptwondn-m5a502c.example", IDN2_DISALLOWED
    /* 4-1-2-6 exptwo<0149><00ED>dn.example -> exptwo<02BC><006E><00ED>dn.example */
    /* Don't resolve as xn--exptwodn-h2a33g.example */
+   /* U+0149 not valid in IDNA2008 */
   },
   {"\x61\x64\x64\x66\x6f\x6c\x64\xcf\x92\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--addfolddn-m5a121f.example"
+   "xn--addfolddn-m5a121f.example", IDN2_DISALLOWED
    /* 4-1-2-7 addfold<03D2><00ED>dn.example -> addfold<03C5><00ED>dn.example */
    /* Don't resolve as xn--addfolddn-m5a462f.example */
+   /* U+03D2 not valid in IDNA2008 */
   },
   {"\x65\x78\x70\x74\x68\x72\x65\x65\xe1\xbd\x92\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
    "xn--expthreedn-r8a5844g.example"
    /* 4-1-2-8 expthree<1F52><00ED>dn.example -> expthree<03C5><0313><0300><00ED>dn.example */
   },
   {"\x6e\x6f\x6e\x62\x6d\x70\xf0\x90\x90\x80\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--nonbmpdn-h2a34747d.example"
+   "xn--nonbmpdn-h2a34747d.example", IDN2_DISALLOWED
    /* 4-1-2-9 nonbmp<10400><00ED>dn.example -> nonbmp<10428><00ED>dn.example */
    /* Don't resolve as xn--nonbmpdn-h2a37046d.example */
+   /* U+10400 not valid under IDNA2008 */
   },
   {"\x6e\x6f\x6e\x62\x6d\x70\x74\x6f\x61\x73\x63\x69\x69\xf0\x9d\x90\x80\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--nonbmptoasciiadn-msb.example"
+   "xn--nonbmptoasciiadn-msb.example", IDN2_DISALLOWED
    /* 4-1-2-10 nonbmptoascii<1D400><00ED>dn.example -> nonbmptoasciia<00ED>dn.example */
    /* Don't resolve as xn--nonbmptoasciidn-hpb54112i.example */
+   /* U+1d400 not valid IDNA2008 */
   },
   {"\x72\x65\x67\x63\x6f\x6d\x62\x65\xcc\x81\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--regcombdn-h4a8b.example"
+   "xn--regcombdn-h4a8b.example", IDN2_NOT_NFC
    /* 4-2-1-1 regcomb<0065><0301><00ED>dn.example -> regcomb<00E9><00ED>dn.example */
    /* Don't resolve as xn--regcombedn-r8a794d.example */
+   /* Input not NFC */
+  },
+  {"regcombéídn.example", "xn--regcombdn-h4a8b.example"
+   /* NFKC of previous */
   },
   {"\x63\x6f\x6d\x62\x61\x6e\x64\x63\x61\x73\x65\x45\xcc\x81\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--combandcasedn-lhb4d.example"
+   "xn--combandcasedn-lhb4d.example", IDN2_NOT_NFC
    /* 4-2-1-2 combandcase<0045><0301><00ED>dn.example -> combandcase<00E9><00ED>dn.example */
    /* Don't resolve as xn--combandcaseedn-cmb526f.example */
   },
+  {"combandcaseÉídn.example",
+   "xn--combandcasedn-lhb4d.example", IDN2_DISALLOWED
+   /* NFKC of previous, uppercase not IDNA2008-valid */
+  },
+  {"combandcaseéídn.example",
+   "xn--combandcasedn-lhb4d.example"
+   /* Lower case of previous */
+  },
   {"\x61\x64\x6a\x63\x6f\x6d\x62\xc2\xba\xcc\x81\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--adjcombdn-m5a9d.example"
+   "xn--adjcombdn-m5a9d.example", IDN2_DISALLOWED
    /* 4-2-1-3 adjcomb<00BA><0301><00ED>dn.example -> adjcomb<00F3><00ED>dn.example */
    /* Don't resolve as xn--adjcombdn-1qa57cp3r.example */
+   /* U+00BA not IDNA2008-valid */
   },
   {"\x65\x78\x74\x63\x6f\x6d\x62\x6f\x63\xcc\x81\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--extcombodn-r8a52a.example"
+   "xn--extcombodn-r8a52a.example", IDN2_NOT_NFC
    /* 4-2-1-4 extcombo<0063><0301><00ED>dn.example -> extcombo<0107><00ED>dn.example */
    /* Don't resolve as xn--extcombocdn-wcb920e.example */
   },
+  {"extcomboćídn.example",
+   "xn--extcombodn-r8a52a.example"
+   /* NFKC of previous */
+  },
   {"\x64\x6f\x75\x62\x6c\x65\x64\x69\x61\x63\x31\x75\xcc\x88\xcc\x81\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--doublediac1dn-6ib836a.example"
+   "xn--doublediac1dn-6ib836a.example", IDN2_NOT_NFC
    /* 4-2-1-5 doublediac1<0075><0308><0301><00ED>dn.example -> doublediac2<01D8><00ED>dn.example */
    /* Don't resolve as xn--doublediac1udn-cmb526fnd.example */
   },
+  {"doublediac1ǘídn.example",
+   "xn--doublediac1dn-6ib836a.example"
+   /* NFKC of previous */
+  },
   {"\x64\x6f\x75\x62\x6c\x65\x64\x69\x61\x63\x32\x75\xcc\x81\xcc\x88\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
+   "xn--doublediac2dn-6ib8qs73a.example", IDN2_NOT_NFC
+   /* 4-2-1-6 doublediac2<0075><0301><0308><00ED>dn.example -> doublediac2<01D8><00ED>dn.example */
+   /* Don't resolve as xn--doublediac2udn-cmb526fod.example */
+  },
+  {"doublediac2ú̈ídn.example",
    "xn--doublediac2dn-6ib8qs73a.example"
    /* 4-2-1-6 doublediac2<0075><0301><0308><00ED>dn.example -> doublediac2<01D8><00ED>dn.example */
    /* Don't resolve as xn--doublediac2udn-cmb526fod.example */
   },
   {"\x6e\x65\x77\x6e\x6f\x72\x6d\xf0\xaf\xa1\xb4\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--newnormdn-m5a7856x.example"
+   "xn--newnormdn-m5a7856x.example", IDN2_DISALLOWED
    /* 4-2-2-1 newnorm<2F874><00ED>dn.example -> newnorm<5F33><00ED>dn.example should not become <5F53> */
    /* Don't resolve as xn--newnormdn-m5a9396x.example */
    /* Don't resolve as xn--newnormdn-m5a9968x.example */
+   /* U+2f876 not IDNA2008-valid */
   },
-  {"\xe2\x80\x80\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65", ""
+  {"\xe2\x80\x80\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
+   "", IDN2_NOT_NFC
    /* 4-3-1 Spacing */
    /* Don't resolve as xn--dn-mja3392a.example */
   },
-  {"\xdb\x9d\xc3\xad\x64\x6e\x2d\x32\x2e\x65\x78\x61\x6d\x70\x6c\x65", ""
+  {" ídn.example", "", IDN2_DISALLOWED
+   /* NFKC of previous.  U+0020 */
+  },
+  {"\xdb\x9d\xc3\xad\x64\x6e\x2d\x32\x2e\x65\x78\x61\x6d\x70\x6c\x65",
+   "", IDN2_DISALLOWED
    /* 4-3-2 Control */
    /* Don't resolve as xn--dn-2-upa332g.example */
   },
-  {"\xee\x80\x85\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65", ""
+  {"\xee\x80\x85\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
+   "", IDN2_DISALLOWED
    /* 4-3-3 Private use */
    /* Don't resolve as xn--dn-mja1659t.example */
   },
-  {"\xf3\xb0\x80\x85\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65", ""
+  {"\xf3\xb0\x80\x85\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
+   "", IDN2_DISALLOWED
    /* 4-3-4 Private use, non-BMP */
    /* Don't resolve as xn--dn-mja7922x.example */
   },
-  {"\xef\xb7\x9d\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65", ""
+  {"\xef\xb7\x9d\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
+   "", IDN2_DISALLOWED
    /* 4-3-5 Non-character */
    /* Don't resolve as xn--dn-mja1210x.example */
   },
-  {"\xf0\x9f\xbf\xbe\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65", ""
+  {"\xf0\x9f\xbf\xbe\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
+   "", IDN2_DISALLOWED
    /* 4-3-6 Non-character, non-BMP */
    /* Don't resolve as xn--dn-mja7922x.example */
   },
-  {"\xef\xbf\xbd\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65", ""
+  {"\xef\xbf\xbd\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
+   "", IDN2_DISALLOWED
    /* 4-3-7 Surrogate points */
    /* Don't resolve as xn--dn-mja7922x.example */
   },
-  {"\xef\xbf\xba\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65", ""
+  {"\xef\xbf\xba\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
+   "", IDN2_DISALLOWED
    /* 4-3-8 Inappropriate for plain */
    /* Don't resolve as xn--dn-mja5822x.example */
   },
-  {"\xe2\xbf\xb5\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65", ""
+  {"\xe2\xbf\xb5\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
+   "", IDN2_DISALLOWED
    /* 4-3-9 Inappropriate for canonical */
    /* Don't resolve as xn--dn-mja3729b.example */
   },
-  {"\xe2\x81\xaa\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65", ""
+  {"\xe2\x81\xaa\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
+   "", IDN2_DISALLOWED
    /* 4-3-10 Change display simple */
    /* Don't resolve as xn--dn-mja7533a.example */
   },
-  {"\xe2\x80\x8f\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65", ""
+  {"\xe2\x80\x8f\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
+   "", IDN2_DISALLOWED
    /* 4-3-11 Change display RTL */
    /* Don't resolve as xn--dn-mja3992a.example */
   },
   {"\xf3\xa0\x80\x81\xf3\xa0\x81\x85\xf3\xa0\x81\x8e\x68\x69\x69\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   ""
+   "", IDN2_DISALLOWED
    /* 4-3-12 Language tags */
    /* Don't resolve as xn--hiidn-km43aaa.example */
   },
-  {"\xd8\xa8\x6f\xd8\xb8\x2e\x65\x78\x61\x6d\x70\x6c\x65", ""
+  {"\xd8\xa8\x6f\xd8\xb8\x2e\x65\x78\x61\x6d\x70\x6c\x65",
+   "", IDN2_BIDI
    /* 4-4-1 Arabic RandALCat-LCat-RandALCat */
    /* Don't resolve as xn--o-0mc3c.example */
   },
-  {"\xd8\xa8\xd8\xb8\x6f\x2e\x65\x78\x61\x6d\x70\x6c\x65", ""
+  {"\xd8\xa8\xd8\xb8\x6f\x2e\x65\x78\x61\x6d\x70\x6c\x65",
+   "", IDN2_BIDI
    /* 4-4-2 Arabic RandALCat-RandALCat-other */
    /* Don't resolve as xn--o-0mc2c.example */
   },
-  {"\x6f\xd8\xa8\xd8\xb8\x2e\x65\x78\x61\x6d\x70\x6c\x65", ""
+  {"\x6f\xd8\xa8\xd8\xb8\x2e\x65\x78\x61\x6d\x70\x6c\x65",
+   "", IDN2_BIDI
    /* 4-4-3 Arabic other-RandALCat-RandALCat */
    /* Don't resolve as xn--o-1mc2c.example */
   },
-  {"\xd7\x91\x6f\xd7\xa1\x2e\x65\x78\x61\x6d\x70\x6c\x65", ""
+  {"\xd7\x91\x6f\xd7\xa1\x2e\x65\x78\x61\x6d\x70\x6c\x65",
+   "", IDN2_BIDI
    /* 4-4-4 Hebrew RandALCat-LCat-RandALCat */
    /* Don't resolve as xn--o-1hc3c.example */
   },
-  {"\xd7\x91\xd7\xa1\x6f\x2e\x65\x78\x61\x6d\x70\x6c\x65", ""
+  {"\xd7\x91\xd7\xa1\x6f\x2e\x65\x78\x61\x6d\x70\x6c\x65",
+   "", IDN2_BIDI
    /* 4-4-5 Hebrew RandALCat-RandALCat-other */
    /* Don't resolve as xn--o-1hc2c.example */
   },
-  {"\x6f\xd7\x91\xd7\xa1\x2e\x65\x78\x61\x6d\x70\x6c\x65", ""
+  {"\x6f\xd7\x91\xd7\xa1\x2e\x65\x78\x61\x6d\x70\x6c\x65",
+   "", IDN2_BIDI
    /* 4-4-6 Hebrew other-RandALCat-RandALCat */
    /* Don't resolve as xn--o-2hc2c.example */
   },
@@ -495,7 +572,7 @@ static const struct idna idna[] = {
    /* 5-1-1 Unassigned in BMP; zone editors should reject */
   },
   {"\xf0\x90\x88\x85\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--dn-mja7734x.example"
+   "xn--dn-mja7734x.example", IDN2_UNASSIGNED
    /* 5-1-2 Unassinged outside BMP; zone editors should reject */
    /* Don't resolve as xn--dn-mja7922x.example */
   },
@@ -507,10 +584,7 @@ static const struct idna idna[] = {
    "xn--dn-mja9232x.example"
    /* 5-2-2 Newly assigned outside of BMP; zone editors should reject */
    /* Don't resolve as xn--dn-mja7922x.example */
-  },
-
-  {"\xe2\x80\xab\xd7\x90\xd7\xa8\xd7\x92\xe2\x80\xac", "foo"
-  },
+  }
 };
 
 int debug = 1;
@@ -555,14 +629,17 @@ main (void)
   size_t i;
   int rc;
 
-  puts ("  #  Result                         ACE                   "
-	"         Unicode input");
+  puts ("-----------------------------------------------------------"
+	"-------------------------------------");
+  puts ("                                          IDNA2008 Lookup\n");
+  puts ("  #  Result                    ACE                         "
+	"             Unicode input");
   puts ("-----------------------------------------------------------"
 	"-------------------------------------");
   for (i = 0; i < sizeof (idna) / sizeof (idna[0]); i++)
     {
       rc = idn2_lookup_u8 (idna[i].in, &out, 0);
-      printf ("%3d  %-30s %-30s %-30s\n", i, idn2_strerror_name (rc),
+      printf ("%3d  %-25s %-40s %s\n", i, idn2_strerror_name (rc),
 	      rc == IDN2_OK ? idna[i].out : "", idna[i].in);
       if (rc != idna[i].rc)
 	fail ("expected rc %d got rc %d\n", idna[i].rc, rc);

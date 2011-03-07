@@ -22,10 +22,28 @@ Comments on the specification:
   For example section 5 of RFC 5891 discuss entire strings in section
   5.1 and 5.2 and section 5.3 onwards discuss labels only.
 
-Example domains valid under IDNA2003 but not under IDNA2008-lookup:
+Example domains IDNA2003-valid but IDNA2008-lookup-invalid:
 
-* example.xn--b7gxomk (symbols)
+* example.∡↺⊂ (symbols)
+* ¹1.example
+* Ⅵvi.example
+* 3002-test.ídn aka 3002-test.xn--dn-mja (U+3002 acts as a label separator)
+* simplecapDídn.example aka xn--simplecapddn-1fb.example (ASCII 0x44)
+* latintogreekµídn.example aka xn--latintogreekdn-cmb716i.example (U+00B5)
+* xn--latinextdn-v6a6e.example aka xn--latinextdn-v6a6e.example (U+00C7)
+* turkishiİídn.example aka xn--turkishiidn-wcb701e.example (U+0130)
+* nonbmp𐐀ídn.example aka xn--nonbmpdn-h2a34747d.example (U+101400)
+* newnorm当ídn.example aka xn--newnormdn-m5a7856x.example (U+2F874)
 
-Example domains valid under IDNA2008-lookup but not under IDNA2003:
+Example domains IDNA2008-lookup-valid but IDNA2003-invalid:
 
 * -foo (leading hyphen)
+
+Example domains with different ACE encodings in IDNA2003 and IDNA2008-lookup:
+
+* ßss.example
+  IDNA2003: ssss.example
+  IDNA2008-lookup: xn--ss-fia.example
+* sharpsßídn.example
+  IDNA2003: xn--sharpsssdn-r8a.example
+  IDNA2008: xn--sharpsdn-vya4l.example
