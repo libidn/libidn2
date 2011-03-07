@@ -17,5 +17,5 @@ AM_CPPFLAGS = -I$(top_srcdir) -I$(top_builddir)
 
 LDADD = ../libidn2.la
 
-TESTS = test-punycode test-lookup test-low
-check_PROGRAMS = test-punycode test-lookup test-low
+TESTS = test-punycode test-low test-lookup
+check_PROGRAMS = test-punycode test-low test-lookup
