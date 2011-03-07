@@ -14,7 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Gnulib
-SUBDIRS = gl . tests
+SUBDIRS = gl . doc tests
 ACLOCAL_AMFLAGS = -I m4 -I gl/m4
 EXTRA_DIST = gl/m4/gnulib-cache.m4
 

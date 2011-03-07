@@ -36,9 +36,12 @@ AC_PROG_CC
 gl_EARLY
 AC_PROG_LIBTOOL
 gl_INIT
+GTK_DOC_CHECK(1.1)
 
 AC_CONFIG_FILES([
   Makefile
+  doc/Makefile
+  doc/reference/Makefile
   gl/Makefile
   tests/Makefile
 ])
