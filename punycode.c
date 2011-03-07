@@ -52,8 +52,6 @@
 
 #include "idn2.h" /* IDN2_OK, ... */
 
-#include "punycode.h"
-
 /* Re-definitions to avoid modifying code below too much. */
 #define punycode_uint uint32_t
 #define punycode_success IDN2_OK
@@ -68,7 +66,7 @@
 
 #include <string.h>
 
-/* #include "punycode.h" */
+#include "punycode.h"
 
 /*** Bootstring parameters for Punycode ***/
 
@@ -88,7 +86,7 @@ enum { base = 36, tmin = 1, tmax = 26, skew = 38, damp = 700,
 static punycode_uint decode_digit(punycode_uint cp)
 {
   return  cp - 48 < 10 ? cp - 22 :  cp - 65 < 26 ? cp - 65 :
-    cp - 97 < 26 ? cp - 97 :  base;
+          cp - 97 < 26 ? cp - 97 :  base;
 }
 
 /* encode_digit(d,flag) returns the basic code point whose value      */
@@ -131,7 +129,7 @@ static const punycode_uint maxint = -1;
 /*** Bias adaptation function ***/
 
 static punycode_uint adapt(
-			   punycode_uint delta, punycode_uint numpoints, int firsttime )
+  punycode_uint delta, punycode_uint numpoints, int firsttime )
 {
   punycode_uint k;
 
@@ -148,49 +146,12 @@ static punycode_uint adapt(
 
 /*** Main encode function ***/
 
-/**
- * idn2_punycode_encode:
- * @input_length: The number of code points in the @input array and
- *   the number of flags in the @case_flags array.
- * @input: An array of code points.  They are presumed to be Unicode
- *   code points, but that is not strictly REQUIRED.  The array
- *   contains code points, not code units.  UTF-16 uses code units
- *   D800 through DFFF to refer to code points 10000..10FFFF.  The
- *   code points D800..DFFF do not occur in any valid Unicode string.
- *   The code points that can occur in Unicode strings (0..D7FF and
- *   E000..10FFFF) are also called Unicode scalar values.
- * @case_flags: A %NULL pointer or an array of boolean values parallel
- *   to the @input array.  Nonzero (true, flagged) suggests that the
- *   corresponding Unicode character be forced to uppercase after
- *   being decoded (if possible), and zero (false, unflagged) suggests
- *   that it be forced to lowercase (if possible).  ASCII code points
- *   (0..7F) are encoded literally, except that ASCII letters are
- *   forced to uppercase or lowercase according to the corresponding
- *   case flags.  If @case_flags is a %NULL pointer then ASCII letters
- *   are left as they are, and other code points are treated as
- *   unflagged.
- * @output_length: The caller passes in the maximum number of ASCII
- *   code points that it can receive.  On successful return it will
- *   contain the number of ASCII code points actually output.
- * @output: An array of ASCII code points.  It is *not*
- *   null-terminated; it will contain zeros if and only if the @input
- *   contains zeros.  (Of course the caller can leave room for a
- *   terminator and add one if needed.)
- *
- * Converts a sequence of code points (presumed to be Unicode code
- * points) to Punycode.
- *
- * Return value: %IDN2_OK on success, %IDN2_PUNYCODE_BIG_OUTPUT if the
- *   output is too big, %IDN2_PUNYCODE_OVERFLOW if the input would
- *   overflow.  If not %IDN2_OK, then @output_size and @output might
- *   contain garbage.
- **/
 int punycode_encode(
-				     size_t input_length_orig,
-				     const punycode_uint input[],
-				     const unsigned char case_flags[],
-				     size_t *output_length,
-				     char output[] )
+  size_t input_length_orig,
+  const punycode_uint input[],
+  const unsigned char case_flags[],
+  size_t *output_length,
+  char output[] )
 {
   punycode_uint input_length, n, delta, h, b, bias, j, m, q, k, t;
   size_t out, max_out;
@@ -262,7 +223,7 @@ int punycode_encode(
         for (q = delta, k = base;  ;  k += base) {
           if (out >= max_out) return punycode_big_output;
           t = k <= bias /* + tmin */ ? tmin :     /* +tmin not needed */
-	    k >= bias + tmax ? tmax : k - bias;
+              k >= bias + tmax ? tmax : k - bias;
           if (q < t) break;
           output[out++] = encode_digit(t + (q - t) % (base - t), 0);
           q = (q - t) / (base - t);
@@ -284,49 +245,12 @@ int punycode_encode(
 
 /*** Main decode function ***/
 
-/**
- * idn2_punycode_decode:
- * @input_length: The number of ASCII code points in the @input array.
- * @input: An array of ASCII code points (0..7F).
- * @output_length: The caller passes in the maximum number of code
- *   points that it can receive into the @output array (which is also
- *   the maximum number of flags that it can receive into the
- *   @case_flags array, if @case_flags is not a %NULL pointer).  On
- *   successful return it will contain the number of code points
- *   actually output (which is also the number of flags actually
- *   output, if case_flags is not a null pointer).  The decoder will
- *   never need to output more code points than the number of ASCII
- *   code points in the input, because of the way the encoding is
- *   defined.  The number of code points output cannot exceed the
- *   maximum possible value of a punycode_uint, even if the supplied
- *   @output_length is greater than that.
- * @output: An array of code points like the input argument of
- *   punycode_encode() (see above).
- * @case_flags: A %NULL pointer (if the flags are not needed by the
- *   caller) or an array of boolean values parallel to the @output
- *   array.  Nonzero (true, flagged) suggests that the corresponding
- *   Unicode character be forced to uppercase by the caller (if
- *   possible), and zero (false, unflagged) suggests that it be forced
- *   to lowercase (if possible).  ASCII code points (0..7F) are output
- *   already in the proper case, but their flags will be set
- *   appropriately so that applying the flags would be harmless.
- *
- * Converts Punycode to a sequence of code points (presumed to be
- * Unicode code points).
- *
- * Return value: %IDN2_OK on success, %IDN2_PUNYCODE_BAD_INPUT if
- *   input is not proper punycode, %IDN2_PUNYCODE_BIG_OUTPUT if the
- *   output is too big, %IDN2_PUNYCODE_OVERFLOW if the input would
- *   overflow.  If not %IDN2_OK, then @output_length, @output, and
- *   @case_flags might contain garbage.
- *
- **/
 int punycode_decode(
-				     size_t input_length,
-				     const char input[],
-				     size_t *output_length,
-				     punycode_uint output[],
-				     unsigned char case_flags[] )
+  size_t input_length,
+  const char input[],
+  size_t *output_length,
+  punycode_uint output[],
+  unsigned char case_flags[] )
 {
   punycode_uint n, out, i, max_out, bias, oldi, w, k, digit, t;
   size_t b, j, in;
@@ -336,7 +260,7 @@ int punycode_decode(
   n = initial_n;
   out = i = 0;
   max_out = *output_length > maxint ? maxint
-    : (punycode_uint) *output_length;
+            : (punycode_uint) *output_length;
   bias = initial_bias;
 
   /* Handle the basic code points:  Let b be the number of input code */
@@ -372,7 +296,7 @@ int punycode_decode(
       if (digit > (maxint - i) / w) return punycode_overflow;
       i += digit * w;
       t = k <= bias /* + tmin */ ? tmin :     /* +tmin not needed */
-	k >= bias + tmax ? tmax : k - bias;
+          k >= bias + tmax ? tmax : k - bias;
       if (digit < t) break;
       if (w > maxint / (base - t)) return punycode_overflow;
       w *= (base - t);

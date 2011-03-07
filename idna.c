@@ -22,8 +22,10 @@
 #include <stdlib.h> /* getsubopt */
 #include <errno.h> /* errno */
 
+#include "bidi.h"
 #include "tables.h"
 #include "context.h"
+#include "punycode.h"
 
 #include "unistr.h" /* u32_cpy_alloc */
 #include "uninorm.h" /* u32_normalize */
@@ -67,13 +69,6 @@ static char *const opts[] = {
   "nfc",
   NULL
 };
-
-extern IDN2_API int
-idn2_punycode_encode (size_t input_length,
-		      const uint32_t input[],
-		      const unsigned char case_flags[],
-		      size_t *output_length,
-		      char output[]);
 
 static int
 process1 (char *opt, uint32_t **label, size_t *llen)
