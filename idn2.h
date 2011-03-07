@@ -89,6 +89,23 @@ idn2_lookup_ul (const char *src, char **lookupname, int flags);
  * idn2_rc:
  * @IDN2_OK: Successful return
  * @IDN2_INTERNAL_ERROR: Indicates an internal error in the library.
+ * @IDN2_MALLOC: Memory allocation error.
+ * @IDN2_ENCODING_ERROR: Unicode data encoding error.
+ * @IDN2_NFC: Error normalizing string.
+ * @IDN2_PUNYCODE_BAD_INPUT: Punycode invalid input.
+ * @IDN2_PUNYCODE_BIG_OUTPUT: Punycode output buffer too small.
+ * @IDN2_PUNYCODE_OVERFLOW: Punycode conversion would overflow.
+ * @IDN2_NOT_NFC: String is not NFC.
+ * @IDN2_2HYPHEN: String has forbidden two hyphens.
+ * @IDN2_HYPHEN_STARTEND: String has forbidden starting/ending hyphen.
+ * @IDN2_COMBINING: String has forbidden combining character.
+ * @IDN2_DISALLOWED: String has disallowed character.
+ * @IDN2_CONTEXTJ: String has forbidden context-j character.
+ * @IDN2_CONTEXTJ_NO_RULE: String has context-j character with no rull.
+ * @IDN2_CONTEXTO: String has forbidden context-o character.
+ * @IDN2_CONTEXTO_NO_RULE: String has context-o character with no rull.
+ * @IDN2_UNASSIGNED: String has forbidden unassigned character.
+ * @IDN2_BIDI: String has forbidden bi-directional properties.
  *
  * Return codes for IDN2 functions.  All return codes are negative
  * except for the successful code IDN2_OK which are guaranteed to be
@@ -101,23 +118,23 @@ typedef enum
 {
   IDN2_OK = 0,
   IDN2_INTERNAL_ERROR = -1,
-  IDN2_ENCODING_ERROR = -100,
-  IDN2_MALLOC = -101,
-  IDN2_NOT_NFC = -102,
-  IDN2_2HYPHEN = -103,
-  IDN2_HYPHEN_STARTEND = -104,
-  IDN2_COMBINING = -105,
-  IDN2_DISALLOWED = -106,
-  IDN2_CONTEXTJ = -107,
-  IDN2_CONTEXTJ_NO_RULE = -108,
-  IDN2_CONTEXTO = -109,
-  IDN2_CONTEXTO_NO_RULE = -110,
-  IDN2_UNASSIGNED = -111,
-  IDN2_BIDI = -112,
-  IDN2_PUNYCODE_BAD_INPUT = -200,
-  IDN2_PUNYCODE_BIG_OUTPUT = -201,
-  IDN2_PUNYCODE_OVERFLOW = -202,
-  IDN2_NFC = -300
+  IDN2_MALLOC = -100,
+  IDN2_ENCODING_ERROR = -200,
+  IDN2_NFC = -201,
+  IDN2_PUNYCODE_BAD_INPUT = -202,
+  IDN2_PUNYCODE_BIG_OUTPUT = -203,
+  IDN2_PUNYCODE_OVERFLOW = -204,
+  IDN2_NOT_NFC = -300,
+  IDN2_2HYPHEN = -301,
+  IDN2_HYPHEN_STARTEND = -302,
+  IDN2_COMBINING = -303,
+  IDN2_DISALLOWED = -304,
+  IDN2_CONTEXTJ = -305,
+  IDN2_CONTEXTJ_NO_RULE = -306,
+  IDN2_CONTEXTO = -307,
+  IDN2_CONTEXTO_NO_RULE = -308,
+  IDN2_UNASSIGNED = -309,
+  IDN2_BIDI = -310
 } idn2_rc;
 
 /* Auxilliary functions. */
