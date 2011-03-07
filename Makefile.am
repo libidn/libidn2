@@ -14,7 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Gnulib
-SUBDIRS = lib
+SUBDIRS = lib . tests
 ACLOCAL_AMFLAGS = -I m4
 EXTRA_DIST = m4/gnulib-cache.m4
 
@@ -59,8 +59,3 @@ libidn2_la_LDFLAGS += -Wl,--version-script=$(srcdir)/idn2.map
 else
 libidn2_la_LDFLAGS += -export-symbols-regex '^idn2_.*'
 endif
-
-LDADD = libidn2.la
-
-TESTS = test-punycode test-lookup test-low
-check_PROGRAMS = test-punycode test-lookup test-low
