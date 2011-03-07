@@ -474,6 +474,8 @@ idn2_lookup_ul (const char *src, char **lookupname, int flags)
     return IDN2_NO_CODESET;
 
   uint8_t *utf8src = str_iconv (src, locale_codeset, "UTF-8");
+  if (utf8src == NULL)
+    return IDN2_ICONV_FAIL;
 
   int rc = idn2_lookup_u8 (utf8src, lookupname, flags | IDN2_NFC_INPUT);
 
@@ -492,6 +494,8 @@ idn2_register_ul (const char *ulabel, const char *alabel,
     return IDN2_NO_CODESET;
 
   uint8_t *utf8ulabel = str_iconv (ulabel, locale_codeset, "UTF-8");
+  if (utf8ulabel == NULL)
+    return IDN2_ICONV_FAIL;
 
   int rc = idn2_register_u8 (utf8ulabel, alabel, lookupname,
 			     flags | IDN2_NFC_INPUT);

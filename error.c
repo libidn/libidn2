@@ -49,12 +49,36 @@ idn2_strerror (int rc)
       p = _("internal libidn2 error");
       break;
 
+    case IDN2_MALLOC:
+      p = _("out of memory");
+      break;
+
+    case IDN2_NO_CODESET:
+      p = _("could not determine locale encoding format");
+      break;
+
+    case IDN2_ICONV_FAIL:
+      p = _("could not convert string to UTF-8");
+      break;
+
     case IDN2_ENCODING_ERROR:
       p = _("string encoding error");
       break;
 
-    case IDN2_MALLOC:
-      p = _("out of memory");
+    case IDN2_NFC:
+      p = _("string could not be NFC normalized");
+      break;
+
+    case IDN2_PUNYCODE_BAD_INPUT:
+      p = _("string contains invalid punycode data");
+      break;
+
+    case IDN2_PUNYCODE_BIG_OUTPUT:
+      p = _("punycode encoded data will be too large");
+      break;
+
+    case IDN2_PUNYCODE_OVERFLOW:
+      p = _("punycode conversion resulted in overflow");
       break;
 
     case IDN2_NOT_NFC:
@@ -101,22 +125,6 @@ idn2_strerror (int rc)
       p = _("string has forbidden bi-directional properties");
       break;
 
-    case IDN2_NFC:
-      p = _("string could not be NFC normalized");
-      break;
-
-    case IDN2_PUNYCODE_BAD_INPUT:
-      p = _("string contains invalid punycode data");
-      break;
-
-    case IDN2_PUNYCODE_BIG_OUTPUT:
-      p = _("punycode encoded data will be too large");
-      break;
-
-    case IDN2_PUNYCODE_OVERFLOW:
-      p = _("punycode conversion resulted in overflow");
-      break;
-
     default:
       p = _("Unknown error");
       break;
@@ -153,12 +161,36 @@ idn2_strerror_name (int rc)
       p = ERR2STR(IDN2_INTERNAL_ERROR);
       break;
 
+    case IDN2_MALLOC:
+      p = ERR2STR(IDN2_MALLOC);
+      break;
+
+    case IDN2_NO_CODESET:
+      p = ERR2STR(IDN2_NO_NODESET);
+      break;
+
+    case IDN2_ICONV_FAIL:
+      p = ERR2STR(IDN2_ICONV_FAIL);
+      break;
+
     case IDN2_ENCODING_ERROR:
       p = ERR2STR(IDN2_ENCODING_ERROR);
       break;
 
-    case IDN2_MALLOC:
-      p = ERR2STR(IDN2_MALLOC);
+    case IDN2_NFC:
+      p = ERR2STR(IDN2_NFC);
+      break;
+
+    case IDN2_PUNYCODE_BAD_INPUT:
+      p = ERR2STR(IDN2_PUNYCODE_BAD_INPUT);
+      break;
+
+    case IDN2_PUNYCODE_BIG_OUTPUT:
+      p = ERR2STR(IDN2_PUNYCODE_BIG_OUTPUT);
+      break;
+
+    case IDN2_PUNYCODE_OVERFLOW:
+      p = ERR2STR(IDN2_PUNYCODE_OVERFLOW);
       break;
 
     case IDN2_NOT_NFC:
@@ -203,22 +235,6 @@ idn2_strerror_name (int rc)
 
     case IDN2_BIDI:
       p = ERR2STR(IDN2_BIDI);
-      break;
-
-    case IDN2_NFC:
-      p = ERR2STR(IDN2_NFC);
-      break;
-
-    case IDN2_PUNYCODE_BAD_INPUT:
-      p = ERR2STR(IDN2_PUNYCODE_BAD_INPUT);
-      break;
-
-    case IDN2_PUNYCODE_BIG_OUTPUT:
-      p = ERR2STR(IDN2_PUNYCODE_BIG_OUTPUT);
-      break;
-
-    case IDN2_PUNYCODE_OVERFLOW:
-      p = ERR2STR(IDN2_PUNYCODE_OVERFLOW);
       break;
 
     default:
