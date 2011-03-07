@@ -33,6 +33,9 @@ _idn2_contextj_rule (uint32_t cp, uint32_t *label, size_t llen)
       /* ZERO WIDTH NON-JOINER */
     case 0x200D:
       /* ZERO WIDTH JOINER */
+
+      /* FIXME */
+
       break;
     }
 
@@ -79,6 +82,9 @@ _idn2_contexto_rule (uint32_t cp, uint32_t *label, size_t llen)
       /* EXTENDED ARABIC-INDIC DIGITS */
     case 0x30FB:
       /* KATAKANA MIDDLE DOT */
+
+      /* FIXME */
+
       break;
     }
 
