@@ -118,6 +118,11 @@ hexprint (const char *str, size_t len)
 }
 
 int
+_idn2_label_u8 (const char *what,
+		const uint8_t *src, size_t srclen,
+		uint8_t **dst, size_t *dstlen);
+
+int
 main (void)
 {
   uint8_t *out;
@@ -132,8 +137,8 @@ main (void)
 
       out = NULL;
       outlen = 0;
-      rc = idn2_label_u8 (tv[i].what, tv[i].in, tv[i].inlen,
-			       &out, &outlen);
+      rc = _idn2_label_u8 (tv[i].what, tv[i].in, tv[i].inlen,
+			  &out, &outlen);
       if (rc != tv[i].rc)
 	{
 	  fail ("IDNA entry %d failed got %d expected %d\n", i, rc, tv[i].rc);

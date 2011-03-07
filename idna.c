@@ -317,10 +317,10 @@ process (char *opt,
   return IDN2_OK;
 }
 
-int
-idn2_label_u32 (const char *what,
-		const uint32_t *src, size_t srclen,
-		uint32_t **dst, size_t *dstlen)
+static int
+label_u32 (const char *what,
+	   const uint32_t *src, size_t srclen,
+	   uint32_t **dst, size_t *dstlen)
 {
   char *opt;
   int rc;
@@ -340,9 +340,9 @@ idn2_label_u32 (const char *what,
 }
 
 int
-idn2_label_u8 (const char *what,
-	       const uint8_t *src, size_t srclen,
-	       uint8_t **dst, size_t *dstlen)
+_idn2_label_u8 (const char *what,
+		const uint8_t *src, size_t srclen,
+		uint8_t **dst, size_t *dstlen)
 {
   size_t plen, u32dstlen;
   uint32_t *p = u8_to_u32 (src, srclen, NULL, &plen);
@@ -356,7 +356,7 @@ idn2_label_u8 (const char *what,
       return IDN2_ENCODING_ERROR;
     }
 
-  rc = idn2_label_u32 (what, p, plen, &u32dst, &u32dstlen);
+  rc = label_u32 (what, p, plen, &u32dst, &u32dstlen);
   free (p);
   if (rc != IDN2_OK)
     return rc;
@@ -369,10 +369,10 @@ idn2_label_u8 (const char *what,
   return IDN2_OK;
 }
 
-int
-idn2_domain_u8 (const char *what, const uint8_t *src, uint8_t **dst)
+static int
+domain_u8 (const char *what, const uint8_t *src, uint8_t **dst)
 {
-  uint8_t *p;
+  const uint8_t *p;
 
   *dst = NULL;
 
@@ -389,7 +389,7 @@ idn2_domain_u8 (const char *what, const uint8_t *src, uint8_t **dst)
 	uint8_t *tmp;
 	size_t tmplen;
 
-	rc = idn2_label_u8 (what, src, p - src, &tmp, &tmplen);
+	rc = _idn2_label_u8 (what, src, p - src, &tmp, &tmplen);
 	if (rc != IDN2_OK)
 	  return rc;
 
@@ -407,7 +407,7 @@ idn2_domain_u8 (const char *what, const uint8_t *src, uint8_t **dst)
 	    size_t l = strlen (*dst);
 	    uint8_t *p = realloc (*dst, l + tmplen + 2);
 
-	    if (*p == NULL)
+	    if (p == NULL)
 	      {
 		free (*dst);
 		return IDN2_MALLOC;
@@ -432,6 +432,13 @@ idn2_domain_u8 (const char *what, const uint8_t *src, uint8_t **dst)
 }
 
 int
+idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
+		  uint8_t **lookupname, int flags)
+{
+  return 0;
+}
+
+int
 idn2_lookup_u8 (const uint8_t *src, uint8_t **lookupname, int flags)
 {
   const char *what = "check-nfc,check-2hyphen,check-combining,"
@@ -446,7 +453,23 @@ idn2_lookup_u8 (const uint8_t *src, uint8_t **lookupname, int flags)
   if (flags & IDN2_NFC_INPUT)
     what += strlen ("check-");
 
-  rc = idn2_domain_u8 (what, src, lookupname);
+  rc = domain_u8 (what, src, lookupname);
 
   return rc;
+}
+
+int
+idn2_register_ul (const char *ulabel, const char *alabel,
+		  char **lookupname, int flags)
+{
+  /* FIXME locale -> utf8 */
+  return idn2_register_u8 (ulabel, alabel, lookupname,
+			   flags | IDN2_NFC_INPUT);
+}
+
+int
+idn2_lookup_ul (const char *src, char **lookupname, int flags)
+{
+  /* FIXME locale -> utf8 */
+  return idn2_lookup_u8 (src, lookupname, flags | IDN2_NFC_INPUT);
 }

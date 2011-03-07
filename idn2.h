@@ -94,36 +94,31 @@ extern IDN2_API const char *idn2_check_version (const char *req_version);
 extern IDN2_API const char *idn2_strerror (int rc);
 extern IDN2_API const char *idn2_strerror_name (int rc);
 
-/* Low-level label/domain processing interfaces. */
-
-extern IDN2_API int
-idn2_label_u8 (const char *what,
-	       const uint8_t *src, size_t srclen,
-	       uint8_t **dst, size_t *dstlen);
-
-extern IDN2_API int
-idn2_label_u32 (const char *what,
-		const uint32_t *src, size_t srclen,
-		uint32_t **dst, size_t *dstlen);
-
-extern IDN2_API int
-idn2_domain_u8 (const char *what, const uint8_t *src, uint8_t **dst);
-
-/* IDNA high-level interfaces. */
+/* IDNA2008 interface flags */
 
 typedef enum
   {
-    IDN2_TO_UNICODE = 1,
-    IDN2_NFC_INPUT = 2,
-    IDN2_ALABEL_ROUNDTRIP = 4,
+    IDN2_NFC_INPUT = 1,
+    IDN2_ALABEL_ROUNDTRIP = 2,
   } idn2_flags;
 
+/* IDNA2008 interface with UTF-8 input. */
+
 extern IDN2_API int
-idn2_register_u8 (const uint32_t *ulabel, const uint8_t *alabel,
+idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
 		  uint8_t **lookupname, int flags);
 
 extern IDN2_API int
 idn2_lookup_u8 (const uint8_t *src, uint8_t **lookupname, int flags);
+
+/* IDNA2008 interface with locale encoded inputs. */
+
+extern IDN2_API int
+idn2_register_ul (const char *ulabel, const char *alabel,
+		  char **lookupname, int flags);
+
+extern IDN2_API int
+idn2_lookup_ul (const char *src, char **lookupname, int flags);
 
 /* Punycode */
 
