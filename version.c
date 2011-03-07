@@ -19,15 +19,18 @@
 
 #include "idn2.h"
 
-#include <string.h>		/* For strverscmp. */
+#include <string.h> /* strverscmp */
 
 /**
  * idn2_check_version:
  * @req_version: version string to compare with, or NULL.
  *
- * Check IDN2 library version.
- *
- * See %IDN2_VERSION for a suitable @req_version string.
+ * Check IDN2 library version.  This function can also be used to read
+ * out the version of the library code used.  See %IDN2_VERSION for a
+ * suitable @req_version string, it corresponds to the idn2.h header
+ * file version.  Normally these two version numbers match, but if you
+ * are using an application built against an older libidn2 with a
+ * newer libidn2 shared library they will be different.
  *
  * Return value: Check that the version of the library is at
  *   minimum the one given as a string in @req_version and return the
