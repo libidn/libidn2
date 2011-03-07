@@ -440,6 +440,25 @@ idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
   return 0;
 }
 
+/**
+ * idn2_lookup_u8:
+ * @src: input zero-terminated UTF-8 string in Unicode NFC normalized form.
+ * @lookupname: newly allocated output variable with name to lookup in DNS.
+ * @flags: optional #Idn2_flags to modify behaviour.
+ *
+ * Perform IDNA2008 lookup string conversion on input, as described in
+ * section 5 of RFC 5891.  Note that the input must be in UTF-8 and
+ * Unicode NFC form.
+ *
+ * Pass %IDN2_NFC_INPUT in @flags to convert input to NFC form before
+ * further processing.  Pass %IDN2_ALABEL_ROUNDTRIP in @flags to
+ * convert any input A-labels to U-labels and perform additional
+ * testing.  Multiple flags may be specified by binary or:ing them
+ * together, for example %IDN2_NFC_INPUT | %IDN2_ALABEL_ROUNDTRIP.
+ *
+ * Returns: On successful conversion %IDN2_OK is returned, otherwise
+ *   an error code is returned.
+ **/
 int
 idn2_lookup_u8 (const uint8_t *src, uint8_t **lookupname, int flags)
 {
@@ -448,9 +467,11 @@ idn2_lookup_u8 (const uint8_t *src, uint8_t **lookupname, int flags)
     "check-unassigned,check-bidi,ace";
   int rc;
 
-  /* FIXME: Conversion from the A-label and testing that the result is
-     a U-label SHOULD be performed if the domain name will later be
-     presented to the user in native character form */
+  if (flags & IDN2_ALABEL_ROUNDTRIP)
+    /* FIXME: Conversion from the A-label and testing that the result is
+       a U-label SHOULD be performed if the domain name will later be
+       presented to the user in native character form */
+    return IDN2_INTERNAL_ERROR;
 
   if (flags & IDN2_NFC_INPUT)
     what += strlen ("check-");
