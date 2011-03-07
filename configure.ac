@@ -14,9 +14,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 AC_INIT([libidn2],
-	m4_esyscmd([build-aux/git-version-gen .tarball-version \
-		's/[a-z-]*-\([0-9]*\)-\([0-9]*\)-\([0-9]*\)/v\1.\2.\3/']),
-	[simon@josefsson.org])
+  m4_esyscmd([build-aux/git-version-gen .tarball-version 's/[a-z2]*-/v/']),
+  [simon@josefsson.org])
 
 # Library code modified:                              REVISION++
 # Interfaces changed/added/removed:   CURRENT++       REVISION=0
