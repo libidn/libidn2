@@ -27,7 +27,7 @@
 
 int
 idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
-		  uint8_t **lookupname, int flags)
+		  uint8_t **insertname, int flags)
 {
   /* FIXME */
   return 0;
@@ -35,7 +35,7 @@ idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
 
 int
 idn2_register_ul (const char *ulabel, const char *alabel,
-		  char **lookupname, int flags)
+		  char **insertname, int flags)
 {
   char *locale_codeset = nl_langinfo (CODESET);
 
@@ -46,7 +46,7 @@ idn2_register_ul (const char *ulabel, const char *alabel,
   if (utf8ulabel == NULL)
     return IDN2_ICONV_FAIL;
 
-  int rc = idn2_register_u8 (utf8ulabel, alabel, lookupname,
+  int rc = idn2_register_u8 (utf8ulabel, alabel, insertname,
 			     flags | IDN2_NFC_INPUT);
 
   free (utf8ulabel);

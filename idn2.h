@@ -74,7 +74,7 @@ idn2_lookup_u8 (const uint8_t *src, uint8_t **lookupname, int flags);
 
 extern IDN2_API int
 idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
-		  uint8_t **lookupname, int flags);
+		  uint8_t **insertname, int flags);
 
 /* IDNA2008 with locale encoded inputs. */
 
@@ -83,7 +83,7 @@ idn2_lookup_ul (const char *src, char **lookupname, int flags);
 
 extern IDN2_API int
 idn2_register_ul (const char *ulabel, const char *alabel,
-		  char **lookupname, int flags);
+		  char **insertname, int flags);
 
 /**
  * idn2_rc:
