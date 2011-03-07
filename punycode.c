@@ -60,8 +60,8 @@
 #define punycode_overflow IDN2_PUNYCODE_OVERFLOW
 #define punycode_big_output IDN2_PUNYCODE_BIG_OUTPUT
 #define punycode_bad_input IDN2_PUNYCODE_BAD_INPUT
-#define punycode_encode idn2_punycode_encode
-#define punycode_decode idn2_punycode_decode
+#define punycode_encode _idn2_punycode_encode
+#define punycode_decode _idn2_punycode_decode
 
 /**********************************************************/
 /* Implementation (would normally go in its own .c file): */

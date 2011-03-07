@@ -68,6 +68,13 @@ static char *const opts[] = {
   NULL
 };
 
+extern IDN2_API int
+idn2_punycode_encode (size_t input_length,
+		      const uint32_t input[],
+		      const unsigned char case_flags[],
+		      size_t *output_length,
+		      char output[]);
+
 static int
 process1 (char *opt, uint32_t **label, size_t *llen)
 {
@@ -211,7 +218,7 @@ process1 (char *opt, uint32_t **label, size_t *llen)
 		uint32_t *l;
 
 		tmpl = sizeof (out);
-		rc = idn2_punycode_encode (*llen, *label, NULL,
+		rc = _idn2_punycode_encode (*llen, *label, NULL,
 					   &tmpl, out);
 		if (rc != IDN2_OK)
 		  return rc;
@@ -245,7 +252,7 @@ process1 (char *opt, uint32_t **label, size_t *llen)
 	    int rc;
 
 	    tmpl = sizeof (out);
-	    rc = idn2_punycode_encode (*llen, *label, NULL,
+	    rc = _idn2_punycode_encode (*llen, *label, NULL,
 				       &tmpl, out);
 	    if (rc != IDN2_OK)
 	      return rc;

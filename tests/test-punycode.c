@@ -196,6 +196,20 @@ ucs4print (const uint32_t * str, size_t len)
   puts ("");
 }
 
+extern IDN2_API int
+idn2_punycode_encode (size_t input_length,
+		      const uint32_t input[],
+		      const unsigned char case_flags[],
+		      size_t *output_length,
+		      char output[]);
+
+extern IDN2_API int
+idn2_punycode_decode(size_t input_length,
+		     const char input[],
+		     size_t *output_length,
+		     uint32_t output[],
+		     unsigned char case_flags[]);
+
 int
 main (void)
 {
@@ -233,7 +247,7 @@ main (void)
 	}
 
       outlen = BUFSIZ;
-      rc = idn2_punycode_encode (punycode[i].inlen, punycode[i].in,
+      rc = _idn2_punycode_encode (punycode[i].inlen, punycode[i].in,
 				    NULL, &outlen, p);
       if (rc != punycode[i].rc)
 	{
@@ -275,7 +289,7 @@ main (void)
 	}
 
       outlen = BUFSIZ;
-      rc = idn2_punycode_decode (strlen (punycode[i].out), punycode[i].out,
+      rc = _idn2_punycode_decode (strlen (punycode[i].out), punycode[i].out,
 				    &outlen, q, NULL);
       if (rc != punycode[i].rc)
 	{

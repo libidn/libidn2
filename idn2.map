@@ -26,14 +26,13 @@ IDN2_1.0.0 {
     idn2_lookup_ul;
     idn2_register_ul;
 
-    idn2_punycode_encode;
-    idn2_punycode_decode;
-
     idn2_strerror;
     idn2_strerror_name;
 
     # Internal use only.
     _idn2_label_u8;
+    _idn2_punycode_encode;
+    _idn2_punycode_decode;
 
   local:
     *;

@@ -120,20 +120,4 @@ idn2_register_ul (const char *ulabel, const char *alabel,
 extern IDN2_API int
 idn2_lookup_ul (const char *src, char **lookupname, int flags);
 
-/* Punycode */
-
-extern IDN2_API int
-idn2_punycode_encode (size_t input_length,
-			 const uint32_t input[],
-			 const unsigned char case_flags[],
-			 size_t *output_length,
-			 char output[]);
-
-extern IDN2_API int
-idn2_punycode_decode(size_t input_length,
-			const char input[],
-			size_t *output_length,
-			uint32_t output[],
-			unsigned char case_flags[]);
-
 #endif /* IDN2_H */
