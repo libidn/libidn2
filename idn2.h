@@ -30,8 +30,8 @@
 #  endif
 # endif
 
-#include <stdint.h>		/* For uint32_t. */
-#include <string.h>		/* For size_t.t */
+#include <stdint.h> /* uint32_t */
+#include <string.h> /* size_t */
 
 /**
  * IDN2_VERSION
@@ -51,9 +51,44 @@
  */
 # define IDN2_VERSION_NUMBER 0x010000
 
+/* IDNA2008 flags */
+
+/**
+ * idn2_flags:
+ * @IDN2_NFC_INPUT: Normalize input string using normalization form C.
+ * @IDN2_ALABEL_ROUNDTRIP: Perform optional IDNA2008 roundtrip check.
+ *
+ * Flags to IDNA2008 functions, to be binary or:ed together.  Specify
+ * only 0 if you want the default behaviour.
+ */
+typedef enum
+  {
+    IDN2_NFC_INPUT = 1,
+    IDN2_ALABEL_ROUNDTRIP = 2,
+  } idn2_flags;
+
+/* IDNA2008 with UTF-8 input. */
+
+extern IDN2_API int
+idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
+		  uint8_t **lookupname, int flags);
+
+extern IDN2_API int
+idn2_lookup_u8 (const uint8_t *src, uint8_t **lookupname, int flags);
+
+/* IDNA2008 with locale encoded inputs. */
+
+extern IDN2_API int
+idn2_register_ul (const char *ulabel, const char *alabel,
+		  char **lookupname, int flags);
+
+extern IDN2_API int
+idn2_lookup_ul (const char *src, char **lookupname, int flags);
+
 /**
  * idn2_rc:
  * @IDN2_OK: Successful return
+ * @IDN2_INTERNAL_ERROR: Indicates an internal error in the library.
  *
  * Return codes for IDN2 functions.  All return codes are negative
  * except for the successful code IDN2_OK which are guaranteed to be
@@ -70,52 +105,28 @@ typedef enum
   IDN2_MALLOC = -101,
   IDN2_NOT_NFC = -102,
   IDN2_2HYPHEN = -103,
-  IDN2_HYPHEN_STARTEND = -114,
-  IDN2_COMBINING = -104,
-  IDN2_DISALLOWED = -105,
-  IDN2_CONTEXTJ = -106,
+  IDN2_HYPHEN_STARTEND = -104,
+  IDN2_COMBINING = -105,
+  IDN2_DISALLOWED = -106,
+  IDN2_CONTEXTJ = -107,
   IDN2_CONTEXTJ_NO_RULE = -108,
   IDN2_CONTEXTO = -109,
-  IDN2_CONTEXTO_NO_RULE = -111,
-  IDN2_UNASSIGNED = -112,
-  IDN2_BIDI = -113,
-  IDN2_NFC = -150,
-  IDN2_PUNYCODE_BAD_INPUT = -161,
-  IDN2_PUNYCODE_BIG_OUTPUT = -162,
-  IDN2_PUNYCODE_OVERFLOW = -163,
+  IDN2_CONTEXTO_NO_RULE = -110,
+  IDN2_UNASSIGNED = -111,
+  IDN2_BIDI = -112,
+  IDN2_PUNYCODE_BAD_INPUT = -200,
+  IDN2_PUNYCODE_BIG_OUTPUT = -201,
+  IDN2_PUNYCODE_OVERFLOW = -202,
+  IDN2_NFC = -300
 } idn2_rc;
 
-/* Global */
-
-extern IDN2_API const char *idn2_check_version (const char *req_version);
+/* Auxilliary functions. */
 
 extern IDN2_API const char *idn2_strerror (int rc);
 extern IDN2_API const char *idn2_strerror_name (int rc);
 
-/* IDNA2008 interface flags */
+extern IDN2_API const char *idn2_check_version (const char *req_version);
 
-typedef enum
-  {
-    IDN2_NFC_INPUT = 1,
-    IDN2_ALABEL_ROUNDTRIP = 2,
-  } idn2_flags;
-
-/* IDNA2008 interface with UTF-8 input. */
-
-extern IDN2_API int
-idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
-		  uint8_t **lookupname, int flags);
-
-extern IDN2_API int
-idn2_lookup_u8 (const uint8_t *src, uint8_t **lookupname, int flags);
-
-/* IDNA2008 interface with locale encoded inputs. */
-
-extern IDN2_API int
-idn2_register_ul (const char *ulabel, const char *alabel,
-		  char **lookupname, int flags);
-
-extern IDN2_API int
-idn2_lookup_ul (const char *src, char **lookupname, int flags);
+extern IDN2_API void idn2_free (void *ptr);
 
 #endif /* IDN2_H */
