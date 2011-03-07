@@ -56,6 +56,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module stddef:
   # Code from module stdint:
   # Code from module stdlib:
+  # Code from module striconv:
   # Code from module striconveh:
   # Code from module striconveha:
   # Code from module uniconv/base:
@@ -172,6 +173,11 @@ AC_DEFUN([gl_INIT],
   gl_STDINT_H
   # Code from module stdlib:
   gl_STDLIB_H
+  # Code from module striconv:
+  if test $gl_cond_libtool = false; then
+    gl_ltlibdeps="$gl_ltlibdeps $LTLIBICONV"
+    gl_libdeps="$gl_libdeps $LIBICONV"
+  fi
   # Code from module striconveh:
   if test $gl_cond_libtool = false; then
     gl_ltlibdeps="$gl_ltlibdeps $LTLIBICONV"
@@ -429,6 +435,8 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/stddef.in.h
   lib/stdint.in.h
   lib/stdlib.in.h
+  lib/striconv.c
+  lib/striconv.h
   lib/striconveh.c
   lib/striconveh.h
   lib/striconveha.c
