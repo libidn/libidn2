@@ -15,10 +15,10 @@
 
 
 # Specification in the form of a command-line invocation:
-#   gnulib-tool --import --dir=. --local-dir=lib/override --lib=libgnu --source-base=lib --m4-base=m4 --doc-base=doc --tests-base=tests --aux-dir=build-aux --libtool --macro-prefix=gl --no-vc-files git-version-gen lib-symbol-versions maintainer-makefile uniconv/u8-strconv-from-locale unictype/bidicategory-of unictype/property-combining uninorm/nfc uninorm/u32-normalize unistr/u32-cpy-alloc unistr/u32-to-u8 unistr/u8-to-u32
+#   gnulib-tool --import --dir=. --local-dir=gl/override --lib=libgnu --source-base=gl --m4-base=gl/m4 --doc-base=doc --tests-base=tests --aux-dir=build-aux --libtool --macro-prefix=gl --no-vc-files git-version-gen lib-symbol-versions maintainer-makefile uniconv/u8-strconv-from-locale unictype/bidicategory-of unictype/property-combining uninorm/nfc uninorm/u32-normalize unistr/u32-cpy-alloc unistr/u32-to-u8 unistr/u8-to-u32
 
 # Specification in the form of a few gnulib-tool.m4 macro invocations:
-gl_LOCAL_DIR([lib/override])
+gl_LOCAL_DIR([gl/override])
 gl_MODULES([
   git-version-gen
   lib-symbol-versions
@@ -33,8 +33,8 @@ gl_MODULES([
   unistr/u8-to-u32
 ])
 gl_AVOID([])
-gl_SOURCE_BASE([lib])
-gl_M4_BASE([m4])
+gl_SOURCE_BASE([gl])
+gl_M4_BASE([gl/m4])
 gl_PO_BASE([])
 gl_DOC_BASE([doc])
 gl_TESTS_BASE([tests])

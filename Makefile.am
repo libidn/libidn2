@@ -14,12 +14,12 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Gnulib
-SUBDIRS = lib . tests
-ACLOCAL_AMFLAGS = -I m4
-EXTRA_DIST = m4/gnulib-cache.m4
+SUBDIRS = gl . tests
+ACLOCAL_AMFLAGS = -I m4 -I gl/m4
+EXTRA_DIST = gl/m4/gnulib-cache.m4
 
 AM_CPPFLAGS = -DLIBIDN2_BUILDING
-AM_CPPFLAGS += -I$(srcdir)/lib -I$(builddir)/lib
+AM_CPPFLAGS += -I$(srcdir)/gl -I$(builddir)/gl
 
 lib_LTLIBRARIES = libidn2.la
 
@@ -35,7 +35,7 @@ libidn2_la_SOURCES += free.c
 libidn2_la_SOURCES += data.h data.c
 libidn2_la_SOURCES += tables.h tables.c
 libidn2_la_SOURCES += context.h context.c
-libidn2_la_LIBADD = lib/libgnu.la
+libidn2_la_LIBADD = gl/libgnu.la
 libidn2_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) -no-undefined
 

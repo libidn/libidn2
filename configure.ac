@@ -39,7 +39,7 @@ gl_INIT
 
 AC_CONFIG_FILES([
   Makefile
-  lib/Makefile
+  gl/Makefile
   tests/Makefile
 ])
 AC_OUTPUT
