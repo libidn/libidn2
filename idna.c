@@ -47,7 +47,6 @@ enum
     CHECK_UNASSIGNED,
     CHECK_BIDI,
     ACE,
-    PUNYCODE,
     NFC,
     THE_END
   };
@@ -66,7 +65,6 @@ static char *const opts[] = {
   "check-unassigned",
   "check-bidi",
   "ace",
-  "punycode",
   "nfc",
   NULL
 };
@@ -235,39 +233,6 @@ process1 (char *opt, uint32_t **label, size_t *llen)
 		*label = l;
 		*llen = tmpl + 4;
 	      }
-	  }
-	  break;
-
-	case PUNYCODE:
-	  {
-	    char out[63];
-	    size_t tmpl;
-	    uint32_t *l;
-	    size_t i;
-	    bool ascii = true;
-	    int rc;
-
-	    tmpl = sizeof (out);
-	    rc = _idn2_punycode_encode (*llen, *label, NULL,
-				       &tmpl, out);
-	    if (rc != IDN2_OK)
-	      return rc;
-
-		l = malloc (sizeof (*l) * (tmpl + 4));
-		if (l == NULL)
-		  return IDN2_MALLOC;
-
-		l[0] = 'x';
-		l[1] = 'n';
-		l[2] = '-';
-		l[3] = '-';
-
-		for (i = 0; i < tmpl; i++)
-		  l[i + 4] = out[i];
-
-		free (*label);
-		*label = l;
-		*llen = tmpl + 4;
 	  }
 	  break;
 
