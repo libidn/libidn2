@@ -39,9 +39,9 @@ struct idna_tv
 #define REKA_LEN 13
 
 static struct idna_tv tv[] = {
-  {"", IDN2_UNKNOWN_WHAT, 0, NULL, 0, NULL},
+  {"", IDN2_INTERNAL_ERROR, 0, NULL, 0, NULL},
+  {"foo", IDN2_INTERNAL_ERROR, 0, NULL, 0, NULL},
   {"", IDN2_ENCODING_ERROR, 6, "\xd0\x94\xd0\xb0\xc1\x80", 0, NULL},
-  {"foo", IDN2_UNKNOWN_WHAT, 0, NULL, 0, NULL},
   {"check-nfc", IDN2_NOT_NFC, 3, "\xe2\x84\xa6", 0, NULL},
   {"check-nfc", IDN2_OK, 2, "\xC3\x85", 2, "\xC3\x85"},
   {"check-nfc", IDN2_NOT_NFC, 3, "\xe2\x84\xa6", 0, NULL},

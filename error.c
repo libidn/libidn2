@@ -45,6 +45,10 @@ idn2_strerror (int rc)
       p = _("success");
       break;
 
+    case IDN2_INTERNAL_ERROR:
+      p = _("internal libidn2 error");
+      break;
+
     case IDN2_ENCODING_ERROR:
       p = _("string encoding error");
       break;
@@ -77,20 +81,41 @@ idn2_strerror (int rc)
       p = _("string contains a forbidden context-j character");
       break;
 
-#if 0
-      IDN2_CONTEXTJ_RULE = -107,
-	IDN2_CONTEXTJ_NO_RULE = -108,
-	IDN2_CONTEXTO = -109,
-	IDN2_CONTEXTO_RULE = -110,
-	IDN2_CONTEXTO_NO_RULE = -111,
-	IDN2_UNASSIGNED = -112,
-	IDN2_BIDI = -113,
-	IDN2_NFC = -150,
-	IDN2_UNKNOWN_WHAT = -160,
-	IDN2_PUNYCODE_BAD_INPUT = -161,
-	IDN2_PUNYCODE_BIG_OUTPUT = -162,
-	IDN2_PUNYCODE_OVERFLOW = -163,
-#endif
+    case IDN2_CONTEXTJ_NO_RULE:
+      p = _("string contains a context-j character with null rule");
+      break;
+
+    case IDN2_CONTEXTO:
+      p = _("string contains a forbidden context-o character");
+      break;
+
+    case IDN2_CONTEXTO_NO_RULE:
+      p = _("string contains a context-o character with null rule");
+      break;
+
+    case IDN2_UNASSIGNED:
+      p = _("string contains unassigned code point");
+      break;
+
+    case IDN2_BIDI:
+      p = _("string has forbidden bi-directional properties");
+      break;
+
+    case IDN2_NFC:
+      p = _("string could not be NFC normalized");
+      break;
+
+    case IDN2_PUNYCODE_BAD_INPUT:
+      p = _("string contains invalid punycode data");
+      break;
+
+    case IDN2_PUNYCODE_BIG_OUTPUT:
+      p = _("punycode encoded data will be too large");
+      break;
+
+    case IDN2_PUNYCODE_OVERFLOW:
+      p = _("punycode conversion resulted in overflow");
+      break;
 
     default:
       p = _("Unknown error");
@@ -122,6 +147,10 @@ idn2_strerror_name (int rc)
     {
     case IDN2_OK:
       p = ERR2STR(IDN2_OK);
+      break;
+
+    case IDN2_INTERNAL_ERROR:
+      p = ERR2STR(IDN2_INTERNAL_ERROR);
       break;
 
     case IDN2_ENCODING_ERROR:
@@ -156,20 +185,12 @@ idn2_strerror_name (int rc)
       p = ERR2STR(IDN2_CONTEXTJ);
       break;
 
-    case IDN2_CONTEXTJ_RULE:
-      p = ERR2STR(IDN2_CONTEXTJ_RULE);
-      break;
-
     case IDN2_CONTEXTJ_NO_RULE:
       p = ERR2STR(IDN2_CONTEXTJ_NO_RULE);
       break;
 
     case IDN2_CONTEXTO:
       p = ERR2STR(IDN2_CONTEXTO);
-      break;
-
-    case IDN2_CONTEXTO_RULE:
-      p = ERR2STR(IDN2_CONTEXTO_RULE);
       break;
 
     case IDN2_CONTEXTO_NO_RULE:
@@ -186,10 +207,6 @@ idn2_strerror_name (int rc)
 
     case IDN2_NFC:
       p = ERR2STR(IDN2_NFC);
-      break;
-
-    case IDN2_UNKNOWN_WHAT:
-      p = ERR2STR(IDN2_UNKNOWN_WHAT);
       break;
 
     case IDN2_PUNYCODE_BAD_INPUT:

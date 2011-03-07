@@ -291,7 +291,7 @@ process1 (char *opt, uint32_t **label, size_t *llen)
 	    break;
 
 	default:
-	  return IDN2_UNKNOWN_WHAT;
+	  return IDN2_INTERNAL_ERROR;
 	  break;
 	}
     }
@@ -333,7 +333,7 @@ label_u32 (const char *what,
   int rc;
 
   if (what == NULL || *what == '\0')
-    return IDN2_UNKNOWN_WHAT;
+    return IDN2_INTERNAL_ERROR;
 
   opt = strdup (what);
   if (opt == NULL)
