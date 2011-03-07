@@ -399,13 +399,6 @@ domain_u8 (const char *what, const uint8_t *src, uint8_t **dst)
   return IDN2_OK;
 }
 
-int
-idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
-		  uint8_t **lookupname, int flags)
-{
-  return 0;
-}
-
 /**
  * idn2_lookup_u8:
  * @src: input zero-terminated UTF-8 string in Unicode NFC normalized form.
@@ -448,12 +441,11 @@ idn2_lookup_u8 (const uint8_t *src, uint8_t **lookupname, int flags)
 }
 
 int
-idn2_register_ul (const char *ulabel, const char *alabel,
-		  char **lookupname, int flags)
+idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
+		  uint8_t **lookupname, int flags)
 {
-  /* FIXME locale -> utf8 */
-  return idn2_register_u8 (ulabel, alabel, lookupname,
-			   flags | IDN2_NFC_INPUT);
+  /* FIXME */
+  return 0;
 }
 
 /**
@@ -486,6 +478,25 @@ idn2_lookup_ul (const char *src, char **lookupname, int flags)
   int rc = idn2_lookup_u8 (utf8src, lookupname, flags | IDN2_NFC_INPUT);
 
   free (utf8src);
+
+  return rc;
+}
+
+int
+idn2_register_ul (const char *ulabel, const char *alabel,
+		  char **lookupname, int flags)
+{
+  char *locale_codeset = nl_langinfo (CODESET);
+
+  if (locale_codeset == NULL || *locale_codeset == '\0')
+    return IDN2_NO_CODESET;
+
+  uint8_t *utf8ulabel = str_iconv (ulabel, locale_codeset, "UTF-8");
+
+  int rc = idn2_register_u8 (utf8ulabel, alabel, lookupname,
+			     flags | IDN2_NFC_INPUT);
+
+  free (utf8ulabel);
 
   return rc;
 }
