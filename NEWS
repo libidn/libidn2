@@ -2,9 +2,12 @@ Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
 Copyright (C) 2011 Simon Josefsson
 See the end for copying conditions.
 
-* Version 1.0 (unreleased) [alpha]
+* Version 0.0.0 (unreleased) [alpha]
 
-** Initial release.
+** Initial draft release for public review of the API.
+IDNA2008-Lookup is fully implemented except for 1) the optional
+round-trip conversion part, and 2) the context rules are not
+implemented.  IDNA2008-Register is not yet implemented.
 
 ----------------------------------------------------------------------
 This file is free software: you can redistribute it and/or modify it
