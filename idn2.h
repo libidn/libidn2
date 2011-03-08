@@ -45,11 +45,13 @@
 /**
  * IDN2_VERSION_NUMBER
  *
- * Pre-processor symbol with a hexadecimal value describing the
- * header file version number.  For example, when the header version
- * is 1.2.3 this symbol will have the value 0x010203.
+ * Pre-processor symbol with a hexadecimal value describing the header
+ * file version number.  For example, when the header version is
+ * 1.2.4711 this symbol will have the value 0x01021267.  The last four
+ * digits are used to enumerate development snapshots, but for all
+ * public releases they will be 0000.
  */
-# define IDN2_VERSION_NUMBER 0x000000
+# define IDN2_VERSION_NUMBER 0x00000000
 
 /* IDNA2008 flags */
 
