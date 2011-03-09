@@ -38,7 +38,6 @@ glimport:
 
 ChangeLog:
 	git2cl > ChangeLog
-	cat .clcopying >> ChangeLog
 
 tag = $(PACKAGE)-`echo $(VERSION) | sed 's/\./-/g'`
 htmldir = ../www-$(PACKAGE)
