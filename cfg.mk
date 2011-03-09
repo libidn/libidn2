@@ -39,18 +39,14 @@ glimport:
 ChangeLog:
 	git2cl > ChangeLog
 
-tag = $(PACKAGE)-`echo $(VERSION) | sed 's/\./-/g'`
-htmldir = ../www-$(PACKAGE)
+release: prepare upload
 
-release: prepare upload web upload-web
-
+tag = $(PACKAGE)-$(VERSION)
 prepare:
 	! git tag -l $(tag) | grep $(PACKAGE) > /dev/null
-	rm -f ChangeLog
 	$(MAKE) ChangeLog distcheck
 	gpg -b $(distdir).tar.gz
 	gpg --verify $(distdir).tar.gz.sig
-	git commit -m Generated. ChangeLog
 	git tag -u b565716f! -m $(VERSION) $(tag)
 
 upload:
