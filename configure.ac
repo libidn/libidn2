@@ -13,8 +13,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+VERSION_MAJOR=0
+VERSION_MINOR=0
+VERSION_PATCH=0
+VERSION_NUMBER=`printf "0x%02x%02x%04x" \
+  $VERSION_MAJOR $VERSION_MINOR $VERSION_PATCH`
+AC_SUBST(VERSION_NUMBER)
+
 AC_INIT([libidn2],
-  m4_esyscmd([build-aux/git-version-gen .tarball-version 's/libidn2-\([0-9]*\)\.\([0-9]*\)\(-\([0-9]*\)\)-.*/v\1.\2.\4/']),
+  m4_esyscmd([echo -n $VERSION_MAJOR.$VERSION_MINOR]),
   [simon@josefsson.org])
 
 # Library code modified:                              REVISION++
@@ -24,13 +31,6 @@ AC_INIT([libidn2],
 AC_SUBST(LT_CURRENT, 0)
 AC_SUBST(LT_REVISION, 0)
 AC_SUBST(LT_AGE, 0)
-
-VERSION_MAJOR=`echo $PACKAGE_VERSION | sed 's/\([0-9]*\)\..*\..*/\1/g'`
-VERSION_MINOR=`echo $PACKAGE_VERSION | sed 's/.*\.\([0-9]*\)\..*/\1/g'`
-VERSION_PATCH=`echo $PACKAGE_VERSION | sed 's/.*\..*\.\([0-9]*\).*/\1/g'`
-VERSION_NUMBER=`printf "0x%02x%02x%04x" \
-  $VERSION_MAJOR $VERSION_MINOR $VERSION_PATCH`
-AC_SUBST(VERSION_NUMBER)
 
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_HEADERS([config.h])
