@@ -7,7 +7,10 @@ See the end for copying conditions.
 ** Initial draft release for public review of the API.
 IDNA2008-Lookup is fully implemented except for 1) the optional
 round-trip conversion part, and 2) the context rules are not
-implemented.  IDNA2008-Register is not yet implemented.
+implemented.  IDNA2008-Register is not yet implemented.  The
+implementation is known to be sub-optimal and ugly, please review the
+interface and ignore the code!  Several changes are planned in the
+internal implementation.
 
 ----------------------------------------------------------------------
 This file is free software: you can redistribute it and/or modify it
