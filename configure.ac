@@ -13,10 +13,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-AC_INIT([libidn2], [0.0], [simon@josefsson.org])
+AC_INIT([libidn2], [0.1], [simon@josefsson.org])
 
 VERSION_MAJOR=0
-VERSION_MINOR=0
+VERSION_MINOR=1
 VERSION_PATCH=0
 VERSION_NUMBER=`printf "0x%02x%02x%04x" \
   $VERSION_MAJOR $VERSION_MINOR $VERSION_PATCH`
