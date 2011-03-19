@@ -67,6 +67,8 @@ AC_DEFUN([gl_EARLY],
   # Code from module uniconv/u8-strconv-from-locale:
   # Code from module unictype/base:
   # Code from module unictype/bidicategory-of:
+  # Code from module unictype/category-M:
+  # Code from module unictype/category-test:
   # Code from module unictype/combining-class:
   # Code from module unictype/property-combining:
   # Code from module uninorm/base:
@@ -203,6 +205,11 @@ AC_DEFUN([gl_INIT],
   gl_LIBUNISTRING_LIBHEADER([0.9], [unictype.h])
   # Code from module unictype/bidicategory-of:
   gl_LIBUNISTRING_MODULE([0.9.4], [unictype/bidicategory-of])
+  # Code from module unictype/category-M:
+  gl_LIBUNISTRING_MODULE([0.9.4], [unictype/category-M])
+  # Code from module unictype/category-test:
+  AC_REQUIRE([AC_C_INLINE])
+  gl_LIBUNISTRING_MODULE([0.9.4], [unictype/category-test])
   # Code from module unictype/combining-class:
   gl_LIBUNISTRING_MODULE([0.9.4], [unictype/combining-class])
   # Code from module unictype/property-combining:
@@ -459,6 +466,9 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/unictype/bidi_of.c
   lib/unictype/bidi_of.h
   lib/unictype/bitmap.h
+  lib/unictype/categ_M.c
+  lib/unictype/categ_M.h
+  lib/unictype/categ_test.c
   lib/unictype/combining.c
   lib/unictype/combining.h
   lib/unictype/pr_combining.c

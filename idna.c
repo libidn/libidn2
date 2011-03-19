@@ -28,6 +28,7 @@
 #include "context.h"
 #include "punycode.h"
 
+#include "unictype.h" /* UC_CATEGORY_M */
 #include "unistr.h" /* u32_cpy_alloc */
 #include "uninorm.h" /* u32_normalize */
 #include "unistr.h" /* u32_normalize */
@@ -109,7 +110,7 @@ process1 (char *opt, uint32_t **label, size_t *llen)
 	  break;
 
 	case CHECK_COMBINING:
-	  if (*llen > 0 && uc_is_property_combining ((*label)[0]))
+	  if (*llen > 0 && uc_is_general_category ((*label)[0], UC_CATEGORY_M))
 	    return IDN2_COMBINING;
 	  break;
 
@@ -138,7 +139,7 @@ process1 (char *opt, uint32_t **label, size_t *llen)
 
 	    for (i = 0; i < *llen; i++)
 	      {
-		rc = _idn2_contextj_rule ((*label)[i], *label, *llen);
+		rc = _idn2_contextj_rule (*label, *llen, i);
 		if (rc != IDN2_OK)
 		  return rc;
 	      }
@@ -171,7 +172,7 @@ process1 (char *opt, uint32_t **label, size_t *llen)
 
 	    for (i = 0; i < *llen; i++)
 	      {
-		rc = _idn2_contexto_rule ((*label)[i], *label, *llen);
+		rc = _idn2_contexto_rule (*label, *llen, i);
 		if (rc != IDN2_OK)
 		  return rc;
 	      }

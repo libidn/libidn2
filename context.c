@@ -21,9 +21,13 @@
 
 #include "context.h"
 
+#include <unictype.h> /* uc_combining_class, UC_CCC_VR */
+
 int
-_idn2_contextj_rule (uint32_t cp, uint32_t *label, size_t llen)
+_idn2_contextj_rule (uint32_t *label, size_t llen, size_t pos)
 {
+  uint32_t cp = label[pos];
+
   if (!_idn2_contextj_p (cp))
     return IDN2_OK;
 
@@ -31,20 +35,34 @@ _idn2_contextj_rule (uint32_t cp, uint32_t *label, size_t llen)
     {
     case 0x200C:
       /* ZERO WIDTH NON-JOINER */
+      break;
+
     case 0x200D:
       /* ZERO WIDTH JOINER */
+      {
+	uint32_t before_cp;
+	int cc;
 
-      /* FIXME */
+	if (pos == 0)
+	  return IDN2_CONTEXTJ;
 
-      break;
+	before_cp = label[pos - 1];
+	cc = uc_combining_class (before_cp);
+	if (cc == UC_CCC_VR)
+	  return IDN2_OK;
+
+	return IDN2_CONTEXTJ;
+      }
     }
 
   return IDN2_CONTEXTJ_NO_RULE;
 }
 
 int
-_idn2_contexto_rule (uint32_t cp, uint32_t *label, size_t llen)
+_idn2_contexto_rule (uint32_t *label, size_t llen, size_t pos)
 {
+  uint32_t cp = label[pos];
+
   if (!_idn2_contexto_p (cp))
     return IDN2_OK;
 

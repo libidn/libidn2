@@ -19,10 +19,10 @@
 #include <stdbool.h>
 
 int
-_idn2_contextj_rule (uint32_t cp, uint32_t *label, size_t llen);
+_idn2_contextj_rule (uint32_t *label, size_t llen, size_t pos);
 
 int
-_idn2_contexto_rule (uint32_t cp, uint32_t *label, size_t llen);
+_idn2_contexto_rule (uint32_t *label, size_t llen, size_t pos);
 
 bool
 _idn2_contexto_with_rule (uint32_t cp);

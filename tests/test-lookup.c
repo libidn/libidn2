@@ -347,13 +347,18 @@ static const struct idna idna[] = {
    /* Don't resolve as xn--00adoutdn-cna81e.example */
    /* Not valid in IDNA2008! */
   },
-#if 0 /* FIXME: implement CONTEXTJ rule */
   {"\x32\x30\x30\x64\x6f\x75\x74\xe2\x80\x8d\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--200doutdn-m5a.example"
+   "xn--200doutdn-m5a.example", IDN2_CONTEXTJ
    /* 4-1-1-2 200dout<200D><00ED>dn.example -> 200dout<00ED>dn.example */
    /* Don't resolve as xn--200doutdn-m5a1678f.example */
+   /* Not valid in IDNA2008!" */
   },
-#endif
+  {"\xe0\xa5\x8d\xe2\x80\x8d", "", IDN2_COMBINING
+   /* U+094D U+200D => U+094D is combining mark */
+  },
+  {"foo\xe0\xa5\x8d\xe2\x80\x8d", "xn--foo-umh4320a", IDN2_OK
+   /* foo U+094D U+200D => OK due to Virama + U+200D. */
+  },
   {"\x73\x69\x6d\x70\x6c\x65\x63\x61\x70\x44\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
    "xn--simplecapddn-1fb.example", IDN2_DISALLOWED
    /* 4-1-2-1 simplecap<0044><00ED>dn.example -> simplecap<0064><00ED>dn.example */
