@@ -33,6 +33,7 @@ struct idna
 };
 
 static const struct idna idna[] = {
+
   /* These comes from http://www.iana.org/domains/root/db see
      gen-idn-tld-tv.pl */
   {"\xe6\xb5\x8b\xe8\xaf\x95", "xn--0zwm56d" },
@@ -84,7 +85,9 @@ static const struct idna idna[] = {
   {"\xd9\x81\xd9\x84\xd8\xb3\xd8\xb7\xd9\x8a\xd9\x86", "xn--ygbi2ammx" },
   {"\xe3\x83\x86\xe3\x82\xb9\xe3\x83\x88", "xn--zckzah" },
   /* end of IANA strings */
-  /* the following comes from IDNA2003 libidn */
+
+  /* the following comes from IDNA2003 libidn
+     with some new variants inspired by the old test vectors */
   {"\x65\x78\x61\x6d\x70\x6c\x65\x2e\xc3\xad\x64\x6e", "example.xn--dn-mja"
    /* 1-1-1 Has an IDN in just the TLD */
   },
