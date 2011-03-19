@@ -43,6 +43,7 @@ doc/reference/idn2.prerequisites
 doc/reference/idn2.signals
 doc/reference/idn2.types
 doc/reference/scan-build.stamp
+doc/reference/setup-build.stamp
 doc/reference/sgml-build.stamp
 doc/reference/sgml.stamp
 doc/reference/tmpl-build.stamp
@@ -73,6 +74,7 @@ gl/iconv_open-hpux.h
 gl/iconv_open-irix.h
 gl/iconv_open-osf.h
 gl/iconv_open-solaris.h
+gl/langinfo.h
 gl/libgnu.la
 gl/localcharset.lo
 gl/localcharset.o
@@ -81,6 +83,8 @@ gl/malloca.o
 gl/ref-add.sed
 gl/ref-del.sed
 gl/stdlib.h
+gl/striconv.lo
+gl/striconv.o
 gl/striconveh.lo
 gl/striconveh.o
 gl/striconveha.lo
@@ -97,6 +101,10 @@ gl/unictype.h
 gl/unictype/.dirstamp
 gl/unictype/bidi_of.lo
 gl/unictype/bidi_of.o
+gl/unictype/categ_M.lo
+gl/unictype/categ_M.o
+gl/unictype/categ_test.lo
+gl/unictype/categ_test.o
 gl/unictype/combining.lo
 gl/unictype/combining.o
 gl/unictype/pr_combining.lo
@@ -158,11 +166,14 @@ gl/unistr/u8-uctomb.o
 gl/unitypes.h
 gl/unused-parameter.h
 gl/warn-on-use.h
+idn2.h
 idna.lo
 idna.o
 libidn2-*.tar.gz
 libidn2.la
 libtool
+lookup.lo
+lookup.o
 m4/libtool.m4
 m4/ltoptions.m4
 m4/ltsugar.m4
@@ -170,6 +181,8 @@ m4/ltversion.m4
 m4/lt~obsolete.m4
 punycode.lo
 punycode.o
+register.lo
+register.o
 stamp-h1
 tables.lo
 tables.o
