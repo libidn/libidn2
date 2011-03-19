@@ -359,6 +359,9 @@ static const struct idna idna[] = {
   {"foo\xe0\xa5\x8d\xe2\x80\x8d", "xn--foo-umh4320a", IDN2_OK
    /* foo U+094D U+200D => OK due to Virama + U+200D. */
   },
+  {"foo𐨿\xe2\x80\x8d\x65\x65", "xn--fooee-zt3bn006o", IDN2_OK
+   /* foo U+10A3F U+200D ee => OK due to Virama + U+200D. */
+  },
   {"\x73\x69\x6d\x70\x6c\x65\x63\x61\x70\x44\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
    "xn--simplecapddn-1fb.example", IDN2_DISALLOWED
    /* 4-1-2-1 simplecap<0044><00ED>dn.example -> simplecap<0064><00ED>dn.example */
