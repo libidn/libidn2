@@ -356,6 +356,8 @@ static const struct idna idna[] = {
    /* Don't resolve as xn--200doutdn-m5a1678f.example */
    /* Not valid in IDNA2008!" */
   },
+  /* To find Virama's, use:
+     grep -E '^[^;]+;[^;]+;[^;]+;9;' UnicodeData.txt */
   {"\xe0\xa5\x8d\xe2\x80\x8d", "", IDN2_COMBINING
    /* U+094D U+200D => U+094D is combining mark */
   },
@@ -364,6 +366,12 @@ static const struct idna idna[] = {
   },
   {"foo𐨿\xe2\x80\x8d\x65\x65", "xn--fooee-zt3bn006o", IDN2_OK
    /* foo U+10A3F U+200D ee => OK due to Virama + U+200D. */
+  },
+  {"foo྄\xe2\x80\x8d\x65\x65", "xn--fooee-c3s855o", IDN2_OK
+   /* foo U+0f84 U+200D ee => OK due to Virama + U+200D. */
+  },
+  {"foo᮪\xe2\x80\x8d\x65\x65", "xn--fooee-hc8as55a", IDN2_OK
+   /* foo U+1bAA (Mc) U+200D ee => OK due to Virama + U+200D. */
   },
   {"\x73\x69\x6d\x70\x6c\x65\x63\x61\x70\x44\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
    "xn--simplecapddn-1fb.example", IDN2_DISALLOWED
