@@ -603,6 +603,19 @@ static const struct idna idna[] = {
    "xn--dn-mja9232x.example"
    /* 5-2-2 Newly assigned outside of BMP; zone editors should reject */
    /* Don't resolve as xn--dn-mja7922x.example */
+  },
+
+  /* Create while writing Libidn2 to trigger certain code paths. */
+
+#if 0
+  {
+    "‌", "xn--uba", IDN2_OK
+    /* Contextj: U+200C. */
+  },
+#endif
+  {
+    "·", "xn--uba", IDN2_OK
+    /* Contexto: Lookup of U+00B7 should succeed. */
   }
 };
 

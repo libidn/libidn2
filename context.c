@@ -26,6 +26,9 @@
 int
 _idn2_contextj_rule (uint32_t *label, size_t llen, size_t pos)
 {
+  if (llen == 0)
+    return IDN2_OK;
+
   uint32_t cp = label[pos];
 
   if (!_idn2_contextj_p (cp))
@@ -35,24 +38,29 @@ _idn2_contextj_rule (uint32_t *label, size_t llen, size_t pos)
     {
     case 0x200C:
       /* ZERO WIDTH NON-JOINER */
+      if (pos > 0)
+	{
+	  uint32_t before_cp = label[pos - 1];
+	  int cc = uc_combining_class (before_cp);
+	  if (cc == UC_CCC_VR)
+	    return IDN2_OK;
+	}
+      /* FIXME
+	 If RegExpMatch((Joining_Type:{L,D})(Joining_Type:T)*\u200C
+         (Joining_Type:T)*(Joining_Type:{R,D})) Then True;
+      */
       break;
 
     case 0x200D:
       /* ZERO WIDTH JOINER */
-      {
-	uint32_t before_cp;
-	int cc;
-
-	if (pos == 0)
-	  return IDN2_CONTEXTJ;
-
-	before_cp = label[pos - 1];
-	cc = uc_combining_class (before_cp);
-	if (cc == UC_CCC_VR)
-	  return IDN2_OK;
-
-	return IDN2_CONTEXTJ;
-      }
+      if (pos > 0)
+	{
+	  uint32_t before_cp = label[pos - 1];
+	  int cc = uc_combining_class (before_cp);
+	  if (cc == UC_CCC_VR)
+	    return IDN2_OK;
+	}
+      return IDN2_CONTEXTJ;
     }
 
   return IDN2_CONTEXTJ_NO_RULE;
