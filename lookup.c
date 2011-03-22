@@ -46,7 +46,7 @@
 int
 idn2_lookup_u8 (const uint8_t *src, uint8_t **lookupname, int flags)
 {
-  const char *what = "check-nfc,check-2hyphen,check-combining,"
+  const char *what = "check-nfc,check-2hyphen,check-leading-combining,"
     "check-disallowed,check-contextj-rule,check-contexto-with-rule,"
     "check-unassigned,check-bidi,ace";
   int rc;

@@ -56,7 +56,7 @@ static char *const opts[] = {
   "check-nfc",
   "check-2hyphen",
   "check-hyphen-startend",
-  "check-combining",
+  "check-leading-combining",
   "check-disallowed",
   "check-contextj",
   "check-contextj-rule",
@@ -111,7 +111,7 @@ process1 (char *opt, uint32_t **label, size_t *llen)
 
 	case CHECK_COMBINING:
 	  if (*llen > 0 && uc_is_general_category ((*label)[0], UC_CATEGORY_M))
-	    return IDN2_COMBINING;
+	    return IDN2_LEADING_COMBINING;
 	  break;
 
 	case CHECK_DISALLOWED:

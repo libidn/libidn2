@@ -93,8 +93,8 @@ idn2_strerror (int rc)
       p = _("string start/ends with forbidden hyphen");
       break;
 
-    case IDN2_COMBINING:
-      p = _("string contains a forbidden combining character");
+    case IDN2_LEADING_COMBINING:
+      p = _("string contains a forbidden leading combining character");
       break;
 
     case IDN2_DISALLOWED:
@@ -205,8 +205,8 @@ idn2_strerror_name (int rc)
       p = ERR2STR(IDN2_HYPHEN_STARTEND);
       break;
 
-    case IDN2_COMBINING:
-      p = ERR2STR(IDN2_COMBINING);
+    case IDN2_LEADING_COMBINING:
+      p = ERR2STR(IDN2_LEADING_COMBINING);
       break;
 
     case IDN2_DISALLOWED:

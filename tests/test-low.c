@@ -56,13 +56,13 @@ static struct idna_tv tv[] = {
   {"nfc", IDN2_OK, 3, "\xe2\x84\xab", 2, "\xC3\x85"},
   {"nfc", IDN2_OK, 3, "\xe2\x84\xa6", 2, "\xce\xa9"},
   /* CCC=0 GC=M */
-  {"check-combining", IDN2_COMBINING, 2, "\xcd\x8f", 0, NULL},
+  {"check-leading-combining", IDN2_LEADING_COMBINING, 2, "\xcd\x8f", 0, NULL},
   /* CCC=0 GC=M */
-  {"check-combining", IDN2_COMBINING, 2, "\xd2\x88", 0, NULL},
+  {"check-leading-combining", IDN2_LEADING_COMBINING, 2, "\xd2\x88", 0, NULL},
   /* CCC!=0 GC=Mn */
-  {"check-combining", IDN2_COMBINING, 2, "\xcc\x80", 0, NULL},
+  {"check-leading-combining", IDN2_LEADING_COMBINING, 2, "\xcc\x80", 0, NULL},
   /* CCC!=0 GC=Mc */
-  {"check-combining", IDN2_COMBINING, 3, "\xe1\xad\x84", 0, NULL},
+  {"check-leading-combining", IDN2_LEADING_COMBINING, 3, "\xe1\xad\x84", 0, NULL},
   {"check-disallowed", IDN2_DISALLOWED, 1, "\x00", 0, NULL},
   {"check-disallowed", IDN2_DISALLOWED, 2, "a\x00", 0, NULL},
   {"check-disallowed", IDN2_DISALLOWED, 2, "\xc2\xb8", 0, NULL},

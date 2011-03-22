@@ -102,7 +102,7 @@ idn2_register_ul (const char *ulabel, const char *alabel,
  * @IDN2_NOT_NFC: String is not NFC.
  * @IDN2_2HYPHEN: String has forbidden two hyphens.
  * @IDN2_HYPHEN_STARTEND: String has forbidden starting/ending hyphen.
- * @IDN2_COMBINING: String has forbidden combining character.
+ * @IDN2_LEADING_COMBINING: String has forbidden leading combining character.
  * @IDN2_DISALLOWED: String has disallowed character.
  * @IDN2_CONTEXTJ: String has forbidden context-j character.
  * @IDN2_CONTEXTJ_NO_RULE: String has context-j character with no rull.
@@ -133,7 +133,7 @@ typedef enum
   IDN2_NOT_NFC = -300,
   IDN2_2HYPHEN = -301,
   IDN2_HYPHEN_STARTEND = -302,
-  IDN2_COMBINING = -303,
+  IDN2_LEADING_COMBINING = -303,
   IDN2_DISALLOWED = -304,
   IDN2_CONTEXTJ = -305,
   IDN2_CONTEXTJ_NO_RULE = -306,

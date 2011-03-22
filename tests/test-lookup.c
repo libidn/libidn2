@@ -33,7 +33,6 @@ struct idna
 };
 
 static const struct idna idna[] = {
-
   /* These comes from http://www.iana.org/domains/root/db see
      gen-idn-tld-tv.pl */
   {"\xe6\xb5\x8b\xe8\xaf\x95", "xn--0zwm56d" },
@@ -358,7 +357,7 @@ static const struct idna idna[] = {
   },
   /* To find Virama's, use:
      grep -E '^[^;]+;[^;]+;[^;]+;9;' UnicodeData.txt */
-  {"\xe0\xa5\x8d\xe2\x80\x8d", "", IDN2_COMBINING
+  {"\xe0\xa5\x8d\xe2\x80\x8d", "", IDN2_LEADING_COMBINING
    /* U+094D U+200D => U+094D is combining mark */
   },
   {"foo\xe0\xa5\x8d\xe2\x80\x8d", "xn--foo-umh4320a", IDN2_OK
@@ -609,27 +608,25 @@ static const struct idna idna[] = {
 
   {
     "\xe2\x80\x8c", "", IDN2_CONTEXTJ
-    /* Contextj: U+200C. */
-  },
-  {
-    "\xe2\x80\x8c\x65\x65", "", IDN2_CONTEXTJ
-    /* Contextj: U+200C. */
-  },
-  {
-    "foo\xe2\x80\x8c", "", IDN2_CONTEXTJ
-    /* Contextj: U+200C. */
+    /* Standalone contextj U+200C. */
   },
   {
     "foo\xe2\x80\x8c\x65\x65", "", IDN2_CONTEXTJ
-    /* Contextj: U+200C. */
+    /* Contextj U+200C with surrounding joining characters. */
   },
   {
-    "\xd9\x84\xe2\x80\x8c\x65", "", IDN2_CONTEXTJ
-    /* Contextj: U+0644 (0xD9 0x84) U+200C e.  U+0644 is D. */
+    "\xdd\x90\xe2\x80\x8c\x65", "", IDN2_CONTEXTJ
+    /* Contextj: U+0750 (0xD9 0x84) U+200C e.  U+0750 is D. */
   },
   {
     "\xdd\x90\xe2\x80\x8c\xdd\x90", "xn--3oba901q", IDN2_OK
     /* Contextj: U+0750 (0xDD 0x90) U+200C U+0750.  U+0750 is D. */
+  },
+  {
+    "\xdd\x90\xcc\x80\xe2\x80\x8c\xcc\x80\xcc\x80\xcc\x80\xdd\x90",
+    "xn--ksaaaa036cea4345b", IDN2_OK
+    /* Contextj: U+750 U+0300 U+200C U+0300 U+0300 U+0300 U+0750.
+       U+0300 is T, U+0750 is D. */
   },
   {
     "·", "xn--uba", IDN2_OK
