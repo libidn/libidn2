@@ -74,7 +74,6 @@ AC_DEFUN([gl_EARLY],
   # Code from module unictype/category-test-withtable:
   # Code from module unictype/combining-class:
   # Code from module unictype/joiningtype-of:
-  # Code from module unictype/property-combining:
   # Code from module uninorm/base:
   # Code from module uninorm/canonical-decomposition:
   # Code from module uninorm/composition:
@@ -224,9 +223,6 @@ AC_DEFUN([gl_INIT],
   gl_LIBUNISTRING_MODULE([0.9.4], [unictype/combining-class])
   # Code from module unictype/joiningtype-of:
   gl_LIBUNISTRING_MODULE([0.9.4], [unictype/joiningtype-of])
-  # Code from module unictype/property-combining:
-  AC_REQUIRE([AC_C_INLINE])
-  gl_LIBUNISTRING_MODULE([0.9.4], [unictype/property-combining])
   # Code from module uninorm/base:
   gl_LIBUNISTRING_LIBHEADER([0.9], [uninorm.h])
   # Code from module uninorm/canonical-decomposition:
@@ -488,8 +484,6 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/unictype/combining.h
   lib/unictype/joiningtype_of.c
   lib/unictype/joiningtype_of.h
-  lib/unictype/pr_combining.c
-  lib/unictype/pr_combining.h
   lib/uninorm.in.h
   lib/uninorm/canonical-decomposition.c
   lib/uninorm/composition-table.gperf
