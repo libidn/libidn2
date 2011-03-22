@@ -22,6 +22,9 @@ Comments on the specification:
   For example section 5 of RFC 5891 discuss entire strings in section
   5.1 and 5.2 and section 5.3 onwards discuss labels only.
 
+* Re U+200C, there are no Joining Type T code points that are
+  permitted in IDNA2008.
+
 Example domains IDNA2003-valid but IDNA2008-lookup-invalid:
 
 * example.∡↺⊂ (symbols)
