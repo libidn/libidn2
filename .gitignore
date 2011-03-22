@@ -103,10 +103,16 @@ gl/unictype/bidi_of.lo
 gl/unictype/bidi_of.o
 gl/unictype/categ_M.lo
 gl/unictype/categ_M.o
+gl/unictype/categ_none.lo
+gl/unictype/categ_none.o
+gl/unictype/categ_of.lo
+gl/unictype/categ_of.o
 gl/unictype/categ_test.lo
 gl/unictype/categ_test.o
 gl/unictype/combining.lo
 gl/unictype/combining.o
+gl/unictype/joiningtype_of.lo
+gl/unictype/joiningtype_of.o
 gl/unictype/pr_combining.lo
 gl/unictype/pr_combining.o
 gl/uninorm.h
