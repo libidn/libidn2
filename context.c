@@ -36,23 +36,55 @@ _idn2_contextj_rule (uint32_t *label, size_t llen, size_t pos)
 
   switch (cp)
     {
-    case 0x200C:
-      /* ZERO WIDTH NON-JOINER */
+    case 0x200C: /* ZERO WIDTH NON-JOINER */
       if (pos > 0)
 	{
+	  /* If Canonical_Combining_Class(Before(cp)) .eq.  Virama Then True; */
 	  uint32_t before_cp = label[pos - 1];
 	  int cc = uc_combining_class (before_cp);
 	  if (cc == UC_CCC_VR)
 	    return IDN2_OK;
 	}
-      /* FIXME
-	 If RegExpMatch((Joining_Type:{L,D})(Joining_Type:T)*\u200C
-         (Joining_Type:T)*(Joining_Type:{R,D})) Then True;
-      */
+
+      /* See http://permalink.gmane.org/gmane.ietf.idnabis/6980 for
+	 clarified rule. */
+
+      if (pos == 0 || pos == llen - 1)
+	return IDN2_CONTEXTJ;
+
+      int jt;
+      size_t tmp;
+
+      /* Search backwards. */
+      for (tmp = pos - 1; tmp >= 0; tmp--)
+	{
+	  jt = uc_joining_type (label[tmp]);
+	  if (jt == UC_JOINING_TYPE_L || jt == UC_JOINING_TYPE_D)
+	    break;
+	  if (tmp == 0)
+	    return IDN2_CONTEXTJ;
+	  if (jt == UC_JOINING_TYPE_T)
+	    continue;
+	  return IDN2_CONTEXTJ;
+	}
+
+      /* Search forward. */
+      for (tmp = pos + 1; tmp < llen; tmp++)
+	{
+	  jt = uc_joining_type (label[tmp]);
+	  if (jt == UC_JOINING_TYPE_L || jt == UC_JOINING_TYPE_D)
+	    break;
+	  if (tmp == llen - 1)
+	    return IDN2_CONTEXTJ;
+	  if (jt == UC_JOINING_TYPE_T)
+	    continue;
+	  return IDN2_CONTEXTJ;
+	}
+
+      return IDN2_OK;
       break;
 
-    case 0x200D:
-      /* ZERO WIDTH JOINER */
+    case 0x200D: /* ZERO WIDTH JOINER */
       if (pos > 0)
 	{
 	  uint32_t before_cp = label[pos - 1];

@@ -605,14 +605,32 @@ static const struct idna idna[] = {
    /* Don't resolve as xn--dn-mja7922x.example */
   },
 
-  /* Create while writing Libidn2 to trigger certain code paths. */
+  /* Created while writing Libidn2 to trigger certain code paths. */
 
-#if 0
   {
-    "‌", "xn--uba", IDN2_OK
+    "\xe2\x80\x8c", "", IDN2_CONTEXTJ
     /* Contextj: U+200C. */
   },
-#endif
+  {
+    "\xe2\x80\x8c\x65\x65", "", IDN2_CONTEXTJ
+    /* Contextj: U+200C. */
+  },
+  {
+    "foo\xe2\x80\x8c", "", IDN2_CONTEXTJ
+    /* Contextj: U+200C. */
+  },
+  {
+    "foo\xe2\x80\x8c\x65\x65", "", IDN2_CONTEXTJ
+    /* Contextj: U+200C. */
+  },
+  {
+    "\xd9\x84\xe2\x80\x8c\x65", "", IDN2_CONTEXTJ
+    /* Contextj: U+0644 (0xD9 0x84) U+200C e.  U+0644 is D. */
+  },
+  {
+    "\xdd\x90\xe2\x80\x8c\xdd\x90", "xn--3oba901q", IDN2_OK
+    /* Contextj: U+0750 (0xDD 0x90) U+200C U+0750.  U+0750 is D. */
+  },
   {
     "·", "xn--uba", IDN2_OK
     /* Contexto: Lookup of U+00B7 should succeed. */
