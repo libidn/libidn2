@@ -46,19 +46,16 @@ AC_DEFUN([gl_EARLY],
   # Code from module iconv_open:
   # Code from module include_next:
   # Code from module inline:
-  # Code from module langinfo:
   # Code from module lib-symbol-versions:
   # Code from module localcharset:
   # Code from module maintainer-makefile:
   # Code from module malloc-posix:
   # Code from module malloca:
   # Code from module multiarch:
-  # Code from module nl_langinfo:
   # Code from module stdbool:
   # Code from module stddef:
   # Code from module stdint:
   # Code from module stdlib:
-  # Code from module striconv:
   # Code from module striconveh:
   # Code from module striconveha:
   # Code from module uniconv/base:
@@ -156,8 +153,6 @@ AC_DEFUN([gl_INIT],
   # Code from module include_next:
   # Code from module inline:
   gl_INLINE
-  # Code from module langinfo:
-  gl_LANGINFO_H
   # Code from module lib-symbol-versions:
   gl_LD_VERSION_SCRIPT
   # Code from module localcharset:
@@ -174,9 +169,6 @@ AC_DEFUN([gl_INIT],
   gl_MALLOCA
   # Code from module multiarch:
   gl_MULTIARCH
-  # Code from module nl_langinfo:
-  gl_FUNC_NL_LANGINFO
-  gl_LANGINFO_MODULE_INDICATOR([nl_langinfo])
   # Code from module stdbool:
   AM_STDBOOL_H
   # Code from module stddef:
@@ -185,11 +177,6 @@ AC_DEFUN([gl_INIT],
   gl_STDINT_H
   # Code from module stdlib:
   gl_STDLIB_H
-  # Code from module striconv:
-  if test $gl_cond_libtool = false; then
-    gl_ltlibdeps="$gl_ltlibdeps $LTLIBICONV"
-    gl_libdeps="$gl_libdeps $LIBICONV"
-  fi
   # Code from module striconveh:
   if test $gl_cond_libtool = false; then
     gl_ltlibdeps="$gl_ltlibdeps $LTLIBICONV"
@@ -445,22 +432,18 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/iconv_open-solaris.gperf
   lib/iconv_open.c
   lib/iconveh.h
-  lib/langinfo.in.h
   lib/localcharset.c
   lib/localcharset.h
   lib/malloc.c
   lib/malloca.c
   lib/malloca.h
   lib/malloca.valgrind
-  lib/nl_langinfo.c
   lib/ref-add.sin
   lib/ref-del.sin
   lib/stdbool.in.h
   lib/stddef.in.h
   lib/stdint.in.h
   lib/stdlib.in.h
-  lib/striconv.c
-  lib/striconv.h
   lib/striconveh.c
   lib/striconveh.h
   lib/striconveha.c
@@ -536,7 +519,6 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/iconv_open.m4
   m4/include_next.m4
   m4/inline.m4
-  m4/langinfo_h.m4
   m4/ld-version-script.m4
   m4/lib-ld.m4
   m4/lib-link.m4
@@ -547,7 +529,6 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/malloc.m4
   m4/malloca.m4
   m4/multiarch.m4
-  m4/nl_langinfo.m4
   m4/onceonly.m4
   m4/stdbool.m4
   m4/stddef_h.m4

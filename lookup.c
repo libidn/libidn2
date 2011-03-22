@@ -19,11 +19,10 @@
 
 #include "idn2.h"
 
-#include <langinfo.h> /* nl_langinfo */
-
-#include "striconv.h" /* str_iconv */
-
-#include "idna.h"
+#include "idna.h" /* _idn2_domain_u8 */
+#include <errno.h> /* errno */
+#include "uniconv.h" /* u8_strconv_from_locale */
+#include <stdlib.h> /* free */
 
 /**
  * idn2_lookup_u8:
@@ -86,16 +85,16 @@ idn2_lookup_u8 (const uint8_t *src, uint8_t **lookupname, int flags)
 int
 idn2_lookup_ul (const char *src, char **lookupname, int flags)
 {
-  char *locale_codeset = nl_langinfo (CODESET);
-
-  if (locale_codeset == NULL || *locale_codeset == '\0')
-    return IDN2_NO_CODESET;
-
-  uint8_t *utf8src = str_iconv (src, locale_codeset, "UTF-8");
+  uint8_t *utf8src = u8_strconv_from_locale (src);
   if (utf8src == NULL)
-    return IDN2_ICONV_FAIL;
+    {
+      if (errno == ENOMEM)
+	return IDN2_MALLOC;
+      return IDN2_ICONV_FAIL;
+    }
 
-  int rc = idn2_lookup_u8 (utf8src, lookupname, flags | IDN2_NFC_INPUT);
+  int rc = idn2_lookup_u8 (utf8src, (uint8_t **) lookupname,
+			   flags | IDN2_NFC_INPUT);
 
   free (utf8src);
 

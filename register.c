@@ -19,11 +19,10 @@
 
 #include "idn2.h"
 
-#include <langinfo.h> /* nl_langinfo */
-
-#include "idna.h"
-
-#include "striconv.h" /* str_iconv */
+#include "idna.h" /* _idn2_domain_u8 */
+#include <errno.h> /* errno */
+#include "uniconv.h" /* u8_strconv_from_locale */
+#include <stdlib.h> /* free */
 
 int
 idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
@@ -37,16 +36,16 @@ int
 idn2_register_ul (const char *ulabel, const char *alabel,
 		  char **insertname, int flags)
 {
-  char *locale_codeset = nl_langinfo (CODESET);
-
-  if (locale_codeset == NULL || *locale_codeset == '\0')
-    return IDN2_NO_CODESET;
-
-  uint8_t *utf8ulabel = str_iconv (ulabel, locale_codeset, "UTF-8");
+  uint8_t *utf8ulabel = u8_strconv_from_locale (ulabel);
   if (utf8ulabel == NULL)
-    return IDN2_ICONV_FAIL;
+    {
+      if (errno == ENOMEM)
+	return IDN2_MALLOC;
+      return IDN2_ICONV_FAIL;
+    }
 
-  int rc = idn2_register_u8 (utf8ulabel, alabel, insertname,
+  int rc = idn2_register_u8 (utf8ulabel, (uint8_t *) alabel,
+			     (uint8_t **) insertname,
 			     flags | IDN2_NFC_INPUT);
 
   free (utf8ulabel);

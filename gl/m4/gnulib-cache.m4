@@ -15,7 +15,7 @@
 
 
 # Specification in the form of a command-line invocation:
-#   gnulib-tool --import --dir=. --local-dir=gl/override --lib=libgnu --source-base=gl --m4-base=gl/m4 --doc-base=doc --tests-base=tests --aux-dir=build-aux --libtool --macro-prefix=gl --no-vc-files git-version-gen lib-symbol-versions maintainer-makefile nl_langinfo striconv uniconv/u8-strconv-from-locale unictype/bidicategory-of unictype/category-M unictype/category-test unictype/joiningtype-of uninorm/nfc uninorm/u32-normalize unistr/u32-cpy-alloc unistr/u32-to-u8 unistr/u8-to-u32
+#   gnulib-tool --import --dir=. --local-dir=gl/override --lib=libgnu --source-base=gl --m4-base=gl/m4 --doc-base=doc --tests-base=tests --aux-dir=build-aux --libtool --macro-prefix=gl --no-vc-files git-version-gen lib-symbol-versions maintainer-makefile uniconv/u8-strconv-from-locale unictype/bidicategory-of unictype/category-M unictype/category-test unictype/joiningtype-of uninorm/nfc uninorm/u32-normalize unistr/u32-cpy-alloc unistr/u32-to-u8 unistr/u8-to-u32
 
 # Specification in the form of a few gnulib-tool.m4 macro invocations:
 gl_LOCAL_DIR([gl/override])
@@ -23,8 +23,6 @@ gl_MODULES([
   git-version-gen
   lib-symbol-versions
   maintainer-makefile
-  nl_langinfo
-  striconv
   uniconv/u8-strconv-from-locale
   unictype/bidicategory-of
   unictype/category-M
