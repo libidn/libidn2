@@ -692,6 +692,8 @@ main (void)
 	fail ("expected rc %d got rc %d\n", idna[i].rc, rc);
       else if (rc == IDN2_OK && strcmp (out, idna[i].out) != 0)
 	fail ("expected: %s\ngot: %s\n", idna[i].out, out);
+      if (rc == IDN2_OK)
+	free (out);
     }
 
   return error_count;

@@ -21,7 +21,6 @@ config.status
 configure
 context.lo
 context.o
-data.c
 data.lo
 data.o
 doc/reference/html-build.stamp
