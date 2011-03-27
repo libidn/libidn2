@@ -19,10 +19,108 @@
 
 #include "idn2.h"
 
-#include "idna.h" /* _idn2_domain_u8 */
 #include <errno.h> /* errno */
-#include "uniconv.h" /* u8_strconv_from_locale */
 #include <stdlib.h> /* free */
+
+#include "punycode.h"
+
+#include "uniconv.h" /* u8_strconv_from_locale */
+#include "unistr.h" /* u8_to_u32 */
+#include "uninorm.h" /* u32_normalize */
+
+#include "idna.h" /* _idn2_label_test */
+
+static int
+label (const int what,
+       const uint8_t *src, size_t srclen,
+       uint8_t **dst, size_t *dstlen,
+       int flags)
+{
+  size_t plen;
+  uint32_t *p;
+  int rc;
+
+  if (flags & IDN2_ALABEL_ROUNDTRIP)
+    /* FIXME: Conversion from the A-label and testing that the result is
+       a U-label SHOULD be performed if the domain name will later be
+       presented to the user in native character form */
+    return -1;
+
+  p = u8_to_u32 (src, srclen, NULL, &plen);
+  if (p == NULL)
+    {
+      if (errno == ENOMEM)
+	return IDN2_MALLOC;
+      return IDN2_ENCODING_ERROR;
+    }
+
+  if (flags & IDN2_NFC_INPUT)
+    {
+      size_t tmplen;
+      uint32_t *tmp = u32_normalize (UNINORM_NFC, p, plen, NULL, &tmplen);
+      free (p);
+      if (tmp == NULL)
+	{
+	  if (errno == ENOMEM)
+	    return IDN2_MALLOC;
+	  return IDN2_NFC;
+	}
+
+      p = tmp;
+      plen = tmplen;
+    }
+
+  rc = _idn2_label_test (what, p, plen);
+  if (rc != IDN2_OK)
+    return rc;
+
+  {
+    size_t i;
+    bool ascii = true;
+    int rc;
+
+    for (i = 0; i < plen; i++)
+      if (p[i] >= 0x80)
+	ascii = false;
+
+    if (!ascii)
+      {
+	char out[63];
+	size_t tmpl;
+	uint8_t *l;
+
+	tmpl = sizeof (out);
+	rc = _idn2_punycode_encode (plen, p, NULL,
+				    &tmpl, out);
+	if (rc != IDN2_OK)
+	  return rc;
+
+	l = malloc (tmpl + 4);
+	if (l == NULL)
+	  return IDN2_MALLOC;
+
+	l[0] = 'x';
+	l[1] = 'n';
+	l[2] = '-';
+	l[3] = '-';
+
+	for (i = 0; i < tmpl; i++)
+	  l[i + 4] = out[i];
+
+	*dst = l;
+	*dstlen = tmpl + 4;
+      }
+    else
+      {
+	*dst = u32_to_u8 (p, plen, NULL, dstlen);
+
+	if (*dst == NULL)
+	  return IDN2_MALLOC;
+      }
+  }
+
+  return IDN2_OK;
+}
 
 /**
  * idn2_lookup_u8:
@@ -46,33 +144,62 @@
 int
 idn2_lookup_u8 (const uint8_t *src, uint8_t **lookupname, int flags)
 {
-  int what[] =
-    {
-      CHECK_NFC,
-      CHECK_2HYPHEN,
-      CHECK_LEADING_COMBINING,
-      CHECK_DISALLOWED,
-      CHECK_CONTEXTJ_RULE,
-      CHECK_CONTEXTO_WITH_RULE,
-      CHECK_UNASSIGNED,
-      CHECK_BIDI,
-      ACE,
-      -1
-    };
+  size_t lookupnamelen = 0;
+  int what = TEST_NFC |
+    TEST_2HYPHEN |
+    TEST_LEADING_COMBINING |
+    TEST_DISALLOWED |
+    TEST_CONTEXTJ_RULE |
+    TEST_CONTEXTO_WITH_RULE |
+    TEST_UNASSIGNED |
+    TEST_BIDI;
   int rc;
 
-  if (flags & IDN2_ALABEL_ROUNDTRIP)
-    /* FIXME: Conversion from the A-label and testing that the result is
-       a U-label SHOULD be performed if the domain name will later be
-       presented to the user in native character form */
-    return -1;
+  if (src == NULL)
+    return IDN2_OK;
 
-  if (flags & IDN2_NFC_INPUT)
-    what[0] = NFC;
+  *lookupname = malloc (IDN2_DOMAIN_MAX_LENGTH + 1);
+  if (*lookupname == NULL)
+    return IDN2_MALLOC;
 
-  rc = _idn2_domain_u8 (what, src, lookupname);
+  do
+    {
+      const uint8_t *end = strchrnul (src, '.');
+      /* XXX Do we care about non-U+002E dots such as U+3002, U+FF0E
+	 and U+FF61 here?  Perhaps when IDN2_NFC_INPUT? */
+      size_t labellen = end - src;
+      uint8_t *tmp;
+      size_t tmplen;
+      int rc;
 
-  return rc;
+      rc = label (what, src, labellen, &tmp, &tmplen, flags);
+      if (rc != IDN2_OK)
+	{
+	  free (*lookupname);
+	  return rc;
+	}
+
+      if (lookupnamelen + tmplen > IDN2_DOMAIN_MAX_LENGTH)
+	return -1;
+
+      memcpy (*lookupname + lookupnamelen, tmp, tmplen);
+      lookupnamelen += tmplen;
+
+      if (*end == '.')
+	{
+	  if (lookupnamelen + 1 > IDN2_DOMAIN_MAX_LENGTH)
+	    return -1;
+
+	  (*lookupname)[lookupnamelen] = '.';
+	  lookupnamelen++;
+	}
+      (*lookupname)[lookupnamelen] = '\0';
+
+      src = end;
+    }
+  while (*src++);
+
+  return IDN2_OK;
 }
 
 /**

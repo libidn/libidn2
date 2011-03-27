@@ -19,21 +19,24 @@
 
 enum
   {
-    ZERO = 0,
-    CHECK_NFC,
-    CHECK_2HYPHEN,
-    CHECK_HYPHEN_STARTEND,
-    CHECK_LEADING_COMBINING,
-    CHECK_DISALLOWED,
-    CHECK_CONTEXTJ, /* is code point a CONTEXTJ code point? */
-    CHECK_CONTEXTJ_RULE, /* does code point pass CONTEXTJ rule? */
-    CHECK_CONTEXTO, /* is code point a CONTEXTO code point? */
-    CHECK_CONTEXTO_WITH_RULE, /* is there a CONTEXTO rule for code point? */
-    CHECK_CONTEXTO_RULE, /* does code point pass CONTEXTO rule? */
-    CHECK_UNASSIGNED,
-    CHECK_BIDI,
-    ACE,
-    NFC
+    TEST_NFC			= 0x0001,
+    TEST_2HYPHEN		= 0x0002,
+    TEST_HYPHEN_STARTEND	= 0x0004,
+    TEST_LEADING_COMBINING	= 0x0008,
+    TEST_DISALLOWED		= 0x0010,
+    /* is code point a CONTEXTJ code point? */
+    TEST_CONTEXTJ		= 0x0020,
+    /* does code point pass CONTEXTJ rule? */
+    TEST_CONTEXTJ_RULE		= 0x0040,
+    /* is code point a CONTEXTO code point? */
+    TEST_CONTEXTO		= 0x0080,
+    /* is there a CONTEXTO rule for code point? */
+    TEST_CONTEXTO_WITH_RULE	= 0x0100,
+    /* does code point pass CONTEXTO rule? */
+    TEST_CONTEXTO_RULE		= 0x0200,
+    TEST_UNASSIGNED		= 0x0400,
+    TEST_BIDI			= 0x0800,
   };
 
-int _idn2_domain_u8 (const int what[], const uint8_t *src, uint8_t **dst);
+extern int
+_idn2_label_test (int what, const uint32_t *label, size_t llen);

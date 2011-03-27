@@ -29,8 +29,7 @@ IDN2_0.0.0 {
     idn2_strerror;
     idn2_strerror_name;
 
-    # Internal use only.
-    _idn2_label_u8;
+    # Internal self-test use only.
     _idn2_punycode_encode;
     _idn2_punycode_decode;
 

@@ -24,7 +24,7 @@
 #include <unictype.h> /* uc_combining_class, UC_CCC_VR */
 
 int
-_idn2_contextj_rule (uint32_t *label, size_t llen, size_t pos)
+_idn2_contextj_rule (const uint32_t *label, size_t llen, size_t pos)
 {
   if (llen == 0)
     return IDN2_OK;
@@ -99,7 +99,7 @@ _idn2_contextj_rule (uint32_t *label, size_t llen, size_t pos)
 }
 
 int
-_idn2_contexto_rule (uint32_t *label, size_t llen, size_t pos)
+_idn2_contexto_rule (const uint32_t *label, size_t llen, size_t pos)
 {
   uint32_t cp = label[pos];
 

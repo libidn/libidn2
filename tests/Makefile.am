@@ -18,5 +18,5 @@ AM_LDFLAGS = -static
 
 LDADD = ../libidn2.la
 
-TESTS = test-punycode test-low test-lookup
-check_PROGRAMS = test-punycode test-low test-lookup
+TESTS = test-punycode test-lookup
+check_PROGRAMS = test-punycode test-lookup

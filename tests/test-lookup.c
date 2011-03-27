@@ -30,6 +30,7 @@ struct idna
   const char *in;
   const char *out;
   int rc;
+  int flags;
 };
 
 static const struct idna idna[] = {
@@ -629,9 +630,87 @@ static const struct idna idna[] = {
        U+0300 is T, U+0750 is D. */
   },
   {
-    "·", "xn--uba", IDN2_OK
+    "\xc2\xb7", "xn--uba", IDN2_OK
     /* Contexto: Lookup of U+00B7 should succeed. */
-  }
+  },
+  {
+    "\xd0\x94\xd0\xb0\xc1\x80", "", IDN2_ENCODING_ERROR
+  },
+  {
+    "\xe2\x84\xa6", "", IDN2_NOT_NFC
+  },
+  {
+    "ab--", "", IDN2_2HYPHEN
+  },
+  {
+    "--", "--", IDN2_OK
+  },
+  {
+    "\xcd\x8f", "", IDN2_LEADING_COMBINING
+    /* CCC=0 GC=M */
+  },
+  {
+    "\xd2\x88", "", IDN2_LEADING_COMBINING
+    /* CCC=0 GC=M */
+  },
+  {
+    "\xcc\x80", "", IDN2_LEADING_COMBINING
+    /* CCC!=0 GC=Mn */
+  },
+  {
+    "\xe1\xad\x84", "", IDN2_LEADING_COMBINING
+    /* CCC!=0 GC=Mc */
+  },
+  {
+    "", "", IDN2_OK
+  },
+  {
+    "\xc2\xb8", "", IDN2_DISALLOWED
+  },
+  {
+    "\xf4\x8f\xbf\xbf", "", IDN2_DISALLOWED
+  },
+  {
+    "\xe2\x80\x8d", "", IDN2_CONTEXTJ
+  },
+  {
+    "\xcd\xb8", "", IDN2_UNASSIGNED
+  },
+  {
+    "\xcd\xb9", "", IDN2_UNASSIGNED
+  },
+  {
+    "\x72\xc3\xa4\x6b\x73\x6d\xc3\xb6\x72\x67\xc3\xa5\x73",
+    "xn--rksmrgs-5wao1o", IDN2_OK
+  },
+  {
+    "1\xde\x86", "", IDN2_BIDI
+    /* Check that bidi rejects leading non-L/R/AL characters in bidi strings */
+  },
+  {
+    "f\xd7\x99", "", IDN2_BIDI
+    /* check that ltr string cannot contain R character */
+  },
+  {
+    "-", "-", IDN2_OK
+  },
+  {
+    "-a", "-a", IDN2_OK
+  },
+  {
+    "a-", "a-", IDN2_OK
+  },
+  {
+    "-a", "-a", IDN2_OK
+  },
+  {
+    "-a-", "-a-", IDN2_OK
+  },
+  {
+    "foo", "foo", IDN2_OK
+  },
+  {"\xe2\x84\xab", "", IDN2_NOT_NFC},
+  {"\xe2\x84\xa6", "", IDN2_NOT_NFC},
 };
 
 int debug = 1;
@@ -685,7 +764,7 @@ main (void)
 	"-------------------------------------");
   for (i = 0; i < sizeof (idna) / sizeof (idna[0]); i++)
     {
-      rc = idn2_lookup_u8 (idna[i].in, &out, 0);
+      rc = idn2_lookup_u8 (idna[i].in, &out, idna[i].flags);
       printf ("%3d  %-25s %-40s %s\n", i, idn2_strerror_name (rc),
 	      rc == IDN2_OK ? idna[i].out : "", idna[i].in);
       if (rc != idna[i].rc)

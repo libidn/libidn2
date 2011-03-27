@@ -77,6 +77,10 @@ idn2_strerror (int rc)
       p = _("punycode conversion resulted in overflow");
       break;
 
+    case IDN2_TOO_BIG:
+      p = _("converted domain name would be longer than 255 characters");
+      break;
+
     case IDN2_NOT_NFC:
       p = _("string is not in Unicode NFC format");
       break;
@@ -183,6 +187,10 @@ idn2_strerror_name (int rc)
 
     case IDN2_PUNYCODE_OVERFLOW:
       p = ERR2STR(IDN2_PUNYCODE_OVERFLOW);
+      break;
+
+    case IDN2_TOO_BIG:
+      p = ERR2STR(IDN2_TOO_BIG);
       break;
 
     case IDN2_NOT_NFC:
