@@ -25,13 +25,13 @@
 
 #include "unictype.h"
 
-/* The entire bidi rule could be rewritten in a way to only pass
-   through the string once and collecting necessary information as it
-   goes along.  However, recall Knuth's premature optimization is the
-   root of all evil. */
+/* The entire bidi rule could be rewritten into an one-pass approach;
+   the implementation below may in the worse case iterate through the
+   string a few times.  However, recall Knuth and premature
+   optimization is the root of all evil. */
 
 static bool
-rtl_ralanenescsetonbnnsm_ok (uint32_t *label, size_t llen)
+rtl_ralanenescsetonbnnsm_ok (const uint32_t *label, size_t llen)
 {
   int bc;
 
@@ -62,9 +62,9 @@ rtl_ralanenescsetonbnnsm_ok (uint32_t *label, size_t llen)
 }
 
 static bool
-rtl_ends_ok (uint32_t *label, size_t llen)
+rtl_ends_ok (const uint32_t *label, size_t llen)
 {
-  uint32_t *p;
+  const uint32_t *p;
   int bc;
 
   for (p = label + llen - 1; llen > 0; llen--, p--)
@@ -90,11 +90,11 @@ rtl_ends_ok (uint32_t *label, size_t llen)
 }
 
 static bool
-rtl_enan_ok (uint32_t *label, size_t llen)
+rtl_enan_ok (const uint32_t *label, size_t llen)
 {
   bool en = false;
   bool an = false;
-  uint32_t *p;
+  const uint32_t *p;
   int bc;
 
   for (p = label + llen - 1; llen > 0; llen--, p--)
@@ -116,7 +116,7 @@ rtl_enan_ok (uint32_t *label, size_t llen)
 }
 
 static int
-rtl (uint32_t *label, size_t llen)
+rtl (const uint32_t *label, size_t llen)
 {
   if (rtl_ralanenescsetonbnnsm_ok (label, llen)
       && rtl_ends_ok (label, llen)
@@ -126,7 +126,7 @@ rtl (uint32_t *label, size_t llen)
 }
 
 static bool
-ltr_lenescsetonbnnsm_ok (uint32_t *label, size_t llen)
+ltr_lenescsetonbnnsm_ok (const uint32_t *label, size_t llen)
 {
   int bc;
 
@@ -154,9 +154,9 @@ ltr_lenescsetonbnnsm_ok (uint32_t *label, size_t llen)
 }
 
 static bool
-ltr_ends_ok (uint32_t *label, size_t llen)
+ltr_ends_ok (const uint32_t *label, size_t llen)
 {
-  uint32_t *p;
+  const uint32_t *p;
   int bc;
 
   for (p = label + llen - 1; llen > 0; llen--, p--)
@@ -180,7 +180,7 @@ ltr_ends_ok (uint32_t *label, size_t llen)
 }
 
 static int
-ltr (uint32_t *label, size_t llen)
+ltr (const uint32_t *label, size_t llen)
 {
   if (ltr_lenescsetonbnnsm_ok (label, llen)
       && ltr_ends_ok (label, llen))
@@ -189,7 +189,7 @@ ltr (uint32_t *label, size_t llen)
 }
 
 static bool
-bidi_p (uint32_t *label, size_t llen)
+bidi_p (const uint32_t *label, size_t llen)
 {
   int bc;
 
@@ -210,7 +210,7 @@ bidi_p (uint32_t *label, size_t llen)
 }
 
 int
-_idn2_bidi (uint32_t *label, size_t llen)
+_idn2_bidi (const uint32_t *label, size_t llen)
 {
   int bc;
 
