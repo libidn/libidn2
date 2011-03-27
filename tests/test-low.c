@@ -25,9 +25,11 @@
 
 #include <idn2.h>
 
+#include "idna.h"
+
 struct idna_tv
 {
-  const char *what;
+  const int what[2];
   int rc;
   size_t inlen;
   const uint8_t *in;
@@ -39,47 +41,47 @@ struct idna_tv
 #define REKA_LEN 13
 
 static struct idna_tv tv[] = {
-  {"", IDN2_INTERNAL_ERROR, 0, NULL, 0, NULL},
-  {"foo", IDN2_INTERNAL_ERROR, 0, NULL, 0, NULL},
-  {"", IDN2_ENCODING_ERROR, 6, "\xd0\x94\xd0\xb0\xc1\x80", 0, NULL},
-  {"check-nfc", IDN2_NOT_NFC, 3, "\xe2\x84\xa6", 0, NULL},
-  {"check-nfc", IDN2_OK, 2, "\xC3\x85", 2, "\xC3\x85"},
-  {"check-nfc", IDN2_NOT_NFC, 3, "\xe2\x84\xa6", 0, NULL},
-  {"check-nfc", IDN2_OK, 2, "\xce\xa9", 2, "\xce\xa9"},
-  {"check-2hyphen", IDN2_2HYPHEN, 4, "ab--", 0, NULL},
-  {"check-2hyphen", IDN2_OK, 2, "--", 2, "--"},
-  {"check-hyphen-startend", IDN2_HYPHEN_STARTEND, 1, "-", 0, NULL},
-  {"check-hyphen-startend", IDN2_HYPHEN_STARTEND, 2, "-a", 0, NULL},
-  {"check-hyphen-startend", IDN2_HYPHEN_STARTEND, 2, "a-", 0, NULL},
-  {"check-hyphen-startend", IDN2_HYPHEN_STARTEND, 3, "-a-", 0, NULL},
-  {"check-hyphen-startend", IDN2_OK, 3, "foo", 3, "foo"},
-  {"nfc", IDN2_OK, 3, "\xe2\x84\xab", 2, "\xC3\x85"},
-  {"nfc", IDN2_OK, 3, "\xe2\x84\xa6", 2, "\xce\xa9"},
+  {{0}, IDN2_OK, 0, NULL, 0, NULL},
+  {{42}, IDN2_OK, 0, NULL, 0, NULL},
+  {{0}, IDN2_ENCODING_ERROR, 6, "\xd0\x94\xd0\xb0\xc1\x80", 0, NULL},
+  {{CHECK_NFC, 0}, IDN2_NOT_NFC, 3, "\xe2\x84\xa6", 0, NULL},
+  {{CHECK_NFC, 0}, IDN2_OK, 2, "\xC3\x85", 2, "\xC3\x85"},
+  {{CHECK_NFC, 0}, IDN2_NOT_NFC, 3, "\xe2\x84\xa6", 0, NULL},
+  {{CHECK_NFC, 0}, IDN2_OK, 2, "\xce\xa9", 2, "\xce\xa9"},
+  {{CHECK_2HYPHEN, 0}, IDN2_2HYPHEN, 4, "ab--", 0, NULL},
+  {{CHECK_2HYPHEN, 0}, IDN2_OK, 2, "--", 2, "--"},
+  {{CHECK_HYPHEN_STARTEND, 0}, IDN2_HYPHEN_STARTEND, 1, "-", 0, NULL},
+  {{CHECK_HYPHEN_STARTEND, 0}, IDN2_HYPHEN_STARTEND, 2, "-a", 0, NULL},
+  {{CHECK_HYPHEN_STARTEND, 0}, IDN2_HYPHEN_STARTEND, 2, "a-", 0, NULL},
+  {{CHECK_HYPHEN_STARTEND, 0}, IDN2_HYPHEN_STARTEND, 3, "-a-", 0, NULL},
+  {{CHECK_HYPHEN_STARTEND, 0}, IDN2_OK, 3, "foo", 3, "foo"},
+  {{NFC, 0}, IDN2_OK, 3, "\xe2\x84\xab", 2, "\xC3\x85"},
+  {{NFC, 0}, IDN2_OK, 3, "\xe2\x84\xa6", 2, "\xce\xa9"},
   /* CCC=0 GC=M */
-  {"check-leading-combining", IDN2_LEADING_COMBINING, 2, "\xcd\x8f", 0, NULL},
+  {{CHECK_LEADING_COMBINING, 0}, IDN2_LEADING_COMBINING, 2, "\xcd\x8f", 0, NULL},
   /* CCC=0 GC=M */
-  {"check-leading-combining", IDN2_LEADING_COMBINING, 2, "\xd2\x88", 0, NULL},
+  {{CHECK_LEADING_COMBINING, 0}, IDN2_LEADING_COMBINING, 2, "\xd2\x88", 0, NULL},
   /* CCC!=0 GC=Mn */
-  {"check-leading-combining", IDN2_LEADING_COMBINING, 2, "\xcc\x80", 0, NULL},
+  {{CHECK_LEADING_COMBINING, 0}, IDN2_LEADING_COMBINING, 2, "\xcc\x80", 0, NULL},
   /* CCC!=0 GC=Mc */
-  {"check-leading-combining", IDN2_LEADING_COMBINING, 3, "\xe1\xad\x84", 0, NULL},
-  {"check-disallowed", IDN2_DISALLOWED, 1, "\x00", 0, NULL},
-  {"check-disallowed", IDN2_DISALLOWED, 2, "a\x00", 0, NULL},
-  {"check-disallowed", IDN2_DISALLOWED, 2, "\xc2\xb8", 0, NULL},
-  {"check-disallowed", IDN2_DISALLOWED, 4, "\xf4\x8f\xbf\xbf", 0, NULL},
-  {"check-contextj", IDN2_CONTEXTJ, 3, "\xe2\x80\x8d", 0, NULL},
-  {"check-contexto-with-rule", IDN2_OK, 2, "AA", 2, "AA"},
-  {"check-contexto-with-rule", IDN2_OK, 2, "\xc2\xb7", 2, "\xc2\xb7"},
-  {"check-unassigned", IDN2_UNASSIGNED, 2, "\xcd\xb8", 0, NULL},
-  {"check-unassigned", IDN2_UNASSIGNED, 2, "\xcd\xb9", 0, NULL},
+  {{CHECK_LEADING_COMBINING, 0}, IDN2_LEADING_COMBINING, 3, "\xe1\xad\x84", 0, NULL},
+  {{CHECK_DISALLOWED, 0}, IDN2_DISALLOWED, 1, "\x00", 0, NULL},
+  {{CHECK_DISALLOWED, 0}, IDN2_DISALLOWED, 2, "a\x00", 0, NULL},
+  {{CHECK_DISALLOWED, 0}, IDN2_DISALLOWED, 2, "\xc2\xb8", 0, NULL},
+  {{CHECK_DISALLOWED, 0}, IDN2_DISALLOWED, 4, "\xf4\x8f\xbf\xbf", 0, NULL},
+  {{CHECK_CONTEXTJ, 0}, IDN2_CONTEXTJ, 3, "\xe2\x80\x8d", 0, NULL},
+  {{CHECK_CONTEXTO_WITH_RULE, 0}, IDN2_OK, 2, "AA", 2, "AA"},
+  {{CHECK_CONTEXTO_WITH_RULE, 0}, IDN2_OK, 2, "\xc2\xb7", 2, "\xc2\xb7"},
+  {{CHECK_UNASSIGNED, 0}, IDN2_UNASSIGNED, 2, "\xcd\xb8", 0, NULL},
+  {{CHECK_UNASSIGNED, 0}, IDN2_UNASSIGNED, 2, "\xcd\xb9", 0, NULL},
   /* Check that bidi handles ascii strings ok. */
-  {"check-bidi", IDN2_OK, 3, "foo", 3, "foo"},
+  {{CHECK_BIDI, 0}, IDN2_OK, 3, "foo", 3, "foo"},
   /* Check that bidi handles non-bidi strings ok. */
-  {"check-bidi", IDN2_OK, REKA_LEN, REKA, REKA_LEN, REKA },
+  {{CHECK_BIDI, 0}, IDN2_OK, REKA_LEN, REKA, REKA_LEN, REKA },
   /* Check that bidi rejects leading non-L/R/AL characters in bidi strings */
-  {"check-bidi", IDN2_BIDI, 3, "1\xde\x86", 0, NULL},
+  {{CHECK_BIDI, 0}, IDN2_BIDI, 3, "1\xde\x86", 0, NULL},
   /* check that ltr string cannot contain R character */
-  {"check-bidi", IDN2_BIDI, 3, "f\xd7\x99", 0, NULL},
+  {{CHECK_BIDI, 0}, IDN2_BIDI, 3, "f\xd7\x99", 0, NULL},
 };
 
 int debug = 1;

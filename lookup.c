@@ -46,19 +46,29 @@
 int
 idn2_lookup_u8 (const uint8_t *src, uint8_t **lookupname, int flags)
 {
-  const char *what = "check-nfc,check-2hyphen,check-leading-combining,"
-    "check-disallowed,check-contextj-rule,check-contexto-with-rule,"
-    "check-unassigned,check-bidi,ace";
+  int what[] =
+    {
+      CHECK_NFC,
+      CHECK_2HYPHEN,
+      CHECK_LEADING_COMBINING,
+      CHECK_DISALLOWED,
+      CHECK_CONTEXTJ_RULE,
+      CHECK_CONTEXTO_WITH_RULE,
+      CHECK_UNASSIGNED,
+      CHECK_BIDI,
+      ACE,
+      -1
+    };
   int rc;
 
   if (flags & IDN2_ALABEL_ROUNDTRIP)
     /* FIXME: Conversion from the A-label and testing that the result is
        a U-label SHOULD be performed if the domain name will later be
        presented to the user in native character form */
-    return IDN2_INTERNAL_ERROR;
+    return -1;
 
   if (flags & IDN2_NFC_INPUT)
-    what += strlen ("check-");
+    what[0] = NFC;
 
   rc = _idn2_domain_u8 (what, src, lookupname);
 

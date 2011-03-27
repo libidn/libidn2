@@ -33,52 +33,16 @@
 #include "uninorm.h" /* u32_normalize */
 #include "unistr.h" /* u32_normalize */
 
-enum
-  {
-    CHECK_NFC,
-    CHECK_2HYPHEN,
-    CHECK_HYPHEN_STARTEND,
-    CHECK_COMBINING,
-    CHECK_DISALLOWED,
-    CHECK_CONTEXTJ, /* is code point a CONTEXTJ code point? */
-    CHECK_CONTEXTJ_RULE, /* does code point pass CONTEXTJ rule? */
-    CHECK_CONTEXTO, /* is code point a CONTEXTO code point? */
-    CHECK_CONTEXTO_WITH_RULE, /* is there a CONTEXTO rule for code point? */
-    CHECK_CONTEXTO_RULE, /* does code point pass CONTEXTO rule? */
-    CHECK_UNASSIGNED,
-    CHECK_BIDI,
-    ACE,
-    NFC,
-    THE_END
-  };
-
-static char *const opts[] = {
-  "check-nfc",
-  "check-2hyphen",
-  "check-hyphen-startend",
-  "check-leading-combining",
-  "check-disallowed",
-  "check-contextj",
-  "check-contextj-rule",
-  "check-contexto",
-  "check-contexto-with-rule",
-  "check-contexto-rule",
-  "check-unassigned",
-  "check-bidi",
-  "ace",
-  "nfc",
-  NULL
-};
+#include "idna.h"
 
 static int
-process1 (char *opt, uint32_t **label, size_t *llen)
+process1 (const int what[], uint32_t **label, size_t *llen)
 {
-  char *p = opt;
-  char *value;
+  const int *p = what;
 
-  while (p != NULL && *p != '\0')
+  for (;;)
     {
-      switch (getsubopt (&p, (char *const *) opts, &value))
+      switch (*p++)
 	{
 	case CHECK_NFC:
 	  {
@@ -109,7 +73,7 @@ process1 (char *opt, uint32_t **label, size_t *llen)
 	    return IDN2_HYPHEN_STARTEND;
 	  break;
 
-	case CHECK_COMBINING:
+	case CHECK_LEADING_COMBINING:
 	  if (*llen > 0 && uc_is_general_category ((*label)[0], UC_CATEGORY_M))
 	    return IDN2_LEADING_COMBINING;
 	  break;
@@ -248,12 +212,8 @@ process1 (char *opt, uint32_t **label, size_t *llen)
 	  }
 	  break;
 
-	case -1:
-	  if (!value)
-	    break;
-
 	default:
-	  return IDN2_INTERNAL_ERROR;
+	  return IDN2_OK;
 	  break;
 	}
     }
@@ -262,7 +222,7 @@ process1 (char *opt, uint32_t **label, size_t *llen)
 }
 
 static int
-process (char *opt,
+process (const int what[],
 	 const uint32_t *src, size_t srclen,
 	 uint32_t **dst, size_t *dstlen)
 {
@@ -273,7 +233,7 @@ process (char *opt,
   if (tmp == NULL)
     return IDN2_MALLOC;
 
-  rc = process1 (opt, &tmp, &tmplen);
+  rc = process1 (what, &tmp, &tmplen);
   if (rc != IDN2_OK)
     {
       free (tmp);
@@ -286,30 +246,8 @@ process (char *opt,
   return IDN2_OK;
 }
 
-static int
-label_u32 (const char *what,
-	   const uint32_t *src, size_t srclen,
-	   uint32_t **dst, size_t *dstlen)
-{
-  char *opt;
-  int rc;
-
-  if (what == NULL || *what == '\0')
-    return IDN2_INTERNAL_ERROR;
-
-  opt = strdup (what);
-  if (opt == NULL)
-    return IDN2_MALLOC;
-
-  rc = process (opt, src, srclen, dst, dstlen);
-
-  free (opt);
-
-  return rc;
-}
-
 int
-_idn2_label_u8 (const char *what,
+_idn2_label_u8 (const int what[],
 		const uint8_t *src, size_t srclen,
 		uint8_t **dst, size_t *dstlen)
 {
@@ -325,7 +263,7 @@ _idn2_label_u8 (const char *what,
       return IDN2_ENCODING_ERROR;
     }
 
-  rc = label_u32 (what, p, plen, &u32dst, &u32dstlen);
+  rc = process (what, p, plen, &u32dst, &u32dstlen);
   free (p);
   if (rc != IDN2_OK)
     return rc;
@@ -339,7 +277,7 @@ _idn2_label_u8 (const char *what,
 }
 
 int
-_idn2_domain_u8 (const char *what, const uint8_t *src, uint8_t **dst)
+_idn2_domain_u8 (const int what[], const uint8_t *src, uint8_t **dst)
 {
   const uint8_t *p;
 

@@ -17,4 +17,23 @@
 
 #include <stdint.h>
 
-int _idn2_domain_u8 (const char *what, const uint8_t *src, uint8_t **dst);
+enum
+  {
+    ZERO = 0,
+    CHECK_NFC,
+    CHECK_2HYPHEN,
+    CHECK_HYPHEN_STARTEND,
+    CHECK_LEADING_COMBINING,
+    CHECK_DISALLOWED,
+    CHECK_CONTEXTJ, /* is code point a CONTEXTJ code point? */
+    CHECK_CONTEXTJ_RULE, /* does code point pass CONTEXTJ rule? */
+    CHECK_CONTEXTO, /* is code point a CONTEXTO code point? */
+    CHECK_CONTEXTO_WITH_RULE, /* is there a CONTEXTO rule for code point? */
+    CHECK_CONTEXTO_RULE, /* does code point pass CONTEXTO rule? */
+    CHECK_UNASSIGNED,
+    CHECK_BIDI,
+    ACE,
+    NFC
+  };
+
+int _idn2_domain_u8 (const int what[], const uint8_t *src, uint8_t **dst);

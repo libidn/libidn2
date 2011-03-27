@@ -45,10 +45,6 @@ idn2_strerror (int rc)
       p = _("success");
       break;
 
-    case IDN2_INTERNAL_ERROR:
-      p = _("internal libidn2 error");
-      break;
-
     case IDN2_MALLOC:
       p = _("out of memory");
       break;
@@ -155,10 +151,6 @@ idn2_strerror_name (int rc)
     {
     case IDN2_OK:
       p = ERR2STR(IDN2_OK);
-      break;
-
-    case IDN2_INTERNAL_ERROR:
-      p = ERR2STR(IDN2_INTERNAL_ERROR);
       break;
 
     case IDN2_MALLOC:
