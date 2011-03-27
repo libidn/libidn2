@@ -53,7 +53,10 @@
  */
 # define IDN2_VERSION_NUMBER 0x00000000
 
-/* IDNA2008 flags */
+/* IDNA2008 constants and flags */
+
+# define IDN2_MAX_LABEL_LENGTH 63
+# define IDN2_MAX_DOMAIN_LENGTH 255
 
 /**
  * idn2_flags:
