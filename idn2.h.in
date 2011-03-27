@@ -72,7 +72,7 @@ typedef enum
     IDN2_ALABEL_ROUNDTRIP = 2,
   } idn2_flags;
 
-/* IDNA2008 with UTF-8 input. */
+/* IDNA2008 with UTF-8 encoded inputs. */
 
 extern IDN2_API int
 idn2_lookup_u8 (const uint8_t *src, uint8_t **lookupname, int flags);
