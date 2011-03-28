@@ -110,12 +110,35 @@ _idn2_contexto_rule (const uint32_t *label, size_t llen, size_t pos)
     {
     case 0x00B7:
       /* MIDDLE DOT */
+      if (llen < 3)
+	return IDN2_CONTEXTO;
+      if (pos == 0 || pos == llen - 1)
+	return IDN2_CONTEXTO;
+      if (label[pos - 1] == 0x006C && label[pos + 1] == 0x006C)
+	return IDN2_OK;
+      return IDN2_CONTEXTO;
+      break;
+
     case 0x0375:
       /* GREEK LOWER NUMERAL SIGN (KERAIA) */
+      if (pos == llen - 1)
+	return IDN2_CONTEXTO;
+      if (strcmp (uc_script (label[pos + 1])->name, "Greek") == 0)
+	return IDN2_OK;
+      return IDN2_CONTEXTO;
+      break;
+
     case 0x05F3:
       /* HEBREW PUNCTUATION GERESH */
     case 0x05F4:
       /* HEBREW PUNCTUATION GERSHAYIM */
+      if (pos == 0)
+	return IDN2_CONTEXTO;
+      if (strcmp (uc_script (label[pos - 1])->name, "Hebrew") == 0)
+	return IDN2_OK;
+      return IDN2_CONTEXTO;
+      break;
+
     case 0x0660:
     case 0x0661:
     case 0x0662:
@@ -126,7 +149,16 @@ _idn2_contexto_rule (const uint32_t *label, size_t llen, size_t pos)
     case 0x0667:
     case 0x0668:
     case 0x0669:
-      /* ARABIC-INDIC DIGITS */
+      {
+	/* ARABIC-INDIC DIGITS */
+	size_t i;
+	for (i = 0; i < llen; i++)
+	  if (label[i] >= 0x6F0 && label[i] <= 0x06F9)
+	    return IDN2_CONTEXTO;
+	return IDN2_OK;
+	break;
+      }
+
     case 0x06F0:
     case 0x06F1:
     case 0x06F2:
@@ -137,13 +169,33 @@ _idn2_contexto_rule (const uint32_t *label, size_t llen, size_t pos)
     case 0x06F7:
     case 0x06F8:
     case 0x06F9:
-      /* EXTENDED ARABIC-INDIC DIGITS */
+      {
+	/* EXTENDED ARABIC-INDIC DIGITS */
+	size_t i;
+	for (i = 0; i < llen; i++)
+	  if (label[i] >= 0x660 && label[i] <= 0x0669)
+	    return IDN2_CONTEXTO;
+	return IDN2_OK;
+	break;
+      }
     case 0x30FB:
-      /* KATAKANA MIDDLE DOT */
+      {
+	/* KATAKANA MIDDLE DOT */
+	size_t i;
+	bool script_ok = false;
 
-      /* FIXME */
+	for (i = 0; !script_ok && i < llen; i++)
+	  if (strcmp (uc_script (label[i])->name, "Hiragana") == 0
+	      || strcmp (uc_script (label[i])->name, "Katakana") == 0
+	      || strcmp (uc_script (label[i])->name, "Han") == 0)
+	    script_ok = true;
 
-      break;
+	if (script_ok)
+	  return IDN2_OK;
+	return IDN2_CONTEXTO;
+	break;
+      }
+
     }
 
   return IDN2_CONTEXTO_NO_RULE;

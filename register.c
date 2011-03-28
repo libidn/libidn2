@@ -96,6 +96,8 @@ idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
 	  return rc;
 	}
 
+      (*insertname)[4 + tmpl] = '\0';
+
       return IDN2_OK;
     }
   else

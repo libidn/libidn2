@@ -85,6 +85,10 @@ idn2_strerror (int rc)
       p = _("domain label longer than 63 characters");
       break;
 
+    case IDN2_INVALID_ALABEL:
+      p = _("input A-label is not valid");
+      break;
+
     case IDN2_NOT_NFC:
       p = _("string is not in Unicode NFC format");
       break;
@@ -199,6 +203,10 @@ idn2_strerror_name (int rc)
 
     case IDN2_TOO_BIG_LABEL:
       p = ERR2STR(IDN2_TOO_BIG_LABEL);
+      break;
+
+    case IDN2_INVALID_ALABEL:
+      p = ERR2STR(IDN2_INVALID_ALABEL);
       break;
 
     case IDN2_NOT_NFC:

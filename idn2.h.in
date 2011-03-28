@@ -103,6 +103,7 @@ idn2_register_ul (const char *ulabel, const char *alabel,
  * @IDN2_PUNYCODE_OVERFLOW: Punycode conversion would overflow.
  * @IDN2_TOO_BIG_DOMAIN: Domain name longer than 255 characters.
  * @IDN2_TOO_BIG_LABEL: Domain label longer than 63 characters.
+ * @IDN2_INVALID_ALABEL: Input A-label is not valid.
  * @IDN2_NOT_NFC: String is not NFC.
  * @IDN2_2HYPHEN: String has forbidden two hyphens.
  * @IDN2_HYPHEN_STARTEND: String has forbidden starting/ending hyphen.

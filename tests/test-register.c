@@ -41,6 +41,55 @@ static const struct idna idna[] = {
 #endif
   {NULL, "foo", "foo", IDN2_OK},
   {NULL, "räksmörgås", "xn--rksmrgs-5wao1o", IDN2_OK},
+  /* U+00B7 MIDDLE DOT */
+  {NULL, "·", "", IDN2_CONTEXTO},
+  {NULL, "a·", "", IDN2_CONTEXTO},
+  {NULL, "·a", "", IDN2_CONTEXTO},
+  {NULL, "a·a", "", IDN2_CONTEXTO},
+  {NULL, "l·l", "xn--ll-0ea", IDN2_OK},
+  {NULL, "al·la", "xn--alla-6ha", IDN2_OK},
+  /* U+0375 GREEK LOWER NUMERAL SIGN (KERAIA) */
+  {NULL, "͵", "", IDN2_CONTEXTO},
+  {NULL, "͵a", "", IDN2_CONTEXTO},
+  {NULL, "͵a͵ϳ", "", IDN2_CONTEXTO},
+  {NULL, "͵ϳ͵a", "", IDN2_CONTEXTO},
+  {NULL, "͵ϳ", "xn--wva6w", IDN2_OK},
+  {NULL, "͵ϳ͵ϳ", "xn--wvaa19ab", IDN2_OK},
+  /* U+05F3 HEBREW PUNCTUATION GERESH */
+  {NULL, "׳", "", IDN2_CONTEXTO},
+  {NULL, "a׳", "", IDN2_CONTEXTO},
+  {NULL, "a׳א׳", "", IDN2_CONTEXTO},
+  {NULL, "א׳a׳", "", IDN2_CONTEXTO},
+  {NULL, "א׳", "xn--4db4e", IDN2_OK},
+  {NULL, "בא׳ב", "xn--4dbbb9k", IDN2_OK},
+  /* U+05F4 HEBREW PUNCTUATION GERSHAYIM */
+  {NULL, "״", "", IDN2_CONTEXTO},
+  {NULL, "a״", "", IDN2_CONTEXTO},
+  {NULL, "a״א", "", IDN2_CONTEXTO},
+  {NULL, "א״", "xn--4db6e", IDN2_OK},
+  {NULL, "בא״ב", "xn--4dbbb3l", IDN2_OK},
+  /* U+0660..U+0669 ARABIC-INDIC DIGITS and
+     U+06F0..U+06F9 EXTENDED ARABIC-INDIC DIGITS */
+  {NULL, "٠", "", IDN2_BIDI},
+  {NULL, "ء٠", "xn--ggb0k", IDN2_OK},
+  {NULL, "ء۰", "xn--ggb82b", IDN2_OK},
+  {NULL, "ء٠ءء", "xn--ggbaa4w", IDN2_OK},
+  {NULL, "ء٠۰", "", IDN2_CONTEXTO},
+  {NULL, "ء٠ءء۰", "", IDN2_CONTEXTO},
+  {NULL, "ء۰ءء٠", "", IDN2_CONTEXTO},
+  {NULL, "٠ء۰ءء٠", "", IDN2_CONTEXTO},
+  /* U+30FB KATAKANA MIDDLE DOT */
+  {NULL, "・", "", IDN2_CONTEXTO},
+  {NULL, "foo・", "", IDN2_CONTEXTO},
+  {NULL, "foo・bar", "", IDN2_CONTEXTO},
+  {NULL, "foo・barぁbaz", /* U+3041 HIRAGANA LETTER SMALL A */
+   "xn--foobarbaz-b23h61e", IDN2_OK},
+  {NULL, "foo・barァbaz", /* U+30A1 KATAKANA LETTER SMALL A */
+   "xn--foobarbaz-qu4h06a", IDN2_OK},
+  {NULL, "foo・bar〇baz", /* U+3007 IDEOGRAPHIC NUMBER ZERO */
+   "xn--foobarbaz-ql3hk3g", IDN2_OK},
+  {NULL, "foo・bar㐀baz", /* U+3400 CJK UNIFIED IDEOGRAPH-3400 */
+   "xn--foobarbaz-dl5hq7z", IDN2_OK},
 };
 
 int debug = 1;
@@ -103,8 +152,20 @@ main (void)
 	fail ("expected rc %d got rc %d\n", idna[i].rc, rc);
       else if (rc == IDN2_OK && strcmp (out, idna[i].out) != 0)
 	fail ("expected: %s\ngot: %s\n", idna[i].out, out);
+
       if (rc == IDN2_OK)
-	free (out);
+	{
+	  char *tmp;
+
+	  rc = idn2_lookup_u8 (idna[i].ulabel, &tmp, idna[i].flags);
+	  if (rc != IDN2_OK)
+	    fail ("lookup failed?! tv %d", i);
+	  if (strcmp (out, tmp) != 0)
+	    fail ("lookup and register different? lookup %s register %s\n",
+		  tmp, out);
+	  free (tmp);
+	  free (out);
+	}
     }
 
   return error_count;

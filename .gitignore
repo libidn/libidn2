@@ -114,6 +114,9 @@ gl/unictype/joiningtype_of.lo
 gl/unictype/joiningtype_of.o
 gl/unictype/pr_combining.lo
 gl/unictype/pr_combining.o
+gl/unictype/scripts.lo
+gl/unictype/scripts.o
+gl/unictype/scripts_byname.h
 gl/uninorm.h
 gl/uninorm/.dirstamp
 gl/uninorm/canonical-decomposition.lo
