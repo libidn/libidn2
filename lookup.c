@@ -53,17 +53,17 @@ label (const uint8_t *src, size_t srclen,
 
     if (ascii)
       {
+	if (flags & IDN2_ALABEL_ROUNDTRIP)
+	  /* FIXME: Conversion from the A-label and testing that the result is
+	     a U-label SHOULD be performed if the domain name will later be
+	     presented to the user in native character form */
+	  return -1;
+
 	memcpy (dst, src, srclen);
 	*dstlen = srclen;
 	return IDN2_OK;
       }
   }
-
-  if (flags & IDN2_ALABEL_ROUNDTRIP)
-    /* FIXME: Conversion from the A-label and testing that the result is
-       a U-label SHOULD be performed if the domain name will later be
-       presented to the user in native character form */
-    return -1;
 
   p = u8_to_u32 (src, srclen, NULL, &plen);
   if (p == NULL)
