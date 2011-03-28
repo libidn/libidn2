@@ -109,8 +109,10 @@ label (const uint8_t *src, size_t srclen,
  * testing.  Multiple flags may be specified by binary or:ing them
  * together, for example %IDN2_NFC_INPUT | %IDN2_ALABEL_ROUNDTRIP.
  *
- * Returns: On successful conversion %IDN2_OK is returned, otherwise
- *   an error code is returned.
+ * Returns: On successful conversion %IDN2_OK is returned, of the
+ *   output would have been longer than %IDN2_DOMAIN_MAX_LENGTH then
+ *   %IDN2_TOO_BIG_DOMAIN is returned, or another error code is
+ *   returned.
  **/
 int
 idn2_lookup_u8 (const uint8_t *src, uint8_t **lookupname, int flags)
@@ -187,8 +189,10 @@ idn2_lookup_u8 (const uint8_t *src, uint8_t **lookupname, int flags)
  * Pass %IDN2_ALABEL_ROUNDTRIP in @flags to convert any input A-labels
  * to U-labels and perform additional testing.
  *
- * Returns: On successful conversion %IDN2_OK is returned, otherwise
- *   an error code is returned.
+ * Returns: On successful conversion %IDN2_OK is returned, of the
+ *   output would have been longer than %IDN2_DOMAIN_MAX_LENGTH then
+ *   %IDN2_TOO_BIG_DOMAIN is returned, or another error code is
+ *   returned.
  **/
 int
 idn2_lookup_ul (const char *src, char **lookupname, int flags)

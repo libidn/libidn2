@@ -57,15 +57,26 @@ extern "C" {
  */
 # define IDN2_VERSION_NUMBER 0x00010000
 
-/* IDNA2008 constants and flags */
-
+/**
+ * IDN2_LABEL_MAX_LENGTH
+ *
+ * Constant specifying the maximum length of a DNS label to 63
+ * characters, as specified in RFC 1034.
+ */
 # define IDN2_LABEL_MAX_LENGTH 63
+
+/**
+ * IDN2_DOMAIN_MAX_LENGTH
+ *
+ * Constant specifying the maximum length of a DNS domain to 255
+ * characters, as specified in RFC 1034.
+ */
 # define IDN2_DOMAIN_MAX_LENGTH 255
 
 /**
  * idn2_flags:
  * @IDN2_NFC_INPUT: Normalize input string using normalization form C.
- * @IDN2_ALABEL_ROUNDTRIP: Perform optional IDNA2008 roundtrip check.
+ * @IDN2_ALABEL_ROUNDTRIP: Perform optional IDNA2008 lookup roundtrip check.
  *
  * Flags to IDNA2008 functions, to be binary or:ed together.  Specify
  * only 0 if you want the default behaviour.

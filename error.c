@@ -153,8 +153,10 @@ idn2_strerror (int rc)
  *
  * Convert internal libidn2 error code to a string corresponding to
  * internal header file symbols.  For example,
- * idn2_strerror_name(IDN2_MALLOC) will return "IDN2_MALLOC".  The
- * returned pointer must not be de-allocated by the caller.
+ * idn2_strerror_name(IDN2_MALLOC) will return the string
+ * "IDN2_MALLOC".
+ *
+ * The caller must not attempt to de-allocate the returned string.
  *
  * Return value: A string corresponding to error code symbol.
  **/

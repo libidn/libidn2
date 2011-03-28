@@ -29,6 +29,32 @@
 
 #include "idna.h" /* _idn2_label_test */
 
+/**
+ * idn2_register_u8:
+ * @ulabel: input zero-terminated UTF-8 and Unicode NFC string, or NULL.
+ * @alabel: input zero-terminated ACE encoded string (xn--), or NULL.
+ * @insertname: newly allocated output variable with name to register in DNS.
+ * @flags: optional #idn2_flags to modify behaviour.
+ *
+ * Perform IDNA2008 register string conversion on domain label @ulabel
+ * and @alabel, as described in section 4 of RFC 5891.  Note that the
+ * input @ulabel must be encoded in UTF-8 and be in Unicode NFC form.
+ *
+ * Pass %IDN2_NFC_INPUT in @flags to convert input @ulabel to NFC form
+ * before further processing.
+ *
+ * It is recommended to supply both @ulabel and @alabel for better
+ * error checking, but supplying just one of them will work.  Passing
+ * in only @alabel is better than only @ulabel.  See RFC 5891 section
+ * 4 for more information.
+ *
+ * Returns: On successful conversion %IDN2_OK is returned, when the
+ *   given @ulabel and @alabel does not match each other
+ *   %IDN2_UALABEL_MISMATCH is returned, when either of the input
+ *   labels are too long %IDN2_TOO_BIG_LABEL is returned, when @alabel
+ *   does does not appear to be a proper A-label %IDN2_INVALID_ALABEL
+ *   is returned, or another error code is returned.
+ **/
 int
 idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
 		  uint8_t **insertname, int flags)
@@ -151,6 +177,31 @@ idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
   return IDN2_OK;
 }
 
+/**
+ * idn2_register_ul:
+ * @ulabel: input zero-terminated locale encoded string, or NULL.
+ * @alabel: input zero-terminated ACE encoded string (xn--), or NULL.
+ * @insertname: newly allocated output variable with name to register in DNS.
+ * @flags: optional #idn2_flags to modify behaviour.
+ *
+ * Perform IDNA2008 register string conversion on domain label @ulabel
+ * and @alabel, as described in section 4 of RFC 5891.  Note that the
+ * input @ulabel is assumed to be encoded in the locale's default
+ * coding system, and will be transcoded to UTF-8 and NFC normalized
+ * by this function.
+ *
+ * It is recommended to supply both @ulabel and @alabel for better
+ * error checking, but supplying just one of them will work.  Passing
+ * in only @alabel is better than only @ulabel.  See RFC 5891 section
+ * 4 for more information.
+ *
+ * Returns: On successful conversion %IDN2_OK is returned, when the
+ *   given @ulabel and @alabel does not match each other
+ *   %IDN2_UALABEL_MISMATCH is returned, when either of the input
+ *   labels are too long %IDN2_TOO_BIG_LABEL is returned, when @alabel
+ *   does does not appear to be a proper A-label %IDN2_INVALID_ALABEL
+ *   is returned, or another error code is returned.
+ **/
 int
 idn2_register_ul (const char *ulabel, const char *alabel,
 		  char **insertname, int flags)
