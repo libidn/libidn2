@@ -33,7 +33,7 @@
 static int
 label (const int what,
        const uint8_t *src, size_t srclen,
-       uint8_t **dst, size_t *dstlen,
+       uint8_t *dst, size_t *dstlen, /* assumed to be 63 */
        int flags)
 {
   size_t plen;
@@ -87,35 +87,23 @@ label (const int what,
       {
 	char out[63];
 	size_t tmpl;
-	uint8_t *l;
 
-	tmpl = sizeof (out);
-	rc = _idn2_punycode_encode (plen, p, NULL,
-				    &tmpl, out);
+	dst[0] = 'x';
+	dst[1] = 'n';
+	dst[2] = '-';
+	dst[3] = '-';
+
+	tmpl = *dstlen - 4;
+	rc = _idn2_punycode_encode (plen, p, NULL, &tmpl, dst + 4);
 	if (rc != IDN2_OK)
 	  return rc;
 
-	l = malloc (tmpl + 4);
-	if (l == NULL)
-	  return IDN2_MALLOC;
-
-	l[0] = 'x';
-	l[1] = 'n';
-	l[2] = '-';
-	l[3] = '-';
-
-	for (i = 0; i < tmpl; i++)
-	  l[i + 4] = out[i];
-
-	*dst = l;
-	*dstlen = tmpl + 4;
+	*dstlen = 4 + tmpl;
       }
     else
       {
-	*dst = u32_to_u8 (p, plen, NULL, dstlen);
-
-	if (*dst == NULL)
-	  return IDN2_MALLOC;
+	if (u32_to_u8 (p, plen, dst, dstlen) == NULL)
+	  return IDN2_TOO_BIG;
       }
   }
 
@@ -168,11 +156,11 @@ idn2_lookup_u8 (const uint8_t *src, uint8_t **lookupname, int flags)
       /* XXX Do we care about non-U+002E dots such as U+3002, U+FF0E
 	 and U+FF61 here?  Perhaps when IDN2_NFC_INPUT? */
       size_t labellen = end - src;
-      uint8_t *tmp;
-      size_t tmplen;
+      uint8_t tmp[IDN2_LABEL_MAX_LENGTH];
+      size_t tmplen = IDN2_LABEL_MAX_LENGTH;
       int rc;
 
-      rc = label (what, src, labellen, &tmp, &tmplen, flags);
+      rc = label (what, src, labellen, tmp, &tmplen, flags);
       if (rc != IDN2_OK)
 	{
 	  free (*lookupname);
