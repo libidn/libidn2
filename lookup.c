@@ -31,8 +31,7 @@
 #include "idna.h" /* _idn2_label_test */
 
 static int
-label (const int what,
-       const uint8_t *src, size_t srclen,
+label (const uint8_t *src, size_t srclen,
        uint8_t *dst, size_t *dstlen, /* assumed to be 63 */
        int flags)
 {
@@ -90,7 +89,14 @@ label (const int what,
       plen = tmplen;
     }
 
-  rc = _idn2_label_test (what, p, plen);
+  rc = _idn2_label_test (TEST_NFC |
+			 TEST_2HYPHEN |
+			 TEST_LEADING_COMBINING |
+			 TEST_DISALLOWED |
+			 TEST_CONTEXTJ_RULE |
+			 TEST_CONTEXTO_WITH_RULE |
+			 TEST_UNASSIGNED |
+			 TEST_BIDI, p, plen);
   if (rc != IDN2_OK)
     return rc;
 
@@ -135,14 +141,6 @@ int
 idn2_lookup_u8 (const uint8_t *src, uint8_t **lookupname, int flags)
 {
   size_t lookupnamelen = 0;
-  int what = TEST_NFC |
-    TEST_2HYPHEN |
-    TEST_LEADING_COMBINING |
-    TEST_DISALLOWED |
-    TEST_CONTEXTJ_RULE |
-    TEST_CONTEXTO_WITH_RULE |
-    TEST_UNASSIGNED |
-    TEST_BIDI;
   int rc;
 
   if (src == NULL)
@@ -165,7 +163,7 @@ idn2_lookup_u8 (const uint8_t *src, uint8_t **lookupname, int flags)
       size_t tmplen = IDN2_LABEL_MAX_LENGTH;
       int rc;
 
-      rc = label (what, src, labellen, tmp, &tmplen, flags);
+      rc = label (src, labellen, tmp, &tmplen, flags);
       if (rc != IDN2_OK)
 	{
 	  free (*lookupname);
