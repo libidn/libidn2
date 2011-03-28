@@ -33,6 +33,10 @@
 #include <stdint.h> /* uint32_t */
 #include <string.h> /* size_t */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * IDN2_VERSION
  *
@@ -160,5 +164,9 @@ extern IDN2_API const char *idn2_strerror_name (int rc);
 extern IDN2_API const char *idn2_check_version (const char *req_version);
 
 extern IDN2_API void idn2_free (void *ptr);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* IDN2_H */
