@@ -36,9 +36,9 @@ struct idna
 
 static const struct idna idna[] = {
   {"xn--rksmrgs-5wao1o", "räksmörgås", "xn--rksmrgs-5wao1o", IDN2_OK},
-#if 0
-  {"foo", NULL, "foo", IDN2_OK},
-#endif
+  {NULL, "sharpß", "xn--sharp-pqa", IDN2_OK},
+  {"xn--sharp-pqa", "sharpß", "xn--sharp-pqa", IDN2_OK},
+  {"foo", NULL, NULL, IDN2_INVALID_ALABEL},
   {NULL, "foo", "foo", IDN2_OK},
   {NULL, "räksmörgås", "xn--rksmrgs-5wao1o", IDN2_OK},
   /* U+00B7 MIDDLE DOT */
@@ -137,7 +137,8 @@ main (void)
   puts ("-----------------------------------------------------------"
 	"-------------------------------------");
   puts ("                                          IDNA2008 Register\n");
-  puts ("  #  Result                    Output                    A-label input             U-label input");
+  puts ("  #  Result                    Output                    A-label"
+	" input             U-label input");
   puts ("-----------------------------------------------------------"
 	"-------------------------------------");
   for (i = 0; i < sizeof (idna) / sizeof (idna[0]); i++)
