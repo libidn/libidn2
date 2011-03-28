@@ -639,9 +639,11 @@ static const struct idna idna[] = {
   {
     "\xe2\x84\xa6", "", IDN2_NOT_NFC
   },
+#if 0 /* reject or not? */
   {
     "ab--", "", IDN2_2HYPHEN
   },
+#endif
   {
     "--", "--", IDN2_OK
   },

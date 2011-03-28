@@ -40,6 +40,26 @@ label (const int what,
   uint32_t *p;
   int rc;
 
+  if (srclen > 63)
+    return IDN2_TOO_BIG_LABEL;
+
+  {
+    size_t i;
+    bool ascii = true;
+    int rc;
+
+    for (i = 0; i < srclen; i++)
+      if (src[i] >= 0x80)
+	ascii = false;
+
+    if (ascii)
+      {
+	memcpy (dst, src, srclen);
+	*dstlen = srclen;
+	return IDN2_OK;
+      }
+  }
+
   if (flags & IDN2_ALABEL_ROUNDTRIP)
     /* FIXME: Conversion from the A-label and testing that the result is
        a U-label SHOULD be performed if the domain name will later be
@@ -74,38 +94,20 @@ label (const int what,
   if (rc != IDN2_OK)
     return rc;
 
-  {
-    size_t i;
-    bool ascii = true;
-    int rc;
+  char out[63];
+  size_t tmpl;
 
-    for (i = 0; i < plen; i++)
-      if (p[i] >= 0x80)
-	ascii = false;
+  dst[0] = 'x';
+  dst[1] = 'n';
+  dst[2] = '-';
+  dst[3] = '-';
 
-    if (!ascii)
-      {
-	char out[63];
-	size_t tmpl;
+  tmpl = *dstlen - 4;
+  rc = _idn2_punycode_encode (plen, p, NULL, &tmpl, dst + 4);
+  if (rc != IDN2_OK)
+    return rc;
 
-	dst[0] = 'x';
-	dst[1] = 'n';
-	dst[2] = '-';
-	dst[3] = '-';
-
-	tmpl = *dstlen - 4;
-	rc = _idn2_punycode_encode (plen, p, NULL, &tmpl, dst + 4);
-	if (rc != IDN2_OK)
-	  return rc;
-
-	*dstlen = 4 + tmpl;
-      }
-    else
-      {
-	if (u32_to_u8 (p, plen, dst, dstlen) == NULL)
-	  return IDN2_TOO_BIG;
-      }
-  }
+  *dstlen = 4 + tmpl;
 
   return IDN2_OK;
 }
@@ -146,6 +148,9 @@ idn2_lookup_u8 (const uint8_t *src, uint8_t **lookupname, int flags)
   if (src == NULL)
     return IDN2_OK;
 
+  if (strlen (src) > IDN2_DOMAIN_MAX_LENGTH)
+    return IDN2_TOO_BIG_DOMAIN;
+
   *lookupname = malloc (IDN2_DOMAIN_MAX_LENGTH + 1);
   if (*lookupname == NULL)
     return IDN2_MALLOC;
@@ -168,7 +173,10 @@ idn2_lookup_u8 (const uint8_t *src, uint8_t **lookupname, int flags)
 	}
 
       if (lookupnamelen + tmplen > IDN2_DOMAIN_MAX_LENGTH)
-	return -1;
+	{
+	  free (*lookupname);
+	  return IDN2_TOO_BIG_DOMAIN;
+	}
 
       memcpy (*lookupname + lookupnamelen, tmp, tmplen);
       lookupnamelen += tmplen;
@@ -176,7 +184,10 @@ idn2_lookup_u8 (const uint8_t *src, uint8_t **lookupname, int flags)
       if (*end == '.')
 	{
 	  if (lookupnamelen + 1 > IDN2_DOMAIN_MAX_LENGTH)
-	    return -1;
+	    {
+	      free (*lookupname);
+	      return IDN2_TOO_BIG_DOMAIN;
+	    }
 
 	  (*lookupname)[lookupnamelen] = '.';
 	  lookupnamelen++;

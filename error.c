@@ -77,8 +77,12 @@ idn2_strerror (int rc)
       p = _("punycode conversion resulted in overflow");
       break;
 
-    case IDN2_TOO_BIG:
-      p = _("converted domain name would be longer than 255 characters");
+    case IDN2_TOO_BIG_DOMAIN:
+      p = _("domain name longer than 255 characters");
+      break;
+
+    case IDN2_TOO_BIG_LABEL:
+      p = _("domain label longer than 63 characters");
       break;
 
     case IDN2_NOT_NFC:
@@ -189,8 +193,12 @@ idn2_strerror_name (int rc)
       p = ERR2STR(IDN2_PUNYCODE_OVERFLOW);
       break;
 
-    case IDN2_TOO_BIG:
-      p = ERR2STR(IDN2_TOO_BIG);
+    case IDN2_TOO_BIG_DOMAIN:
+      p = ERR2STR(IDN2_TOO_BIG_DOMAIN);
+      break;
+
+    case IDN2_TOO_BIG_LABEL:
+      p = ERR2STR(IDN2_TOO_BIG_LABEL);
       break;
 
     case IDN2_NOT_NFC:
