@@ -35,16 +35,46 @@ idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
   if (alabel && strlen (alabel) >= IDN2_LABEL_MAX_LENGTH)
     return IDN2_TOO_BIG_LABEL;
 
+  if (alabel && !_idn2_ascii_p (alabel, strlen (alabel)))
+    return IDN2_INVALID_ALABEL;
+
+  *insertname = malloc (IDN2_LABEL_MAX_LENGTH + 1);
+  if (*insertname == NULL)
+    return IDN2_MALLOC;
+
   if (ulabel && alabel)
     {
+      return -1;
     }
   else if (ulabel)
     {
       uint32_t *u32;
       size_t u32len;
 
+      if (_idn2_ascii_p (ulabel, strlen (ulabel)))
+	{
+	  strcpy (*insertname, ulabel);
+	  return IDN2_OK;
+	}
+
       rc = _idn2_u8_to_u32_nfc (ulabel, strlen (ulabel), &u32, &u32len,
 				flags & IDN2_NFC_INPUT);
+      if (rc != IDN2_OK)
+	return rc;
+
+      size_t tmpl;
+
+      (*insertname)[0] = 'x';
+      (*insertname)[1] = 'n';
+      (*insertname)[2] = '-';
+      (*insertname)[3] = '-';
+
+      tmpl = IDN2_LABEL_MAX_LENGTH - 4;
+      rc = _idn2_punycode_encode (u32len, u32, NULL, &tmpl, *insertname);
+      if (rc != IDN2_OK)
+	return rc;
+
+      return IDN2_OK;
     }
   else
     return -1;

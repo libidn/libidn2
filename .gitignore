@@ -199,5 +199,7 @@ tests/test-low
 tests/test-low.o
 tests/test-punycode
 tests/test-punycode.o
+tests/test-register
+tests/test-register.o
 version.lo
 version.o
