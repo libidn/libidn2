@@ -104,6 +104,7 @@ idn2_register_ul (const char *ulabel, const char *alabel,
  * @IDN2_TOO_BIG_DOMAIN: Domain name longer than 255 characters.
  * @IDN2_TOO_BIG_LABEL: Domain label longer than 63 characters.
  * @IDN2_INVALID_ALABEL: Input A-label is not valid.
+ * @IDN2_UALABEL_MISMATCH: Input A-label and U-label does not match.
  * @IDN2_NOT_NFC: String is not NFC.
  * @IDN2_2HYPHEN: String has forbidden two hyphens.
  * @IDN2_HYPHEN_STARTEND: String has forbidden starting/ending hyphen.
@@ -137,6 +138,7 @@ typedef enum
   IDN2_TOO_BIG_DOMAIN = -205,
   IDN2_TOO_BIG_LABEL = -206,
   IDN2_INVALID_ALABEL = -207,
+  IDN2_UALABEL_MISMATCH = -208,
   IDN2_NOT_NFC = -300,
   IDN2_2HYPHEN = -301,
   IDN2_HYPHEN_STARTEND = -302,

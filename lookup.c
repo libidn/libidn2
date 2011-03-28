@@ -45,9 +45,15 @@ label (const uint8_t *src, size_t srclen,
   if (_idn2_ascii_p (src, srclen))
     {
       if (flags & IDN2_ALABEL_ROUNDTRIP)
-	/* FIXME: Conversion from the A-label and testing that the result is
-	   a U-label SHOULD be performed if the domain name will later be
-	   presented to the user in native character form */
+	/* FIXME implement this MAY:
+
+	   If the input to this procedure appears to be an A-label
+	   (i.e., it starts in "xn--", interpreted
+	   case-insensitively), the lookup application MAY attempt to
+	   convert it to a U-label, first ensuring that the A-label is
+	   entirely in lowercase (converting it to lowercase if
+	   necessary), and apply the tests of Section 5.4 and the
+	   conversion of Section 5.5 to that form. */
 	return -1;
 
       memcpy (dst, src, srclen);

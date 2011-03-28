@@ -19,10 +19,12 @@
 
 #include "idn2.h"
 
-#include "idna.h" /* _idn2_domain_u8 */
 #include <errno.h> /* errno */
-#include "uniconv.h" /* u8_strconv_from_locale */
 #include <stdlib.h> /* free */
+
+#include "idna.h" /* _idn2_label_test */
+#include "uniconv.h" /* u8_strconv_from_locale */
+#include "unistr.h" /* u32_to_u8 */
 
 int
 idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
@@ -30,10 +32,17 @@ idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
 {
   int rc;
 
+  if (ulabel == NULL && alabel == NULL)
+    {
+      *insertname = NULL;
+      return IDN2_OK;
+    }
+
   if (ulabel && strlen (ulabel) >= IDN2_LABEL_MAX_LENGTH)
     return IDN2_TOO_BIG_LABEL;
   if (alabel && strlen (alabel) >= IDN2_LABEL_MAX_LENGTH)
     return IDN2_TOO_BIG_LABEL;
+
   if (alabel && !_idn2_ascii_p (alabel, strlen (alabel)))
     return IDN2_INVALID_ALABEL;
 
@@ -66,21 +75,21 @@ idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
       if (ulabel)
 	{
 	  if (strcmp (ulabel, u8) != 0)
-	    return -1;
+	    return IDN2_UALABEL_MISMATCH;
 	}
 
       rc = idn2_register_u8 (u8, NULL, &tmp, 0);
       if (rc != IDN2_OK)
 	return rc;
       
-      if (strcmp (alabel, tmp) != 0)
-	return -2;
+      rc = strcmp (alabel, tmp);
+      free (tmp);
+      if (rc != 0)
+	return IDN2_UALABEL_MISMATCH;
 
       *insertname = strdup (alabel);
-
-      return IDN2_OK;
     }
-  else if (ulabel)
+  else /* ulabel only */
     {
       uint32_t *u32;
       size_t u32len;
@@ -135,13 +144,9 @@ idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
 	}
 
       (*insertname)[4 + tmpl] = '\0';
-
-      return IDN2_OK;
     }
-  else
-    return -1;
 
-  return 0;
+  return IDN2_OK;
 }
 
 int
