@@ -15,19 +15,12 @@
 
 AC_INIT([libidn2], [0.1], [simon@josefsson.org])
 
-VERSION_MAJOR=0
-VERSION_MINOR=1
-VERSION_PATCH=0
-VERSION_NUMBER=`printf "0x%02x%02x%04x" \
-  $VERSION_MAJOR $VERSION_MINOR $VERSION_PATCH`
-AC_SUBST(VERSION_NUMBER)
-
 # Library code modified:                              REVISION++
 # Interfaces changed/added/removed:   CURRENT++       REVISION=0
 # Interfaces added:                             AGE++
 # Interfaces removed:                           AGE=0
 AC_SUBST(LT_CURRENT, 0)
-AC_SUBST(LT_REVISION, 0)
+AC_SUBST(LT_REVISION, 1)
 AC_SUBST(LT_AGE, 0)
 
 AC_CONFIG_AUX_DIR([build-aux])

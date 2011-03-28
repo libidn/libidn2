@@ -98,9 +98,9 @@ label (const uint8_t *src, size_t srclen,
  * idn2_lookup_u8:
  * @src: input zero-terminated UTF-8 string in Unicode NFC normalized form.
  * @lookupname: newly allocated output variable with name to lookup in DNS.
- * @flags: optional #Idn2_flags to modify behaviour.
+ * @flags: optional #idn2_flags to modify behaviour.
  *
- * Perform IDNA2008 lookup string conversion on input @src, as
+ * Perform IDNA2008 lookup string conversion on domain name @src, as
  * described in section 5 of RFC 5891.  Note that the input string
  * must be encoded in UTF-8 and be in Unicode NFC form.
  *
@@ -179,9 +179,9 @@ idn2_lookup_u8 (const uint8_t *src, uint8_t **lookupname, int flags)
  * idn2_lookup_ul:
  * @src: input zero-terminated locale encoded string.
  * @lookupname: newly allocated output variable with name to lookup in DNS.
- * @flags: optional #Idn2_flags to modify behaviour.
+ * @flags: optional #idn2_flags to modify behaviour.
  *
- * Perform IDNA2008 lookup string conversion on input @src, as
+ * Perform IDNA2008 lookup string conversion on domain name @src, as
  * described in section 5 of RFC 5891.  Note that the input is assumed
  * to be encoded in the locale's default coding system, and will be
  * transcoded to UTF-8 and NFC normalized by this function.

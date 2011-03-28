@@ -4,6 +4,12 @@ See the end for copying conditions.
 
 * Version 0.1 (unreleased) [alpha]
 
+** Now features IDNA2008 Lookup and Register functions.
+The implementation is still subject to changes, and thus no API/ABI
+stability guarantees are made.  We are now inviting comments both on
+the API (as before) but also on the actual behaviour.  Any unexpected
+outputs are from here on considered as real bugs.
+
 * Version 0.0 (released 2011-03-09) [alpha]
 
 ** Initial draft release for public review of the API.
