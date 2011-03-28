@@ -19,7 +19,7 @@ SUBDIRS = gl . doc tests
 ACLOCAL_AMFLAGS = -I m4 -I gl/m4
 EXTRA_DIST = gl/m4/gnulib-cache.m4
 
-AM_CPPFLAGS = -DLIBIDN2_BUILDING
+AM_CPPFLAGS = -DIDN2_BUILDING
 AM_CPPFLAGS += -I$(srcdir)/gl -I$(builddir)/gl
 
 lib_LTLIBRARIES = libidn2.la
