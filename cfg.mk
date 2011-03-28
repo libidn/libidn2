@@ -22,9 +22,15 @@ endif
 # Re-add when we have translation
 local-checks-to-skip += sc_unmarked_diagnostics sc_bindtextdomain
 local-checks-to-skip += sc_immutable_NEWS
+local-checks-to-skip += sc_prohibit_strcmp
 
 # Ignore gnulib files.
-VC_LIST_ALWAYS_EXCLUDE_REGEX = ^(lib|m4)/.*$
+VC_LIST_ALWAYS_EXCLUDE_REGEX = ^(gl|m4)/.*$
+
+# Explicit syntax-check exceptions.
+exclude_file_name_regexp--sc_program_name = ^tests/.*\.c$$
+exclude_file_name_regexp--sc_prohibit_empty_lines_at_EOF = ^doc/reference/version.xml.in$$
+exclude_file_name_regexp--sc_space_tab = ^maint.mk$$
 
 update-copyright-env = UPDATE_COPYRIGHT_HOLDER="Simon Josefsson"
 

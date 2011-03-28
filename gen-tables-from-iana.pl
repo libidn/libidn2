@@ -51,7 +51,7 @@ while(<>) {
     }
 }
 
-printf FH "  {0x0, 0x0}\n";
+printf FH "  {0x0, 0x0, 0}\n";
 print FH "};\n";
 
 close FH or die "cannot close $filename";

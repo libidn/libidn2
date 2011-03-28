@@ -2325,5 +2325,5 @@ const struct idna_table idna_table[] = {
   {0xE0100, 0xE01EF, DISALLOWED},
   {0xE01F0, 0xEFFFD, UNASSIGNED},
   {0xEFFFE, 0x10FFFF, DISALLOWED},
-  {0x0, 0x0}
+  {0x0, 0x0, 0}
 };

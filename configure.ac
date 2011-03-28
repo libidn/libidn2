@@ -54,11 +54,19 @@ if test "$gl_gcc_warnings" = yes; then
   nw="$nw -Wtraditional"          # All compilers nowadays support ANSI C
   nw="$nw -Wconversion"           # These warnings usually don't point to mistakes.
   nw="$nw -Wsign-conversion"      # Likewise.
+  nw="$nw -Wpadded"               # Padding internal structs doesn't help.
+  nw="$nw -Wc++-compat"           # Compile using a C compiler.
+  nw="$nw -Wtraditional-conversion" # Too many complaints for now.
+  nw="$nw -Wunreachable-code"     # gcc bug 40412
+  nw="$nw -Wswitch-default"       # Nothing wrong with default-less switch?
 
   gl_MANYWARN_COMPLEMENT([warnings], [$warnings], [$nw])
   for w in $warnings; do
     gl_WARN_ADD([$w])
   done
+
+  gl_WARN_ADD([-Wno-pointer-sign])     # Too many warnings for now
+  gl_WARN_ADD([-fdiagnostics-show-option])
 fi
 
 AC_CONFIG_FILES([

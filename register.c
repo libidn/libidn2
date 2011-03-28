@@ -22,9 +22,12 @@
 #include <errno.h> /* errno */
 #include <stdlib.h> /* free */
 
-#include "idna.h" /* _idn2_label_test */
+#include "punycode.h"
+
 #include "uniconv.h" /* u8_strconv_from_locale */
 #include "unistr.h" /* u32_to_u8 */
+
+#include "idna.h" /* _idn2_label_test */
 
 int
 idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
@@ -81,7 +84,7 @@ idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
       rc = idn2_register_u8 (u8, NULL, &tmp, 0);
       if (rc != IDN2_OK)
 	return rc;
-      
+
       rc = strcmp (alabel, tmp);
       free (tmp);
       if (rc != 0)
@@ -93,6 +96,7 @@ idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
     {
       uint32_t *u32;
       size_t u32len;
+      size_t tmpl;
 
       *insertname = malloc (IDN2_LABEL_MAX_LENGTH + 1);
       if (*insertname == NULL)
@@ -128,8 +132,6 @@ idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
 	  return rc;
 	}
 
-      size_t tmpl;
-
       (*insertname)[0] = 'x';
       (*insertname)[1] = 'n';
       (*insertname)[2] = '-';
@@ -154,6 +156,8 @@ idn2_register_ul (const char *ulabel, const char *alabel,
 		  char **insertname, int flags)
 {
   uint8_t *utf8ulabel = u8_strconv_from_locale (ulabel);
+  int rc;
+
   if (utf8ulabel == NULL)
     {
       if (errno == ENOMEM)
@@ -161,7 +165,7 @@ idn2_register_ul (const char *ulabel, const char *alabel,
       return IDN2_ICONV_FAIL;
     }
 
-  int rc = idn2_register_u8 (utf8ulabel, (uint8_t *) alabel,
+  rc = idn2_register_u8 (utf8ulabel, (const uint8_t *) alabel,
 			     (uint8_t **) insertname,
 			     flags | IDN2_NFC_INPUT);
 

@@ -26,16 +26,16 @@
 #include "tables.h"
 #include "context.h"
 
-#include "unictype.h" /* uc_is_general_category, UC_CATEGORY_M */
-#include "uninorm.h" /* u32_normalize */
-#include "unistr.h" /* u8_to_u32 */
+#include <unictype.h> /* uc_is_general_category, UC_CATEGORY_M */
+#include <uninorm.h> /* u32_normalize */
+#include <unistr.h> /* u8_to_u32 */
 
 #include "idna.h"
 
 int
 _idn2_u8_to_u32_nfc (const uint8_t *src, size_t srclen,
 		     uint32_t **out, size_t *outlen,
-		     bool nfc)
+		     int nfc)
 {
   uint32_t *p;
   size_t plen;
@@ -70,13 +70,13 @@ _idn2_u8_to_u32_nfc (const uint8_t *src, size_t srclen,
 }
 
 bool
-_idn2_ascii_p (const uint8_t *str, size_t strlen)
+_idn2_ascii_p (const uint8_t *src, size_t srclen)
 {
   size_t i;
   bool ascii = true;
 
-  for (i = 0; i < strlen; i++)
-    if (str[i] >= 0x80)
+  for (i = 0; i < srclen; i++)
+    if (src[i] >= 0x80)
       ascii = false;
 
   return ascii;
@@ -111,7 +111,7 @@ _idn2_label_test (int what, const uint32_t *label, size_t llen)
 
   if (what & TEST_HYPHEN_STARTEND)
     {
-      if (llen > 0 && label[0] == '-' || label[llen - 1] == '-')
+      if (llen > 0 && (label[0] == '-' || label[llen - 1] == '-'))
 	return IDN2_HYPHEN_STARTEND;
     }
 

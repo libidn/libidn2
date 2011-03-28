@@ -20,7 +20,7 @@
 #include "idn2.h"
 
 #include <errno.h> /* errno */
-#include <stdlib.h> /* free */
+#include <stdlib.h> /* malloc, free */
 
 #include "punycode.h"
 
@@ -38,6 +38,7 @@ label (const uint8_t *src, size_t srclen,
   size_t plen;
   uint32_t *p;
   int rc;
+  size_t tmpl;
 
   if (srclen > 63)
     return IDN2_TOO_BIG_LABEL;
@@ -61,7 +62,8 @@ label (const uint8_t *src, size_t srclen,
       return IDN2_OK;
     }
 
-  rc = _idn2_u8_to_u32_nfc (src, srclen, &p, &plen, flags & IDN2_NFC_INPUT);
+  rc = _idn2_u8_to_u32_nfc (src, srclen, &p, &plen,
+			    flags & IDN2_NFC_INPUT);
   if (rc != IDN2_OK)
     return rc;
 
@@ -76,16 +78,13 @@ label (const uint8_t *src, size_t srclen,
   if (rc != IDN2_OK)
     return rc;
 
-  char out[63];
-  size_t tmpl;
-
   dst[0] = 'x';
   dst[1] = 'n';
   dst[2] = '-';
   dst[3] = '-';
 
   tmpl = *dstlen - 4;
-  rc = _idn2_punycode_encode (plen, p, NULL, &tmpl, dst + 4);
+  rc = _idn2_punycode_encode (plen, p, NULL, &tmpl, (char *) dst + 4);
   if (rc != IDN2_OK)
     return rc;
 
@@ -122,7 +121,7 @@ idn2_lookup_u8 (const uint8_t *src, uint8_t **lookupname, int flags)
   if (src == NULL)
     return IDN2_OK;
 
-  if (strlen (src) > IDN2_DOMAIN_MAX_LENGTH)
+  if (strlen ((const char *) src) > IDN2_DOMAIN_MAX_LENGTH)
     return IDN2_TOO_BIG_DOMAIN;
 
   *lookupname = malloc (IDN2_DOMAIN_MAX_LENGTH + 1);
@@ -131,13 +130,12 @@ idn2_lookup_u8 (const uint8_t *src, uint8_t **lookupname, int flags)
 
   do
     {
-      const uint8_t *end = strchrnul (src, '.');
+      const uint8_t *end = strchrnul ((const char *) src, '.');
       /* XXX Do we care about non-U+002E dots such as U+3002, U+FF0E
 	 and U+FF61 here?  Perhaps when IDN2_NFC_INPUT? */
       size_t labellen = end - src;
       uint8_t tmp[IDN2_LABEL_MAX_LENGTH];
       size_t tmplen = IDN2_LABEL_MAX_LENGTH;
-      int rc;
 
       rc = label (src, labellen, tmp, &tmplen, flags);
       if (rc != IDN2_OK)
@@ -196,6 +194,8 @@ int
 idn2_lookup_ul (const char *src, char **lookupname, int flags)
 {
   uint8_t *utf8src = u8_strconv_from_locale (src);
+  int rc;
+
   if (utf8src == NULL)
     {
       if (errno == ENOMEM)
@@ -203,7 +203,7 @@ idn2_lookup_ul (const char *src, char **lookupname, int flags)
       return IDN2_ICONV_FAIL;
     }
 
-  int rc = idn2_lookup_u8 (utf8src, (uint8_t **) lookupname,
+  rc = idn2_lookup_u8 (utf8src, (uint8_t **) lookupname,
 			   flags | IDN2_NFC_INPUT);
 
   free (utf8src);

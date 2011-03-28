@@ -19,17 +19,21 @@
 
 #include "idn2.h"
 
-#include "context.h"
+#include "tables.h"
 
 #include <unictype.h> /* uc_combining_class, UC_CCC_VR */
+
+#include "context.h"
 
 int
 _idn2_contextj_rule (const uint32_t *label, size_t llen, size_t pos)
 {
+  uint32_t cp;
+
   if (llen == 0)
     return IDN2_OK;
 
-  uint32_t cp = label[pos];
+  cp = label[pos];
 
   if (!_idn2_contextj_p (cp))
     return IDN2_OK;
@@ -52,34 +56,36 @@ _idn2_contextj_rule (const uint32_t *label, size_t llen, size_t pos)
       if (pos == 0 || pos == llen - 1)
 	return IDN2_CONTEXTJ;
 
-      int jt;
-      size_t tmp;
+      {
+	int jt;
+	size_t tmp;
 
-      /* Search backwards. */
-      for (tmp = pos - 1; tmp >= 0; tmp--)
-	{
-	  jt = uc_joining_type (label[tmp]);
-	  if (jt == UC_JOINING_TYPE_L || jt == UC_JOINING_TYPE_D)
-	    break;
-	  if (tmp == 0)
+	/* Search backwards. */
+	for (tmp = pos - 1; ; tmp--)
+	  {
+	    jt = uc_joining_type (label[tmp]);
+	    if (jt == UC_JOINING_TYPE_L || jt == UC_JOINING_TYPE_D)
+	      break;
+	    if (tmp == 0)
+	      return IDN2_CONTEXTJ;
+	    if (jt == UC_JOINING_TYPE_T)
+	      continue;
 	    return IDN2_CONTEXTJ;
-	  if (jt == UC_JOINING_TYPE_T)
-	    continue;
-	  return IDN2_CONTEXTJ;
-	}
+	  }
 
-      /* Search forward. */
-      for (tmp = pos + 1; tmp < llen; tmp++)
-	{
-	  jt = uc_joining_type (label[tmp]);
-	  if (jt == UC_JOINING_TYPE_L || jt == UC_JOINING_TYPE_D)
-	    break;
-	  if (tmp == llen - 1)
+	/* Search forward. */
+	for (tmp = pos + 1; tmp < llen; tmp++)
+	  {
+	    jt = uc_joining_type (label[tmp]);
+	    if (jt == UC_JOINING_TYPE_L || jt == UC_JOINING_TYPE_D)
+	      break;
+	    if (tmp == llen - 1)
+	      return IDN2_CONTEXTJ;
+	    if (jt == UC_JOINING_TYPE_T)
+	      continue;
 	    return IDN2_CONTEXTJ;
-	  if (jt == UC_JOINING_TYPE_T)
-	    continue;
-	  return IDN2_CONTEXTJ;
-	}
+	  }
+      }
 
       return IDN2_OK;
       break;
@@ -195,7 +201,6 @@ _idn2_contexto_rule (const uint32_t *label, size_t llen, size_t pos)
 	return IDN2_CONTEXTO;
 	break;
       }
-
     }
 
   return IDN2_CONTEXTO_NO_RULE;

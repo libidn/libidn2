@@ -21,7 +21,8 @@ EXTRA_DIST = gl/m4/gnulib-cache.m4
 
 AM_CPPFLAGS = -DIDN2_BUILDING
 AM_CPPFLAGS += -I$(srcdir)/gl -I$(builddir)/gl
-AM_CFLAGS = $(CFLAG_VISIBILITY)
+AM_CFLAGS = $(WARN_CFLAGS)
+AM_CFLAGS += $(CFLAG_VISIBILITY)
 
 lib_LTLIBRARIES = libidn2.la
 
