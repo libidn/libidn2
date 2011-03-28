@@ -40,6 +40,7 @@ static const struct idna idna[] = {
   {"foo", NULL, "foo", IDN2_OK},
 #endif
   {NULL, "foo", "foo", IDN2_OK},
+  {NULL, "räksmörgås", "xn--rksmrgs-5wao1o", IDN2_OK},
 };
 
 int debug = 1;

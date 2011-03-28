@@ -60,7 +60,26 @@ idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
       rc = _idn2_u8_to_u32_nfc (ulabel, strlen (ulabel), &u32, &u32len,
 				flags & IDN2_NFC_INPUT);
       if (rc != IDN2_OK)
-	return rc;
+	{
+	  free (*insertname);
+	  return rc;
+	}
+
+      rc = _idn2_label_test (TEST_NFC
+			     | TEST_DISALLOWED
+			     | TEST_UNASSIGNED
+			     | TEST_2HYPHEN
+			     | TEST_HYPHEN_STARTEND
+			     | TEST_LEADING_COMBINING
+			     | TEST_CONTEXTJ_RULE
+			     | TEST_CONTEXTO_RULE
+			     | TEST_BIDI,
+			     u32, u32len);
+      if (rc != IDN2_OK)
+	{
+	  free (*insertname);
+	  return rc;
+	}
 
       size_t tmpl;
 
@@ -70,9 +89,12 @@ idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
       (*insertname)[3] = '-';
 
       tmpl = IDN2_LABEL_MAX_LENGTH - 4;
-      rc = _idn2_punycode_encode (u32len, u32, NULL, &tmpl, *insertname);
+      rc = _idn2_punycode_encode (u32len, u32, NULL, &tmpl, *insertname + 4);
       if (rc != IDN2_OK)
-	return rc;
+	{
+	  free (*insertname);
+	  return rc;
+	}
 
       return IDN2_OK;
     }
