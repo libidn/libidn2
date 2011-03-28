@@ -147,8 +147,8 @@ main (void)
 			     &out, idna[i].flags);
       printf ("%3d  %-25s %-25s %-25s %s\n", i, idn2_strerror_name (rc),
 	      rc == IDN2_OK ? idna[i].out : "",
-	      idna[i].alabel ? idna[i].alabel : "(null)",
-	      idna[i].ulabel ? idna[i].ulabel : "(null)");
+	      idna[i].alabel ? (char *) idna[i].alabel : "(null)",
+	      idna[i].ulabel ? (char *) idna[i].ulabel : "(null)");
       if (rc != idna[i].rc)
 	fail ("expected rc %d got rc %d\n", idna[i].rc, rc);
       else if (rc == IDN2_OK && strcmp (out, idna[i].out) != 0)

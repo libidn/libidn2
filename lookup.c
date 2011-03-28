@@ -25,7 +25,6 @@
 #include "punycode.h"
 
 #include "uniconv.h" /* u8_strconv_from_locale */
-#include "unistr.h" /* u8_to_u32 */
 #include "uninorm.h" /* u32_normalize */
 
 #include "idna.h" /* _idn2_label_test */
@@ -76,7 +75,10 @@ label (const uint8_t *src, size_t srclen,
 			 TEST_UNASSIGNED |
 			 TEST_BIDI, p, plen);
   if (rc != IDN2_OK)
-    return rc;
+    {
+      free (p);
+      return rc;
+    }
 
   dst[0] = 'x';
   dst[1] = 'n';
@@ -85,6 +87,7 @@ label (const uint8_t *src, size_t srclen,
 
   tmpl = *dstlen - 4;
   rc = _idn2_punycode_encode (plen, p, NULL, &tmpl, (char *) dst + 4);
+  free (p);
   if (rc != IDN2_OK)
     return rc;
 

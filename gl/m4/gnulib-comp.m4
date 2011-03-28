@@ -96,6 +96,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module unitypes:
   # Code from module unused-parameter:
   # Code from module useless-if-before-free:
+  # Code from module valgrind-tests:
   # Code from module vc-list-files:
   # Code from module verify:
   # Code from module warn-on-use:
@@ -261,6 +262,8 @@ AC_DEFUN([gl_INIT],
   gl_LIBUNISTRING_LIBHEADER([0.9], [unitypes.h])
   # Code from module unused-parameter:
   # Code from module useless-if-before-free:
+  # Code from module valgrind-tests:
+  gl_VALGRIND_TESTS
   # Code from module vc-list-files:
   # Code from module verify:
   # Code from module warn-on-use:
@@ -312,6 +315,7 @@ changequote([, ])dnl
   AC_SUBST([gltests_WITNESS])
   gl_module_indicator_condition=$gltests_WITNESS
   m4_pushdef([gl_MODULE_INDICATOR_CONDITION], [$gl_module_indicator_condition])
+  gl_VALGRIND_TESTS
   m4_popdef([gl_MODULE_INDICATOR_CONDITION])
   m4_ifval(gltests_LIBSOURCES_LIST, [
     m4_syscmd([test ! -d ]m4_defn([gltests_LIBSOURCES_DIR])[ ||
@@ -524,6 +528,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/onceonly.m4
   m4/stdbool.m4
   m4/stdint.m4
+  m4/valgrind-tests.m4
   m4/visibility.m4
   m4/warn-on-use.m4
   m4/warnings.m4

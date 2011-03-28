@@ -155,6 +155,7 @@ idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
       if (rc != IDN2_OK)
 	{
 	  free (*insertname);
+	  free (u32);
 	  return rc;
 	}
 
@@ -165,6 +166,7 @@ idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
 
       tmpl = IDN2_LABEL_MAX_LENGTH - 4;
       rc = _idn2_punycode_encode (u32len, u32, NULL, &tmpl, *insertname + 4);
+      free (u32);
       if (rc != IDN2_OK)
 	{
 	  free (*insertname);
