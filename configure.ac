@@ -35,6 +35,32 @@ AC_PROG_LIBTOOL
 gl_INIT
 GTK_DOC_CHECK(1.1)
 
+AC_ARG_ENABLE([gcc-warnings],
+  [AS_HELP_STRING([--enable-gcc-warnings],
+		  [turn on lots of GCC warnings (for developers)])],
+  [case $enableval in
+     yes|no) ;;
+     *)      AC_MSG_ERROR([bad value $enableval for gcc-warnings option]) ;;
+   esac
+   gl_gcc_warnings=$enableval],
+  [gl_gcc_warnings=no]
+)
+
+if test "$gl_gcc_warnings" = yes; then
+  gl_MANYWARN_ALL_GCC([warnings])
+  nw=
+  nw="$nw -Wsystem-headers"       # Don't let system headers trigger warnings
+  nw="$nw -Wundef"                # All compiler preprocessors support #if UNDEF
+  nw="$nw -Wtraditional"          # All compilers nowadays support ANSI C
+  nw="$nw -Wconversion"           # These warnings usually don't point to mistakes.
+  nw="$nw -Wsign-conversion"      # Likewise.
+
+  gl_MANYWARN_COMPLEMENT([warnings], [$warnings], [$nw])
+  for w in $warnings; do
+    gl_WARN_ADD([$w])
+  done
+fi
+
 AC_CONFIG_FILES([
   Makefile
   idn2.h

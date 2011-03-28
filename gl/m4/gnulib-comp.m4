@@ -51,6 +51,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module localcharset:
   # Code from module maintainer-makefile:
   # Code from module malloca:
+  # Code from module manywarnings:
   # Code from module multiarch:
   # Code from module stdbool:
   # Code from module stdint:
@@ -98,6 +99,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module vc-list-files:
   # Code from module verify:
   # Code from module warn-on-use:
+  # Code from module warnings:
 ])
 
 # This macro should be invoked from ./configure.ac, in the section
@@ -163,6 +165,7 @@ AC_DEFUN([gl_INIT],
     [AC_SUBST([CONFIG_INCLUDE], m4_defn([AH_HEADER]))])])
   # Code from module malloca:
   gl_MALLOCA
+  # Code from module manywarnings:
   # Code from module multiarch:
   gl_MULTIARCH
   # Code from module stdbool:
@@ -261,6 +264,8 @@ AC_DEFUN([gl_INIT],
   # Code from module vc-list-files:
   # Code from module verify:
   # Code from module warn-on-use:
+  # Code from module warnings:
+  AC_SUBST([WARN_CFLAGS])
   # End of code from modules
   m4_ifval(gl_LIBSOURCES_LIST, [
     m4_syscmd([test ! -d ]m4_defn([gl_LIBSOURCES_DIR])[ ||
@@ -514,12 +519,14 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/localcharset.m4
   m4/longlong.m4
   m4/malloca.m4
+  m4/manywarnings.m4
   m4/multiarch.m4
   m4/onceonly.m4
   m4/stdbool.m4
   m4/stdint.m4
   m4/visibility.m4
   m4/warn-on-use.m4
+  m4/warnings.m4
   top/GNUmakefile
   top/maint.mk
 ])
