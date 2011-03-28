@@ -62,3 +62,6 @@ libidn2_la_LDFLAGS += -Wl,--version-script=$(srcdir)/idn2.map
 else
 libidn2_la_LDFLAGS += -export-symbols-regex '^idn2_.*'
 endif
+
+backup:
+	rsync -av . jas@yxa-vi.extundo.com:libidn2
