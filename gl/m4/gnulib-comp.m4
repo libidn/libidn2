@@ -47,6 +47,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module include_next:
   # Code from module inline:
   # Code from module lib-symbol-versions:
+  # Code from module lib-symbol-visibility:
   # Code from module localcharset:
   # Code from module maintainer-makefile:
   # Code from module malloca:
@@ -151,6 +152,8 @@ AC_DEFUN([gl_INIT],
   gl_INLINE
   # Code from module lib-symbol-versions:
   gl_LD_VERSION_SCRIPT
+  # Code from module lib-symbol-visibility:
+  gl_VISIBILITY
   # Code from module localcharset:
   gl_LOCALCHARSET
   LOCALCHARSET_TESTS_ENVIRONMENT="CHARSETALIASDIR=\"\$(top_builddir)/$gl_source_base\""
@@ -515,6 +518,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/onceonly.m4
   m4/stdbool.m4
   m4/stdint.m4
+  m4/visibility.m4
   m4/warn-on-use.m4
   top/GNUmakefile
   top/maint.mk
