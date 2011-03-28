@@ -42,52 +42,22 @@ label (const uint8_t *src, size_t srclen,
   if (srclen > 63)
     return IDN2_TOO_BIG_LABEL;
 
-  {
-    size_t i;
-    bool ascii = true;
-    int rc;
-
-    for (i = 0; i < srclen; i++)
-      if (src[i] >= 0x80)
-	ascii = false;
-
-    if (ascii)
-      {
-	if (flags & IDN2_ALABEL_ROUNDTRIP)
-	  /* FIXME: Conversion from the A-label and testing that the result is
-	     a U-label SHOULD be performed if the domain name will later be
-	     presented to the user in native character form */
-	  return -1;
-
-	memcpy (dst, src, srclen);
-	*dstlen = srclen;
-	return IDN2_OK;
-      }
-  }
-
-  p = u8_to_u32 (src, srclen, NULL, &plen);
-  if (p == NULL)
+  if (_idn2_ascii_p (src, srclen))
     {
-      if (errno == ENOMEM)
-	return IDN2_MALLOC;
-      return IDN2_ENCODING_ERROR;
+      if (flags & IDN2_ALABEL_ROUNDTRIP)
+	/* FIXME: Conversion from the A-label and testing that the result is
+	   a U-label SHOULD be performed if the domain name will later be
+	   presented to the user in native character form */
+	return -1;
+
+      memcpy (dst, src, srclen);
+      *dstlen = srclen;
+      return IDN2_OK;
     }
 
-  if (flags & IDN2_NFC_INPUT)
-    {
-      size_t tmplen;
-      uint32_t *tmp = u32_normalize (UNINORM_NFC, p, plen, NULL, &tmplen);
-      free (p);
-      if (tmp == NULL)
-	{
-	  if (errno == ENOMEM)
-	    return IDN2_MALLOC;
-	  return IDN2_NFC;
-	}
-
-      p = tmp;
-      plen = tmplen;
-    }
+  rc = _idn2_u8_to_u32_nfc (src, srclen, &p, &plen, flags & IDN2_NFC_INPUT);
+  if (rc != IDN2_OK)
+    return rc;
 
   rc = _idn2_label_test (TEST_NFC |
 			 TEST_2HYPHEN |

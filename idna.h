@@ -16,6 +16,7 @@
 */
 
 #include <stdint.h>
+#include <stdbool.h>
 
 enum
   {
@@ -37,6 +38,14 @@ enum
     TEST_UNASSIGNED		= 0x0400,
     TEST_BIDI			= 0x0800,
   };
+
+extern int
+_idn2_u8_to_u32_nfc (const uint8_t *src, size_t srclen,
+		     uint32_t **out, size_t *outlen,
+		     bool nfc);
+
+extern bool
+_idn2_ascii_p (const uint8_t *str, size_t strlen);
 
 extern int
 _idn2_label_test (int what, const uint32_t *label, size_t llen);

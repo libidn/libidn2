@@ -28,7 +28,27 @@ int
 idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
 		  uint8_t **insertname, int flags)
 {
-  /* FIXME */
+  int rc;
+
+  if (ulabel && strlen (ulabel) >= IDN2_LABEL_MAX_LENGTH)
+    return IDN2_TOO_BIG_LABEL;
+  if (alabel && strlen (alabel) >= IDN2_LABEL_MAX_LENGTH)
+    return IDN2_TOO_BIG_LABEL;
+
+  if (ulabel && alabel)
+    {
+    }
+  else if (ulabel)
+    {
+      uint32_t *u32;
+      size_t u32len;
+
+      rc = _idn2_u8_to_u32_nfc (ulabel, strlen (ulabel), &u32, &u32len,
+				flags & IDN2_NFC_INPUT);
+    }
+  else
+    return -1;
+
   return 0;
 }
 
