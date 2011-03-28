@@ -60,7 +60,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module uniconv/u8-strconv-from-enc:
   # Code from module uniconv/u8-strconv-from-locale:
   # Code from module unictype/base:
-  # Code from module unictype/bidicategory-of:
+  # Code from module unictype/bidiclass-of:
   # Code from module unictype/category-M:
   # Code from module unictype/category-none:
   # Code from module unictype/category-of:
@@ -182,8 +182,8 @@ AC_DEFUN([gl_INIT],
   gl_LIBUNISTRING_MODULE([0.9], [uniconv/u8-strconv-from-locale])
   # Code from module unictype/base:
   gl_LIBUNISTRING_LIBHEADER([0.9], [unictype.h])
-  # Code from module unictype/bidicategory-of:
-  gl_LIBUNISTRING_MODULE([0.9.4], [unictype/bidicategory-of])
+  # Code from module unictype/bidiclass-of:
+  gl_LIBUNISTRING_MODULE([0.9.4], [unictype/bidiclass-of])
   # Code from module unictype/category-M:
   gl_LIBUNISTRING_MODULE([0.9.4], [unictype/category-M])
   # Code from module unictype/category-none:
@@ -447,8 +447,8 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/unictype/categ_of.c
   lib/unictype/categ_of.h
   lib/unictype/categ_test.c
-  lib/unictype/combining.c
-  lib/unictype/combining.h
+  lib/unictype/combiningclass.c
+  lib/unictype/combiningclass.h
   lib/unictype/joiningtype_of.c
   lib/unictype/joiningtype_of.h
   lib/unictype/scripts.c

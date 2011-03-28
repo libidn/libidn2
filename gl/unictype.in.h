@@ -61,6 +61,7 @@ uc_general_category_t;
 enum
 {
   UC_CATEGORY_MASK_L  = 0x0000001f,
+  UC_CATEGORY_MASK_LC = 0x00000007,
   UC_CATEGORY_MASK_Lu = 0x00000001,
   UC_CATEGORY_MASK_Ll = 0x00000002,
   UC_CATEGORY_MASK_Lt = 0x00000004,
@@ -101,6 +102,7 @@ enum
 
 /* Predefined General category values.  */
 extern const uc_general_category_t UC_CATEGORY_L;
+extern const uc_general_category_t UC_CATEGORY_LC;
 extern const uc_general_category_t UC_CATEGORY_Lu;
 extern const uc_general_category_t UC_CATEGORY_Ll;
 extern const uc_general_category_t UC_CATEGORY_Lt;
@@ -142,6 +144,7 @@ extern const uc_general_category_t _UC_CATEGORY_NONE;
 
 /* Alias names for predefined General category values.  */
 #define UC_LETTER                    UC_CATEGORY_L
+#define UC_CASED_LETTER              UC_CATEGORY_LC
 #define UC_UPPERCASE_LETTER          UC_CATEGORY_Lu
 #define UC_LOWERCASE_LETTER          UC_CATEGORY_Ll
 #define UC_TITLECASE_LETTER          UC_CATEGORY_Lt
@@ -204,7 +207,12 @@ extern uc_general_category_t
 extern const char *
        uc_general_category_name (uc_general_category_t category);
 
-/* Return the general category given by name, e.g. "Lu".  */
+/* Return the long name of a general category.  */
+extern const char *
+       uc_general_category_long_name (uc_general_category_t category);
+
+/* Return the general category given by name, e.g. "Lu", or by long name,
+   e.g. "Uppercase Letter".  */
 extern uc_general_category_t
        uc_general_category_byname (const char *category_name);
 
@@ -237,6 +245,7 @@ enum
   UC_CCC_VR   =   9, /* Virama */
   UC_CCC_ATBL = 200, /* Attached Below Left */
   UC_CCC_ATB  = 202, /* Attached Below */
+  UC_CCC_ATA  = 214, /* Attached Above */
   UC_CCC_ATAR = 216, /* Attached Above Right */
   UC_CCC_BL   = 218, /* Below Left */
   UC_CCC_B    = 220, /* Below */
@@ -255,9 +264,23 @@ enum
 extern int
        uc_combining_class (ucs4_t uc);
 
+/* Return the name of a canonical combining class.  */
+extern const char *
+       uc_combining_class_name (int ccc);
+
+/* Return the long name of a canonical combining class.  */
+extern const char *
+       uc_combining_class_long_name (int ccc);
+
+/* Return the canonical combining class given by name, e.g. "BL", or by long
+   name, e.g. "Below Left".  */
+extern int
+       uc_combining_class_byname (const char *ccc_name);
+
 /* ========================================================================= */
 
-/* Field 4 of Unicode Character Database: Bidirectional category.  */
+/* Field 4 of Unicode Character Database: Bidi class.
+   Before Unicode 4.0, this field was called "Bidirectional category".  */
 
 enum
 {
@@ -282,20 +305,36 @@ enum
   UC_BIDI_ON   /* Other Neutral */
 };
 
-/* Return the name of a bidirectional category.  */
+/* Return the name of a bidi class.  */
+extern const char *
+       uc_bidi_class_name (int bidi_class);
+/* Same; obsolete function name.  */
 extern const char *
        uc_bidi_category_name (int category);
 
-/* Return the bidirectional category given by name, e.g. "LRE".  */
+/* Return the long name of a bidi class.  */
+extern const char *
+       uc_bidi_class_long_name (int bidi_class);
+
+/* Return the bidi class given by name, e.g. "LRE", or by long name, e.g.
+   "Left-to-Right Embedding".  */
+extern int
+       uc_bidi_class_byname (const char *bidi_class_name);
+/* Same; obsolete function name.  */
 extern int
        uc_bidi_category_byname (const char *category_name);
 
-/* Return the bidirectional category of a Unicode character.  */
+/* Return the bidi class of a Unicode character.  */
+extern int
+       uc_bidi_class (ucs4_t uc);
+/* Same; obsolete function name.  */
 extern int
        uc_bidi_category (ucs4_t uc);
 
-/* Test whether a Unicode character belongs to a given bidirectional
-   category.  */
+/* Test whether a Unicode character belongs to a given bidi class.  */
+extern bool
+       uc_is_bidi_class (ucs4_t uc, int bidi_class);
+/* Same; obsolete function name.  */
 extern bool
        uc_is_bidi_category (ucs4_t uc, int category);
 
@@ -376,7 +415,12 @@ enum
 extern const char *
        uc_joining_type_name (int joining_type);
 
-/* Return the joining type given by name, e.g. "D".  */
+/* Return the long name of a joining type.  */
+extern const char *
+       uc_joining_type_long_name (int joining_type);
+
+/* Return the joining type given by name, e.g. "D", or by long name, e.g.
+   "Dual Joining".  */
 extern int
        uc_joining_type_byname (const char *joining_type_name);
 

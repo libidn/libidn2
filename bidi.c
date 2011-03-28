@@ -37,7 +37,7 @@ rtl_ralanenescsetonbnnsm_ok (const uint32_t *label, size_t llen)
 
   for (; llen > 0; label++, llen--)
     {
-      bc = uc_bidi_category (*label);
+      bc = uc_bidi_class (*label);
 
       switch (bc)
 	{
@@ -69,7 +69,7 @@ rtl_ends_ok (const uint32_t *label, size_t llen)
 
   for (p = label + llen - 1; llen > 0; llen--, p--)
     {
-      bc = uc_bidi_category (*p);
+      bc = uc_bidi_class (*p);
       switch (bc)
 	{
 	case UC_BIDI_NSM:
@@ -99,7 +99,7 @@ rtl_enan_ok (const uint32_t *label, size_t llen)
 
   for (p = label + llen - 1; llen > 0; llen--, p--)
     {
-      bc = uc_bidi_category (*p);
+      bc = uc_bidi_class (*p);
       switch (bc)
 	{
 	case UC_BIDI_EN:
@@ -132,7 +132,7 @@ ltr_lenescsetonbnnsm_ok (const uint32_t *label, size_t llen)
 
   for (; llen > 0; label++, llen--)
     {
-      bc = uc_bidi_category (*label);
+      bc = uc_bidi_class (*label);
       switch (bc)
 	{
 	case UC_BIDI_L:
@@ -161,7 +161,7 @@ ltr_ends_ok (const uint32_t *label, size_t llen)
 
   for (p = label + llen - 1; llen > 0; llen--, p--)
     {
-      bc = uc_bidi_category (*p);
+      bc = uc_bidi_class (*p);
       switch (bc)
 	{
 	case UC_BIDI_NSM:
@@ -195,7 +195,7 @@ bidi_p (const uint32_t *label, size_t llen)
 
   for (; llen > 0; label++, llen--)
     {
-      bc = uc_bidi_category (*label);
+      bc = uc_bidi_class (*label);
 
       switch (bc)
 	{
@@ -217,7 +217,7 @@ _idn2_bidi (const uint32_t *label, size_t llen)
   if (!bidi_p (label, llen))
     return IDN2_OK;
 
-  bc = uc_bidi_category (*label);
+  bc = uc_bidi_class (*label);
   switch (bc)
     {
     case UC_BIDI_L:
