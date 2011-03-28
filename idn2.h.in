@@ -15,18 +15,18 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef IDN2_H
-# define IDN2_H
+#ifndef _IDN2_H
+# define _IDN2_H
 
-# ifndef IDN2_API
+# ifndef _IDN2_API
 #  if defined IDN2_BUILDING && defined HAVE_VISIBILITY && HAVE_VISIBILITY
-#   define IDN2_API __attribute__((__visibility__("default")))
+#   define _IDN2_API __attribute__((__visibility__("default")))
 #  elif defined IDN2_BUILDING && defined _MSC_VER && ! defined IDN2_STATIC
-#   define IDN2_API __declspec(dllexport)
+#   define _IDN2_API __declspec(dllexport)
 #  elif defined _MSC_VER && ! defined IDN2_STATIC
-#   define IDN2_API __declspec(dllimport)
+#   define _IDN2_API __declspec(dllimport)
 #  else
-#   define IDN2_API
+#   define _IDN2_API
 #  endif
 # endif
 
@@ -89,19 +89,19 @@ typedef enum
 
 /* IDNA2008 with UTF-8 encoded inputs. */
 
-extern IDN2_API int
+extern _IDN2_API int
 idn2_lookup_u8 (const uint8_t *src, uint8_t **lookupname, int flags);
 
-extern IDN2_API int
+extern _IDN2_API int
 idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
 		  uint8_t **insertname, int flags);
 
 /* IDNA2008 with locale encoded inputs. */
 
-extern IDN2_API int
+extern _IDN2_API int
 idn2_lookup_ul (const char *src, char **lookupname, int flags);
 
-extern IDN2_API int
+extern _IDN2_API int
 idn2_register_ul (const char *ulabel, const char *alabel,
 		  char **insertname, int flags);
 
@@ -169,15 +169,15 @@ typedef enum
 
 /* Auxilliary functions. */
 
-extern IDN2_API const char *idn2_strerror (int rc);
-extern IDN2_API const char *idn2_strerror_name (int rc);
+extern _IDN2_API const char *idn2_strerror (int rc);
+extern _IDN2_API const char *idn2_strerror_name (int rc);
 
-extern IDN2_API const char *idn2_check_version (const char *req_version);
+extern _IDN2_API const char *idn2_check_version (const char *req_version);
 
-extern IDN2_API void idn2_free (void *ptr);
+extern _IDN2_API void idn2_free (void *ptr);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* IDN2_H */
+#endif /* _IDN2_H */
