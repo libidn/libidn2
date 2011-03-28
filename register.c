@@ -34,22 +34,60 @@ idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
     return IDN2_TOO_BIG_LABEL;
   if (alabel && strlen (alabel) >= IDN2_LABEL_MAX_LENGTH)
     return IDN2_TOO_BIG_LABEL;
-
   if (alabel && !_idn2_ascii_p (alabel, strlen (alabel)))
     return IDN2_INVALID_ALABEL;
 
-  *insertname = malloc (IDN2_LABEL_MAX_LENGTH + 1);
-  if (*insertname == NULL)
-    return IDN2_MALLOC;
-
-  if (ulabel && alabel)
+  if (alabel)
     {
-      return -1;
+      size_t alabellen = strlen (alabel), u32len = IDN2_LABEL_MAX_LENGTH * 4;
+      uint32_t u32[IDN2_DOMAIN_MAX_LENGTH * 4];
+      uint8_t *tmp;
+      uint8_t u8[IDN2_DOMAIN_MAX_LENGTH + 1];
+      size_t u8len;
+
+      if (alabellen <= 4)
+	return IDN2_INVALID_ALABEL;
+      if (alabel[0] != 'x'
+	  || alabel[1] != 'n'
+	  || alabel[2] != '-'
+	  || alabel[3] != '-')
+	return IDN2_INVALID_ALABEL;
+
+      rc = _idn2_punycode_decode (alabellen - 4, alabel + 4,
+				  &u32len, u32, NULL);
+      if (rc != IDN2_OK)
+	return rc;
+
+      u8len = sizeof (u8);
+      if (u32_to_u8 (u32, u32len, u8, &u8len) == NULL)
+	return IDN2_ENCODING_ERROR;
+      u8[u8len] = '\0';
+
+      if (ulabel)
+	{
+	  if (strcmp (ulabel, u8) != 0)
+	    return -1;
+	}
+
+      rc = idn2_register_u8 (u8, NULL, &tmp, 0);
+      if (rc != IDN2_OK)
+	return rc;
+      
+      if (strcmp (alabel, tmp) != 0)
+	return -2;
+
+      *insertname = strdup (alabel);
+
+      return IDN2_OK;
     }
   else if (ulabel)
     {
       uint32_t *u32;
       size_t u32len;
+
+      *insertname = malloc (IDN2_LABEL_MAX_LENGTH + 1);
+      if (*insertname == NULL)
+	return IDN2_MALLOC;
 
       if (_idn2_ascii_p (ulabel, strlen (ulabel)))
 	{

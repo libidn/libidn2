@@ -35,8 +35,8 @@ struct idna
 };
 
 static const struct idna idna[] = {
+  {"xn--rksmrgs-5wao1o", "räksmörgås", "xn--rksmrgs-5wao1o", IDN2_OK},
 #if 0
-  {"foo", "foo", "foo", IDN2_OK},
   {"foo", NULL, "foo", IDN2_OK},
 #endif
   {NULL, "foo", "foo", IDN2_OK},
@@ -155,7 +155,7 @@ main (void)
 
       if (rc == IDN2_OK)
 	{
-	  char *tmp;
+	  uint8_t *tmp;
 
 	  rc = idn2_lookup_u8 (idna[i].ulabel, &tmp, idna[i].flags);
 	  if (rc != IDN2_OK)
