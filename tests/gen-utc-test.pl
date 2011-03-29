@@ -28,8 +28,7 @@ while (<>) {
 
     m,^.*;	(.*);	(.*);	(.*);	(NV8)?,;
 
-    next if /\uD/;
-    next if /123456789/;
+    my $line = $_;
 
     my ($source) = $1;
     my ($ustr) = $2;
@@ -39,21 +38,43 @@ while (<>) {
     $ustr = $source if ($ustr eq "");
     $astr = $ustr if ($astr eq "");
 
+    while ($ustr =~ /(.*)\\u([0-9A-f][0-9A-f][0-9A-f][0-9A-f])(.*)/) {
+	my $num = hex($2);
+	#printf "/* hex $2 num $num */";
+
+	my $str = unpack ("H*", pack("C0U*",$num));
+	my $escstr = "";
+	while ($str) {
+	    $escstr .= "\\x" . substr ($str,0,2);
+	    $str = substr ($str,2);
+	}
+	#printf "/* utf8 $escstr */\n";
+
+	$ustr = $1.'" "'.$escstr.'" "'.$3;
+    }
+
     next if ($ustr eq $last);
 
-    print "/* $ctr source $source uni $ustr ace $astr nv8 $nv8 line $_ */\n";
+    print "/* $ctr source $source uni $ustr ace $astr nv8 $nv8 line $line */\n";
 
-    if ($ctr == 116) {
-	print "/* punt2 */\n";
+    if ($astr =~ /\\u/) {
+	print "/* IdnaTest.txt bug? */\n";
+    } elsif ($astr =~ /。/) {
+	print "/* IdnaTest.txt bug2? */\n";
+    } elsif ($ustr =~ /123456789012345678901234567890123456789012345678901234567890123.123456789012345678901234567890123456789012345678901234567890123.123456789012345678901234567890123456789012345678901234567890123.12345678901234567890123456789012345678901234567890123456789012/) {
+	print "/* IdnaTest.txt bug3? */\n";
+    } elsif ($ustr =~ /123456789012345678901234567890123456789012345678901234567890123.1234567890ä123456789012345678901234567890123456789012345.123456789012345678901234567890123456789012345678901234567890123.12345678901234567890123456789012345678901234567890123456789012/) {
+	print "/* IdnaTest.txt bug4? */\n";
+    } elsif ($ustr =~ /a..c/ || $ustr =~ /ä..c/) {
+	print "/* libidn2 bug? */\n";
     } elsif ($nv8 eq "NV8") {
-	if ($ctr == 103 || $ctr == 93 || $ctr == 99) {
-	    print "{ \"$ustr\", \"$astr\", IDN2_UNASSIGNED },\n";
-	} else {
-	    print "{ \"$ustr\", \"$astr\", IDN2_DISALLOWED },\n";
-	}
+	print "{ \"$ustr\", \"$astr\", -1 },\n";
+	$ctr++;
+    } elsif (substr($astr, 0, 1) eq "[" && substr($ustr, 0, 1) ne "[") {
+	print "{ \"$ustr\", \"$astr\", -1 },\n";
 	$ctr++;
     } elsif (substr($astr, 0, 1) eq "[") {
-	print "/* punt1 */\n";
+	print "/* punt1 $line */\n";
     } else {
 	print "{ \"$ustr\", \"$astr\", IDN2_OK },\n";
 	$ctr++;

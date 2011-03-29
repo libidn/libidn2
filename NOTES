@@ -25,6 +25,9 @@ Comments on the specification:
 * Re U+200C, there are no Joining Type T code points that are
   permitted in IDNA2008.
 
+* IdnaTest.txt test vectors found two bugs in libidn2: one cut'n'paste
+  bug of the U+200C rule (L vs R) and handling of zero size labels.
+
 Example domains IDNA2003-valid but IDNA2008-lookup-invalid:
 
 * example.∡↺⊂ (symbols)
