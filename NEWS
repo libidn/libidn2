@@ -2,7 +2,7 @@ Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
 Copyright (C) 2011 Simon Josefsson
 See the end for copying conditions.
 
-* Version 0.1 (unreleased) [alpha]
+* Version 0.1 (released 2011-03-29) [alpha]
 
 ** IDNA2008 Lookup+Register functions are now operational.
 The implementation is still subject to changes, and thus no API/ABI
