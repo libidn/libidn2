@@ -22,3 +22,14 @@ TESTS = test-punycode test-lookup test-register
 check_PROGRAMS = test-punycode test-lookup test-register
 
 TESTS_ENVIRONMENT = $(VALGRIND)
+
+IdnaTest.txt: $(srcdir)/gen-utc-test.pl
+	test -f IdnaTest.txt || \
+		wget http://www.unicode.org/Public/idna/6.0.1/IdnaTest.txt
+
+IdnaTest.c: IdnaTest.txt
+	$(srcdir)/gen-utc-test.pl < IdnaTest.txt > IdnaTest.c
+
+idnatest: IdnaTest.c
+	make clean
+	make check TESTS=test-lookup CFLAGS="-DIDNATEST -std=gnu99"

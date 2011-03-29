@@ -34,6 +34,15 @@ struct idna
 };
 
 static const struct idna idna[] = {
+  /*
+    wget http://www.unicode.org/Public/idna/6.0.1/IdnaTest.txt
+    ./gen-utc-test.pl < IdnaTest.txt > IdnaTest.c
+    make check TESTS=test-lookup CFLAGS="-DIDNATEST -std=gnu99"
+  */
+#ifdef IDNATEST
+# include "IdnaTest.c"
+#endif
+
   /* These comes from http://www.iana.org/domains/root/db see
      gen-idn-tld-tv.pl */
   {"\xe6\xb5\x8b\xe8\xaf\x95", "xn--0zwm56d" },
