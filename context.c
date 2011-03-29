@@ -77,7 +77,7 @@ _idn2_contextj_rule (const uint32_t *label, size_t llen, size_t pos)
 	for (tmp = pos + 1; tmp < llen; tmp++)
 	  {
 	    jt = uc_joining_type (label[tmp]);
-	    if (jt == UC_JOINING_TYPE_L || jt == UC_JOINING_TYPE_D)
+	    if (jt == UC_JOINING_TYPE_R || jt == UC_JOINING_TYPE_D)
 	      break;
 	    if (tmp == llen - 1)
 	      return IDN2_CONTEXTJ;
