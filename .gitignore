@@ -110,6 +110,8 @@ gl/unictype/categ_test.lo
 gl/unictype/categ_test.o
 gl/unictype/combining.lo
 gl/unictype/combining.o
+gl/unictype/combiningclass.lo
+gl/unictype/combiningclass.o
 gl/unictype/joiningtype_of.lo
 gl/unictype/joiningtype_of.o
 gl/unictype/pr_combining.lo
@@ -194,6 +196,7 @@ register.o
 stamp-h1
 tables.lo
 tables.o
+tests/IdnaTest.txt
 tests/Makefile
 tests/Makefile.in
 tests/test-lookup

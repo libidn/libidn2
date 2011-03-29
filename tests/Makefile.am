@@ -21,6 +21,8 @@ LDADD = ../libidn2.la
 TESTS = test-punycode test-lookup test-register
 check_PROGRAMS = test-punycode test-lookup test-register
 
+EXTRA_DIST = IdnaTest.c
+
 TESTS_ENVIRONMENT = $(VALGRIND)
 
 IdnaTest.txt: $(srcdir)/gen-utc-test.pl
@@ -29,7 +31,3 @@ IdnaTest.txt: $(srcdir)/gen-utc-test.pl
 
 IdnaTest.c: IdnaTest.txt
 	$(srcdir)/gen-utc-test.pl < IdnaTest.txt > IdnaTest.c
-
-idnatest: IdnaTest.c
-	make clean
-	make check TESTS=test-lookup CFLAGS="-DIDNATEST -std=gnu99"
