@@ -83,7 +83,7 @@ upload-web-coverage:
 ChangeLog:
 	git2cl > ChangeLog
 
-release: prepare upload
+release: syntax-check prepare upload
 
 tag = $(PACKAGE)-$(VERSION)
 prepare:
@@ -94,6 +94,4 @@ prepare:
 	git tag -u b565716f! -m $(VERSION) $(tag)
 
 upload:
-	git push
-	git push --tags
 	cp $(distdir).tar.gz $(distdir).tar.gz.sig ../releases/$(PACKAGE)/
