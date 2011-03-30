@@ -17,11 +17,13 @@
 
 #include <stdint.h>
 
-enum {
+enum
+{
   PVALID, CONTEXTJ, CONTEXTO, DISALLOWED, UNASSIGNED
 };
 
-struct idna_table {
+struct idna_table
+{
   uint32_t start;
   uint32_t end;
   int state;

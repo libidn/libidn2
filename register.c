@@ -19,15 +19,15 @@
 
 #include "idn2.h"
 
-#include <errno.h> /* errno */
-#include <stdlib.h> /* free */
+#include <errno.h>		/* errno */
+#include <stdlib.h>		/* free */
 
 #include "punycode.h"
 
-#include "uniconv.h" /* u8_strconv_from_locale */
-#include "unistr.h" /* u32_to_u8 */
+#include "uniconv.h"		/* u8_strconv_from_locale */
+#include "unistr.h"		/* u32_to_u8 */
 
-#include "idna.h" /* _idn2_label_test */
+#include "idna.h"		/* _idn2_label_test */
 
 /**
  * idn2_register_u8:
@@ -56,8 +56,8 @@
  *   is returned, or another error code is returned.
  **/
 int
-idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
-		  uint8_t **insertname, int flags)
+idn2_register_u8 (const uint8_t * ulabel, const uint8_t * alabel,
+		  uint8_t ** insertname, int flags)
 {
   int rc;
 
@@ -86,9 +86,7 @@ idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
       if (alabellen <= 4)
 	return IDN2_INVALID_ALABEL;
       if (alabel[0] != 'x'
-	  || alabel[1] != 'n'
-	  || alabel[2] != '-'
-	  || alabel[3] != '-')
+	  || alabel[1] != 'n' || alabel[2] != '-' || alabel[3] != '-')
 	return IDN2_INVALID_ALABEL;
 
       rc = _idn2_punycode_decode (alabellen - 4, alabel + 4,
@@ -118,7 +116,7 @@ idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
 
       *insertname = strdup (alabel);
     }
-  else /* ulabel only */
+  else				/* ulabel only */
     {
       uint32_t *u32;
       size_t u32len;
@@ -149,9 +147,7 @@ idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
 			     | TEST_HYPHEN_STARTEND
 			     | TEST_LEADING_COMBINING
 			     | TEST_CONTEXTJ_RULE
-			     | TEST_CONTEXTO_RULE
-			     | TEST_BIDI,
-			     u32, u32len);
+			     | TEST_CONTEXTO_RULE | TEST_BIDI, u32, u32len);
       if (rc != IDN2_OK)
 	{
 	  free (*insertname);
@@ -219,8 +215,7 @@ idn2_register_ul (const char *ulabel, const char *alabel,
     }
 
   rc = idn2_register_u8 (utf8ulabel, (const uint8_t *) alabel,
-			     (uint8_t **) insertname,
-			     flags | IDN2_NFC_INPUT);
+			 (uint8_t **) insertname, flags | IDN2_NFC_INPUT);
 
   free (utf8ulabel);
 

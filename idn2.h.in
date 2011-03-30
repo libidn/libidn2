@@ -16,25 +16,26 @@
 */
 
 #ifndef _IDN2_H
-# define _IDN2_H
+#define _IDN2_H
 
-# ifndef _IDN2_API
-#  if defined IDN2_BUILDING && defined HAVE_VISIBILITY && HAVE_VISIBILITY
-#   define _IDN2_API __attribute__((__visibility__("default")))
-#  elif defined IDN2_BUILDING && defined _MSC_VER && ! defined IDN2_STATIC
-#   define _IDN2_API __declspec(dllexport)
-#  elif defined _MSC_VER && ! defined IDN2_STATIC
-#   define _IDN2_API __declspec(dllimport)
-#  else
-#   define _IDN2_API
-#  endif
-# endif
+#ifndef _IDN2_API
+#if defined IDN2_BUILDING && defined HAVE_VISIBILITY && HAVE_VISIBILITY
+#define _IDN2_API __attribute__((__visibility__("default")))
+#elif defined IDN2_BUILDING && defined _MSC_VER && ! defined IDN2_STATIC
+#define _IDN2_API __declspec(dllexport)
+#elif defined _MSC_VER && ! defined IDN2_STATIC
+#define _IDN2_API __declspec(dllimport)
+#else
+#define _IDN2_API
+#endif
+#endif
 
-#include <stdint.h> /* uint32_t */
-#include <string.h> /* size_t */
+#include <stdint.h>		/* uint32_t */
+#include <string.h>		/* size_t */
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**
@@ -44,7 +45,7 @@ extern "C" {
  * version number.  Used together with idn2_check_version() to verify
  * header file and run-time library consistency.
  */
-# define IDN2_VERSION "0.2"
+#define IDN2_VERSION "0.2"
 
 /**
  * IDN2_VERSION_NUMBER
@@ -55,7 +56,7 @@ extern "C" {
  * digits are used to enumerate development snapshots, but for all
  * public releases they will be 0000.
  */
-# define IDN2_VERSION_NUMBER 0x00020000
+#define IDN2_VERSION_NUMBER 0x00020000
 
 /**
  * IDN2_LABEL_MAX_LENGTH
@@ -63,7 +64,7 @@ extern "C" {
  * Constant specifying the maximum length of a DNS label to 63
  * characters, as specified in RFC 1034.
  */
-# define IDN2_LABEL_MAX_LENGTH 63
+#define IDN2_LABEL_MAX_LENGTH 63
 
 /**
  * IDN2_DOMAIN_MAX_LENGTH
@@ -71,7 +72,7 @@ extern "C" {
  * Constant specifying the maximum length of a DNS domain to 255
  * characters, as specified in RFC 1034.
  */
-# define IDN2_DOMAIN_MAX_LENGTH 255
+#define IDN2_DOMAIN_MAX_LENGTH 255
 
 /**
  * idn2_flags:
@@ -81,7 +82,7 @@ extern "C" {
  * Flags to IDNA2008 functions, to be binary or:ed together.  Specify
  * only 0 if you want the default behaviour.
  */
-typedef enum
+  typedef enum
   {
     IDN2_NFC_INPUT = 1,
     IDN2_ALABEL_ROUNDTRIP = 2,
@@ -89,21 +90,21 @@ typedef enum
 
 /* IDNA2008 with UTF-8 encoded inputs. */
 
-extern _IDN2_API int
-idn2_lookup_u8 (const uint8_t *src, uint8_t **lookupname, int flags);
+  extern _IDN2_API int
+    idn2_lookup_u8 (const uint8_t * src, uint8_t ** lookupname, int flags);
 
-extern _IDN2_API int
-idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
-		  uint8_t **insertname, int flags);
+  extern _IDN2_API int
+    idn2_register_u8 (const uint8_t * ulabel, const uint8_t * alabel,
+		      uint8_t ** insertname, int flags);
 
 /* IDNA2008 with locale encoded inputs. */
 
-extern _IDN2_API int
-idn2_lookup_ul (const char *src, char **lookupname, int flags);
+  extern _IDN2_API int
+    idn2_lookup_ul (const char *src, char **lookupname, int flags);
 
-extern _IDN2_API int
-idn2_register_ul (const char *ulabel, const char *alabel,
-		  char **insertname, int flags);
+  extern _IDN2_API int
+    idn2_register_ul (const char *ulabel, const char *alabel,
+		      char **insertname, int flags);
 
 /**
  * idn2_rc:
@@ -139,45 +140,45 @@ idn2_register_ul (const char *ulabel, const char *alabel,
  * Note that the #idn2_rc enumeration may be extended at a later date
  * to include new return codes.
  */
-typedef enum
-{
-  IDN2_OK = 0,
-  IDN2_MALLOC = -100,
-  IDN2_NO_CODESET = -101,
-  IDN2_ICONV_FAIL = -102,
-  IDN2_ENCODING_ERROR = -200,
-  IDN2_NFC = -201,
-  IDN2_PUNYCODE_BAD_INPUT = -202,
-  IDN2_PUNYCODE_BIG_OUTPUT = -203,
-  IDN2_PUNYCODE_OVERFLOW = -204,
-  IDN2_TOO_BIG_DOMAIN = -205,
-  IDN2_TOO_BIG_LABEL = -206,
-  IDN2_INVALID_ALABEL = -207,
-  IDN2_UALABEL_MISMATCH = -208,
-  IDN2_NOT_NFC = -300,
-  IDN2_2HYPHEN = -301,
-  IDN2_HYPHEN_STARTEND = -302,
-  IDN2_LEADING_COMBINING = -303,
-  IDN2_DISALLOWED = -304,
-  IDN2_CONTEXTJ = -305,
-  IDN2_CONTEXTJ_NO_RULE = -306,
-  IDN2_CONTEXTO = -307,
-  IDN2_CONTEXTO_NO_RULE = -308,
-  IDN2_UNASSIGNED = -309,
-  IDN2_BIDI = -310
-} idn2_rc;
+  typedef enum
+  {
+    IDN2_OK = 0,
+    IDN2_MALLOC = -100,
+    IDN2_NO_CODESET = -101,
+    IDN2_ICONV_FAIL = -102,
+    IDN2_ENCODING_ERROR = -200,
+    IDN2_NFC = -201,
+    IDN2_PUNYCODE_BAD_INPUT = -202,
+    IDN2_PUNYCODE_BIG_OUTPUT = -203,
+    IDN2_PUNYCODE_OVERFLOW = -204,
+    IDN2_TOO_BIG_DOMAIN = -205,
+    IDN2_TOO_BIG_LABEL = -206,
+    IDN2_INVALID_ALABEL = -207,
+    IDN2_UALABEL_MISMATCH = -208,
+    IDN2_NOT_NFC = -300,
+    IDN2_2HYPHEN = -301,
+    IDN2_HYPHEN_STARTEND = -302,
+    IDN2_LEADING_COMBINING = -303,
+    IDN2_DISALLOWED = -304,
+    IDN2_CONTEXTJ = -305,
+    IDN2_CONTEXTJ_NO_RULE = -306,
+    IDN2_CONTEXTO = -307,
+    IDN2_CONTEXTO_NO_RULE = -308,
+    IDN2_UNASSIGNED = -309,
+    IDN2_BIDI = -310
+  } idn2_rc;
 
 /* Auxilliary functions. */
 
-extern _IDN2_API const char *idn2_strerror (int rc);
-extern _IDN2_API const char *idn2_strerror_name (int rc);
+  extern _IDN2_API const char *idn2_strerror (int rc);
+  extern _IDN2_API const char *idn2_strerror_name (int rc);
 
-extern _IDN2_API const char *idn2_check_version (const char *req_version);
+  extern _IDN2_API const char *idn2_check_version (const char *req_version);
 
-extern _IDN2_API void idn2_free (void *ptr);
+  extern _IDN2_API void idn2_free (void *ptr);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* _IDN2_H */
+#endif				/* _IDN2_H */

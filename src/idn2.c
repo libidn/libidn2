@@ -150,16 +150,14 @@ main (int argc, char *argv[])
     usage (EXIT_SUCCESS);
 
   if (!args_info.quiet_given
-      && args_info.inputs_num == 0
-      && isatty (fileno (stdin)))
+      && args_info.inputs_num == 0 && isatty (fileno (stdin)))
     fprintf (stderr, "%s %s\n" GREETING, PACKAGE, VERSION);
 
   if (args_info.debug_given)
     fprintf (stderr, _("Charset: %s\n"), locale_charset ());
 
   if (!args_info.quiet_given
-      && args_info.inputs_num == 0
-      && isatty (fileno (stdin)))
+      && args_info.inputs_num == 0 && isatty (fileno (stdin)))
     fprintf (stderr, _("Type each input string on a line by itself, "
 		       "terminated by a newline character.\n"));
 

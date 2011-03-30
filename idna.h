@@ -19,30 +19,29 @@
 #include <stdbool.h>
 
 enum
-  {
-    TEST_NFC			= 0x0001,
-    TEST_2HYPHEN		= 0x0002,
-    TEST_HYPHEN_STARTEND	= 0x0004,
-    TEST_LEADING_COMBINING	= 0x0008,
-    TEST_DISALLOWED		= 0x0010,
-    /* is code point a CONTEXTJ code point? */
-    TEST_CONTEXTJ		= 0x0020,
-    /* does code point pass CONTEXTJ rule? */
-    TEST_CONTEXTJ_RULE		= 0x0040,
-    /* is code point a CONTEXTO code point? */
-    TEST_CONTEXTO		= 0x0080,
-    /* is there a CONTEXTO rule for code point? */
-    TEST_CONTEXTO_WITH_RULE	= 0x0100,
-    /* does code point pass CONTEXTO rule? */
-    TEST_CONTEXTO_RULE		= 0x0200,
-    TEST_UNASSIGNED		= 0x0400,
-    TEST_BIDI			= 0x0800,
-  };
+{
+  TEST_NFC = 0x0001,
+  TEST_2HYPHEN = 0x0002,
+  TEST_HYPHEN_STARTEND = 0x0004,
+  TEST_LEADING_COMBINING = 0x0008,
+  TEST_DISALLOWED = 0x0010,
+  /* is code point a CONTEXTJ code point? */
+  TEST_CONTEXTJ = 0x0020,
+  /* does code point pass CONTEXTJ rule? */
+  TEST_CONTEXTJ_RULE = 0x0040,
+  /* is code point a CONTEXTO code point? */
+  TEST_CONTEXTO = 0x0080,
+  /* is there a CONTEXTO rule for code point? */
+  TEST_CONTEXTO_WITH_RULE = 0x0100,
+  /* does code point pass CONTEXTO rule? */
+  TEST_CONTEXTO_RULE = 0x0200,
+  TEST_UNASSIGNED = 0x0400,
+  TEST_BIDI = 0x0800,
+};
 
-extern int _idn2_u8_to_u32_nfc (const uint8_t *src, size_t srclen,
-				uint32_t **out, size_t *outlen,
-				int nfc);
+extern int _idn2_u8_to_u32_nfc (const uint8_t * src, size_t srclen,
+				uint32_t ** out, size_t * outlen, int nfc);
 
-extern bool _idn2_ascii_p (const uint8_t *src, size_t srclen);
+extern bool _idn2_ascii_p (const uint8_t * src, size_t srclen);
 
-extern int _idn2_label_test (int what, const uint32_t *label, size_t llen);
+extern int _idn2_label_test (int what, const uint32_t * label, size_t llen);

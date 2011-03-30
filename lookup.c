@@ -19,19 +19,18 @@
 
 #include "idn2.h"
 
-#include <errno.h> /* errno */
-#include <stdlib.h> /* malloc, free */
+#include <errno.h>		/* errno */
+#include <stdlib.h>		/* malloc, free */
 
 #include "punycode.h"
 
-#include "uniconv.h" /* u8_strconv_from_locale */
-#include "uninorm.h" /* u32_normalize */
+#include "uniconv.h"		/* u8_strconv_from_locale */
+#include "uninorm.h"		/* u32_normalize */
 
-#include "idna.h" /* _idn2_label_test */
+#include "idna.h"		/* _idn2_label_test */
 
 static int
-label (const uint8_t *src, size_t srclen,
-       uint8_t *dst, size_t *dstlen, /* assumed to be 63 */
+label (const uint8_t * src, size_t srclen, uint8_t * dst, size_t * dstlen,	/* assumed to be 63 */
        int flags)
 {
   size_t plen;
@@ -61,8 +60,7 @@ label (const uint8_t *src, size_t srclen,
       return IDN2_OK;
     }
 
-  rc = _idn2_u8_to_u32_nfc (src, srclen, &p, &plen,
-			    flags & IDN2_NFC_INPUT);
+  rc = _idn2_u8_to_u32_nfc (src, srclen, &p, &plen, flags & IDN2_NFC_INPUT);
   if (rc != IDN2_OK)
     return rc;
 
@@ -72,8 +70,7 @@ label (const uint8_t *src, size_t srclen,
 			 TEST_DISALLOWED |
 			 TEST_CONTEXTJ_RULE |
 			 TEST_CONTEXTO_WITH_RULE |
-			 TEST_UNASSIGNED |
-			 TEST_BIDI, p, plen);
+			 TEST_UNASSIGNED | TEST_BIDI, p, plen);
   if (rc != IDN2_OK)
     {
       free (p);
@@ -118,7 +115,7 @@ label (const uint8_t *src, size_t srclen,
  *   returned.
  **/
 int
-idn2_lookup_u8 (const uint8_t *src, uint8_t **lookupname, int flags)
+idn2_lookup_u8 (const uint8_t * src, uint8_t ** lookupname, int flags)
 {
   size_t lookupnamelen = 0;
   int rc;
@@ -137,7 +134,7 @@ idn2_lookup_u8 (const uint8_t *src, uint8_t **lookupname, int flags)
     {
       const uint8_t *end = strchrnul ((const char *) src, '.');
       /* XXX Do we care about non-U+002E dots such as U+3002, U+FF0E
-	 and U+FF61 here?  Perhaps when IDN2_NFC_INPUT? */
+         and U+FF61 here?  Perhaps when IDN2_NFC_INPUT? */
       size_t labellen = end - src;
       uint8_t tmp[IDN2_LABEL_MAX_LENGTH];
       size_t tmplen = IDN2_LABEL_MAX_LENGTH;
@@ -211,7 +208,7 @@ idn2_lookup_ul (const char *src, char **lookupname, int flags)
     }
 
   rc = idn2_lookup_u8 (utf8src, (uint8_t **) lookupname,
-			   flags | IDN2_NFC_INPUT);
+		       flags | IDN2_NFC_INPUT);
 
   free (utf8src);
 

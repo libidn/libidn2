@@ -19,7 +19,7 @@
 
 #include "tables.h"
 
-#include <stdlib.h> /* abort */
+#include <stdlib.h>		/* abort */
 
 #include "data.h"
 

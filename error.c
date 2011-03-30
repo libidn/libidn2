@@ -168,99 +168,99 @@ idn2_strerror_name (int rc)
   switch (rc)
     {
     case IDN2_OK:
-      p = ERR2STR(IDN2_OK);
+      p = ERR2STR (IDN2_OK);
       break;
 
     case IDN2_MALLOC:
-      p = ERR2STR(IDN2_MALLOC);
+      p = ERR2STR (IDN2_MALLOC);
       break;
 
     case IDN2_NO_CODESET:
-      p = ERR2STR(IDN2_NO_NODESET);
+      p = ERR2STR (IDN2_NO_NODESET);
       break;
 
     case IDN2_ICONV_FAIL:
-      p = ERR2STR(IDN2_ICONV_FAIL);
+      p = ERR2STR (IDN2_ICONV_FAIL);
       break;
 
     case IDN2_ENCODING_ERROR:
-      p = ERR2STR(IDN2_ENCODING_ERROR);
+      p = ERR2STR (IDN2_ENCODING_ERROR);
       break;
 
     case IDN2_NFC:
-      p = ERR2STR(IDN2_NFC);
+      p = ERR2STR (IDN2_NFC);
       break;
 
     case IDN2_PUNYCODE_BAD_INPUT:
-      p = ERR2STR(IDN2_PUNYCODE_BAD_INPUT);
+      p = ERR2STR (IDN2_PUNYCODE_BAD_INPUT);
       break;
 
     case IDN2_PUNYCODE_BIG_OUTPUT:
-      p = ERR2STR(IDN2_PUNYCODE_BIG_OUTPUT);
+      p = ERR2STR (IDN2_PUNYCODE_BIG_OUTPUT);
       break;
 
     case IDN2_PUNYCODE_OVERFLOW:
-      p = ERR2STR(IDN2_PUNYCODE_OVERFLOW);
+      p = ERR2STR (IDN2_PUNYCODE_OVERFLOW);
       break;
 
     case IDN2_TOO_BIG_DOMAIN:
-      p = ERR2STR(IDN2_TOO_BIG_DOMAIN);
+      p = ERR2STR (IDN2_TOO_BIG_DOMAIN);
       break;
 
     case IDN2_TOO_BIG_LABEL:
-      p = ERR2STR(IDN2_TOO_BIG_LABEL);
+      p = ERR2STR (IDN2_TOO_BIG_LABEL);
       break;
 
     case IDN2_INVALID_ALABEL:
-      p = ERR2STR(IDN2_INVALID_ALABEL);
+      p = ERR2STR (IDN2_INVALID_ALABEL);
       break;
 
     case IDN2_UALABEL_MISMATCH:
-      p = ERR2STR(IDN2_UALABEL_MISMATCH);
+      p = ERR2STR (IDN2_UALABEL_MISMATCH);
       break;
 
     case IDN2_NOT_NFC:
-      p = ERR2STR(IDN2_NOT_NFC);
+      p = ERR2STR (IDN2_NOT_NFC);
       break;
 
     case IDN2_2HYPHEN:
-      p = ERR2STR(IDN2_2HYPHEN);
+      p = ERR2STR (IDN2_2HYPHEN);
       break;
 
     case IDN2_HYPHEN_STARTEND:
-      p = ERR2STR(IDN2_HYPHEN_STARTEND);
+      p = ERR2STR (IDN2_HYPHEN_STARTEND);
       break;
 
     case IDN2_LEADING_COMBINING:
-      p = ERR2STR(IDN2_LEADING_COMBINING);
+      p = ERR2STR (IDN2_LEADING_COMBINING);
       break;
 
     case IDN2_DISALLOWED:
-      p = ERR2STR(IDN2_DISALLOWED);
+      p = ERR2STR (IDN2_DISALLOWED);
       break;
 
     case IDN2_CONTEXTJ:
-      p = ERR2STR(IDN2_CONTEXTJ);
+      p = ERR2STR (IDN2_CONTEXTJ);
       break;
 
     case IDN2_CONTEXTJ_NO_RULE:
-      p = ERR2STR(IDN2_CONTEXTJ_NO_RULE);
+      p = ERR2STR (IDN2_CONTEXTJ_NO_RULE);
       break;
 
     case IDN2_CONTEXTO:
-      p = ERR2STR(IDN2_CONTEXTO);
+      p = ERR2STR (IDN2_CONTEXTO);
       break;
 
     case IDN2_CONTEXTO_NO_RULE:
-      p = ERR2STR(IDN2_CONTEXTO_NO_RULE);
+      p = ERR2STR (IDN2_CONTEXTO_NO_RULE);
       break;
 
     case IDN2_UNASSIGNED:
-      p = ERR2STR(IDN2_UNASSIGNED);
+      p = ERR2STR (IDN2_UNASSIGNED);
       break;
 
     case IDN2_BIDI:
-      p = ERR2STR(IDN2_BIDI);
+      p = ERR2STR (IDN2_BIDI);
       break;
 
     default:

@@ -21,12 +21,12 @@
 
 #include "tables.h"
 
-#include <unictype.h> /* uc_combining_class, UC_CCC_VR */
+#include <unictype.h>		/* uc_combining_class, UC_CCC_VR */
 
 #include "context.h"
 
 int
-_idn2_contextj_rule (const uint32_t *label, size_t llen, size_t pos)
+_idn2_contextj_rule (const uint32_t * label, size_t llen, size_t pos)
 {
   uint32_t cp;
 
@@ -40,7 +40,7 @@ _idn2_contextj_rule (const uint32_t *label, size_t llen, size_t pos)
 
   switch (cp)
     {
-    case 0x200C: /* ZERO WIDTH NON-JOINER */
+    case 0x200C:		/* ZERO WIDTH NON-JOINER */
       if (pos > 0)
 	{
 	  /* If Canonical_Combining_Class(Before(cp)) .eq.  Virama Then True; */
@@ -51,7 +51,7 @@ _idn2_contextj_rule (const uint32_t *label, size_t llen, size_t pos)
 	}
 
       /* See http://permalink.gmane.org/gmane.ietf.idnabis/6980 for
-	 clarified rule. */
+         clarified rule. */
 
       if (pos == 0 || pos == llen - 1)
 	return IDN2_CONTEXTJ;
@@ -61,7 +61,7 @@ _idn2_contextj_rule (const uint32_t *label, size_t llen, size_t pos)
 	size_t tmp;
 
 	/* Search backwards. */
-	for (tmp = pos - 1; ; tmp--)
+	for (tmp = pos - 1;; tmp--)
 	  {
 	    jt = uc_joining_type (label[tmp]);
 	    if (jt == UC_JOINING_TYPE_L || jt == UC_JOINING_TYPE_D)
@@ -90,7 +90,7 @@ _idn2_contextj_rule (const uint32_t *label, size_t llen, size_t pos)
       return IDN2_OK;
       break;
 
-    case 0x200D: /* ZERO WIDTH JOINER */
+    case 0x200D:		/* ZERO WIDTH JOINER */
       if (pos > 0)
 	{
 	  uint32_t before_cp = label[pos - 1];
@@ -105,7 +105,7 @@ _idn2_contextj_rule (const uint32_t *label, size_t llen, size_t pos)
 }
 
 int
-_idn2_contexto_rule (const uint32_t *label, size_t llen, size_t pos)
+_idn2_contexto_rule (const uint32_t * label, size_t llen, size_t pos)
 {
   uint32_t cp = label[pos];
 

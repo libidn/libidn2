@@ -19,7 +19,7 @@
 
 #include "idn2.h"
 
-#include <stdlib.h> /* free */
+#include <stdlib.h>		/* free */
 
 /**
  * idn2_free:

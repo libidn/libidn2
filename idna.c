@@ -19,23 +19,22 @@
 
 #include "idn2.h"
 
-#include <stdlib.h> /* free */
-#include <errno.h> /* errno */
+#include <stdlib.h>		/* free */
+#include <errno.h>		/* errno */
 
 #include "bidi.h"
 #include "tables.h"
 #include "context.h"
 
-#include <unictype.h> /* uc_is_general_category, UC_CATEGORY_M */
-#include <uninorm.h> /* u32_normalize */
-#include <unistr.h> /* u8_to_u32 */
+#include <unictype.h>		/* uc_is_general_category, UC_CATEGORY_M */
+#include <uninorm.h>		/* u32_normalize */
+#include <unistr.h>		/* u8_to_u32 */
 
 #include "idna.h"
 
 int
-_idn2_u8_to_u32_nfc (const uint8_t *src, size_t srclen,
-		     uint32_t **out, size_t *outlen,
-		     int nfc)
+_idn2_u8_to_u32_nfc (const uint8_t * src, size_t srclen,
+		     uint32_t ** out, size_t * outlen, int nfc)
 {
   uint32_t *p;
   size_t plen;
@@ -70,7 +69,7 @@ _idn2_u8_to_u32_nfc (const uint8_t *src, size_t srclen,
 }
 
 bool
-_idn2_ascii_p (const uint8_t *src, size_t srclen)
+_idn2_ascii_p (const uint8_t * src, size_t srclen)
 {
   size_t i;
   bool ascii = true;
@@ -83,7 +82,7 @@ _idn2_ascii_p (const uint8_t *src, size_t srclen)
 }
 
 int
-_idn2_label_test (int what, const uint32_t *label, size_t llen)
+_idn2_label_test (int what, const uint32_t * label, size_t llen)
 {
   if (what & TEST_NFC)
     {

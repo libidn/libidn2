@@ -35,6 +35,26 @@ exclude_file_name_regexp--sc_trailing_blank = ^tests/IdnaTest.(txt|inc)$$
 
 update-copyright-env = UPDATE_COPYRIGHT_HOLDER="Simon Josefsson"
 
+INDENT_SOURCES = \
+	bidi.c \
+	bidi.h \
+	context.c \
+	context.h \
+	data.h \
+	error.c \
+	free.c \
+	idn2.h.in \
+	idna.c \
+	idna.h \
+	lookup.c \
+	punycode.h \
+	register.c \
+	src/blurbs.h \
+	src/idn2.c \
+	tables.c \
+	tables.h \
+	version.c
+
 buildit:
 	test -f configure || autoreconf --force --install
 	test -f Makefile || ./configure $(CFGFLAGS)

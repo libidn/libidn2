@@ -31,7 +31,7 @@
    optimization is the root of all evil. */
 
 static bool
-rtl_ralanenescsetonbnnsm_ok (const uint32_t *label, size_t llen)
+rtl_ralanenescsetonbnnsm_ok (const uint32_t * label, size_t llen)
 {
   int bc;
 
@@ -62,7 +62,7 @@ rtl_ralanenescsetonbnnsm_ok (const uint32_t *label, size_t llen)
 }
 
 static bool
-rtl_ends_ok (const uint32_t *label, size_t llen)
+rtl_ends_ok (const uint32_t * label, size_t llen)
 {
   const uint32_t *p;
   int bc;
@@ -90,7 +90,7 @@ rtl_ends_ok (const uint32_t *label, size_t llen)
 }
 
 static bool
-rtl_enan_ok (const uint32_t *label, size_t llen)
+rtl_enan_ok (const uint32_t * label, size_t llen)
 {
   bool en = false;
   bool an = false;
@@ -116,17 +116,16 @@ rtl_enan_ok (const uint32_t *label, size_t llen)
 }
 
 static int
-rtl (const uint32_t *label, size_t llen)
+rtl (const uint32_t * label, size_t llen)
 {
   if (rtl_ralanenescsetonbnnsm_ok (label, llen)
-      && rtl_ends_ok (label, llen)
-      && rtl_enan_ok (label, llen))
+      && rtl_ends_ok (label, llen) && rtl_enan_ok (label, llen))
     return IDN2_OK;
   return IDN2_BIDI;
 }
 
 static bool
-ltr_lenescsetonbnnsm_ok (const uint32_t *label, size_t llen)
+ltr_lenescsetonbnnsm_ok (const uint32_t * label, size_t llen)
 {
   int bc;
 
@@ -154,7 +153,7 @@ ltr_lenescsetonbnnsm_ok (const uint32_t *label, size_t llen)
 }
 
 static bool
-ltr_ends_ok (const uint32_t *label, size_t llen)
+ltr_ends_ok (const uint32_t * label, size_t llen)
 {
   const uint32_t *p;
   int bc;
@@ -180,16 +179,15 @@ ltr_ends_ok (const uint32_t *label, size_t llen)
 }
 
 static int
-ltr (const uint32_t *label, size_t llen)
+ltr (const uint32_t * label, size_t llen)
 {
-  if (ltr_lenescsetonbnnsm_ok (label, llen)
-      && ltr_ends_ok (label, llen))
+  if (ltr_lenescsetonbnnsm_ok (label, llen) && ltr_ends_ok (label, llen))
     return IDN2_OK;
   return IDN2_BIDI;
 }
 
 static bool
-bidi_p (const uint32_t *label, size_t llen)
+bidi_p (const uint32_t * label, size_t llen)
 {
   int bc;
 
@@ -210,7 +208,7 @@ bidi_p (const uint32_t *label, size_t llen)
 }
 
 int
-_idn2_bidi (const uint32_t *label, size_t llen)
+_idn2_bidi (const uint32_t * label, size_t llen)
 {
   int bc;
 

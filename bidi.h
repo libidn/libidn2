@@ -17,4 +17,4 @@
 
 #include <stdint.h>
 
-int _idn2_bidi (const uint32_t *label, size_t llen);
+int _idn2_bidi (const uint32_t * label, size_t llen);

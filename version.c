@@ -19,7 +19,7 @@
 
 #include "idn2.h"
 
-#include <string.h> /* strverscmp */
+#include <string.h>		/* strverscmp */
 
 /**
  * idn2_check_version:
