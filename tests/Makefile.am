@@ -25,6 +25,8 @@ test_lookup_SOURCES = test-lookup.c IdnaTest.inc
 
 TESTS_ENVIRONMENT = $(VALGRIND)
 
+EXTRA_DIST = IdnaTest.txt gen-utc-test.pl
+
 IdnaTest.txt:
 	wget http://www.unicode.org/Public/idna/6.0.1/IdnaTest.txt
 
