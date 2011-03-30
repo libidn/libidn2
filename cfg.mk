@@ -42,6 +42,23 @@ buildit:
 glimport:
 	gnulib-tool --add-import
 
+htmldir = ../www-$(PACKAGE)
+
+my-coverage:
+	ln -s . gl/uniconv/uniconv
+	ln -s . gl/unictype/unictype
+	ln -s . gl/uninorm/uninorm
+	ln -s . gl/unistr/unistr
+	$(MAKE) coverage
+
+web-coverage:
+	rm -fv `find $(htmldir)/coverage -type f`
+	cp -rv $(COVERAGE_OUT)/* $(htmldir)/coverage/
+
+upload-web-coverage:
+	cd $(htmldir) && \
+		git commit -m "Update." coverage
+
 ChangeLog:
 	git2cl > ChangeLog
 
