@@ -13,20 +13,23 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-AM_CPPFLAGS = -I$(top_srcdir) -I$(top_builddir)
-AM_LDFLAGS = -static
+AC_INIT([idn2], [0.2], [simon@josefsson.org],,
+  [http://josefsson.org/libidn2/])
 
-LDADD = ../libidn2.la
+AC_CONFIG_AUX_DIR([../build-aux])
+AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_MACRO_DIR([../m4])
+AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 
-TESTS = test-punycode test-lookup test-register
-check_PROGRAMS = test-punycode test-lookup test-register
+AM_MISSING_PROG(HELP2MAN, help2man, $missing_dir)
 
-test_lookup_SOURCES = test-lookup.c IdnaTest.inc
+AC_PROG_CC
+gl_EARLY
+AC_PROG_LIBTOOL
+gl_INIT
 
-TESTS_ENVIRONMENT = $(VALGRIND)
-
-IdnaTest.txt:
-	wget http://www.unicode.org/Public/idna/6.0.1/IdnaTest.txt
-
-IdnaTest.inc: IdnaTest.txt $(srcdir)/gen-utc-test.pl
-	$(srcdir)/gen-utc-test.pl < IdnaTest.txt > IdnaTest.inc
+AC_CONFIG_FILES([
+  Makefile
+  gl/Makefile
+])
+AC_OUTPUT

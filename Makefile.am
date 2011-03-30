@@ -15,7 +15,7 @@
 
 DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc
 
-SUBDIRS = gl . doc tests
+SUBDIRS = gl . doc src tests
 ACLOCAL_AMFLAGS = -I m4 -I gl/m4
 EXTRA_DIST = gl/m4/gnulib-cache.m4
 

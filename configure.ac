@@ -13,7 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-AC_INIT([libidn2], [0.2], [simon@josefsson.org])
+AC_INIT([libidn2], [0.2], [simon@josefsson.org],,
+  [http://josefsson.org/libidn2/])
 
 # Library code modified:                              REVISION++
 # Interfaces changed/added/removed:   CURRENT++       REVISION=0
@@ -68,6 +69,8 @@ if test "$gl_gcc_warnings" = yes; then
   gl_WARN_ADD([-Wno-pointer-sign])     # Too many warnings for now
   gl_WARN_ADD([-fdiagnostics-show-option])
 fi
+
+AC_CONFIG_SUBDIRS([src])
 
 AC_CONFIG_FILES([
   Makefile

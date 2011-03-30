@@ -13,20 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-AM_CPPFLAGS = -I$(top_srcdir) -I$(top_builddir)
-AM_LDFLAGS = -static
-
-LDADD = ../libidn2.la
-
-TESTS = test-punycode test-lookup test-register
-check_PROGRAMS = test-punycode test-lookup test-register
-
-test_lookup_SOURCES = test-lookup.c IdnaTest.inc
-
-TESTS_ENVIRONMENT = $(VALGRIND)
-
-IdnaTest.txt:
-	wget http://www.unicode.org/Public/idna/6.0.1/IdnaTest.txt
-
-IdnaTest.inc: IdnaTest.txt $(srcdir)/gen-utc-test.pl
-	$(srcdir)/gen-utc-test.pl < IdnaTest.txt > IdnaTest.inc
+option "lookup" l "Lookup domain name (default)" no
+option "register" r "Register label" no
+option "debug" - "Print debugging information" flag off
+option "quiet" - "Silent operation" flag off

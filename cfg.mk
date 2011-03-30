@@ -25,12 +25,13 @@ local-checks-to-skip += sc_immutable_NEWS
 local-checks-to-skip += sc_prohibit_strcmp
 
 # Ignore gnulib files.
-VC_LIST_ALWAYS_EXCLUDE_REGEX = ^(gl|m4)/.*$
+VC_LIST_ALWAYS_EXCLUDE_REGEX = ^(src/gl|gl|m4)/.*$
 
 # Explicit syntax-check exceptions.
 exclude_file_name_regexp--sc_program_name = ^tests/.*\.c$$
 exclude_file_name_regexp--sc_prohibit_empty_lines_at_EOF = ^doc/reference/version.xml.in$$
 exclude_file_name_regexp--sc_space_tab = ^maint.mk$$
+exclude_file_name_regexp--sc_trailing_blank = ^tests/IdnaTest.(txt|inc)$$
 
 update-copyright-env = UPDATE_COPYRIGHT_HOLDER="Simon Josefsson"
 

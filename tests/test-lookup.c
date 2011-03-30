@@ -35,7 +35,7 @@ struct idna
 
 static const struct idna idna[] = {
   /* UTC's test vectors. */
-#include "IdnaTest.c"
+#include "IdnaTest.inc"
 
   /* These comes from http://www.iana.org/domains/root/db see
      gen-idn-tld-tv.pl */

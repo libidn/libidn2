@@ -4,6 +4,10 @@ See the end for copying conditions.
 
 * Version 0.2 (unreleased) [alpha]
 
+** Added command line tool "idn2".
+
+** Added more test vectors from Unicode.
+
 * Version 0.1 (released 2011-03-29) [alpha]
 
 ** IDNA2008 Lookup+Register functions are now operational.
