@@ -19,15 +19,15 @@
 #define _IDN2_H
 
 #ifndef _IDN2_API
-#if defined IDN2_BUILDING && defined HAVE_VISIBILITY && HAVE_VISIBILITY
-#define _IDN2_API __attribute__((__visibility__("default")))
-#elif defined IDN2_BUILDING && defined _MSC_VER && ! defined IDN2_STATIC
-#define _IDN2_API __declspec(dllexport)
-#elif defined _MSC_VER && ! defined IDN2_STATIC
-#define _IDN2_API __declspec(dllimport)
-#else
-#define _IDN2_API
-#endif
+# if defined IDN2_BUILDING && defined HAVE_VISIBILITY && HAVE_VISIBILITY
+#  define _IDN2_API __attribute__((__visibility__("default")))
+# elif defined IDN2_BUILDING && defined _MSC_VER && ! defined IDN2_STATIC
+#  define _IDN2_API __declspec(dllexport)
+# elif defined _MSC_VER && ! defined IDN2_STATIC
+#  define _IDN2_API __declspec(dllimport)
+# else
+#  define _IDN2_API
+# endif
 #endif
 
 #include <stdint.h>		/* uint32_t */
@@ -45,7 +45,7 @@ extern "C"
  * version number.  Used together with idn2_check_version() to verify
  * header file and run-time library consistency.
  */
-#define IDN2_VERSION "0.2"
+#define IDN2_VERSION "0.3"
 
 /**
  * IDN2_VERSION_NUMBER
@@ -56,7 +56,7 @@ extern "C"
  * digits are used to enumerate development snapshots, but for all
  * public releases they will be 0000.
  */
-#define IDN2_VERSION_NUMBER 0x00020000
+#define IDN2_VERSION_NUMBER 0x00030000
 
 /**
  * IDN2_LABEL_MAX_LENGTH
