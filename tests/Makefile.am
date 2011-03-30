@@ -28,5 +28,5 @@ TESTS_ENVIRONMENT = $(VALGRIND)
 IdnaTest.txt:
 	wget http://www.unicode.org/Public/idna/6.0.1/IdnaTest.txt
 
-IdnaTest.inc: IdnaTest.txt $(srcdir)/gen-utc-test.pl
-	$(srcdir)/gen-utc-test.pl < IdnaTest.txt > IdnaTest.inc
+IdnaTest.inc: $(srcdir)/IdnaTest.txt $(srcdir)/gen-utc-test.pl
+	$(srcdir)/gen-utc-test.pl < $(srcdir)/IdnaTest.txt > IdnaTest.inc
