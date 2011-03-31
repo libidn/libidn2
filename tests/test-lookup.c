@@ -34,6 +34,9 @@ struct idna
 };
 
 static const struct idna idna[] = {
+  /* U+19DA */
+  {"\xe1\xa7\x9a", "xn--pkf", IDN2_OK},
+
   /* UTC's test vectors. */
 #include "IdnaTest.inc"
 
