@@ -1,0 +1,56 @@
+Libidn2 README-alpha -- Information for developers.             -*- outline -*-
+Copyright (C) 2011 Simon Josefsson
+See the end for copying conditions.
+
+This file contains instructions for developers and advanced users that
+wants to build from version controlled sources.  You need to have
+several tools installed, including:
+
+- Automake <http://www.gnu.org/software/automake/>
+- Autoconf <http://www.gnu.org/software/autoconf/>
+- Libtool <http://www.gnu.org/software/libtool/>
+- help2man <http://www.gnu.org/software/help2man/>
+- Gengetopt <http://www.gnu.org/software/gengetopt/>
+- Tar <http://www.gnu.org/software/tar/>
+- Gzip <http://www.gnu.org/software/gzip/>
+- GTK-DOC <http://www.gtk.org/gtk-doc/> (for API manual)
+- Git <http://git.or.cz/>
+- Perl <http://www.cpan.org/>
+- Valgrind <http://valgrind.org/> (optional)
+
+The required software is typically distributed with your operating
+system, and the instructions for installing them differ.  Here are
+some hints for gNewSense/Debian/Ubuntu:
+
+apt-get install git-core autoconf automake libtool 
+apt-get install help2man gtk-doc-tools valgrind gengetopt
+
+Download the version controlled sources:
+
+$ git clone git://gitorious.org/libidn2/libidn2.git
+$ cd libidn2
+
+The next step is to run autoreconf, ./configure, etc:
+
+$ make
+
+Then build the project normally:
+
+$ make
+$ make check
+
+Happy hacking!
+
+----------------------------------------------------------------------
+This file is free software: you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation, either version 3 of the License, or (at your
+option) any later version.
+
+This file is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this file.  If not, see <http://www.gnu.org/licenses/>.
