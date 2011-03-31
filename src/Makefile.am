@@ -17,7 +17,9 @@ SUBDIRS = gl
 ACLOCAL_AMFLAGS = -I ../m4 -I gl/m4
 EXTRA_DIST = gl/m4/gnulib-cache.m4
 
-AM_CPPFLAGS = -I. -I$(srcdir)/.. -I$(builddir)/..
+AM_CPPFLAGS = -I.
+AM_CPPFLAGS += -I$(srcdir)/.. -I$(builddir)/..
+AM_CPPFLAGS += -I$(srcdir)/../gl -I$(builddir)/../gl
 AM_CPPFLAGS += -I$(srcdir)/gl -I$(builddir)/gl
 
 bin_PROGRAMS = idn2
@@ -28,7 +30,7 @@ idn2.c: $(BUILT_SOURCES)
 
 noinst_LTLIBRARIES = libidn2_cmd.la
 libidn2_cmd_la_SOURCES =  idn2.ggo idn2_cmd.c idn2_cmd.h
-libidn2_cmd_la_LIBADD = gl/libgnu.la
+libidn2_cmd_la_LIBADD = ../gl/libgnu.la gl/libgnu.la
 libidn2_cmd_la_CFLAGS =
 
 idn2_cmd.c idn2_cmd.h: idn2.ggo Makefile.am

@@ -15,7 +15,7 @@
 
 
 # Specification in the form of a command-line invocation:
-#   gnulib-tool --import --dir=. --lib=libgnu --source-base=gl --m4-base=gl/m4 --doc-base=doc --tests-base=tests --aux-dir=../build-aux --libtool --macro-prefix=gl --no-vc-files configmake error gettext-h progname uniconv/u8-strconv-from-locale unistr/u8-to-u32 version-etc
+#   gnulib-tool --import --dir=. --lib=libgnu --source-base=gl --m4-base=gl/m4 --doc-base=doc --tests-base=tests --aux-dir=../build-aux --libtool --macro-prefix=gl --no-vc-files configmake error gettext-h progname version-etc
 
 # Specification in the form of a few gnulib-tool.m4 macro invocations:
 gl_LOCAL_DIR([])
@@ -24,8 +24,6 @@ gl_MODULES([
   error
   gettext-h
   progname
-  uniconv/u8-strconv-from-locale
-  unistr/u8-to-u32
   version-etc
 ])
 gl_AVOID([])
