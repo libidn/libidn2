@@ -142,7 +142,8 @@ BUILT_SOURCES += $(ERRNO_H)
 
 # We need the following in order to create <errno.h> when the system
 # doesn't have one that is POSIX compliant.
-errno.h: errno.in.h
+if GL_GENERATE_ERRNO_H
+errno.h: errno.in.h $(top_builddir)/config.status
 	$(AM_V_GEN)rm -f $@-t $@ && \
 	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */' && \
 	  sed -e 's|@''INCLUDE_NEXT''@|$(INCLUDE_NEXT)|g' \
@@ -158,6 +159,10 @@ errno.h: errno.in.h
 	      < $(srcdir)/errno.in.h; \
 	} > $@-t && \
 	mv $@-t $@
+else
+errno.h: $(top_builddir)/config.status
+	rm -f $@
+endif
 MOSTLYCLEANFILES += errno.h errno.h-t
 
 EXTRA_DIST += errno.in.h
@@ -198,7 +203,8 @@ BUILT_SOURCES += $(STDARG_H)
 
 # We need the following in order to create <stdarg.h> when the system
 # doesn't have one that works with the given compiler.
-stdarg.h: stdarg.in.h
+if GL_GENERATE_STDARG_H
+stdarg.h: stdarg.in.h $(top_builddir)/config.status
 	$(AM_V_GEN)rm -f $@-t $@ && \
 	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */' && \
 	  sed -e 's|@''INCLUDE_NEXT''@|$(INCLUDE_NEXT)|g' \
@@ -208,6 +214,10 @@ stdarg.h: stdarg.in.h
 	      < $(srcdir)/stdarg.in.h; \
 	} > $@-t && \
 	mv $@-t $@
+else
+stdarg.h: $(top_builddir)/config.status
+	rm -f $@
+endif
 MOSTLYCLEANFILES += stdarg.h stdarg.h-t
 
 EXTRA_DIST += stdarg.in.h
@@ -220,7 +230,8 @@ BUILT_SOURCES += $(STDDEF_H)
 
 # We need the following in order to create <stddef.h> when the system
 # doesn't have one that works with the given compiler.
-stddef.h: stddef.in.h
+if GL_GENERATE_STDDEF_H
+stddef.h: stddef.in.h $(top_builddir)/config.status
 	$(AM_V_GEN)rm -f $@-t $@ && \
 	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */' && \
 	  sed -e 's|@''INCLUDE_NEXT''@|$(INCLUDE_NEXT)|g' \
@@ -232,6 +243,10 @@ stddef.h: stddef.in.h
 	      < $(srcdir)/stddef.in.h; \
 	} > $@-t && \
 	mv $@-t $@
+else
+stddef.h: $(top_builddir)/config.status
+	rm -f $@
+endif
 MOSTLYCLEANFILES += stddef.h stddef.h-t
 
 EXTRA_DIST += stddef.in.h
@@ -253,7 +268,7 @@ BUILT_SOURCES += string.h
 
 # We need the following in order to create <string.h> when the system
 # doesn't have one that works with the given compiler.
-string.h: string.in.h $(CXXDEFS_H) $(ARG_NONNULL_H) $(WARN_ON_USE_H)
+string.h: string.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H) $(WARN_ON_USE_H)
 	$(AM_V_GEN)rm -f $@-t $@ && \
 	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */' && \
 	  sed -e 's|@''INCLUDE_NEXT''@|$(INCLUDE_NEXT)|g' \
@@ -347,7 +362,7 @@ BUILT_SOURCES += unistd.h
 
 # We need the following in order to create an empty placeholder for
 # <unistd.h> when the system doesn't have one.
-unistd.h: unistd.in.h $(CXXDEFS_H) $(ARG_NONNULL_H) $(WARN_ON_USE_H)
+unistd.h: unistd.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H) $(WARN_ON_USE_H)
 	$(AM_V_GEN)rm -f $@-t $@ && \
 	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
 	  sed -e 's|@''HAVE_UNISTD_H''@|$(HAVE_UNISTD_H)|g' \

@@ -823,8 +823,8 @@ require_exactly_one_NL_at_EOF_ =					\
   END { exit defined $$fail }
 sc_prohibit_empty_lines_at_EOF:
 	@perl -le '$(require_exactly_one_NL_at_EOF_)' $$($(VC_LIST_EXCEPT)) \
-          || { echo '$(ME): empty line(s) or no newline at EOF' 	\
-		1>&2; exit 1; } || :;					\
+	  || { echo '$(ME): empty line(s) or no newline at EOF'		\
+		1>&2; exit 1; } || :
 
 # Make sure we don't use st_blocks.  Use ST_NBLOCKS instead.
 # This is a bit of a kludge, since it prevents use of the string
@@ -839,6 +839,31 @@ sc_prohibit_stat_st_blocks:
 sc_prohibit_S_IS_definition:
 	@prohibit='^ *# *define  *S_IS'					\
 	halt='do not define S_IS* macros; include <sys/stat.h>'		\
+	  $(_sc_search_regexp)
+
+prohibit_doubled_word_RE_ ?= \
+  /\b(then?|[iao]n|i[fst]|but|f?or|at|and|[dt]o)\s+\1\b/gims
+prohibit_doubled_word_ =						\
+    -e 'while ($(prohibit_doubled_word_RE_))'				\
+    -e '  {'								\
+    -e '    $$n = ($$` =~ tr/\n/\n/ + 1);'				\
+    -e '    ($$v = $$&) =~ s/\n/\\n/g;'					\
+    -e '    print "$$ARGV:$$n:$$v\n";'					\
+    -e '  }'
+
+# Define this to a regular expression that matches
+# any filename:dd:match lines you want to ignore.
+# The default is to ignore no matches.
+ignore_doubled_word_match_RE_ ?= ^$$
+
+sc_prohibit_doubled_word:
+	@perl -n -0777 $(prohibit_doubled_word_) $$($(VC_LIST_EXCEPT))	\
+	  | grep -vE '$(ignore_doubled_word_match_RE_)'			\
+	  | grep . && { echo '$(ME): doubled words' 1>&2; exit 1; } || :
+
+sc_prohibit_can_not:
+	@prohibit='\<can[ ]not\>'					\
+	halt='use "cannot", not "can'' not"'				\
 	  $(_sc_search_regexp)
 
 _ptm1 = use "test C1 && test C2", not "test C1 -''a C2"
