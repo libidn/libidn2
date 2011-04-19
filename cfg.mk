@@ -28,10 +28,12 @@ local-checks-to-skip += sc_prohibit_strcmp
 VC_LIST_ALWAYS_EXCLUDE_REGEX = ^(src/gl|gl|m4)/.*$
 
 # Explicit syntax-check exceptions.
-exclude_file_name_regexp--sc_program_name = ^tests/.*\.c$$
+exclude_file_name_regexp--sc_program_name = ^(tests|examples)/.*\.c$$
 exclude_file_name_regexp--sc_prohibit_empty_lines_at_EOF = ^doc/reference/version.xml.in$$
 exclude_file_name_regexp--sc_space_tab = ^maint.mk$$
 exclude_file_name_regexp--sc_trailing_blank = ^tests/IdnaTest.(txt|inc)$$
+exclude_file_name_regexp--sc_require_config_h = ^examples/.*\.c$$
+exclude_file_name_regexp--sc_require_config_h_first = ^examples/.*\.c$$
 
 update-copyright-env = UPDATE_COPYRIGHT_HOLDER="Simon Josefsson"
 
