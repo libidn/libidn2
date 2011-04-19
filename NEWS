@@ -2,6 +2,8 @@ Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
 Copyright (C) 2011 Simon Josefsson
 See the end for copying conditions.
 
+* Version 0.4 (unreleased) [alpha]
+
 * Version 0.3 (released 2011-04-20) [alpha]
 
 ** doc: Added Texinfo manual.

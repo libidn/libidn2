@@ -97,6 +97,8 @@ prepare:
 	gpg -b $(distdir).tar.gz
 	gpg --verify $(distdir).tar.gz.sig
 	git tag -u b565716f! -m $(VERSION) $(tag)
+	git push
+	git push --tags
 
 upload:
 	cp $(distdir).tar.gz $(distdir).tar.gz.sig ../releases/$(PACKAGE)/
