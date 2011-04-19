@@ -1,3 +1,11 @@
+Todo:
+
+* Verify the max-domain-name-length constant.
+
+* Implement A-label roundtrip conversion.
+
+* Decide whether non-U+002E dots need any special consideration.
+
 Comments on the specification:
 
 * The [Unicode] reference needs to be a normative reference.  In
