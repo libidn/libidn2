@@ -42,12 +42,3 @@ idn2_cmd.c idn2_cmd.h: idn2.ggo Makefile.am
 
 BUILT_SOURCES = idn2_cmd.c idn2_cmd.h
 MAINTAINERCLEANFILES = $(BUILT_SOURCES)
-
-dist_man_MANS = idn2.1
-MAINTAINERCLEANFILES += $(dist_man_MANS)
-
-idn2.1: $(srcdir)/idn2.c $(srcdir)/idn2.ggo $(srcdir)/configure.ac
-	$(HELP2MAN) \
-		--name="Libidn2 Internationalized Domain Names (IDNA2008) conversion" \
-		--output=$@ \
-		$(builddir)/idn2$(EXEEXT)

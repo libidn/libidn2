@@ -19,10 +19,10 @@ ifeq ($(.DEFAULT_GOAL),abort-due-to-no-makefile)
 .DEFAULT_GOAL := buildit
 endif
 
-# Re-add when we have translation
-local-checks-to-skip += sc_unmarked_diagnostics sc_bindtextdomain
+local-checks-to-skip += sc_unmarked_diagnostics sc_bindtextdomain # Re-add when we have translation
 local-checks-to-skip += sc_immutable_NEWS
 local-checks-to-skip += sc_prohibit_strcmp
+local-checks-to-skip += sc_copyright_check
 
 # Ignore gnulib files.
 VC_LIST_ALWAYS_EXCLUDE_REGEX = ^(src/gl|gl|m4)/.*$
@@ -31,7 +31,7 @@ VC_LIST_ALWAYS_EXCLUDE_REGEX = ^(src/gl|gl|m4)/.*$
 exclude_file_name_regexp--sc_program_name = ^(tests|examples)/.*\.c$$
 exclude_file_name_regexp--sc_prohibit_empty_lines_at_EOF = ^doc/reference/version.xml.in$$
 exclude_file_name_regexp--sc_space_tab = ^maint.mk$$
-exclude_file_name_regexp--sc_trailing_blank = ^tests/IdnaTest.(txt|inc)$$
+exclude_file_name_regexp--sc_trailing_blank = ^(tests/IdnaTest.(txt|inc))|(doc/gdoc)$$
 exclude_file_name_regexp--sc_require_config_h = ^examples/.*\.c$$
 exclude_file_name_regexp--sc_require_config_h_first = ^examples/.*\.c$$
 
@@ -57,7 +57,10 @@ INDENT_SOURCES = \
 	tables.h \
 	version.c
 
-buildit:
+doc/Makefile.gdoc:
+	printf "gdoc_MANS =\ngdoc_TEXINFOS =\n" > doc/Makefile.gdoc
+
+buildit: doc/Makefile.gdoc
 	test -f configure || autoreconf --force --install
 	test -f Makefile || ./configure $(CFGFLAGS)
 	make

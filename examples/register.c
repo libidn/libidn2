@@ -30,7 +30,8 @@ main (int argc, char *argv[])
 
   setlocale (LC_ALL, "");
 
-  printf ("Enter (possibly non-ASCII) label to register: "); fflush (stdout);
+  printf ("Enter (possibly non-ASCII) label to register: ");
+  fflush (stdout);
   if (!fgets (src, sizeof (src), stdin))
     {
       perror ("fgets");

@@ -108,7 +108,7 @@ extern "C"
 
 /**
  * idn2_rc:
- * @IDN2_OK: Successful return
+ * @IDN2_OK: Successful return.
  * @IDN2_MALLOC: Memory allocation error.
  * @IDN2_NO_CODESET: Could not determine locale string encoding format.
  * @IDN2_ICONV_FAIL: Could not transcode locale string to UTF-8.

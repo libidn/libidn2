@@ -35,6 +35,7 @@ gl_EARLY
 AC_PROG_LIBTOOL
 gl_INIT
 GTK_DOC_CHECK(1.1)
+AM_MISSING_PROG(HELP2MAN, help2man, $missing_dir)
 
 AC_ARG_ENABLE([gcc-warnings],
   [AS_HELP_STRING([--enable-gcc-warnings],

@@ -14,3 +14,38 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 SUBDIRS = reference
+
+EXTRA_DIST = gdoc libidn2.html libidn2.pdf
+
+info_TEXINFOS = libidn2.texi
+libidn2_TEXINFOS = libidn2.texi lookup.c register.c $(gdoc_TEXINFOS)
+
+AM_MAKEINFOHTMLFLAGS = $(AM_MAKEINFOFLAGS) \
+	--no-split --number-sections --css-include=texinfo.css
+
+lookup.c: $(top_srcdir)/examples/lookup.c
+	tail -n +18 $< > $@.tmp
+	mv $@.tmp $@
+
+register.c: $(top_srcdir)/examples/register.c
+	tail -n +18 $< > $@.tmp
+	mv $@.tmp $@
+
+dist_man_MANS = idn2.1 $(gdoc_MANS)
+MAINTAINERCLEANFILES = $(dist_man_MANS)
+
+idn2.1: $(top_srcdir)/src/idn2.c $(top_srcdir)/src/idn2.ggo $(top_srcdir)/configure.ac
+	$(HELP2MAN) \
+		--name="Libidn2 Internationalized Domain Names (IDNA2008) conversion" \
+		--output=$@ \
+		$(top_builddir)/src/idn2$(EXEEXT)
+
+# GDOC
+
+GDOC_SRC = $(top_srcdir)/lookup.c $(top_srcdir)/register.c	\
+	$(top_srcdir)/error.c $(top_srcdir)/version.c $(top_srcdir)/free.c
+GDOC_TEXI_PREFIX = texi/
+GDOC_MAN_PREFIX = man/
+GDOC_MAN_EXTRA_ARGS = -module $(PACKAGE) -sourceversion $(VERSION) \
+	-includefuncprefix -seeinfo $(PACKAGE)
+include $(srcdir)/Makefile.gdoci
