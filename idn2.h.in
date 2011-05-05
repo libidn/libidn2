@@ -69,8 +69,11 @@ extern "C"
 /**
  * IDN2_DOMAIN_MAX_LENGTH
  *
- * Constant specifying the maximum length of a DNS domain to 255
- * characters, as specified in RFC 1034.
+ * Constant specifying the maximum size of the wire encoding of a DNS
+ * domain to 255 characters, as specified in RFC 1034.  Note that the
+ * usual printed representation of a domain name is limited to 253
+ * characters if it does not end with a period, or 254 characters if
+ * it ends with a period.
  */
 #define IDN2_DOMAIN_MAX_LENGTH 255
 
