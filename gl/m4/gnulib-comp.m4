@@ -117,158 +117,85 @@ AC_DEFUN([gl_INIT],
   m4_pushdef([gl_LIBSOURCES_DIR], [])
   gl_COMMON
   gl_source_base='gl'
-  # Code from module alloca-opt:
-  gl_FUNC_ALLOCA
-  # Code from module arg-nonnull:
-  # Code from module array-mergesort:
-  # Code from module c++defs:
-  # Code from module c-ctype:
-  # Code from module c-strcase:
-  # Code from module c-strcaseeq:
-  # Code from module configmake:
-  gl_CONFIGMAKE_PREP
-  # Code from module extensions:
-  # Code from module git-version-gen:
-  # Code from module gnumakefile:
-  # Autoconf 2.61a.99 and earlier don't support linking a file only
-  # in VPATH builds.  But since GNUmakefile is for maintainer use
-  # only, it does not matter if we skip the link with older autoconf.
-  # Automake 1.10.1 and earlier try to remove GNUmakefile in non-VPATH
-  # builds, so use a shell variable to bypass this.
-  GNUmakefile=GNUmakefile
-  m4_if(m4_version_compare([2.61a.100],
-  	m4_defn([m4_PACKAGE_VERSION])), [1], [],
-        [AC_CONFIG_LINKS([$GNUmakefile:$GNUmakefile], [],
-  	[GNUmakefile=$GNUmakefile])])
-  # Code from module gperf:
-  # Code from module havelib:
-  # Code from module iconv:
-  AM_ICONV
-  m4_ifdef([gl_ICONV_MODULE_INDICATOR],
-    [gl_ICONV_MODULE_INDICATOR([iconv])])
-  # Code from module iconv-h:
-  gl_ICONV_H
-  # Code from module iconv_open:
-  gl_FUNC_ICONV_OPEN
-  # Code from module include_next:
-  # Code from module inline:
-  gl_INLINE
-  # Code from module lib-symbol-versions:
-  gl_LD_VERSION_SCRIPT
-  # Code from module lib-symbol-visibility:
-  gl_VISIBILITY
-  # Code from module localcharset:
-  gl_LOCALCHARSET
-  LOCALCHARSET_TESTS_ENVIRONMENT="CHARSETALIASDIR=\"\$(top_builddir)/$gl_source_base\""
-  AC_SUBST([LOCALCHARSET_TESTS_ENVIRONMENT])
-  # Code from module maintainer-makefile:
-  AC_CONFIG_COMMANDS_PRE([m4_ifdef([AH_HEADER],
-    [AC_SUBST([CONFIG_INCLUDE], m4_defn([AH_HEADER]))])])
-  # Code from module malloca:
-  gl_MALLOCA
-  # Code from module manywarnings:
-  # Code from module multiarch:
-  gl_MULTIARCH
-  # Code from module stdbool:
-  AM_STDBOOL_H
-  # Code from module stdint:
-  gl_STDINT_H
-  # Code from module striconveh:
-  if test $gl_cond_libtool = false; then
-    gl_ltlibdeps="$gl_ltlibdeps $LTLIBICONV"
-    gl_libdeps="$gl_libdeps $LIBICONV"
-  fi
-  # Code from module striconveha:
-  # Code from module uniconv/base:
-  gl_LIBUNISTRING_LIBHEADER([0.9], [uniconv.h])
-  # Code from module uniconv/u8-conv-from-enc:
-  gl_LIBUNISTRING_MODULE([0.9], [uniconv/u8-conv-from-enc])
-  # Code from module uniconv/u8-strconv-from-enc:
-  gl_LIBUNISTRING_MODULE([0.9], [uniconv/u8-strconv-from-enc])
-  # Code from module uniconv/u8-strconv-from-locale:
-  gl_LIBUNISTRING_MODULE([0.9], [uniconv/u8-strconv-from-locale])
-  # Code from module unictype/base:
-  gl_LIBUNISTRING_LIBHEADER([0.9], [unictype.h])
-  # Code from module unictype/bidiclass-of:
-  gl_LIBUNISTRING_MODULE([0.9.4], [unictype/bidiclass-of])
-  # Code from module unictype/category-M:
-  gl_LIBUNISTRING_MODULE([0.9.4], [unictype/category-M])
-  # Code from module unictype/category-none:
-  gl_LIBUNISTRING_MODULE([0.9], [unictype/category-none])
-  # Code from module unictype/category-of:
-  AC_REQUIRE([AC_C_INLINE])
-  gl_LIBUNISTRING_MODULE([0.9.4], [unictype/category-of])
-  # Code from module unictype/category-test:
-  AC_REQUIRE([AC_C_INLINE])
-  gl_LIBUNISTRING_MODULE([0.9.4], [unictype/category-test])
-  # Code from module unictype/category-test-withtable:
-  # Code from module unictype/combining-class:
-  gl_LIBUNISTRING_MODULE([0.9.4], [unictype/combining-class])
-  # Code from module unictype/joiningtype-of:
-  gl_LIBUNISTRING_MODULE([0.9.4], [unictype/joiningtype-of])
-  # Code from module unictype/scripts:
-  gl_LIBUNISTRING_MODULE([0.9.4], [unictype/scripts])
-  # Code from module uninorm/base:
-  gl_LIBUNISTRING_LIBHEADER([0.9], [uninorm.h])
-  # Code from module uninorm/canonical-decomposition:
-  gl_LIBUNISTRING_MODULE([0.9.4], [uninorm/canonical-decomposition])
-  # Code from module uninorm/composition:
-  gl_LIBUNISTRING_MODULE([0.9.4], [uninorm/composition])
-  # Code from module uninorm/decompose-internal:
-  # Code from module uninorm/decomposition-table:
-  AC_REQUIRE([AC_C_INLINE])
-  # Code from module uninorm/nfc:
-  gl_LIBUNISTRING_MODULE([0.9.4], [uninorm/nfc])
-  # Code from module uninorm/nfd:
-  gl_LIBUNISTRING_MODULE([0.9.4], [uninorm/nfd])
-  # Code from module uninorm/u32-normalize:
-  gl_MODULE_INDICATOR_FOR_TESTS([uninorm/u32-normalize])
-  gl_LIBUNISTRING_MODULE([0.9.4], [uninorm/u32-normalize])
-  # Code from module unistr/base:
-  gl_LIBUNISTRING_LIBHEADER([0.9.2], [unistr.h])
-  # Code from module unistr/u32-cpy:
-  gl_LIBUNISTRING_MODULE([0.9], [unistr/u32-cpy])
-  # Code from module unistr/u32-mbtouc-unsafe:
-  gl_MODULE_INDICATOR([unistr/u32-mbtouc-unsafe])
-  gl_LIBUNISTRING_MODULE([0.9], [unistr/u32-mbtouc-unsafe])
-  # Code from module unistr/u32-to-u8:
-  gl_LIBUNISTRING_MODULE([0.9], [unistr/u32-to-u8])
-  # Code from module unistr/u32-uctomb:
-  gl_MODULE_INDICATOR([unistr/u32-uctomb])
-  gl_LIBUNISTRING_MODULE([0.9], [unistr/u32-uctomb])
-  # Code from module unistr/u8-check:
-  gl_LIBUNISTRING_MODULE([0.9], [unistr/u8-check])
-  # Code from module unistr/u8-mblen:
-  gl_LIBUNISTRING_MODULE([0.9], [unistr/u8-mblen])
-  # Code from module unistr/u8-mbtouc:
-  gl_MODULE_INDICATOR([unistr/u8-mbtouc])
-  gl_LIBUNISTRING_MODULE([0.9.4], [unistr/u8-mbtouc])
-  # Code from module unistr/u8-mbtouc-unsafe:
-  gl_MODULE_INDICATOR([unistr/u8-mbtouc-unsafe])
-  gl_LIBUNISTRING_MODULE([0.9.4], [unistr/u8-mbtouc-unsafe])
-  # Code from module unistr/u8-mbtoucr:
-  gl_MODULE_INDICATOR([unistr/u8-mbtoucr])
-  gl_LIBUNISTRING_MODULE([0.9], [unistr/u8-mbtoucr])
-  # Code from module unistr/u8-prev:
-  gl_LIBUNISTRING_MODULE([0.9], [unistr/u8-prev])
-  # Code from module unistr/u8-strlen:
-  gl_LIBUNISTRING_MODULE([0.9], [unistr/u8-strlen])
-  # Code from module unistr/u8-to-u32:
-  gl_LIBUNISTRING_MODULE([0.9.3], [unistr/u8-to-u32])
-  # Code from module unistr/u8-uctomb:
-  gl_MODULE_INDICATOR([unistr/u8-uctomb])
-  gl_LIBUNISTRING_MODULE([0.9], [unistr/u8-uctomb])
-  # Code from module unitypes:
-  gl_LIBUNISTRING_LIBHEADER([0.9], [unitypes.h])
-  # Code from module unused-parameter:
-  # Code from module useless-if-before-free:
-  # Code from module valgrind-tests:
-  gl_VALGRIND_TESTS
-  # Code from module vc-list-files:
-  # Code from module verify:
-  # Code from module warn-on-use:
-  # Code from module warnings:
-  AC_SUBST([WARN_CFLAGS])
+gl_FUNC_ALLOCA
+gl_CONFIGMAKE_PREP
+# Autoconf 2.61a.99 and earlier don't support linking a file only
+# in VPATH builds.  But since GNUmakefile is for maintainer use
+# only, it does not matter if we skip the link with older autoconf.
+# Automake 1.10.1 and earlier try to remove GNUmakefile in non-VPATH
+# builds, so use a shell variable to bypass this.
+GNUmakefile=GNUmakefile
+m4_if(m4_version_compare([2.61a.100],
+        m4_defn([m4_PACKAGE_VERSION])), [1], [],
+      [AC_CONFIG_LINKS([$GNUmakefile:$GNUmakefile], [],
+        [GNUmakefile=$GNUmakefile])])
+AM_ICONV
+m4_ifdef([gl_ICONV_MODULE_INDICATOR],
+  [gl_ICONV_MODULE_INDICATOR([iconv])])
+gl_ICONV_H
+gl_FUNC_ICONV_OPEN
+gl_INLINE
+gl_LD_VERSION_SCRIPT
+gl_VISIBILITY
+gl_LOCALCHARSET
+LOCALCHARSET_TESTS_ENVIRONMENT="CHARSETALIASDIR=\"\$(top_builddir)/$gl_source_base\""
+AC_SUBST([LOCALCHARSET_TESTS_ENVIRONMENT])
+AC_CONFIG_COMMANDS_PRE([m4_ifdef([AH_HEADER],
+  [AC_SUBST([CONFIG_INCLUDE], m4_defn([AH_HEADER]))])])
+gl_MALLOCA
+gl_MULTIARCH
+AM_STDBOOL_H
+gl_STDINT_H
+if test $gl_cond_libtool = false; then
+  gl_ltlibdeps="$gl_ltlibdeps $LTLIBICONV"
+  gl_libdeps="$gl_libdeps $LIBICONV"
+fi
+gl_LIBUNISTRING_LIBHEADER([0.9], [uniconv.h])
+gl_LIBUNISTRING_MODULE([0.9], [uniconv/u8-conv-from-enc])
+gl_LIBUNISTRING_MODULE([0.9], [uniconv/u8-strconv-from-enc])
+gl_LIBUNISTRING_MODULE([0.9], [uniconv/u8-strconv-from-locale])
+gl_LIBUNISTRING_LIBHEADER([0.9], [unictype.h])
+gl_LIBUNISTRING_MODULE([0.9.4], [unictype/bidiclass-of])
+gl_LIBUNISTRING_MODULE([0.9.4], [unictype/category-M])
+gl_LIBUNISTRING_MODULE([0.9], [unictype/category-none])
+AC_REQUIRE([AC_C_INLINE])
+gl_LIBUNISTRING_MODULE([0.9.4], [unictype/category-of])
+AC_REQUIRE([AC_C_INLINE])
+gl_LIBUNISTRING_MODULE([0.9.4], [unictype/category-test])
+gl_LIBUNISTRING_MODULE([0.9.4], [unictype/combining-class])
+gl_LIBUNISTRING_MODULE([0.9.4], [unictype/joiningtype-of])
+gl_LIBUNISTRING_MODULE([0.9.4], [unictype/scripts])
+gl_LIBUNISTRING_LIBHEADER([0.9], [uninorm.h])
+gl_LIBUNISTRING_MODULE([0.9.4], [uninorm/canonical-decomposition])
+gl_LIBUNISTRING_MODULE([0.9.4], [uninorm/composition])
+AC_REQUIRE([AC_C_INLINE])
+gl_LIBUNISTRING_MODULE([0.9.4], [uninorm/nfc])
+gl_LIBUNISTRING_MODULE([0.9.4], [uninorm/nfd])
+gl_MODULE_INDICATOR_FOR_TESTS([uninorm/u32-normalize])
+gl_LIBUNISTRING_MODULE([0.9.4], [uninorm/u32-normalize])
+gl_LIBUNISTRING_LIBHEADER([0.9.2], [unistr.h])
+gl_LIBUNISTRING_MODULE([0.9], [unistr/u32-cpy])
+gl_MODULE_INDICATOR([unistr/u32-mbtouc-unsafe])
+gl_LIBUNISTRING_MODULE([0.9], [unistr/u32-mbtouc-unsafe])
+gl_LIBUNISTRING_MODULE([0.9], [unistr/u32-to-u8])
+gl_MODULE_INDICATOR([unistr/u32-uctomb])
+gl_LIBUNISTRING_MODULE([0.9], [unistr/u32-uctomb])
+gl_LIBUNISTRING_MODULE([0.9], [unistr/u8-check])
+gl_LIBUNISTRING_MODULE([0.9], [unistr/u8-mblen])
+gl_MODULE_INDICATOR([unistr/u8-mbtouc])
+gl_LIBUNISTRING_MODULE([0.9.4], [unistr/u8-mbtouc])
+gl_MODULE_INDICATOR([unistr/u8-mbtouc-unsafe])
+gl_LIBUNISTRING_MODULE([0.9.4], [unistr/u8-mbtouc-unsafe])
+gl_MODULE_INDICATOR([unistr/u8-mbtoucr])
+gl_LIBUNISTRING_MODULE([0.9], [unistr/u8-mbtoucr])
+gl_LIBUNISTRING_MODULE([0.9], [unistr/u8-prev])
+gl_LIBUNISTRING_MODULE([0.9], [unistr/u8-strlen])
+gl_LIBUNISTRING_MODULE([0.9.3], [unistr/u8-to-u32])
+gl_MODULE_INDICATOR([unistr/u8-uctomb])
+gl_LIBUNISTRING_MODULE([0.9], [unistr/u8-uctomb])
+gl_LIBUNISTRING_LIBHEADER([0.9], [unitypes.h])
+gl_VALGRIND_TESTS
+AC_SUBST([WARN_CFLAGS])
   # End of code from modules
   m4_ifval(gl_LIBSOURCES_LIST, [
     m4_syscmd([test ! -d ]m4_defn([gl_LIBSOURCES_DIR])[ ||
@@ -315,7 +242,7 @@ changequote([, ])dnl
   AC_SUBST([gltests_WITNESS])
   gl_module_indicator_condition=$gltests_WITNESS
   m4_pushdef([gl_MODULE_INDICATOR_CONDITION], [$gl_module_indicator_condition])
-  gl_VALGRIND_TESTS
+gl_VALGRIND_TESTS
   m4_popdef([gl_MODULE_INDICATOR_CONDITION])
   m4_ifval(gltests_LIBSOURCES_LIST, [
     m4_syscmd([test ! -d ]m4_defn([gltests_LIBSOURCES_DIR])[ ||

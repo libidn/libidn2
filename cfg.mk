@@ -25,12 +25,11 @@ local-checks-to-skip += sc_prohibit_strcmp
 local-checks-to-skip += sc_copyright_check
 
 # Ignore gnulib files.
-VC_LIST_ALWAYS_EXCLUDE_REGEX = ^(src/gl|gl|m4)/.*$
+VC_LIST_ALWAYS_EXCLUDE_REGEX = ^(maint.mk|src/gl/.*|gl/.*|m4/.*)$$
 
 # Explicit syntax-check exceptions.
 exclude_file_name_regexp--sc_program_name = ^(tests|examples)/.*\.c$$
 exclude_file_name_regexp--sc_prohibit_empty_lines_at_EOF = ^doc/reference/version.xml.in$$
-exclude_file_name_regexp--sc_space_tab = ^maint.mk$$
 exclude_file_name_regexp--sc_trailing_blank = ^(tests/IdnaTest.(txt|inc))|(doc/gdoc)$$
 exclude_file_name_regexp--sc_require_config_h = ^examples/.*\.c$$
 exclude_file_name_regexp--sc_require_config_h_first = ^examples/.*\.c$$
@@ -70,20 +69,38 @@ glimport:
 
 htmldir = ../www-$(PACKAGE)
 
-my-coverage:
+# Coverage
+
+coverage-my:
 	ln -s . gl/uniconv/uniconv
 	ln -s . gl/unictype/unictype
 	ln -s . gl/uninorm/uninorm
 	ln -s . gl/unistr/unistr
 	$(MAKE) coverage
 
-web-coverage:
+coverage-web:
 	rm -fv `find $(htmldir)/coverage -type f`
 	cp -rv $(COVERAGE_OUT)/* $(htmldir)/coverage/
 
-upload-web-coverage:
+coverage-web-upload:
 	cd $(htmldir) && \
 		git commit -m "Update." coverage
+
+# Clang analyzis.
+clang:
+	make clean
+	scan-build ./configure
+	rm -rf scan.tmp
+	scan-build -o scan.tmp make
+clang-web:
+	rm -fv `find $(htmldir)/clang-analyzer -type f | grep -v CVS`
+	cp -rv scan.tmp/*/* $(htmldir)/clang-analyzer/
+clang-web-upload:
+	cd $(htmldir) && \
+		cvs add clang-analyzer/*.html || true && \
+		cvs commit -m "Update." clang-analyzer
+
+# Release
 
 ChangeLog:
 	git2cl > ChangeLog
