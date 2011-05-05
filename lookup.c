@@ -30,7 +30,7 @@
 #include "idna.h"		/* _idn2_label_test */
 
 static int
-label (const uint8_t * src, size_t srclen, uint8_t * dst, size_t * dstlen,	/* assumed to be 63 */
+label (const uint8_t * src, size_t srclen, uint8_t * dst, size_t * dstlen,
        int flags)
 {
   size_t plen;
@@ -52,8 +52,10 @@ label (const uint8_t * src, size_t srclen, uint8_t * dst, size_t * dstlen,	/* as
 	   conversion of Section 5.5 to that form. */
 	return -1;
 
-      if (srclen > 63)
+      if (srclen > IDN2_LABEL_MAX_LENGTH)
 	return IDN2_TOO_BIG_LABEL;
+      if (srclen > *dstlen)
+	return IDN2_TOO_BIG_DOMAIN;
 
       memcpy (dst, src, srclen);
       *dstlen = srclen;
