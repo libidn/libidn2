@@ -145,7 +145,7 @@ idn2_lookup_u8 (const uint8_t * src, uint8_t ** lookupname, int flags)
 	  return rc;
 	}
 
-      if (lookupnamelen + tmplen > IDN2_DOMAIN_MAX_LENGTH)
+      if (lookupnamelen + tmplen > IDN2_DOMAIN_MAX_LENGTH - (tmplen == 0 && *end == '\0' ? 1 : 2))
 	{
 	  free (*lookupname);
 	  return IDN2_TOO_BIG_DOMAIN;

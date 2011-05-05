@@ -4,6 +4,15 @@ See the end for copying conditions.
 
 * Version 0.4 (unreleased) [alpha]
 
+** libidn2: Fix domain name maximum size issue.
+Domain names in string representation can be 254 characters long if
+they end with a period, or 253 characters long if they don't end with
+a period.  The code got this wrong and used 255 characters all the
+time.  The documentation for the IDN2_DOMAIN_MAX_LENGTH constant is
+improved.  We now pass two more of the IdnaTest.txt test vectors.
+Reported by "Abdulrahman I. ALGhadir" <aghadir@citc.gov.sa> and
+explanation from Markus Scherer <mscherer@google.com>.
+
 * Version 0.3 (released 2011-04-20) [alpha]
 
 ** doc: Added Texinfo manual.
