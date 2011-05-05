@@ -13,6 +13,9 @@ improved.  We now pass two more of the IdnaTest.txt test vectors.
 Reported by "Abdulrahman I. ALGhadir" <aghadir@citc.gov.sa> and
 explanation from Markus Scherer <mscherer@google.com>.
 
+** tests: Added several new Arabic test vectors.
+From "Abdulrahman I. ALGhadir" <aghadir@citc.gov.sa>.
+
 * Version 0.3 (released 2011-04-20) [alpha]
 
 ** doc: Added Texinfo manual.
