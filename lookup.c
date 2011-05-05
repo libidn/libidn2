@@ -38,9 +38,6 @@ label (const uint8_t * src, size_t srclen, uint8_t * dst, size_t * dstlen,	/* as
   int rc;
   size_t tmpl;
 
-  if (srclen > 63)
-    return IDN2_TOO_BIG_LABEL;
-
   if (_idn2_ascii_p (src, srclen))
     {
       if (flags & IDN2_ALABEL_ROUNDTRIP)
@@ -54,6 +51,9 @@ label (const uint8_t * src, size_t srclen, uint8_t * dst, size_t * dstlen,	/* as
 	   necessary), and apply the tests of Section 5.4 and the
 	   conversion of Section 5.5 to that form. */
 	return -1;
+
+      if (srclen > 63)
+	return IDN2_TOO_BIG_LABEL;
 
       memcpy (dst, src, srclen);
       *dstlen = srclen;
