@@ -123,9 +123,6 @@ idn2_lookup_u8 (const uint8_t * src, uint8_t ** lookupname, int flags)
   if (src == NULL)
     return IDN2_OK;
 
-  if (strlen ((const char *) src) > IDN2_DOMAIN_MAX_LENGTH)
-    return IDN2_TOO_BIG_DOMAIN;
-
   *lookupname = malloc (IDN2_DOMAIN_MAX_LENGTH + 1);
   if (*lookupname == NULL)
     return IDN2_MALLOC;
