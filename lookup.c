@@ -111,10 +111,10 @@ label (const uint8_t * src, size_t srclen, uint8_t * dst, size_t * dstlen,
  * testing.  Multiple flags may be specified by binary or:ing them
  * together, for example %IDN2_NFC_INPUT | %IDN2_ALABEL_ROUNDTRIP.
  *
- * Returns: On successful conversion %IDN2_OK is returned, of the
- *   output would have been longer than %IDN2_DOMAIN_MAX_LENGTH then
- *   %IDN2_TOO_BIG_DOMAIN is returned, or another error code is
- *   returned.
+ * Returns: On successful conversion %IDN2_OK is returned, if the
+ *   output domain or any label would have been too long
+ *   %IDN2_TOO_BIG_DOMAIN or %IDN2_TOO_BIG_LABEL is returned, or
+ *   another error code is returned.
  **/
 int
 idn2_lookup_u8 (const uint8_t * src, uint8_t ** lookupname, int flags)
@@ -145,7 +145,8 @@ idn2_lookup_u8 (const uint8_t * src, uint8_t ** lookupname, int flags)
 	  return rc;
 	}
 
-      if (lookupnamelen + tmplen > IDN2_DOMAIN_MAX_LENGTH - (tmplen == 0 && *end == '\0' ? 1 : 2))
+      if (lookupnamelen + tmplen
+	  > IDN2_DOMAIN_MAX_LENGTH - (tmplen == 0 && *end == '\0' ? 1 : 2))
 	{
 	  free (*lookupname);
 	  return IDN2_TOO_BIG_DOMAIN;
@@ -188,10 +189,11 @@ idn2_lookup_u8 (const uint8_t * src, uint8_t ** lookupname, int flags)
  * Pass %IDN2_ALABEL_ROUNDTRIP in @flags to convert any input A-labels
  * to U-labels and perform additional testing.
  *
- * Returns: On successful conversion %IDN2_OK is returned, of the
- *   output would have been longer than %IDN2_DOMAIN_MAX_LENGTH then
- *   %IDN2_TOO_BIG_DOMAIN is returned, or another error code is
- *   returned.
+ * Returns: On successful conversion %IDN2_OK is returned, if
+ *   conversion from locale to UTF-8 fails then %IDN2_ICONV_FAIL is
+ *   returned, if the output domain or any label would have been too
+ *   long %IDN2_TOO_BIG_DOMAIN or %IDN2_TOO_BIG_LABEL is returned, or
+ *   another error code is returned.
  **/
 int
 idn2_lookup_ul (const char *src, char **lookupname, int flags)
