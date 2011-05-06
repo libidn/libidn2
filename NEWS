@@ -2,7 +2,7 @@ Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
 Copyright (C) 2011 Simon Josefsson
 See the end for copying conditions.
 
-* Version 0.4 (unreleased) [alpha]
+* Version 0.4 (released 2011-05-06) [alpha]
 
 ** libidn2: Fix domain name maximum size issue.
 Domain names in string representation can be 254 characters long if
