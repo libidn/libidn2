@@ -164,4 +164,4 @@ release-upload-ftp:
 	build-aux/gnupload --to alpha.gnu.org:libidn $(distdir).tar.gz
 	cp $(distdir).tar.gz $(distdir).tar.gz.sig ../releases/$(PACKAGE)/
 
-release: release-upload-www source release-upload-ftp
+release: release-check release-upload-www source release-upload-ftp
