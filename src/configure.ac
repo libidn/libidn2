@@ -14,7 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 AC_INIT([idn2], [0.4], [simon@josefsson.org],,
-  [http://josefsson.org/libidn2/])
+  [http://www.gnu.org/software/libidn/#libidn2])
 
 AC_CONFIG_AUX_DIR([../build-aux])
 AC_CONFIG_HEADERS([config.h])

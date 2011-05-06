@@ -14,7 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 AC_INIT([libidn2], [0.4], [simon@josefsson.org],,
-  [http://josefsson.org/libidn2/])
+  [http://www.gnu.org/software/libidn/#libidn2])
 
 # Library code modified:                              REVISION++
 # Interfaces changed/added/removed:   CURRENT++       REVISION=0
@@ -27,7 +27,7 @@ AC_SUBST(LT_AGE, 0)
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
-AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+AM_INIT_AUTOMAKE([-Wall -Werror])
 
 AC_LIBTOOL_WIN32_DLL
 AC_PROG_CC
