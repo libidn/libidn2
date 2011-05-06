@@ -37,6 +37,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module configmake:
   # Code from module extensions:
   AC_REQUIRE([gl_USE_SYSTEM_EXTENSIONS])
+  # Code from module gendocs:
   # Code from module git-version-gen:
   # Code from module gnumakefile:
   # Code from module gperf:
@@ -336,11 +337,13 @@ AC_DEFUN([gl_FILE_LIST], [
   build-aux/arg-nonnull.h
   build-aux/c++defs.h
   build-aux/config.rpath
+  build-aux/gendocs.sh
   build-aux/git-version-gen
   build-aux/unused-parameter.h
   build-aux/useless-if-before-free
   build-aux/vc-list-files
   build-aux/warn-on-use.h
+  doc/gendocs_template
   lib/alloca.in.h
   lib/array-mergesort.h
   lib/c-ctype.c

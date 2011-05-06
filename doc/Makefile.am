@@ -15,7 +15,7 @@
 
 SUBDIRS = reference
 
-EXTRA_DIST = gdoc libidn2.html libidn2.pdf
+EXTRA_DIST = gdoc libidn2.html libidn2.pdf texinfo.css
 
 info_TEXINFOS = libidn2.texi
 libidn2_TEXINFOS = libidn2.texi lookup.c register.c $(gdoc_TEXINFOS)

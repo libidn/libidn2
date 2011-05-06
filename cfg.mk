@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-CFGFLAGS ?= --enable-gtk-doc --enable-gcc-warnings
+CFGFLAGS ?= --enable-gtk-doc --enable-gtk-doc-pdf --enable-gcc-warnings
 
 ifeq ($(.DEFAULT_GOAL),abort-due-to-no-makefile)
 .DEFAULT_GOAL := buildit
@@ -67,7 +67,7 @@ buildit: doc/Makefile.gdoc
 glimport:
 	gnulib-tool --add-import
 
-htmldir = ../www-$(PACKAGE)
+htmldir = ../www-libidn/libidn2
 
 # Coverage
 
@@ -105,7 +105,7 @@ clang-web-upload:
 ChangeLog:
 	git2cl > ChangeLog
 
-release: syntax-check prepare upload
+release: syntax-check prepare upload web upload-web
 
 tag = $(PACKAGE)-$(VERSION)
 prepare:
@@ -119,3 +119,12 @@ prepare:
 
 upload:
 	cp $(distdir).tar.gz $(distdir).tar.gz.sig ../releases/$(PACKAGE)/
+
+web:
+	cd doc && ../build-aux/gendocs.sh --html "--css-include=texinfo.css" \
+		-o ../$(htmldir)/manual/ $(PACKAGE) "$(PACKAGE_NAME)"
+	cp -v doc/reference/$(PACKAGE).pdf doc/reference/html/*.html doc/reference/html/*.png doc/reference/html/*.devhelp doc/reference/html/*.css $(htmldir)/reference/
+
+upload-web:
+	cd $(htmldir) && \
+		cvs commit -m "Update." manual/ reference/

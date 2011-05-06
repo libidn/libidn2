@@ -11,8 +11,9 @@
     <releaseinfo>
       for Libidn2 &version;
       The latest version of this documentation can be found on-line at
-      <ulink role="online-location" url="http://josefsson.org/libidn2/">
-	http://josefsson.org/libidn2/</ulink>.
+      <ulink role="online-location"
+	     url="http://www.gnu.org/software/libidn/#libidn2">
+	http://www.gnu.org/software/libidn/#libidn2</ulink>.
     </releaseinfo>
   </bookinfo>
 
@@ -29,6 +30,4 @@
     <title>API Index</title>
     <xi:include href="xml/api-index-full.xml"><xi:fallback /></xi:include>
   </index>
-
-  <!-- <xi:include href="xml/annotation-glossary.xml"><xi:fallback /></xi:include> -->
 </book>
