@@ -67,9 +67,9 @@ buildit: doc/Makefile.gdoc
 glimport:
 	gnulib-tool --add-import
 
-htmldir = ../www-libidn/libidn2
+# Release
 
-# Coverage
+htmldir = ../www-libidn/libidn2
 
 coverage-my:
 	ln -s . gl/uniconv/uniconv
@@ -78,53 +78,90 @@ coverage-my:
 	ln -s . gl/unistr/unistr
 	$(MAKE) coverage
 
-coverage-web:
-	rm -fv `find $(htmldir)/coverage -type f`
+coverage-copy:
+	rm -fv `find $(htmldir)/coverage -type f | grep -v CVS`
+	mkdir -p $(htmldir)/coverage/
 	cp -rv $(COVERAGE_OUT)/* $(htmldir)/coverage/
 
-coverage-web-upload:
+coverage-upload:
 	cd $(htmldir) && \
-		git commit -m "Update." coverage
+	find coverage -type d -! -name CVS -! -name '.' \
+		-exec cvs add {} \; && \
+	find coverage -type d -! -name CVS -! -name '.' \
+		-exec sh -c "cvs add -kb {}/*.png" \; && \
+	find coverage -type d -! -name CVS -! -name '.' \
+		-exec sh -c "cvs add {}/*.html" \; && \
+	cvs add coverage/libidn2.info coverage/gcov.css || true && \
+	cvs commit -m "Update." coverage
 
-# Clang analyzis.
 clang:
 	make clean
 	scan-build ./configure
 	rm -rf scan.tmp
 	scan-build -o scan.tmp make
-clang-web:
-	rm -fv `find $(htmldir)/clang-analyzer -type f | grep -v CVS`
-	cp -rv scan.tmp/*/* $(htmldir)/clang-analyzer/
-clang-web-upload:
-	cd $(htmldir) && \
-		cvs add clang-analyzer/*.html || true && \
-		cvs commit -m "Update." clang-analyzer
 
-# Release
+clang-copy:
+	rm -fv `find $(htmldir)/clang-analyzer -type f | grep -v CVS`
+	mkdir -p $(htmldir)/clang-analyzer/
+	cp -rv scan.tmp/*/* $(htmldir)/clang-analyzer/
+
+clang-upload:
+	cd $(htmldir) && \
+		cvs add clang-analyzer || true && \
+		cvs add clang-analyzer/*.css clang-analyzer/*.js \
+			clang-analyzer/*.html || true && \
+		cvs commit -m "Update." clang-analyzer
 
 ChangeLog:
 	git2cl > ChangeLog
 
-release: syntax-check prepare upload web upload-web
-
-tag = $(PACKAGE)-$(VERSION)
-prepare:
-	! git tag -l $(tag) | grep $(PACKAGE) > /dev/null
+tarball:
+	! git tag -l $(PACKAGE)-$(VERSION) | grep $(PACKAGE) > /dev/null
 	$(MAKE) ChangeLog distcheck
-	gpg -b $(distdir).tar.gz
-	gpg --verify $(distdir).tar.gz.sig
-	git tag -u b565716f! -m $(VERSION) $(tag)
+
+gendoc-copy:
+	cd doc && ../build-aux/gendocs.sh \
+		--html "--css-include=texinfo.css" \
+		-o ../$(htmldir)/manual/ $(PACKAGE) "$(PACKAGE_NAME)"
+
+gendoc-upload:
+	cd $(htmldir) && \
+		cvs add manual || true && \
+		cvs add manual/html_node || true && \
+		cvs add -kb manual/*.gz manual/*.pdf || true && \
+		cvs add manual/*.txt manual/*.html \
+			manual/html_node/*.html || true && \
+		cvs commit -m "Update." manual/
+
+gtkdoc-copy:
+	mkdir -p $(htmldir)/reference/
+	cp -v doc/reference/$(PACKAGE).pdf \
+		doc/reference/html/*.html \
+		doc/reference/html/*.png \
+		doc/reference/html/*.devhelp \
+		doc/reference/html/*.css \
+		$(htmldir)/reference/
+
+gtkdoc-upload:
+	cd $(htmldir) && \
+		cvs add reference || true && \
+		cvs add -kb reference/*.png reference/*.pdf || true && \
+		cvs add reference/*.html reference/*.css \
+			reference/*.devhelp || true && \
+		cvs commit -m "Update." reference/
+
+source:
+	git commit -m Generated. ChangeLog
+	git tag -u b565716f! -m $(VERSION) $(PACKAGE)-$(VERSION)
+
+release-check: syntax-check tarball gendoc-copy gtkdoc-copy coverage-my coverage-copy clang clang-copy
+
+release-upload-www: gendoc-upload gtkdoc-upload coverage-upload clang-upload
+
+release-upload-ftp:
 	git push
 	git push --tags
-
-upload:
+	build-aux/gnupload --to alpha.gnu.org:libidn $(distdir).tar.gz
 	cp $(distdir).tar.gz $(distdir).tar.gz.sig ../releases/$(PACKAGE)/
 
-web:
-	cd doc && ../build-aux/gendocs.sh --html "--css-include=texinfo.css" \
-		-o ../$(htmldir)/manual/ $(PACKAGE) "$(PACKAGE_NAME)"
-	cp -v doc/reference/$(PACKAGE).pdf doc/reference/html/*.html doc/reference/html/*.png doc/reference/html/*.devhelp doc/reference/html/*.css $(htmldir)/reference/
-
-upload-web:
-	cd $(htmldir) && \
-		cvs commit -m "Update." manual/ reference/
+release: release-upload-www source release-upload-ftp
