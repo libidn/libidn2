@@ -1,0 +1,1391 @@
+2011-05-06  Simon Josefsson <simon@josefsson.org>
+
+	* configure.ac: Use modern libtool calls.
+
+2011-05-06  Simon Josefsson <simon@josefsson.org>
+
+	* COPYING: Add license.
+
+2011-05-06  Simon Josefsson <simon@josefsson.org>
+
+	* configure.ac, src/configure.ac: Prepare for GNU upload more.
+
+2011-05-06  Simon Josefsson <simon@josefsson.org>
+
+	* lookup.c: Doc fix for return codes.
+
+2011-05-06  Simon Josefsson <simon@josefsson.org>
+
+	* build-aux/gendocs.sh, cfg.mk, doc/Makefile.am,
+	doc/gendocs_template, doc/reference/Makefile.am,
+	doc/reference/idn2-docs.sgml, doc/reference/libidn2-docs.sgml,
+	gl/Makefile.am, gl/m4/gnulib-cache.m4, gl/m4/gnulib-comp.m4: Prepare
+	for upload to GNU.
+
+2011-05-05  Simon Josefsson <simon@josefsson.org>
+
+	* build-aux/useless-if-before-free, build-aux/vc-list-files,
+	cfg.mk, gl/m4/gnulib-comp.m4, gl/m4/manywarnings.m4, maint.mk: 
+	Update gnulib files.  Add clang rules.
+
+2011-05-05  Simon Josefsson <simon@josefsson.org>
+
+	* NEWS, tests/test-lookup.c: tests: Added several new Arabic test
+	vectors.
+
+2011-05-05  Simon Josefsson <simon@josefsson.org>
+
+	* .gitignore, NEWS, lookup.c, tests/IdnaTest.inc,
+	tests/gen-utc-test.pl: libidn2: Fix domain name maximum size issue.
+
+2011-05-05  Simon Josefsson <simon@josefsson.org>
+
+	* idn2.h.in: Documentation clarification of IDN2_DOMAIN_MAX_LENGTH.
+
+2011-05-05  Simon Josefsson <simon@josefsson.org>
+
+	* lookup.c: Fix return codes for overlong ASCII labels/domains.
+
+2011-05-05  Simon Josefsson <simon@josefsson.org>
+
+	* lookup.c: Only check ASCII labels for max length.  Note that non-ASCII labels are checked implicitely by
+	punycode_encode() and will yield IDN2_PUNYCODE_BIG_OUTPUT.
+
+2011-05-05  Simon Josefsson <simon@josefsson.org>
+
+	* tests/test-lookup.c: Test some corner cases.
+
+2011-05-05  Simon Josefsson <simon@josefsson.org>
+
+	* lookup.c: Drop errorenous max domain length check applied to UTF-8
+	encoded values.
+
+2011-04-20  Simon Josefsson <simon@josefsson.org>
+
+	* NEWS, cfg.mk, configure.ac, src/configure.ac: Bump versions.
+
+2011-04-20  Simon Josefsson <simon@josefsson.org>
+
+	* NEWS: Version 0.3.
+
+2011-04-20  Simon Josefsson <simon@josefsson.org>
+
+	* .gitignore, Makefile.am, NEWS, cfg.mk, configure.ac,
+	doc/Makefile.am, doc/Makefile.gdoci, doc/gdoc, doc/libidn2.texi,
+	doc/texinfo.css, examples/register.c, idn2.h.in, src/Makefile.am,
+	src/configure.ac: Add texinfo manual and man pages.
+
+2011-04-19  Simon Josefsson <simon@josefsson.org>
+
+	* Makefile.am, NEWS, cfg.mk, configure.ac, examples/Makefile.am,
+	examples/lookup.c, examples/register.c: Add examples.
+
+2011-04-19  Simon Josefsson <simon@josefsson.org>
+
+	* NOTES: Add.
+
+2011-04-11  Simon Josefsson <simon@josefsson.org>
+
+	* README-alpha, gl/Makefile.am, gl/m4/alloca.m4,
+	gl/m4/gnulib-common.m4, gl/m4/iconv_h.m4, gl/m4/stdbool.m4,
+	gl/m4/stdint.m4, gl/malloca.c, gl/verify.h, maint.mk,
+	src/gl/Makefile.am, src/gl/m4/errno_h.m4,
+	src/gl/m4/gnulib-common.m4, src/gl/m4/stdarg.m4,
+	src/gl/m4/stddef_h.m4: Update gnulib files.  Fix syntax-check
+	warning.
+
+2011-03-31  Simon Josefsson <simon@josefsson.org>
+
+	* .gitignore, src/Makefile.am, src/gl/Makefile.am,
+	src/gl/alloca.in.h, src/gl/c-ctype.c, src/gl/c-ctype.h,
+	src/gl/c-strcase.h, src/gl/c-strcasecmp.c, src/gl/c-strcaseeq.h,
+	src/gl/c-strncasecmp.c, src/gl/config.charset, src/gl/iconv.in.h,
+	src/gl/iconv_open-aix.gperf, src/gl/iconv_open-hpux.gperf,
+	src/gl/iconv_open-irix.gperf, src/gl/iconv_open-osf.gperf,
+	src/gl/iconv_open-solaris.gperf, src/gl/iconv_open.c,
+	src/gl/iconveh.h, src/gl/localcharset.c, src/gl/localcharset.h,
+	src/gl/m4/alloca.m4, src/gl/m4/codeset.m4, src/gl/m4/eealloc.m4,
+	src/gl/m4/fcntl-o.m4, src/gl/m4/glibc21.m4,
+	src/gl/m4/gnulib-cache.m4, src/gl/m4/gnulib-comp.m4,
+	src/gl/m4/iconv.m4, src/gl/m4/iconv_h.m4, src/gl/m4/iconv_open.m4,
+	src/gl/m4/inline.m4, src/gl/m4/lib-ld.m4, src/gl/m4/lib-link.m4,
+	src/gl/m4/lib-prefix.m4, src/gl/m4/libunistring-base.m4,
+	src/gl/m4/localcharset.m4, src/gl/m4/longlong.m4,
+	src/gl/m4/malloca.m4, src/gl/m4/multiarch.m4, src/gl/m4/stdbool.m4,
+	src/gl/m4/stdint.m4, src/gl/malloca.c, src/gl/malloca.h,
+	src/gl/malloca.valgrind, src/gl/ref-add.sin, src/gl/ref-del.sin,
+	src/gl/stdbool.in.h, src/gl/stdint.in.h, src/gl/striconveh.c,
+	src/gl/striconveh.h, src/gl/striconveha.c, src/gl/striconveha.h,
+	src/gl/uniconv.in.h, src/gl/uniconv/u-strconv-from-enc.h,
+	src/gl/uniconv/u8-conv-from-enc.c,
+	src/gl/uniconv/u8-strconv-from-enc.c,
+	src/gl/uniconv/u8-strconv-from-locale.c, src/gl/unistr.in.h,
+	src/gl/unistr/u8-check.c, src/gl/unistr/u8-mblen.c,
+	src/gl/unistr/u8-mbtouc-aux.c,
+	src/gl/unistr/u8-mbtouc-unsafe-aux.c,
+	src/gl/unistr/u8-mbtouc-unsafe.c, src/gl/unistr/u8-mbtouc.c,
+	src/gl/unistr/u8-mbtoucr.c, src/gl/unistr/u8-prev.c,
+	src/gl/unistr/u8-strlen.c, src/gl/unistr/u8-to-u32.c,
+	src/gl/unistr/u8-uctomb-aux.c, src/gl/unistr/u8-uctomb.c,
+	src/gl/unitypes.in.h, src/gl/verify.h: Reduce code duplication.
+
+2011-03-31  Simon Josefsson <simon@josefsson.org>
+
+	* README-alpha: Add.
+
+2011-03-31  Simon Josefsson <simon@josefsson.org>
+
+	* tests/test-lookup.c: Add U+19DA test vector.
+
+2011-03-30  Simon Josefsson <simon@josefsson.org>
+
+	* NEWS: Bump version.
+
+2011-03-30  Simon Josefsson <simon@josefsson.org>
+
+	* tests/Makefile.am: Dist more.
+
+2011-03-30  Simon Josefsson <simon@josefsson.org>
+
+	* configure.ac, idn2.h.in: Bump versions.
+
+2011-03-30  Simon Josefsson <simon@josefsson.org>
+
+	* cfg.mk: Fix release target.
+
+2011-03-30  Simon Josefsson <simon@josefsson.org>
+
+	* NEWS: Version 0.2.
+
+2011-03-30  Simon Josefsson <simon@josefsson.org>
+
+	* tests/Makefile.am: Fix.
+
+2011-03-30  Simon Josefsson <simon@josefsson.org>
+
+	* bidi.c, bidi.h, cfg.mk, context.c, context.h, data.h, error.c,
+	free.c, idn2.h.in, idna.c, idna.h, lookup.c, punycode.h,
+	register.c, src/idn2.c, tables.c, version.c: Indent.
+
+2011-03-30  Simon Josefsson <simon@josefsson.org>
+
+	* .gitignore, Makefile.am, NEWS, cfg.mk, configure.ac,
+	doc/reference/Makefile.am, src/Makefile.am, src/blurbs.h,
+	src/configure.ac, src/gl/Makefile.am, src/gl/alloca.in.h,
+	src/gl/c-ctype.c, src/gl/c-ctype.h, src/gl/c-strcase.h,
+	src/gl/c-strcasecmp.c, src/gl/c-strcaseeq.h,
+	src/gl/c-strncasecmp.c, src/gl/config.charset, src/gl/errno.in.h,
+	src/gl/error.c, src/gl/error.h, src/gl/gettext.h,
+	src/gl/iconv.in.h, src/gl/iconv_open-aix.gperf,
+	src/gl/iconv_open-hpux.gperf, src/gl/iconv_open-irix.gperf,
+	src/gl/iconv_open-osf.gperf, src/gl/iconv_open-solaris.gperf,
+	src/gl/iconv_open.c, src/gl/iconveh.h, src/gl/intprops.h,
+	src/gl/localcharset.c, src/gl/localcharset.h,
+	src/gl/m4/00gnulib.m4, src/gl/m4/alloca.m4, src/gl/m4/codeset.m4,
+	src/gl/m4/configmake.m4, src/gl/m4/eealloc.m4,
+	src/gl/m4/errno_h.m4, src/gl/m4/error.m4, src/gl/m4/extensions.m4,
+	src/gl/m4/fcntl-o.m4, src/gl/m4/glibc21.m4,
+	src/gl/m4/gnulib-cache.m4, src/gl/m4/gnulib-common.m4,
+	src/gl/m4/gnulib-comp.m4, src/gl/m4/gnulib-tool.m4,
+	src/gl/m4/iconv.m4, src/gl/m4/iconv_h.m4, src/gl/m4/iconv_open.m4,
+	src/gl/m4/include_next.m4, src/gl/m4/inline.m4,
+	src/gl/m4/lib-ld.m4, src/gl/m4/lib-link.m4,
+	src/gl/m4/lib-prefix.m4, src/gl/m4/libunistring-base.m4,
+	src/gl/m4/localcharset.m4, src/gl/m4/longlong.m4,
+	src/gl/m4/malloca.m4, src/gl/m4/multiarch.m4,
+	src/gl/m4/onceonly.m4, src/gl/m4/stdarg.m4, src/gl/m4/stdbool.m4,
+	src/gl/m4/stddef_h.m4, src/gl/m4/stdint.m4, src/gl/m4/strerror.m4,
+	src/gl/m4/string_h.m4, src/gl/m4/unistd_h.m4,
+	src/gl/m4/version-etc.m4, src/gl/m4/warn-on-use.m4,
+	src/gl/m4/wchar_t.m4, src/gl/malloca.c, src/gl/malloca.h,
+	src/gl/malloca.valgrind, src/gl/progname.c, src/gl/progname.h,
+	src/gl/ref-add.sin, src/gl/ref-del.sin, src/gl/stdarg.in.h,
+	src/gl/stdbool.in.h, src/gl/stddef.in.h, src/gl/stdint.in.h,
+	src/gl/strerror.c, src/gl/striconveh.c, src/gl/striconveh.h,
+	src/gl/striconveha.c, src/gl/striconveha.h, src/gl/string.in.h,
+	src/gl/uniconv.in.h, src/gl/uniconv/u-strconv-from-enc.h,
+	src/gl/uniconv/u8-conv-from-enc.c,
+	src/gl/uniconv/u8-strconv-from-enc.c,
+	src/gl/uniconv/u8-strconv-from-locale.c, src/gl/unistd.in.h,
+	src/gl/unistr.in.h, src/gl/unistr/u8-check.c,
+	src/gl/unistr/u8-mblen.c, src/gl/unistr/u8-mbtouc-aux.c,
+	src/gl/unistr/u8-mbtouc-unsafe-aux.c,
+	src/gl/unistr/u8-mbtouc-unsafe.c, src/gl/unistr/u8-mbtouc.c,
+	src/gl/unistr/u8-mbtoucr.c, src/gl/unistr/u8-prev.c,
+	src/gl/unistr/u8-strlen.c, src/gl/unistr/u8-to-u32.c,
+	src/gl/unistr/u8-uctomb-aux.c, src/gl/unistr/u8-uctomb.c,
+	src/gl/unitypes.in.h, src/gl/verify.h, src/gl/version-etc.c,
+	src/gl/version-etc.h, src/idn2.c, src/idn2.ggo, tests/IdnaTest.c,
+	tests/IdnaTest.inc, tests/IdnaTest.txt, tests/Makefile.am,
+	tests/test-lookup.c: Add command line tool.
+
+2011-03-30  Simon Josefsson <simon@josefsson.org>
+
+	* cfg.mk: Workaround genhtml bugs.
+
+2011-03-30  Simon Josefsson <simon@josefsson.org>
+
+	* gl/Makefile.am, gl/alloca.in.h, gl/array-mergesort.h,
+	gl/c-ctype.c, gl/c-ctype.h, gl/c-strcase.h, gl/c-strcasecmp.c,
+	gl/c-strcaseeq.h, gl/c-strncasecmp.c, gl/config.charset,
+	gl/iconv.in.h, gl/iconv_open.c, gl/iconveh.h, gl/localcharset.c,
+	gl/localcharset.h, gl/m4/gnulib-cache.m4, gl/malloca.c,
+	gl/malloca.h, gl/ref-add.sin, gl/ref-del.sin, gl/stdbool.in.h,
+	gl/stdint.in.h, gl/striconveh.c, gl/striconveh.h, gl/striconveha.c,
+	gl/striconveha.h, gl/uniconv.in.h, gl/uniconv/u-strconv-from-enc.h,
+	gl/uniconv/u8-conv-from-enc.c, gl/uniconv/u8-strconv-from-enc.c,
+	gl/uniconv/u8-strconv-from-locale.c, gl/unictype.in.h,
+	gl/unictype/bidi_of.c, gl/unictype/bitmap.h, gl/unictype/categ_M.c,
+	gl/unictype/categ_none.c, gl/unictype/categ_of.c,
+	gl/unictype/categ_test.c, gl/unictype/combiningclass.c,
+	gl/unictype/joiningtype_of.c, gl/unictype/scripts.c,
+	gl/uninorm.in.h, gl/uninorm/canonical-decomposition.c,
+	gl/uninorm/composition-table.gperf, gl/uninorm/composition.c,
+	gl/uninorm/decompose-internal.c, gl/uninorm/decompose-internal.h,
+	gl/uninorm/decomposition-table.c, gl/uninorm/decomposition-table.h,
+	gl/uninorm/nfc.c, gl/uninorm/nfd.c,
+	gl/uninorm/normalize-internal.h, gl/uninorm/u-normalize-internal.h,
+	gl/uninorm/u32-normalize.c, gl/unistr.in.h, gl/unistr/u-cpy.h,
+	gl/unistr/u32-cpy.c, gl/unistr/u32-mbtouc-unsafe.c,
+	gl/unistr/u32-to-u8.c, gl/unistr/u32-uctomb.c,
+	gl/unistr/u8-check.c, gl/unistr/u8-mblen.c,
+	gl/unistr/u8-mbtouc-aux.c, gl/unistr/u8-mbtouc-unsafe-aux.c,
+	gl/unistr/u8-mbtouc-unsafe.c, gl/unistr/u8-mbtouc.c,
+	gl/unistr/u8-mbtoucr.c, gl/unistr/u8-prev.c, gl/unistr/u8-strlen.c,
+	gl/unistr/u8-to-u32.c, gl/unistr/u8-uctomb-aux.c,
+	gl/unistr/u8-uctomb.c, gl/unitypes.in.h, gl/verify.h: Update gnulib
+	files.
+
+2011-03-29  Simon Josefsson <simon@josefsson.org>
+
+	* NOTES, tests/IdnaTest.c, tests/Makefile.am,
+	tests/gen-utc-test.pl, tests/test-lookup.c: Improve utc tests.
+
+2011-03-29  Simon Josefsson <simon@josefsson.org>
+
+	* tests/test-lookup.c: Drop UTC's test vectors.
+
+2011-03-29  Simon Josefsson <simon@josefsson.org>
+
+	* .gitignore, tests/IdnaTest.c, tests/Makefile.am,
+	tests/test-lookup.c: Fix UTC tests.
+
+2011-03-29  Simon Josefsson <simon@josefsson.org>
+
+	* tests/test-punycode.c: Hack it.
+
+2011-03-29  Simon Josefsson <simon@josefsson.org>
+
+	* tests/Makefile.am, tests/gen-utc-test.pl, tests/test-lookup.c: Add
+	UTC test vectors.
+
+2011-03-29  Simon Josefsson <simon@josefsson.org>
+
+	* NEWS, configure.ac, idn2.h.in: Bump versions.
+
+2011-03-29  Simon Josefsson <simon@josefsson.org>
+
+	* NEWS: Version 0.1.
+
+2011-03-29  Simon Josefsson <simon@josefsson.org>
+
+	* tests/test-lookup.c, tests/test-register.c: Add test vectors.
+
+2011-03-29  Simon Josefsson <simon@josefsson.org>
+
+	* context.c: Fix U+200C.
+
+2011-03-29  Simon Josefsson <simon@josefsson.org>
+
+	* gl/Makefile.am, gl/m4/gnulib-cache.m4, gl/m4/gnulib-comp.m4,
+	gl/m4/valgrind-tests.m4, lookup.c, register.c, tests/Makefile.am,
+	tests/test-register.c: Use valgrind.
+
+2011-03-29  Simon Josefsson <simon@josefsson.org>
+
+	* doc/reference/Makefile.am, idn2.h.in, tests/test-punycode.c: 
+	Namespace fixes for gtk-doc.
+
+2011-03-28  Simon Josefsson <simon@josefsson.org>
+
+	* error.c, idn2.h.in, lookup.c, register.c: Doc fixes.
+
+2011-03-28  Simon Josefsson <simon@josefsson.org>
+
+	* NEWS: Doc fix.
+
+2011-03-28  Simon Josefsson <simon@josefsson.org>
+
+	* Makefile.am, cfg.mk, configure.ac, context.c, data.c,
+	gen-tables-from-iana.pl, gen-tables-from-rfc5892.pl, gtk-doc.make,
+	idna.c, idna.h, lookup.c, punycode.h, register.c: Warning cleanup.
+
+2011-03-28  Simon Josefsson <simon@josefsson.org>
+
+	* cfg.mk, configure.ac, gl/Makefile.am, gl/m4/gnulib-cache.m4,
+	gl/m4/gnulib-comp.m4, gl/m4/manywarnings.m4, gl/m4/warnings.m4: More
+	warnings.
+
+2011-03-28  Simon Josefsson <simon@josefsson.org>
+
+	* idna.c: Fix warning.
+
+2011-03-28  Simon Josefsson <simon@josefsson.org>
+
+	* Makefile.am, gl/Makefile.am, gl/m4/gnulib-cache.m4,
+	gl/m4/gnulib-comp.m4, gl/m4/visibility.m4: Use visibility.
+
+2011-03-28  Simon Josefsson <simon@josefsson.org>
+
+	* bidi.c, gl/Makefile.am, gl/m4/gnulib-cache.m4,
+	gl/m4/gnulib-comp.m4, gl/unictype.in.h, gl/unictype/bidi_of.c,
+	gl/unictype/combining.c, gl/unictype/combining.h,
+	gl/unictype/combiningclass.c, gl/unictype/combiningclass.h,
+	maint.mk: Update gnulib files.
+
+2011-03-28  Simon Josefsson <simon@josefsson.org>
+
+	* idn2.h.in: C++ fix.
+
+2011-03-28  Simon Josefsson <simon@josefsson.org>
+
+	* Makefile.am: Fix cludge.
+
+2011-03-28  Simon Josefsson <simon@josefsson.org>
+
+	* NEWS, configure.ac, idn2.h.in, lookup.c: Doc fix.
+
+2011-03-28  Simon Josefsson <simon@josefsson.org>
+
+	* tests/test-register.c: Register test vectors.
+
+2011-03-28  Simon Josefsson <simon@josefsson.org>
+
+	* error.c, idn2.h.in, lookup.c, register.c: More register.
+
+2011-03-28  Simon Josefsson <simon@josefsson.org>
+
+	* register.c, tests/test-register.c: More register.
+
+2011-03-28  Simon Josefsson <simon@josefsson.org>
+
+	* .gitignore, context.c, error.c, gl/Makefile.am,
+	gl/m4/gnulib-cache.m4, gl/m4/gnulib-comp.m4, gl/unictype/scripts.c,
+	gl/unictype/scripts.h, gl/unictype/scripts_byname.gperf, idn2.h.in,
+	register.c, tests/test-register.c: More register.
+
+2011-03-28  Simon Josefsson <simon@josefsson.org>
+
+	* register.c, tests/test-register.c: More register.
+
+2011-03-28  Simon Josefsson <simon@josefsson.org>
+
+	* .gitignore, register.c, tests/Makefile.am, tests/test-register.c: 
+	More register.
+
+2011-03-28  Simon Josefsson <simon@josefsson.org>
+
+	* Makefile.am: Add backup rule.
+
+2011-03-28  Simon Josefsson <simon@josefsson.org>
+
+	* idn2.h.in, idna.c, idna.h, lookup.c, register.c: Generalize.
+
+2011-03-28  Simon Josefsson <simon@josefsson.org>
+
+	* lookup.c: Fix.
+
+2011-03-28  Simon Josefsson <simon@josefsson.org>
+
+	* lookup.c: Simplify what.
+
+2011-03-28  Simon Josefsson <simon@josefsson.org>
+
+	* error.c, idn2.h.in, lookup.c, tests/test-lookup.c: Revamp ascii.
+
+2011-03-28  Simon Josefsson <simon@josefsson.org>
+
+	* lookup.c: Revamp allocation.
+
+2011-03-27  Simon Josefsson <simon@josefsson.org>
+
+	* context.c, context.h, error.c, gl/Makefile.am,
+	gl/m4/gnulib-cache.m4, gl/m4/gnulib-comp.m4, gl/m4/malloc.m4,
+	gl/m4/stddef_h.m4, gl/m4/stdlib_h.m4, gl/m4/unistd_h.m4,
+	gl/m4/wchar_t.m4, gl/malloc.c, gl/stddef.in.h, gl/stdlib.in.h,
+	gl/unistd.in.h, gl/unistr/u-cpy-alloc.h, gl/unistr/u32-cpy-alloc.c,
+	idn2.h.in, idn2.map, idna.c, idna.h, lookup.c, tests/Makefile.am,
+	tests/test-lookup.c, tests/test-low.c: Rewrite lookup.
+
+2011-03-27  Simon Josefsson <simon@josefsson.org>
+
+	* error.c, idn2.h.in, idna.c, idna.h, lookup.c, tests/test-low.c: 
+	Drop getopt stuff.
+
+2011-03-27  Simon Josefsson <simon@josefsson.org>
+
+	* idn2.h.in: Fix comment.
+
+2011-03-27  Simon Josefsson <simon@josefsson.org>
+
+	* idn2.h.in: Add constants.
+
+2011-03-27  Simon Josefsson <simon@josefsson.org>
+
+	* .gitignore, data.c, tests/test-lookup.c: Add data.c, for offline
+	work.
+
+2011-03-27  Simon Josefsson <simon@josefsson.org>
+
+	* tests/Makefile.am: Build static to make valgrind produce useful
+	output.
+
+2011-03-27  Simon Josefsson <simon@josefsson.org>
+
+	* bidi.c, bidi.h: Constify.
+
+2011-03-22  Simon Josefsson <simon@josefsson.org>
+
+	* error.c, idn2.h.in, idna.c, lookup.c, tests/test-lookup.c,
+	tests/test-low.c: Fix tests.
+
+2011-03-22  Simon Josefsson <simon@josefsson.org>
+
+	* gl/Makefile.am, gl/langinfo.in.h, gl/m4/gnulib-cache.m4,
+	gl/m4/gnulib-comp.m4, gl/m4/langinfo_h.m4, gl/m4/nl_langinfo.m4,
+	gl/nl_langinfo.c, gl/striconv.c, gl/striconv.h, lookup.c,
+	register.c: Drop striconv stuff.
+
+2011-03-22  Simon Josefsson <simon@josefsson.org>
+
+	* gl/Makefile.am, gl/m4/gnulib-cache.m4, gl/m4/gnulib-comp.m4,
+	gl/unictype/pr_combining.c, gl/unictype/pr_combining.h: Remove
+	unused gnulib module.
+
+2011-03-22  Simon Josefsson <simon@josefsson.org>
+
+	* .gitignore: Ignore more.
+
+2011-03-22  Simon Josefsson <simon@josefsson.org>
+
+	* context.c, tests/test-lookup.c: Fix U+200C rule.
+
+2011-03-22  Simon Josefsson <simon@josefsson.org>
+
+	* NOTES: Add.
+
+2011-03-22  Simon Josefsson <simon@josefsson.org>
+
+	* gl/Makefile.am, gl/m4/gnulib-cache.m4, gl/m4/gnulib-comp.m4,
+	gl/unictype.in.h, gl/unictype/categ_none.c, gl/unictype/categ_of.c,
+	gl/unictype/categ_of.h, gl/unictype/joiningtype_of.c,
+	gl/unictype/joiningtype_of.h, maint.mk: Add joiningtype gnulib
+	module.
+
+2011-03-20  Simon Josefsson <simon@josefsson.org>
+
+	* context.c, tests/test-lookup.c: Parts of U+200C rule.
+
+2011-03-20  Simon Josefsson <simon@josefsson.org>
+
+	* tests/test-lookup.c: More self tests.
+
+2011-03-19  Simon Josefsson <simon@josefsson.org>
+
+	* tests/test-lookup.c: doc fix
+
+2011-03-19  Simon Josefsson <simon@josefsson.org>
+
+	* tests/test-lookup.c: fix
+
+2011-03-19  Simon Josefsson <simon@josefsson.org>
+
+	* tests/test-lookup.c: Add more.
+
+2011-03-19  Simon Josefsson <simon@josefsson.org>
+
+	* .gitignore: Ignore more.
+
+2011-03-19  Simon Josefsson <simon@josefsson.org>
+
+	* context.c, context.h, gl/Makefile.am, gl/m4/gnulib-cache.m4,
+	gl/m4/gnulib-comp.m4, gl/unictype/categ_M.c, gl/unictype/categ_M.h,
+	gl/unictype/categ_test.c, idna.c, tests/test-lookup.c: Fix U+200D
+	contet rule.  Fix combining mark bug.
+
+2011-03-09  Simon Josefsson <simon@josefsson.org>
+
+	* NEWS, configure.ac: Bump version.
+
+2011-03-09  Simon Josefsson <simon@josefsson.org>
+
+	* cfg.mk: Fix release target.
+
+2011-03-09  Simon Josefsson <simon@josefsson.org>
+
+	* cfg.mk: No .clcopying.
+
+2011-03-09  Simon Josefsson <simon@josefsson.org>
+
+	* gtk-doc.make: Update gtk-doc files.
+
+2011-03-09  Simon Josefsson <simon@josefsson.org>
+
+	* Makefile.am: Fix.
+
+2011-03-09  Simon Josefsson <simon@josefsson.org>
+
+	* configure.ac: Fix version.
+
+2011-03-09  Simon Josefsson <simon@josefsson.org>
+
+	* NEWS: Version 0.0.
+
+2011-03-09  Simon Josefsson <simon@josefsson.org>
+
+	* NEWS: Add.
+
+2011-03-09  Simon Josefsson <simon@josefsson.org>
+
+	* configure.ac: Hard code version for now.
+
+2011-03-08  Simon Josefsson <simon@josefsson.org>
+
+	* configure.ac, idn2.h, idn2.h.in: Version fix.
+
+2011-03-08  Simon Josefsson <simon@josefsson.org>
+
+	* NEWS, idn2.h: Version fixes.
+
+2011-03-08  Simon Josefsson <simon@josefsson.org>
+
+	* NEWS: Add.
+
+2011-03-08  Simon Josefsson <simon@josefsson.org>
+
+	* idn2.h, register.c: Fix name.
+
+2011-03-08  Simon Josefsson <simon@josefsson.org>
+
+	* Makefile.am: Fix.
+
+2011-03-08  Simon Josefsson <simon@josefsson.org>
+
+	* lookup.c: Fix.
+
+2011-03-08  Simon Josefsson <simon@josefsson.org>
+
+	* idn2.h: Reorder.
+
+2011-03-08  Simon Josefsson <simon@josefsson.org>
+
+	* Makefile.am, idna.c, idna.h, lookup.c, register.c: Split up.
+
+2011-03-08  Simon Josefsson <simon@josefsson.org>
+
+	* error.c, idn2.h, idna.c: Improve errors.
+
+2011-03-08  Simon Josefsson <simon@josefsson.org>
+
+	* idna.c: Reorder.
+
+2011-03-07  Simon Josefsson <simon@josefsson.org>
+
+	* idna.c: Simplify.
+
+2011-03-07  Simon Josefsson <simon@josefsson.org>
+
+	* context.c: Add FIXME.
+
+2011-03-07  Simon Josefsson <simon@josefsson.org>
+
+	* gl/Makefile.am, gl/langinfo.in.h, gl/m4/gnulib-cache.m4,
+	gl/m4/gnulib-comp.m4, gl/m4/langinfo_h.m4, gl/m4/nl_langinfo.m4,
+	gl/nl_langinfo.c, idn2.h, idna.c: Add nl_langinfo replacement.
+
+2011-03-07  Simon Josefsson <simon@josefsson.org>
+
+	* gl/Makefile.am, gl/m4/gnulib-cache.m4, gl/m4/gnulib-comp.m4,
+	gl/striconv.c, gl/striconv.h: Add striconv.
+
+2011-03-07  Simon Josefsson <simon@josefsson.org>
+
+	* idna.c: Doc fix.
+
+2011-03-07  Simon Josefsson <simon@josefsson.org>
+
+	* idn2.h: Fix errcodes.
+
+2011-03-07  Simon Josefsson <simon@josefsson.org>
+
+	* idn2.h, idn2.map: Fix version.
+
+2011-03-07  Simon Josefsson <simon@josefsson.org>
+
+	* configure.ac: Fix version.
+
+2011-03-07  Simon Josefsson <simon@josefsson.org>
+
+	* .gitignore: Ignore more.
+
+2011-03-07  Simon Josefsson <simon@josefsson.org>
+
+	* Makefile.am, doc/reference/Makefile.am, idna.c, punycode.c,
+	punycode.h: Revamp punycode.
+
+2011-03-07  Simon Josefsson <simon@josefsson.org>
+
+	* version.c: Doc fix.
+
+2011-03-07  Simon Josefsson <simon@josefsson.org>
+
+	* cfg.mk, configure.ac, doc/reference/Makefile.am,
+	doc/reference/idn2-docs.sgml, doc/reference/version.xml.in, free.c: 
+	Doc fix.
+
+2011-03-07  Simon Josefsson <simon@josefsson.org>
+
+	* Makefile.am, cfg.mk, configure.ac, doc/Makefile.am,
+	doc/reference/Makefile.am, gtk-doc.make, m4/dummy.m4, m4/gtk-doc.m4: 
+	Add gtk-doc.
+
+2011-03-07  Simon Josefsson <simon@josefsson.org>
+
+	* idn2.h: Header cleanup.
+
+2011-03-07  Simon Josefsson <simon@josefsson.org>
+
+	* tests/Makefile.am: Reorder.
+
+2011-03-07  Simon Josefsson <simon@josefsson.org>
+
+	* error.c, idn2.h, idna.c, tests/test-low.c: Error handling.
+
+2011-03-07  Simon Josefsson <simon@josefsson.org>
+
+	* idn2.h, idn2.map, idna.c, punycode.c, tests/test-punycode.c: 
+	Internalize punycode too.
+
+2011-03-07  Simon Josefsson <simon@josefsson.org>
+
+	* .gitignore: Update.
+
+2011-03-07  Simon Josefsson <simon@josefsson.org>
+
+	* Makefile.am, configure.ac, gl/Makefile.am, gl/alloca.in.h,
+	gl/array-mergesort.h, gl/c-ctype.c, gl/c-ctype.h, gl/c-strcase.h,
+	gl/c-strcasecmp.c, gl/c-strcaseeq.h, gl/c-strncasecmp.c,
+	gl/config.charset, gl/iconv.in.h, gl/iconv_open-aix.gperf,
+	gl/iconv_open-hpux.gperf, gl/iconv_open-irix.gperf,
+	gl/iconv_open-osf.gperf, gl/iconv_open-solaris.gperf,
+	gl/iconv_open.c, gl/iconveh.h, gl/localcharset.c,
+	gl/localcharset.h, gl/m4/00gnulib.m4, gl/m4/alloca.m4,
+	gl/m4/codeset.m4, gl/m4/configmake.m4, gl/m4/eealloc.m4,
+	gl/m4/extensions.m4, gl/m4/fcntl-o.m4, gl/m4/glibc21.m4,
+	gl/m4/gnulib-cache.m4, gl/m4/gnulib-common.m4,
+	gl/m4/gnulib-comp.m4, gl/m4/gnulib-tool.m4, gl/m4/iconv.m4,
+	gl/m4/iconv_h.m4, gl/m4/iconv_open.m4, gl/m4/include_next.m4,
+	gl/m4/inline.m4, gl/m4/ld-version-script.m4, gl/m4/lib-ld.m4,
+	gl/m4/lib-link.m4, gl/m4/lib-prefix.m4, gl/m4/libunistring-base.m4,
+	gl/m4/localcharset.m4, gl/m4/longlong.m4, gl/m4/malloc.m4,
+	gl/m4/malloca.m4, gl/m4/multiarch.m4, gl/m4/onceonly.m4,
+	gl/m4/stdbool.m4, gl/m4/stddef_h.m4, gl/m4/stdint.m4,
+	gl/m4/stdlib_h.m4, gl/m4/unistd_h.m4, gl/m4/warn-on-use.m4,
+	gl/m4/wchar_t.m4, gl/malloc.c, gl/malloca.c, gl/malloca.h,
+	gl/malloca.valgrind, gl/override/lib/unictype/bidi_of.h,
+	gl/override/lib/unictype/combining.h,
+	gl/override/lib/unictype/pr_combining.h,
+	gl/override/lib/uninorm/composition-table.gperf,
+	gl/override/lib/uninorm/decomposition-table1.h,
+	gl/override/lib/uninorm/decomposition-table2.h,
+	gl/override/lib/uninorm/normalize-internal.h, gl/ref-add.sin,
+	gl/ref-del.sin, gl/stdbool.in.h, gl/stddef.in.h, gl/stdint.in.h,
+	gl/stdlib.in.h, gl/striconveh.c, gl/striconveh.h, gl/striconveha.c,
+	gl/striconveha.h, gl/uniconv.in.h, gl/uniconv/u-strconv-from-enc.h,
+	gl/uniconv/u8-conv-from-enc.c, gl/uniconv/u8-strconv-from-enc.c,
+	gl/uniconv/u8-strconv-from-locale.c, gl/unictype.in.h,
+	gl/unictype/bidi_of.c, gl/unictype/bidi_of.h, gl/unictype/bitmap.h,
+	gl/unictype/combining.c, gl/unictype/combining.h,
+	gl/unictype/pr_combining.c, gl/unictype/pr_combining.h,
+	gl/uninorm.in.h, gl/uninorm/canonical-decomposition.c,
+	gl/uninorm/composition-table.gperf, gl/uninorm/composition.c,
+	gl/uninorm/decompose-internal.c, gl/uninorm/decompose-internal.h,
+	gl/uninorm/decomposition-table.c, gl/uninorm/decomposition-table.h,
+	gl/uninorm/decomposition-table1.h,
+	gl/uninorm/decomposition-table2.h, gl/uninorm/nfc.c,
+	gl/uninorm/nfd.c, gl/uninorm/normalize-internal.h,
+	gl/uninorm/u-normalize-internal.h, gl/uninorm/u32-normalize.c,
+	gl/unistd.in.h, gl/unistr.in.h, gl/unistr/u-cpy-alloc.h,
+	gl/unistr/u-cpy.h, gl/unistr/u32-cpy-alloc.c, gl/unistr/u32-cpy.c,
+	gl/unistr/u32-mbtouc-unsafe.c, gl/unistr/u32-to-u8.c,
+	gl/unistr/u32-uctomb.c, gl/unistr/u8-check.c, gl/unistr/u8-mblen.c,
+	gl/unistr/u8-mbtouc-aux.c, gl/unistr/u8-mbtouc-unsafe-aux.c,
+	gl/unistr/u8-mbtouc-unsafe.c, gl/unistr/u8-mbtouc.c,
+	gl/unistr/u8-mbtoucr.c, gl/unistr/u8-prev.c, gl/unistr/u8-strlen.c,
+	gl/unistr/u8-to-u32.c, gl/unistr/u8-uctomb-aux.c,
+	gl/unistr/u8-uctomb.c, gl/unitypes.in.h, gl/verify.h,
+	lib/Makefile.am, lib/alloca.in.h, lib/array-mergesort.h,
+	lib/c-ctype.c, lib/c-ctype.h, lib/c-strcase.h, lib/c-strcasecmp.c,
+	lib/c-strcaseeq.h, lib/c-strncasecmp.c, lib/config.charset,
+	lib/iconv.in.h, lib/iconv_open-aix.gperf,
+	lib/iconv_open-hpux.gperf, lib/iconv_open-irix.gperf,
+	lib/iconv_open-osf.gperf, lib/iconv_open-solaris.gperf,
+	lib/iconv_open.c, lib/iconveh.h, lib/localcharset.c,
+	lib/localcharset.h, lib/malloc.c, lib/malloca.c, lib/malloca.h,
+	lib/malloca.valgrind, lib/override/lib/unictype/bidi_of.h,
+	lib/override/lib/unictype/combining.h,
+	lib/override/lib/unictype/pr_combining.h,
+	lib/override/lib/uninorm/composition-table.gperf,
+	lib/override/lib/uninorm/decomposition-table1.h,
+	lib/override/lib/uninorm/decomposition-table2.h,
+	lib/override/lib/uninorm/normalize-internal.h, lib/ref-add.sin,
+	lib/ref-del.sin, lib/stdbool.in.h, lib/stddef.in.h,
+	lib/stdint.in.h, lib/stdlib.in.h, lib/striconveh.c,
+	lib/striconveh.h, lib/striconveha.c, lib/striconveha.h,
+	lib/uniconv.in.h, lib/uniconv/u-strconv-from-enc.h,
+	lib/uniconv/u8-conv-from-enc.c, lib/uniconv/u8-strconv-from-enc.c,
+	lib/uniconv/u8-strconv-from-locale.c, lib/unictype.in.h,
+	lib/unictype/bidi_of.c, lib/unictype/bidi_of.h,
+	lib/unictype/bitmap.h, lib/unictype/combining.c,
+	lib/unictype/combining.h, lib/unictype/pr_combining.c,
+	lib/unictype/pr_combining.h, lib/uninorm.in.h,
+	lib/uninorm/canonical-decomposition.c,
+	lib/uninorm/composition-table.gperf, lib/uninorm/composition.c,
+	lib/uninorm/decompose-internal.c, lib/uninorm/decompose-internal.h,
+	lib/uninorm/decomposition-table.c,
+	lib/uninorm/decomposition-table.h,
+	lib/uninorm/decomposition-table1.h,
+	lib/uninorm/decomposition-table2.h, lib/uninorm/nfc.c,
+	lib/uninorm/nfd.c, lib/uninorm/normalize-internal.h,
+	lib/uninorm/u-normalize-internal.h, lib/uninorm/u32-normalize.c,
+	lib/unistd.in.h, lib/unistr.in.h, lib/unistr/u-cpy-alloc.h,
+	lib/unistr/u-cpy.h, lib/unistr/u32-cpy-alloc.c,
+	lib/unistr/u32-cpy.c, lib/unistr/u32-mbtouc-unsafe.c,
+	lib/unistr/u32-to-u8.c, lib/unistr/u32-uctomb.c,
+	lib/unistr/u8-check.c, lib/unistr/u8-mblen.c,
+	lib/unistr/u8-mbtouc-aux.c, lib/unistr/u8-mbtouc-unsafe-aux.c,
+	lib/unistr/u8-mbtouc-unsafe.c, lib/unistr/u8-mbtouc.c,
+	lib/unistr/u8-mbtoucr.c, lib/unistr/u8-prev.c,
+	lib/unistr/u8-strlen.c, lib/unistr/u8-to-u32.c,
+	lib/unistr/u8-uctomb-aux.c, lib/unistr/u8-uctomb.c,
+	lib/unitypes.in.h, lib/verify.h, m4/00gnulib.m4, m4/alloca.m4,
+	m4/codeset.m4, m4/configmake.m4, m4/dummy.m4, m4/eealloc.m4,
+	m4/extensions.m4, m4/fcntl-o.m4, m4/glibc21.m4, m4/gnulib-cache.m4,
+	m4/gnulib-common.m4, m4/gnulib-comp.m4, m4/gnulib-tool.m4,
+	m4/iconv.m4, m4/iconv_h.m4, m4/iconv_open.m4, m4/include_next.m4,
+	m4/inline.m4, m4/ld-version-script.m4, m4/lib-ld.m4,
+	m4/lib-link.m4, m4/lib-prefix.m4, m4/libunistring-base.m4,
+	m4/localcharset.m4, m4/longlong.m4, m4/malloc.m4, m4/malloca.m4,
+	m4/multiarch.m4, m4/onceonly.m4, m4/stdbool.m4, m4/stddef_h.m4,
+	m4/stdint.m4, m4/stdlib_h.m4, m4/unistd_h.m4, m4/warn-on-use.m4,
+	m4/wchar_t.m4: Move gnulib to gl/.
+
+2011-03-07  Simon Josefsson <simon@josefsson.org>
+
+	* Makefile.am, configure.ac, test-lookup.c, test-low.c,
+	test-punycode.c, tests/Makefile.am, tests/test-lookup.c,
+	tests/test-low.c, tests/test-punycode.c: Move self-tests to tests/.
+
+2011-03-07  Simon Josefsson <simon@josefsson.org>
+
+	* idn2.h, idn2.map, idna.c, test-low.c: Internalize some interfaces.
+
+2011-03-07  Simon Josefsson <simon@josefsson.org>
+
+	* NOTES, test-lookup.c: Improve self checks.
+
+2011-03-02  Simon Josefsson <simon@josefsson.org>
+
+	* NOTES: Fix.
+
+2011-03-02  Simon Josefsson <simon@josefsson.org>
+
+	* test-lookup.c: Improve self-test.
+
+2011-03-02  Simon Josefsson <simon@josefsson.org>
+
+	* NOTES: Add.
+
+2011-03-02  Simon Josefsson <simon@josefsson.org>
+
+	* .gitignore: Add more.
+
+2011-03-02  Simon Josefsson <simon@josefsson.org>
+
+	* Makefile.am, test-idna.c, test-lookup.c, test-low.c: Cleanup
+	self-tests.
+
+2011-03-02  Simon Josefsson <simon@josefsson.org>
+
+	* .gitignore: Ignore more.
+
+2011-03-02  Simon Josefsson <simon@josefsson.org>
+
+	* Makefile.am, error.c, idn2.h, idn2.map, test-idna.c: Add strerror
+	functions.
+
+2011-03-02  Simon Josefsson <simon@josefsson.org>
+
+	* bidi.c, cfg.mk, context.c, idna.c, punycode.c, tables.c,
+	test-idna.c, test-punycode.c: Fix some syntax-check bugs.
+
+2011-03-02  Simon Josefsson <simon@josefsson.org>
+
+	* cfg.mk: Ignore gnulib files.
+
+2011-03-01  Simon Josefsson <simon@josefsson.org>
+
+	* lib/localcharset.c, maint.mk: Update gnulib files.
+
+2011-02-28  Simon Josefsson <simon@josefsson.org>
+
+	* build-aux/arg-nonnull.h, build-aux/c++defs.h,
+	build-aux/config.rpath, build-aux/git-version-gen,
+	build-aux/unused-parameter.h, build-aux/warn-on-use.h,
+	lib/Makefile.am, lib/alloca.in.h, lib/array-mergesort.h,
+	lib/c-ctype.c, lib/c-ctype.h, lib/c-strcase.h, lib/c-strcasecmp.c,
+	lib/c-strcaseeq.h, lib/c-strncasecmp.c, lib/config.charset,
+	lib/iconv.in.h, lib/iconv_open.c, lib/iconveh.h,
+	lib/localcharset.c, lib/localcharset.h, lib/malloc.c,
+	lib/malloca.c, lib/malloca.h, lib/ref-add.sin, lib/ref-del.sin,
+	lib/stdbool.in.h, lib/stddef.in.h, lib/stdint.in.h,
+	lib/stdlib.in.h, lib/striconveh.c, lib/striconveh.h,
+	lib/striconveha.c, lib/striconveha.h, lib/uniconv.in.h,
+	lib/uniconv/u-strconv-from-enc.h, lib/uniconv/u8-conv-from-enc.c,
+	lib/uniconv/u8-strconv-from-enc.c,
+	lib/uniconv/u8-strconv-from-locale.c, lib/unictype.in.h,
+	lib/unictype/bidi_of.c, lib/unictype/bitmap.h,
+	lib/unictype/combining.c, lib/unictype/pr_combining.c,
+	lib/uninorm.in.h, lib/uninorm/canonical-decomposition.c,
+	lib/uninorm/composition-table.gperf, lib/uninorm/composition.c,
+	lib/uninorm/decompose-internal.c, lib/uninorm/decompose-internal.h,
+	lib/uninorm/decomposition-table.c,
+	lib/uninorm/decomposition-table.h, lib/uninorm/nfc.c,
+	lib/uninorm/nfd.c, lib/uninorm/normalize-internal.h,
+	lib/uninorm/u-normalize-internal.h, lib/uninorm/u32-normalize.c,
+	lib/unistd.in.h, lib/unistr.in.h, lib/unistr/u-cpy-alloc.h,
+	lib/unistr/u-cpy.h, lib/unistr/u32-cpy-alloc.c,
+	lib/unistr/u32-cpy.c, lib/unistr/u32-mbtouc-unsafe.c,
+	lib/unistr/u32-to-u8.c, lib/unistr/u32-uctomb.c,
+	lib/unistr/u8-check.c, lib/unistr/u8-mblen.c,
+	lib/unistr/u8-mbtouc-aux.c, lib/unistr/u8-mbtouc-unsafe-aux.c,
+	lib/unistr/u8-mbtouc-unsafe.c, lib/unistr/u8-mbtouc.c,
+	lib/unistr/u8-mbtoucr.c, lib/unistr/u8-prev.c,
+	lib/unistr/u8-strlen.c, lib/unistr/u8-to-u32.c,
+	lib/unistr/u8-uctomb-aux.c, lib/unistr/u8-uctomb.c,
+	lib/unitypes.in.h, lib/verify.h, lib/wchar.in.h,
+	m4/gnulib-cache.m4, m4/gnulib-comp.m4, m4/lib-link.m4,
+	m4/longlong.m4, m4/stdbool.m4, m4/stdint.m4, m4/stdlib_h.m4,
+	m4/wchar_h.m4, m4/wint_t.m4, maint.mk: Update gnulib files.
+
+2011-02-28  Simon Josefsson <simon@josefsson.org>
+
+	* NEWS, bidi.c, bidi.h, context.c, context.h, data.h, free.c,
+	idn2.h, idna.c, punycode.c, tables.c, tables.h, test-idna.c,
+	test-punycode.c, version.c: Relicense under GPLv3+.
+
+2011-02-24  Simon Josefsson <simon@josefsson.org>
+
+	* idna.c, test-idna.c: Handle empty strings.
+
+2011-02-24  Simon Josefsson <simon@josefsson.org>
+
+	* Makefile.am, test-idna.c: Add.
+
+2011-02-24  Simon Josefsson <simon@josefsson.org>
+
+	* gen-idn-tld-tv.pl: Add.
+
+2011-02-24  Simon Josefsson <simon@josefsson.org>
+
+	* idn2.map: Add.
+
+2011-02-24  Simon Josefsson <simon@josefsson.org>
+
+	* idn2.h: New.
+
+2011-02-24  Simon Josefsson <simon@josefsson.org>
+
+	* bidi.c: Fix off by one bug.
+
+2011-02-24  Simon Josefsson <simon@josefsson.org>
+
+	* idna.c: Fix.
+
+2011-02-23  Simon Josefsson <simon@josefsson.org>
+
+	* NOTES: Fix.
+
+2011-02-23  Simon Josefsson <simon@josefsson.org>
+
+	* NOTES: Add.
+
+2011-02-23  Simon Josefsson <simon@josefsson.org>
+
+	* idn2.h, idna.c: Update.
+
+2011-02-23  Simon Josefsson <simon@josefsson.org>
+
+	* idn2.h, idna.c: Commit old stuff.
+
+2011-01-30  Simon Josefsson <simon@josefsson.org>
+
+	* idn2.h, idn2.map, idna.c, test-idna.c: Rename APIs.
+
+2011-01-30  Simon Josefsson <simon@josefsson.org>
+
+	* build-aux/config.rpath, lib/Makefile.am,
+	lib/override/lib/unictype/bidi_of.h,
+	lib/override/lib/unictype/combining.h,
+	lib/override/lib/unictype/pr_combining.h,
+	lib/override/lib/uninorm/composition-table.gperf,
+	lib/override/lib/uninorm/decomposition-table1.h,
+	lib/override/lib/uninorm/decomposition-table2.h,
+	lib/override/lib/uninorm/normalize-internal.h, m4/gnulib-cache.m4,
+	m4/gnulib-common.m4, m4/include_next.m4, m4/multiarch.m4,
+	m4/stddef_h.m4, m4/stdint.m4, m4/stdlib_h.m4, m4/unistd_h.m4,
+	m4/wchar_h.m4, maint.mk: Stick at Unicode 5.2 files.
+
+2011-01-30  Simon Josefsson <simon@josefsson.org>
+
+	* test-idna.c: More testing.
+
+2011-01-25  Simon Josefsson <simon@josefsson.org>
+
+	* punycode.c: Fixup punycode.
+
+2011-01-25  Simon Josefsson <simon@josefsson.org>
+
+	* idn2.h, idna.c, punycode.c, test-punycode.c: Revamp punycode
+	implementation.
+
+2011-01-13  Simon Josefsson <simon@josefsson.org>
+
+	* idna.c, test-idna.c: Simplistic ace.
+
+2011-01-11  Simon Josefsson <simon@josefsson.org>
+
+	* idna.c: Fix output.
+
+2011-01-11  Simon Josefsson <simon@josefsson.org>
+
+	* idn2.h, idna.c: Rename.
+
+2011-01-11  Simon Josefsson <simon@josefsson.org>
+
+	* idna.c: Fix.
+
+2011-01-11  Simon Josefsson <simon@josefsson.org>
+
+	* .gitignore, Makefile.am, NEWS, README, bidi.c, bidi.h,
+	configure.ac, context.c, context.h, free.c, idn2.h, idn2.map,
+	idna.c, libidna.h, libidna.map, punycode.c, tables.c, tables.h,
+	test-idna.c, test-punycode.c, version.c: Rename from libidna to
+	libidn2.
+
+2011-01-09  Simon Josefsson <simon@josefsson.org>
+
+	* idna.c, libidna.h, libidna.map, test-idna.c: Goodnight.
+
+2011-01-09  Simon Josefsson <simon@josefsson.org>
+
+	* build-aux/config.rpath, lib/Makefile.am, lib/alloca.in.h,
+	lib/c-ctype.c, lib/c-ctype.h, lib/c-strcase.h, lib/c-strcasecmp.c,
+	lib/c-strcaseeq.h, lib/c-strncasecmp.c, lib/config.charset,
+	lib/iconv.in.h, lib/iconv_open-aix.gperf,
+	lib/iconv_open-hpux.gperf, lib/iconv_open-irix.gperf,
+	lib/iconv_open-osf.gperf, lib/iconv_open-solaris.gperf,
+	lib/iconv_open.c, lib/iconveh.h, lib/localcharset.c,
+	lib/localcharset.h, lib/malloca.c, lib/malloca.h,
+	lib/malloca.valgrind, lib/ref-add.sin, lib/ref-del.sin,
+	lib/striconveh.c, lib/striconveh.h, lib/striconveha.c,
+	lib/striconveha.h, lib/uniconv.in.h,
+	lib/uniconv/u-strconv-from-enc.h, lib/uniconv/u8-conv-from-enc.c,
+	lib/uniconv/u8-strconv-from-enc.c,
+	lib/uniconv/u8-strconv-from-locale.c, lib/unistr/u8-check.c,
+	lib/unistr/u8-mblen.c, lib/unistr/u8-mbtouc-aux.c,
+	lib/unistr/u8-mbtouc-unsafe-aux.c, lib/unistr/u8-mbtouc-unsafe.c,
+	lib/unistr/u8-mbtouc.c, lib/unistr/u8-prev.c,
+	lib/unistr/u8-strlen.c, lib/verify.h, m4/alloca.m4, m4/codeset.m4,
+	m4/configmake.m4, m4/eealloc.m4, m4/extensions.m4, m4/fcntl-o.m4,
+	m4/glibc21.m4, m4/gnulib-cache.m4, m4/gnulib-comp.m4, m4/iconv.m4,
+	m4/iconv_h.m4, m4/iconv_open.m4, m4/lib-ld.m4, m4/lib-link.m4,
+	m4/lib-prefix.m4, m4/localcharset.m4, m4/malloca.m4: Add
+	u8-from-locale.
+
+2011-01-09  Simon Josefsson <simon@josefsson.org>
+
+	* idna.c, libidna.h, test-idna.c: Add hyphen-startend.
+
+2011-01-09  Simon Josefsson <simon@josefsson.org>
+
+	* .gitignore: Update.
+
+2011-01-09  Simon Josefsson <simon@josefsson.org>
+
+	* bidi.c, test-idna.c: Update bidi.
+
+2011-01-09  Simon Josefsson <simon@josefsson.org>
+
+	* data.h: Fix warning.
+
+2011-01-09  Simon Josefsson <simon@josefsson.org>
+
+	* build-aux/useless-if-before-free, lib/unictype.in.h,
+	lib/unictype/bidi_of.h, lib/unictype/combining.h,
+	lib/unictype/pr_combining.h, lib/uninorm/composition-table.gperf,
+	lib/uninorm/composition.c, lib/uninorm/decomposition-table1.h,
+	lib/uninorm/decomposition-table2.h, m4/gnulib-comp.m4: Update
+	libunistring to 5.2.0.
+
+2011-01-09  Simon Josefsson <simon@josefsson.org>
+
+	* bidi.c, libidna.h, test-idna.c: Improve bidi.
+
+2011-01-09  Simon Josefsson <simon@josefsson.org>
+
+	* lib/Makefile.am, lib/unictype/bidi_of.c, lib/unictype/bidi_of.h,
+	m4/gnulib-cache.m4, m4/gnulib-comp.m4, maint.mk: Add bidi functions.
+
+2011-01-09  Simon Josefsson <simon@josefsson.org>
+
+	* .gitignore, Makefile.am, bidi.c, bidi.h, idna.c: Bidi template.
+
+2011-01-09  Simon Josefsson <simon@josefsson.org>
+
+	* idna.c, libidna.h, tables.c, tables.h, test-idna.c: Unassigned.
+
+2011-01-09  Simon Josefsson <simon@josefsson.org>
+
+	* context.c, context.h, idna.c, libidna.h, test-idna.c: Update.
+
+2011-01-09  Simon Josefsson <simon@josefsson.org>
+
+	* context.c, context.h, idna.c: contexto-has-rule.
+
+2011-01-08  Simon Josefsson <simon@josefsson.org>
+
+	* context.c, libidna.h: Add.
+
+2011-01-08  Simon Josefsson <simon@josefsson.org>
+
+	* .gitignore: Update.
+
+2011-01-08  Simon Josefsson <simon@josefsson.org>
+
+	* Makefile.am: Fix.
+
+2011-01-08  Simon Josefsson <simon@josefsson.org>
+
+	* .gitignore, Makefile.am, check.c, check.h, idna.c, tables.c,
+	tables.h: Add.
+
+2011-01-08  Simon Josefsson <simon@josefsson.org>
+
+	* Makefile.am, data.h, gen-tables-from-iana.pl,
+	gen-tables-from-rfc5892.pl, tables.h: Update.
+
+2011-01-08  Simon Josefsson <simon@josefsson.org>
+
+	* check.c, check.h, context.c, context.h, idna.c: Fixes.
+
+2011-01-08  Simon Josefsson <simon@josefsson.org>
+
+	* context.c, context.h, idna.c: Fixes.
+
+2011-01-08  Simon Josefsson <simon@josefsson.org>
+
+	* Makefile.am, context.c, context.h, idna.c, libidna.h: Add context
+	rule template.
+
+2011-01-08  Simon Josefsson <simon@josefsson.org>
+
+	* idna.c, test-idna.c: Fix first bug.
+
+2011-01-08  Simon Josefsson <simon@josefsson.org>
+
+	* idna.c, libidna.h, test-idna.c: Improve.
+
+2011-01-08  Simon Josefsson <simon@josefsson.org>
+
+	* idna.c, libidna.h, test-idna.c: Improve.
+
+2011-01-08  Simon Josefsson <simon@josefsson.org>
+
+	* check.c, check.h, idna.c, libidna.h, test-idna.c: Add contextj.
+
+2011-01-08  Simon Josefsson <simon@josefsson.org>
+
+	* Makefile.am: Dist tables.h.
+
+2011-01-08  Simon Josefsson <simon@josefsson.org>
+
+	* Makefile.am, libidna.h, libidna.map, nfc.c, test-nfc.c: Drop NFC
+	api.
+
+2011-01-06  Simon Josefsson <simon@josefsson.org>
+
+	* check.c, idna.c, libidna.h, test-idna.c: Add.
+
+2011-01-06  Simon Josefsson <simon@josefsson.org>
+
+	* .gitignore, Makefile.am, check.c, check.h, tables.h: Add.
+
+2011-01-06  Simon Josefsson <simon@josefsson.org>
+
+	* gen-tables-from-iana.pl, gen-tables-from-rfc5892.pl: Terminate
+	array.
+
+2011-01-05  Simon Josefsson <simon@josefsson.org>
+
+	* Makefile.am, configure.ac, free.c, idna.c, lib/Makefile.am,
+	lib/array-mergesort.h, lib/malloc.c, lib/stdbool.in.h,
+	lib/stddef.in.h, lib/stdint.in.h, lib/stdlib.in.h,
+	lib/unictype.in.h, lib/unictype/bitmap.h, lib/unictype/combining.c,
+	lib/unictype/pr_combining.c, lib/uninorm.in.h,
+	lib/uninorm/canonical-decomposition.c,
+	lib/uninorm/composition-table.gperf, lib/uninorm/composition.c,
+	lib/uninorm/decompose-internal.c, lib/uninorm/decompose-internal.h,
+	lib/uninorm/decomposition-table.c,
+	lib/uninorm/decomposition-table.h, lib/uninorm/nfc.c,
+	lib/uninorm/nfd.c, lib/uninorm/normalize-internal.h,
+	lib/uninorm/u-normalize-internal.h, lib/uninorm/u32-normalize.c,
+	lib/unistd.in.h, lib/unistr.in.h, lib/unistr/u-cpy-alloc.h,
+	lib/unistr/u-cpy.h, lib/unistr/u32-cpy-alloc.c,
+	lib/unistr/u32-cpy.c, lib/unistr/u32-mbtouc-unsafe.c,
+	lib/unistr/u32-to-u8.c, lib/unistr/u32-uctomb.c,
+	lib/unistr/u8-mbtoucr.c, lib/unistr/u8-to-u32.c,
+	lib/unistr/u8-uctomb-aux.c, lib/unistr/u8-uctomb.c,
+	lib/unitypes.in.h, lib/wchar.in.h, libidna.h, libidna.map,
+	m4/gnulib-cache.m4, nfc.c, punycode.c, tables.h, version.c: LGPLv3+
+
+2011-01-05  Simon Josefsson <simon@josefsson.org>
+
+	* test-idna.c: Add test vectors.
+
+2011-01-05  Simon Josefsson <simon@josefsson.org>
+
+	* idna.c, lib/Makefile.am, lib/unictype/bitmap.h,
+	lib/unictype/pr_combining.c, lib/unictype/pr_combining.h,
+	libidna.h, m4/gnulib-cache.m4, m4/gnulib-comp.m4: Add.
+
+2011-01-05  Simon Josefsson <simon@josefsson.org>
+
+	* .gitignore: Update.
+
+2011-01-05  Simon Josefsson <simon@josefsson.org>
+
+	* Makefile.am, idna.c, lib/Makefile.am,
+	lib/uninorm/u32-normalize.c, lib/uninorm/u8-normalize.c,
+	lib/unistr/u32-cpy-alloc.c, lib/unistr/u32-cpy.c,
+	lib/unistr/u32-mbtouc-unsafe.c, lib/unistr/u32-to-u8.c,
+	lib/unistr/u32-uctomb.c, lib/unistr/u8-check.c,
+	lib/unistr/u8-cpy-alloc.c, lib/unistr/u8-cpy.c,
+	lib/unistr/u8-mbtouc-unsafe-aux.c, lib/unistr/u8-mbtouc-unsafe.c,
+	lib/unistr/u8-mbtoucr.c, lib/unistr/u8-to-u32.c, libidna.h,
+	m4/gnulib-cache.m4, m4/gnulib-comp.m4, nfc.c, test-idna.c: Use
+	uint32 internally.
+
+2011-01-05  Simon Josefsson <simon@josefsson.org>
+
+	* free.c: Fix.
+
+2011-01-05  Simon Josefsson <simon@josefsson.org>
+
+	* check-combining-property.pl: Add.
+
+2011-01-05  Simon Josefsson <simon@josefsson.org>
+
+	* NOTES: Add.
+
+2011-01-05  Simon Josefsson <simon@josefsson.org>
+
+	* NOTES: Add.
+
+2011-01-05  Simon Josefsson <simon@josefsson.org>
+
+	* idna.c, libidna.h, test-idna.c: Add.
+
+2011-01-05  Simon Josefsson <simon@josefsson.org>
+
+	* .gitignore: Add.
+
+2011-01-05  Simon Josefsson <simon@josefsson.org>
+
+	* idna.c, lib/Makefile.am, lib/unistr/u8-check.c, libidna.h,
+	m4/gnulib-cache.m4, m4/gnulib-comp.m4, test-idna.c: Update.
+
+2011-01-04  Simon Josefsson <simon@josefsson.org>
+
+	* idna.c, libidna.h, test-idna.c: Add.
+
+2011-01-04  Simon Josefsson <simon@josefsson.org>
+
+	* idna.c: Fix.
+
+2011-01-04  Simon Josefsson <simon@josefsson.org>
+
+	* .gitignore: Add.
+
+2011-01-04  Simon Josefsson <simon@josefsson.org>
+
+	* Makefile.am, idna.c, lib/Makefile.am, lib/malloc.c,
+	lib/stdlib.in.h, lib/unistd.in.h, lib/unistr/u-cpy-alloc.h,
+	lib/unistr/u8-cpy-alloc.c, libidna.h, libidna.map,
+	m4/gnulib-cache.m4, m4/gnulib-comp.m4, m4/malloc.m4,
+	m4/stdlib_h.m4, m4/unistd_h.m4, test-idna.c: Add.
+
+2011-01-04  Simon Josefsson <simon@josefsson.org>
+
+	* test-nfc.c: Fix.
+
+2011-01-04  Simon Josefsson <simon@josefsson.org>
+
+	* .gitignore, Makefile.am, idna.c, libidna.h: Add.
+
+2011-01-04  Simon Josefsson <simon@josefsson.org>
+
+	* nfc.c: Fix.
+
+2011-01-04  Simon Josefsson <simon@josefsson.org>
+
+	* .gitignore: Add.
+
+2011-01-04  Simon Josefsson <simon@josefsson.org>
+
+	* Makefile.am, free.c, libidna.h, libidna.map, nfc.c, test-nfc.c: 
+	More.
+
+2011-01-04  Simon Josefsson <simon@josefsson.org>
+
+	* build-aux/unused-parameter.h, lib/array-mergesort.h,
+	lib/stdbool.in.h, lib/unictype.in.h,
+	lib/uninorm/decompose-internal.c, lib/uninorm/decompose-internal.h,
+	lib/uninorm/u-normalize-internal.h, lib/uninorm/u8-normalize.c,
+	lib/unistr.in.h, m4/inline.m4, m4/stdbool.m4: Update.
+
+2011-01-04  Simon Josefsson <simon@josefsson.org>
+
+	* nfc.c, test-nfc.c: Update.
+
+2011-01-04  Simon Josefsson <simon@josefsson.org>
+
+	* Makefile.am, lib/Makefile.am, lib/unictype/combining.c,
+	lib/unictype/combining.h, lib/unistr/u-cpy.h, lib/unistr/u8-cpy.c,
+	lib/unistr/u8-mbtouc-unsafe-aux.c, lib/unistr/u8-mbtouc-unsafe.c,
+	lib/unistr/u8-uctomb-aux.c, lib/unistr/u8-uctomb.c, libidna.h,
+	libidna.map, m4/gnulib-cache.m4, m4/gnulib-comp.m4: Update.
+
+2011-01-04  Simon Josefsson <simon@josefsson.org>
+
+	* Makefile.am: Fix.
+
+2011-01-04  Simon Josefsson <simon@josefsson.org>
+
+	* .gitignore, build-aux/arg-nonnull.h, build-aux/c++defs.h,
+	build-aux/warn-on-use.h, lib/Makefile.am, lib/Makefile.am~,
+	lib/dummy.c, lib/stddef.in.h, lib/stdint.in.h, lib/uninorm.in.h,
+	lib/uninorm/canonical-decomposition.c,
+	lib/uninorm/composition-table.gperf, lib/uninorm/composition.c,
+	lib/uninorm/decomposition-table.c,
+	lib/uninorm/decomposition-table.h,
+	lib/uninorm/decomposition-table1.h,
+	lib/uninorm/decomposition-table2.h, lib/uninorm/nfc.c,
+	lib/uninorm/nfd.c, lib/uninorm/normalize-internal.h,
+	lib/unitypes.in.h, lib/wchar.in.h, m4/gnulib-cache.m4,
+	m4/gnulib-cache.m4~, m4/gnulib-comp.m4, m4/include_next.m4,
+	m4/libunistring-base.m4, m4/longlong.m4, m4/multiarch.m4,
+	m4/stddef_h.m4, m4/stdint.m4, m4/warn-on-use.m4, m4/wchar_h.m4,
+	m4/wchar_t.m4, m4/wint_t.m4: Add NFC module.
+
+2011-01-04  Simon Josefsson <simon@josefsson.org>
+
+	* build-aux/git-version-gen: Update.
+
+2011-01-04  Simon Josefsson <simon@josefsson.org>
+
+	* Makefile.am: Typo.
+
+2011-01-04  Simon Josefsson <simon@josefsson.org>
+
+	* .gitignore, Makefile.am, gen-tables-from-iana.pl,
+	gen-tables-from-rfc5892.pl, gen-tables.pl: Add.
+
+2011-01-04  Simon Josefsson <simon@josefsson.org>
+
+	* Makefile.am: Add.
+
+2011-01-04  Simon Josefsson <simon@josefsson.org>
+
+	* tables.h: Add.
+
+2011-01-04  Simon Josefsson <simon@josefsson.org>
+
+	* gen-tables.pl: Add.
+
+2011-01-04  Simon Josefsson <simon@josefsson.org>
+
+	* test-punycode.c: Fix range.
+
+2011-01-04  Simon Josefsson <simon@josefsson.org>
+
+	* .gitignore: Update.
+
+2011-01-04  Simon Josefsson <simon@josefsson.org>
+
+	* Makefile.am, libidna.map, test-punycode.c: Add.
+
+2011-01-04  Simon Josefsson <simon@josefsson.org>
+
+	* version.c: Add.
+
+2011-01-04  Simon Josefsson <simon@josefsson.org>
+
+	* .gitignore: Add.
+
+2011-01-04  Simon Josefsson <simon@josefsson.org>
+
+	* Makefile.am, libidna.h, libidna.map, punycode.c, test-punycode.c: 
+	Add.
+
+2011-01-04  Simon Josefsson <simon@josefsson.org>
+
+	* NEWS: Add.
+
+2011-01-04  Simon Josefsson <simon@josefsson.org>
+
+	* libidna.h: Update.
+
+2011-01-04  Simon Josefsson <simon@josefsson.org>
+
+	* libidna.h: Add.
+
+2011-01-04  Simon Josefsson <simon@josefsson.org>
+
+	* README: Add.
+
+2011-01-04  Simon Josefsson <simon@josefsson.org>
+
+	* AUTHORS: Add.
+
+2011-01-04  Simon Josefsson <simon@josefsson.org>
+
+	* lib/Makefile.am, lib/Makefile.am~, m4/gnulib-cache.m4,
+	m4/gnulib-cache.m4~, m4/gnulib-comp.m4, m4/ld-version-script.m4: 
+	Update.
+
+2011-01-04  Simon Josefsson <simon@josefsson.org>
+
+	* cfg.mk: Add.
+
+2011-01-04  Simon Josefsson <simon@josefsson.org>
+
+	* GNUmakefile, build-aux/useless-if-before-free,
+	build-aux/vc-list-files, lib/Makefile.am, lib/Makefile.am~,
+	m4/gnulib-cache.m4, m4/gnulib-cache.m4~, m4/gnulib-comp.m4,
+	maint.mk: Add.
+
+2011-01-04  Simon Josefsson <simon@josefsson.org>
+
+	* Add.
+
