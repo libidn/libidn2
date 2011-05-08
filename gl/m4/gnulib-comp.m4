@@ -40,6 +40,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module gendocs:
   # Code from module git-version-gen:
   # Code from module gnumakefile:
+  # Code from module gnupload:
   # Code from module gperf:
   # Code from module havelib:
   # Code from module iconv:
@@ -339,6 +340,7 @@ AC_DEFUN([gl_FILE_LIST], [
   build-aux/config.rpath
   build-aux/gendocs.sh
   build-aux/git-version-gen
+  build-aux/gnupload
   build-aux/unused-parameter.h
   build-aux/useless-if-before-free
   build-aux/vc-list-files
