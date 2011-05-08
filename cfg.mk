@@ -151,7 +151,7 @@ gtkdoc-upload:
 		cvs commit -m "Update." reference/
 
 source:
-	git commit -m Generated. ChangeLog
+	-git commit -m Generated. ChangeLog
 	git tag -u b565716f! -m $(VERSION) $(PACKAGE)-$(VERSION)
 
 release-check: syntax-check tarball gendoc-copy gtkdoc-copy coverage-my coverage-copy clang clang-copy
