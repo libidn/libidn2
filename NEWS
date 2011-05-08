@@ -2,6 +2,10 @@ Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
 Copyright (C) 2011 Simon Josefsson
 See the end for copying conditions.
 
+* Version 0.5 (unreleased) [?]
+
+** API and ABI is backwards compatible with the previous version.
+
 * Version 0.4 (released 2011-05-06) [alpha]
 
 ** libidn2: Fix domain name maximum size issue.
@@ -16,6 +20,8 @@ explanation from Markus Scherer <mscherer@google.com>.
 ** tests: Added several new Arabic test vectors.
 From "Abdulrahman I. ALGhadir" <aghadir@citc.gov.sa>.
 
+** API and ABI is backwards compatible with the previous version.
+
 * Version 0.3 (released 2011-04-20) [alpha]
 
 ** doc: Added Texinfo manual.
@@ -24,11 +30,15 @@ From "Abdulrahman I. ALGhadir" <aghadir@citc.gov.sa>.
 
 ** examples: Added examples/lookup and examples/register as demo.
 
+** API and ABI is backwards compatible with the previous version.
+
 * Version 0.2 (released 2011-03-30) [alpha]
 
 ** Added command line tool "idn2".
 
 ** Added more test vectors from Unicode.
+
+** API and ABI is backwards compatible with the previous version.
 
 * Version 0.1 (released 2011-03-29) [alpha]
 
@@ -37,6 +47,8 @@ The implementation is still subject to changes, and thus no API/ABI
 stability guarantees are made.  We are now inviting comments both on
 the API (as before) but also on the actual behaviour.  Any unexpected
 outputs are from here on considered as real bugs.
+
+** API and ABI is backwards compatible with the previous version.
 
 * Version 0.0 (released 2011-03-09) [alpha]
 
