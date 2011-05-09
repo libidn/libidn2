@@ -890,7 +890,8 @@ EXTRA_DIST += $(top_srcdir)/build-aux/vc-list-files
 
 ## begin gnulib module verify
 
-libgnu_la_SOURCES += verify.h
+
+EXTRA_DIST += verify.h
 
 ## end   gnulib module verify
 

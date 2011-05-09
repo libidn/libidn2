@@ -987,12 +987,13 @@ apply the above patch\n'
 
 # Verify that all source files using _() are listed in po/POTFILES.in.
 po_file ?= $(srcdir)/po/POTFILES.in
+generated_files ?= $(srcdir)/lib/*.[ch]
 sc_po_check:
 	@if test -f $(po_file); then					\
 	  grep -E -v '^(#|$$)' $(po_file)				\
 	    | grep -v '^src/false\.c$$' | sort > $@-1;			\
 	  files=;							\
-	  for file in $$($(VC_LIST_EXCEPT)) $(srcdir)/lib/*.[ch]; do	\
+	  for file in $$($(VC_LIST_EXCEPT)) $(generated_files); do	\
 	    test -r $$file || continue;					\
 	    case $$file in						\
 	      *.m4|*.mk) continue ;;					\
@@ -1123,11 +1124,20 @@ gpg_key_ID ?= \
 	  | sed -n '/.*key ID \([0-9A-F]*\)/s//\1/p'; rm -f .ann-sig)
 
 translation_project_ ?= coordinator@translationproject.org
-announcement_Cc_ ?= $(translation_project_), $(PACKAGE_BUGREPORT)
-announcement_mail_headers_ ?=						\
-To: info-gnu@gnu.org							\
-Cc: $(announcement_Cc_)							\
-Mail-Followup-To: $(PACKAGE_BUGREPORT)
+
+# Make info-gnu the default only for a stable release.
+ifeq ($(RELEASE_TYPE),stable)
+  announcement_Cc_ ?= $(translation_project_), $(PACKAGE_BUGREPORT)
+  announcement_mail_headers_ ?=						\
+    To: info-gnu@gnu.org						\
+    Cc: $(announcement_Cc_)						\
+    Mail-Followup-To: $(PACKAGE_BUGREPORT)
+else
+  announcement_Cc_ ?= $(translation_project_)
+  announcement_mail_headers_ ?=						\
+    To: $(PACKAGE_BUGREPORT)						\
+    Cc: $(announcement_Cc_)
+endif
 
 announcement: NEWS ChangeLog $(rel-files)
 	@$(build_aux)/announce-gen					\
@@ -1228,7 +1238,7 @@ gl_noteworthy_news_ = * Noteworthy changes in release ?.? (????-??-??) [?]
 release-prep:
 	case $$RELEASE_TYPE in alpha|beta|stable) ;; \
 	  *) echo "invalid RELEASE_TYPE: $$RELEASE_TYPE" 1>&2; exit 1;; esac
-	$(MAKE) -s announcement > ~/announce-$(my_distdir)
+	$(MAKE) --no-print-directory -s announcement > ~/announce-$(my_distdir)
 	if test -d $(release_archive_dir); then			\
 	  ln $(rel-files) $(release_archive_dir);		\
 	  chmod a-w $(rel-files);				\
