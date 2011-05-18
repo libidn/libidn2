@@ -646,12 +646,6 @@ sc_require_test_exit_idiom:
 	      exit 1; } || :;						\
 	fi
 
-sc_the_the:
-	@prohibit='\<the ''the\>'					\
-	ignore_case=1							\
-	halt='found use of "the ''the";'				\
-	  $(_sc_search_regexp)
-
 sc_trailing_blank:
 	@prohibit='[	 ]$$'						\
 	halt='found trailing blank(s)'					\
@@ -840,15 +834,20 @@ sc_prohibit_S_IS_definition:
 	halt='do not define S_IS* macros; include <sys/stat.h>'		\
 	  $(_sc_search_regexp)
 
-prohibit_doubled_word_RE_ ?= \
-  /\b(then?|[iao]n|i[fst]|but|f?or|at|and|[dt]o)\s+\1\b/gims
-prohibit_doubled_word_ =						\
-    -e 'while ($(prohibit_doubled_word_RE_))'				\
+# Perl block to convert a match to FILE_NAME:LINENO:TEST,
+# that is shared by two definitions below.
+perl_filename_lineno_text_ =						\
     -e '  {'								\
     -e '    $$n = ($$` =~ tr/\n/\n/ + 1);'				\
     -e '    ($$v = $$&) =~ s/\n/\\n/g;'					\
     -e '    print "$$ARGV:$$n:$$v\n";'					\
     -e '  }'
+
+prohibit_doubled_word_RE_ ?= \
+  /\b(then?|[iao]n|i[fst]|but|f?or|at|and|[dt]o)\s+\1\b/gims
+prohibit_doubled_word_ =						\
+    -e 'while ($(prohibit_doubled_word_RE_))'				\
+    $(perl_filename_lineno_text_)
 
 # Define this to a regular expression that matches
 # any filename:dd:match lines you want to ignore.
@@ -860,10 +859,24 @@ sc_prohibit_doubled_word:
 	  | grep -vE '$(ignore_doubled_word_match_RE_)'			\
 	  | grep . && { echo '$(ME): doubled words' 1>&2; exit 1; } || :
 
-sc_prohibit_can_not:
-	@prohibit='\<can[ ]not\>'					\
-	halt='use "cannot", not "can'' not"'				\
-	  $(_sc_search_regexp)
+# A regular expression matching undesirable combinations of words like
+# "can not"; this matches them even when the two words appear on different
+# lines, but not when there is an intervening delimiter like "#" or "*".
+prohibit_undesirable_word_seq_RE_ ?=					\
+  /\bcan\s+not\b/gims
+prohibit_undesirable_word_seq_ =					\
+    -e 'while ($(prohibit_undesirable_word_seq_RE_))'			\
+    $(perl_filename_lineno_text_)
+# Define this to a regular expression that matches
+# any filename:dd:match lines you want to ignore.
+# The default is to ignore no matches.
+ignore_undesirable_word_sequence_RE_ ?= ^$$
+
+sc_prohibit_undesirable_word_seq:
+	@perl -n -0777 $(prohibit_undesirable_word_seq_)		\
+	     $$($(VC_LIST_EXCEPT))					\
+	  | grep -vE '$(ignore_undesirable_word_sequence_RE_)' | grep .	\
+	  && { echo '$(ME): undesirable word sequence' >&2; exit 1; } || :
 
 _ptm1 = use "test C1 && test C2", not "test C1 -''a C2"
 _ptm2 = use "test C1 || test C2", not "test C1 -''o C2"
@@ -1325,3 +1338,77 @@ update-copyright:
 	grep -l -w Copyright                                             \
 	  $$(export VC_LIST_EXCEPT_DEFAULT=COPYING && $(VC_LIST_EXCEPT)) \
 	  | $(update-copyright-env) xargs $(build_aux)/$@
+
+# NOTE: This test is silently skipped if $(_gl_TS_dir)/Makefile.am
+# does not mention noinst_HEADERS.
+# NOTE: to override these _gl_TS_* default values, you must
+# define the variable(s) using "export" in cfg.mk.
+_gl_TS_dir ?= src
+ALL_RECURSIVE_TARGETS += sc_tight_scope
+sc_tight_scope: tight-scope.mk
+	@grep noinst_HEADERS $(_gl_TS_dir)/Makefile.am > /dev/null 2>&1	\
+	  && $(MAKE) -s -C $(_gl_TS_dir) -f Makefile			\
+	      -f '$(abs_srcdir)/tight-scope.mk' _gl_tight_scope		\
+	  || :
+	@rm -f $<
+
+tight-scope.mk: $(ME)
+	@rm -f $@ $@-t
+	@perl -ne '/^# TS-start/.../^# TS-end/ and print' $(ME) > $@-t
+	@chmod a=r $@-t && mv $@-t $@
+
+ifeq (a,b)
+# TS-start
+# Most functions should have static scope.
+# Any that don't must be marked with `extern', but `main'
+# and `usage' are exceptions: they're always extern, but
+# do not need to be marked.  Symbols matching `__.*' are
+# reserved by the compiler, so are automatically excluded below.
+_gl_TS_unmarked_extern_functions ?= main usage
+_gl_TS_function_match ?= \
+  /^(?:extern|XTERN) +(?:void|(?:struct |const |enum )?\S+) +\**(\S+) +\(/
+
+# The second nm|grep checks for file-scope variables with `extern' scope.
+# Without gnulib's progname module, you might put program_name here.
+# Symbols matching `__.*' are reserved by the compiler,
+# so are automatically excluded below.
+_gl_TS_unmarked_extern_vars ?=
+
+# NOTE: the _match variables are perl expressions -- not mere regular
+# expressions -- so that you can extend them to match other patterns
+# and easily extract matched variable names.
+# For example, if your project declares some global variables via
+# a macro like this: GLOBAL(type, var_name, initializer), then you
+# can override this definition to automatically extract those names:
+# export _gl_TS_var_match = \
+#   /^(?:extern|XTERN) .*?\**(\w+)(\[.*?\])?;/ || /\bGLOBAL\(.*?,\s*(.*?),/
+_gl_TS_var_match ?= /^(?:extern|XTERN) .*?\**(\w+)(\[.*?\])?;/
+.PHONY: _gl_tight_scope
+_gl_tight_scope: $(bin_PROGRAMS)
+	t=exceptions-$$$$;						\
+	trap 's=$$?; rm -f $$t; exit $$s' 0;				\
+	for sig in 1 2 3 13 15; do					\
+	  eval "trap 'v=`expr $$sig + 128`; (exit $$v); exit $$v' $$sig"; \
+	done;								\
+	src=`for f in $(SOURCES); do					\
+	       test -f $$f && d= || d=$(srcdir)/; echo $$d$$f; done`;	\
+	hdr=`for f in $(noinst_HEADERS); do				\
+	       test -f $$f && d= || d=$(srcdir)/; echo $$d$$f; done`;	\
+	( printf '^%s$$\n' '__.*' $(_gl_TS_unmarked_extern_functions);	\
+	  grep -h -A1 '^extern .*[^;]$$' $$src				\
+	    | grep -vE '^(extern |--)' | sed 's/ .*//';			\
+	  perl -lne '$(_gl_TS_function_match)'				\
+                 -e 'and print $$1' $$hdr;				\
+	) | sort -u | sed 's/^/^/;s/$$/$$/' > $$t;			\
+	nm -e *.$(OBJEXT) | sed -n 's/.* T //p' | grep -Ev -f $$t	\
+	  && { echo the above functions should have static scope >&2;	\
+	       exit 1; } || : ;						\
+	( printf '^%s$$\n' '__.*' $(_gl_TS_unmarked_extern_vars);	\
+	  perl -lne '$(_gl_TS_var_match) and print "^$$1\$$"'		\
+	    $$hdr *.h ) | sort -u > $$t;				\
+	nm -e *.$(OBJEXT) | sed -n 's/.* [BCDGRS] //p'			\
+            | sort -u | grep -Ev -f $$t					\
+	  && { echo the above variables should have static scope >&2;	\
+	       exit 1; } || :
+# TS-end
+endif
