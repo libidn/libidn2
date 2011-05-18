@@ -548,7 +548,7 @@ static const struct idna idna[] = {
    /* Don't resolve as xn--doublediac2udn-cmb526fod.example */
   },
   {"\x6e\x65\x77\x6e\x6f\x72\x6d\xf0\xaf\xa1\xb4\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--newnormdn-m5a7856x.example", IDN2_DISALLOWED
+   "xn--newnormdn-m5a7856x.example", IDN2_NOT_NFC
    /* 4-2-2-1 newnorm<2F874><00ED>dn.example -> newnorm<5F33><00ED>dn.example should not become <5F53> */
    /* Don't resolve as xn--newnormdn-m5a9396x.example */
    /* Don't resolve as xn--newnormdn-m5a9968x.example */

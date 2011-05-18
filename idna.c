@@ -96,7 +96,7 @@ _idn2_label_test (int what, const uint32_t * label, size_t llen)
 	    return IDN2_MALLOC;
 	  return IDN2_NFC;
 	}
-      ok = llen == plen && memcmp (label, p, plen) == 0;
+      ok = llen == plen && memcmp (label, p, plen * sizeof (*label)) == 0;
       free (p);
       if (!ok)
 	return IDN2_NOT_NFC;

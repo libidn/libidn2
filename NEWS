@@ -4,6 +4,10 @@ See the end for copying conditions.
 
 * Version 0.5 (unreleased) [?]
 
+** Fix NFC check to compare entire strings.
+Some non-NFC strings were permitted when they should have been
+rejected.  Reported by Robert Scheck <robert@fedoraproject.org>.
+
 ** API and ABI is backwards compatible with the previous version.
 
 * Version 0.4 (released 2011-05-06) [alpha]
