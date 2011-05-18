@@ -8,6 +8,13 @@ See the end for copying conditions.
 Some non-NFC strings were permitted when they should have been
 rejected.  Reported by Robert Scheck <robert@fedoraproject.org>.
 
+** Self tests are not run under valgrind by default anymore.
+Use --enable-valgrind-tests if you want to run self tests under
+valgrind.  The reason was that there were too many false positives on
+some platforms with valgrind issues in system libraries.  Self tests
+are still run under valgrind by default when building from version
+controlled sources.
+
 ** API and ABI is backwards compatible with the previous version.
 
 * Version 0.4 (released 2011-05-06) [alpha]
