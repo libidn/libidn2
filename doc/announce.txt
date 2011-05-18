@@ -1,0 +1,37 @@
+To: help-libidn@gnu.org
+Subject: libidn2 0.5
+<#secure method=pgpmime mode=sign>
+Libidn2 is a free software implementation of IDNA2008.
+
+* Version 0.5 (released 2011-05-18) [alpha]
+
+** Fix NFC check to compare entire strings.
+Some non-NFC strings were permitted when they should have been
+rejected.  Reported by Robert Scheck <robert@fedoraproject.org>.
+
+** Self tests are not run under valgrind by default anymore.
+Use --enable-valgrind-tests if you want to run self tests under
+valgrind.  The reason was that there were too many false positives on
+some platforms with valgrind issues in system libraries.  Self tests
+are still run under valgrind by default when building from version
+controlled sources.
+
+** API and ABI is backwards compatible with the previous version.
+
+Download release:
+  ftp://alpha.gnu.org/gnu/libidn/libidn2-0.5.tar.gz      (1.4MB)
+  ftp://alpha.gnu.org/gnu/libidn/libidn2-0.5.tar.gz.sig  (OpenPGP signature)
+
+Webpage:
+  http://www.gnu.org/software/libidn/#libidn2
+
+Manuals:
+  http://www.gnu.org/software/libidn/libidn2/manual/libidn2.html
+  http://www.gnu.org/software/libidn/libidn2/manual/libidn2.pdf
+  http://www.gnu.org/software/libidn/libidn2/reference/libidn2-idn2.html
+
+Example code for domain name lookup and label register:
+  http://www.gnu.org/software/libidn/libidn2/manual/libidn2.html#Lookup
+  http://www.gnu.org/software/libidn/libidn2/manual/libidn2.html#Register
+
+/Simon
