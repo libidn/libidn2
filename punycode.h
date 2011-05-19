@@ -1,4 +1,4 @@
-/* bidi.h - IDNA right to left checking functions
+/* punycode.h - prototypes for internal punycode functions
    Copyright (C) 2011 Simon Josefsson
 
    This program is free software: you can redistribute it and/or modify
