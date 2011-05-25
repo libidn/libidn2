@@ -21,9 +21,11 @@
 use strict;
 
 my ($last);
+my ($lineno) = 0;
 my ($ctr) = 0;
 
 while (<>) {
+    $lineno++;
     next unless /^[BN]/;
 
     m,^.*;	(.*);	(.*);	(.*);	(NV8)?,;
@@ -55,7 +57,7 @@ while (<>) {
 
     next if ($ustr eq $last);
 
-    print "/* $ctr source $source uni $ustr ace $astr nv8 $nv8 line $line */\n";
+    print "/* lineno $lineno ctr $ctr source $source uni $ustr ace $astr nv8 $nv8 line $line */\n";
 
     if ($astr =~ /\\u/) {
 	print "/* IdnaTest.txt bug? */\n";
