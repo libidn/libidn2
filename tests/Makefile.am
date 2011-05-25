@@ -14,7 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 AM_CPPFLAGS = -I$(top_srcdir) -I$(top_builddir)
-AM_LDFLAGS = -static
+AM_LDFLAGS = -no-install
 
 LDADD = ../libidn2.la
 
