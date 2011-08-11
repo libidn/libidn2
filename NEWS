@@ -2,6 +2,15 @@ Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
 Copyright (C) 2011 Simon Josefsson
 See the end for copying conditions.
 
+* Version 0.7 (unreleased) [alpha]
+
+** libidn2: Fix missing strchrnul and strverscmp uses.
+Reported by Ray Satiro <raysatiro@yahoo.com>.
+
+** Update gnulib files.
+
+** API and ABI is backwards compatible with the previous version.
+
 * Version 0.6 (released 2011-05-25) [alpha]
 
 ** tests: Use -no-install instead of -static to fix --disable-static.
