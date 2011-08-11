@@ -66,6 +66,7 @@ buildit: doc/Makefile.gdoc
 
 glimport:
 	gnulib-tool --add-import
+	cd src && gnulib-tool --add-import
 
 # Release
 
