@@ -25,12 +25,10 @@ AC_DEFUN([gl_EARLY],
   m4_pattern_allow([^gl_ES$])dnl a valid locale name
   m4_pattern_allow([^gl_LIBOBJS$])dnl a variable
   m4_pattern_allow([^gl_LTLIBOBJS$])dnl a variable
-  AC_REQUIRE([AC_PROG_RANLIB])
+  AC_REQUIRE([gl_PROG_AR_RANLIB])
   AC_REQUIRE([AM_PROG_CC_C_O])
   # Code from module alloca-opt:
-  # Code from module arg-nonnull:
   # Code from module array-mergesort:
-  # Code from module c++defs:
   # Code from module c-ctype:
   # Code from module c-strcase:
   # Code from module c-strcaseeq:
@@ -55,10 +53,19 @@ AC_DEFUN([gl_EARLY],
   # Code from module malloca:
   # Code from module manywarnings:
   # Code from module multiarch:
+  # Code from module rawmemchr:
+  # Code from module snippet/arg-nonnull:
+  # Code from module snippet/c++defs:
+  # Code from module snippet/unused-parameter:
+  # Code from module snippet/warn-on-use:
   # Code from module stdbool:
+  # Code from module stddef:
   # Code from module stdint:
+  # Code from module strchrnul:
   # Code from module striconveh:
   # Code from module striconveha:
+  # Code from module string:
+  # Code from module strverscmp:
   # Code from module uniconv/base:
   # Code from module uniconv/u8-conv-from-enc:
   # Code from module uniconv/u8-strconv-from-enc:
@@ -96,12 +103,10 @@ AC_DEFUN([gl_EARLY],
   # Code from module unistr/u8-to-u32:
   # Code from module unistr/u8-uctomb:
   # Code from module unitypes:
-  # Code from module unused-parameter:
   # Code from module useless-if-before-free:
   # Code from module valgrind-tests:
   # Code from module vc-list-files:
   # Code from module verify:
-  # Code from module warn-on-use:
   # Code from module warnings:
 ])
 
@@ -136,6 +141,13 @@ m4_ifdef([gl_ICONV_MODULE_INDICATOR],
   [gl_ICONV_MODULE_INDICATOR([iconv])])
 gl_ICONV_H
 gl_FUNC_ICONV_OPEN
+if test $REPLACE_ICONV_OPEN = 1; then
+  AC_LIBOBJ([iconv_open])
+fi
+if test $REPLACE_ICONV = 1; then
+  AC_LIBOBJ([iconv])
+  AC_LIBOBJ([iconv_close])
+fi
 gl_INLINE
 gl_LD_VERSION_SCRIPT
 gl_VISIBILITY
@@ -146,17 +158,37 @@ AC_CONFIG_COMMANDS_PRE([m4_ifdef([AH_HEADER],
   [AC_SUBST([CONFIG_INCLUDE], m4_defn([AH_HEADER]))])])
 gl_MALLOCA
 gl_MULTIARCH
+gl_FUNC_RAWMEMCHR
+if test $HAVE_RAWMEMCHR = 0; then
+  AC_LIBOBJ([rawmemchr])
+  gl_PREREQ_RAWMEMCHR
+fi
+gl_STRING_MODULE_INDICATOR([rawmemchr])
 AM_STDBOOL_H
+gl_STDDEF_H
 gl_STDINT_H
+gl_FUNC_STRCHRNUL
+if test $HAVE_STRCHRNUL = 0 || test $REPLACE_STRCHRNUL = 1; then
+  AC_LIBOBJ([strchrnul])
+  gl_PREREQ_STRCHRNUL
+fi
+gl_STRING_MODULE_INDICATOR([strchrnul])
 if test $gl_cond_libtool = false; then
   gl_ltlibdeps="$gl_ltlibdeps $LTLIBICONV"
   gl_libdeps="$gl_libdeps $LIBICONV"
 fi
+gl_HEADER_STRING_H
+gl_FUNC_STRVERSCMP
+if test $HAVE_STRVERSCMP = 0; then
+  AC_LIBOBJ([strverscmp])
+  gl_PREREQ_STRVERSCMP
+fi
+gl_STRING_MODULE_INDICATOR([strverscmp])
 gl_LIBUNISTRING_LIBHEADER([0.9], [uniconv.h])
 gl_LIBUNISTRING_MODULE([0.9], [uniconv/u8-conv-from-enc])
 gl_LIBUNISTRING_MODULE([0.9], [uniconv/u8-strconv-from-enc])
 gl_LIBUNISTRING_MODULE([0.9], [uniconv/u8-strconv-from-locale])
-gl_LIBUNISTRING_LIBHEADER([0.9], [unictype.h])
+gl_LIBUNISTRING_LIBHEADER([0.9.4], [unictype.h])
 gl_LIBUNISTRING_MODULE([0.9.4], [unictype/bidiclass-of])
 gl_LIBUNISTRING_MODULE([0.9.4], [unictype/category-M])
 gl_LIBUNISTRING_MODULE([0.9], [unictype/category-none])
@@ -335,16 +367,16 @@ AC_DEFUN([gltests_LIBSOURCES], [
 # This macro records the list of files which have been installed by
 # gnulib-tool and may be removed by future gnulib-tool invocations.
 AC_DEFUN([gl_FILE_LIST], [
-  build-aux/arg-nonnull.h
-  build-aux/c++defs.h
   build-aux/config.rpath
   build-aux/gendocs.sh
   build-aux/git-version-gen
   build-aux/gnupload
-  build-aux/unused-parameter.h
+  build-aux/snippet/arg-nonnull.h
+  build-aux/snippet/c++defs.h
+  build-aux/snippet/unused-parameter.h
+  build-aux/snippet/warn-on-use.h
   build-aux/useless-if-before-free
   build-aux/vc-list-files
-  build-aux/warn-on-use.h
   doc/gendocs_template
   lib/alloca.in.h
   lib/array-mergesort.h
@@ -355,7 +387,9 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/c-strcaseeq.h
   lib/c-strncasecmp.c
   lib/config.charset
+  lib/iconv.c
   lib/iconv.in.h
+  lib/iconv_close.c
   lib/iconv_open-aix.gperf
   lib/iconv_open-hpux.gperf
   lib/iconv_open-irix.gperf
@@ -368,14 +402,21 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/malloca.c
   lib/malloca.h
   lib/malloca.valgrind
+  lib/rawmemchr.c
+  lib/rawmemchr.valgrind
   lib/ref-add.sin
   lib/ref-del.sin
   lib/stdbool.in.h
+  lib/stddef.in.h
   lib/stdint.in.h
+  lib/strchrnul.c
+  lib/strchrnul.valgrind
   lib/striconveh.c
   lib/striconveh.h
   lib/striconveha.c
   lib/striconveha.h
+  lib/string.in.h
+  lib/strverscmp.c
   lib/uniconv.in.h
   lib/uniconv/u-strconv-from-enc.h
   lib/uniconv/u8-conv-from-enc.c
@@ -458,12 +499,18 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/manywarnings.m4
   m4/multiarch.m4
   m4/onceonly.m4
+  m4/rawmemchr.m4
   m4/stdbool.m4
+  m4/stddef_h.m4
   m4/stdint.m4
+  m4/strchrnul.m4
+  m4/string_h.m4
+  m4/strverscmp.m4
   m4/valgrind-tests.m4
   m4/visibility.m4
   m4/warn-on-use.m4
   m4/warnings.m4
+  m4/wchar_t.m4
   top/GNUmakefile
   top/maint.mk
 ])
