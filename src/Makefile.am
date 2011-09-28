@@ -21,6 +21,7 @@ AM_CPPFLAGS = -I.
 AM_CPPFLAGS += -I$(srcdir)/.. -I$(builddir)/..
 AM_CPPFLAGS += -I$(srcdir)/../gl -I$(builddir)/../gl
 AM_CPPFLAGS += -I$(srcdir)/gl -I$(builddir)/gl
+AM_CFLAGS = $(WARN_CFLAGS)
 
 bin_PROGRAMS = idn2
 idn2_SOURCES = idn2.c blurbs.h

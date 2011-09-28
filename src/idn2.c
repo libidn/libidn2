@@ -34,7 +34,6 @@
 #include "error.h"
 #include "gettext.h"
 #define _(String) dgettext (PACKAGE, String)
-#define N_(String) gettext_noop (String)
 #include "progname.h"
 #include "version-etc.h"
 #include "localcharset.h"
@@ -97,7 +96,7 @@ Mandatory arguments to long options are mandatory for short options too.\n\
   exit (status);
 }
 
-void
+static void
 hexdump (const char *prefix, const char *str)
 {
   uint8_t *u8;
@@ -107,14 +106,14 @@ hexdump (const char *prefix, const char *str)
 
   u8 = u8_strconv_from_locale (str);
   if (u8)
-    u32 = u8_to_u32 (u8, strlen (u8), NULL, &u32len);
+    u32 = u8_to_u32 (u8, strlen ((char *) u8), NULL, &u32len);
 
   for (i = 0; i < strlen (str); i++)
     fprintf (stderr, "%s[%lu] = 0x%02x\n",
 	     prefix, (unsigned long) i, str[i] & 0xFF);
 
-  if (u8 && strcmp (str, u8) != 0)
-    for (i = 0; i < strlen (u8); i++)
+  if (u8 && strcmp (str, (char *) u8) != 0)
+    for (i = 0; i < strlen ((char *) u8); i++)
       fprintf (stderr, "UTF-8 %s[%lu] = 0x%02x\n",
 	       prefix, (unsigned long) i, u8[i] & 0xFF);
 
@@ -158,8 +157,8 @@ main (int argc, char *argv[])
 
   if (!args_info.quiet_given
       && args_info.inputs_num == 0 && isatty (fileno (stdin)))
-    fprintf (stderr, _("Type each input string on a line by itself, "
-		       "terminated by a newline character.\n"));
+    fprintf (stderr, "%s", _("Type each input string on a line by itself, "
+			     "terminated by a newline character.\n"));
 
   do
     {
@@ -176,7 +175,7 @@ main (int argc, char *argv[])
 	  if (feof (stdin))
 	    break;
 
-	  error (EXIT_FAILURE, errno, _("input error"));
+	  error (EXIT_FAILURE, errno, "%s", _("input error"));
 	}
 
       if (readbuf[strlen (readbuf) - 1] == '\n')

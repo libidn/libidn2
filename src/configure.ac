@@ -26,6 +26,40 @@ gl_EARLY
 AC_PROG_LIBTOOL
 gl_INIT
 
+AC_ARG_ENABLE([gcc-warnings],
+  [AS_HELP_STRING([--enable-gcc-warnings],
+		  [turn on lots of GCC warnings (for developers)])],
+  [case $enableval in
+     yes|no) ;;
+     *)      AC_MSG_ERROR([bad value $enableval for gcc-warnings option]) ;;
+   esac
+   gl_gcc_warnings=$enableval],
+  [gl_gcc_warnings=no]
+)
+
+if test "$gl_gcc_warnings" = yes; then
+  gl_MANYWARN_ALL_GCC([warnings])
+  nw=
+  nw="$nw -Wsystem-headers"       # Don't let system headers trigger warnings
+  nw="$nw -Wundef"                # All compiler preprocessors support #if UNDEF
+  nw="$nw -Wtraditional"          # All compilers nowadays support ANSI C
+  nw="$nw -Wconversion"           # These warnings usually don't point to mistakes.
+  nw="$nw -Wsign-conversion"      # Likewise.
+  nw="$nw -Wpadded"               # Padding internal structs doesn't help.
+  nw="$nw -Wc++-compat"           # Compile using a C compiler.
+  nw="$nw -Wtraditional-conversion" # Too many complaints for now.
+  nw="$nw -Wunreachable-code"     # gcc bug 40412
+  nw="$nw -Wswitch-default"       # Nothing wrong with default-less switch?
+
+  gl_MANYWARN_COMPLEMENT([warnings], [$warnings], [$nw])
+  for w in $warnings; do
+    gl_WARN_ADD([$w])
+  done
+
+  gl_WARN_ADD([-Wno-pointer-sign])     # Too many warnings for now
+  gl_WARN_ADD([-fdiagnostics-show-option])
+fi
+
 AC_CONFIG_FILES([
   Makefile
   gl/Makefile
