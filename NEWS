@@ -2,6 +2,16 @@ Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
 Copyright (C) 2011 Simon Josefsson
 See the end for copying conditions.
 
+* Version 0.8 (unreleased) [alpha]
+
+** idn2: Fix build warnings.
+Reported by Didier Raboud <odyx@debian.org> in
+<http://bugs.debian.org/643427>.
+
+** Update gnulib files.
+
+** API and ABI is backwards compatible with the previous version.
+
 * Version 0.7 (released 2011-08-11) [alpha]
 
 ** libidn2: Fix missing strchrnul and strverscmp uses.
