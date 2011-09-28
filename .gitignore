@@ -147,6 +147,7 @@ gl/striconveh.o
 gl/striconveha.gcno
 gl/striconveha.lo
 gl/striconveha.o
+gl/string.h
 gl/uniconv.h
 gl/uniconv/.dirstamp
 gl/uniconv/u8-conv-from-enc.gcno
