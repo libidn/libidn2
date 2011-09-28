@@ -2,7 +2,7 @@ Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
 Copyright (C) 2011 Simon Josefsson
 See the end for copying conditions.
 
-* Version 0.8 (unreleased) [alpha]
+* Version 0.8 (released 2011-09-28) [alpha]
 
 ** idn2: Fix build warnings.
 Reported by Didier Raboud <odyx@debian.org> in
