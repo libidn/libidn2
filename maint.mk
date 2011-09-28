@@ -762,7 +762,8 @@ define def_sym_regex
 	gen_h=$(gl_generated_headers_);					\
 	(cd $(gnulib_dir)/lib;						\
 	  for f in *.in.h $(gl_other_headers_); do			\
-	    perl -lne '$(gl_extract_significant_defines_)' $$f;		\
+	    test -f $$f							\
+	      && perl -lne '$(gl_extract_significant_defines_)' $$f;	\
 	  done;								\
 	) | sort -u							\
 	  | sed 's/^/^ *# *(define|undef)  */;s/$$/\\>/'
@@ -1235,9 +1236,9 @@ emit_upload_commands:
 	@echo =====================================
 
 define emit-commit-log
-  printf '%s\n' 'post-release administrivia' '' \
-    '* NEWS: Add header line for next release.' \
-    '* .prev-version: Record previous version.' \
+  printf '%s\n' 'maint: post-release administrivia' ''			\
+    '* NEWS: Add header line for next release.'				\
+    '* .prev-version: Record previous version.'				\
     '* cfg.mk (old_NEWS_hash): Auto-update.'
 endef
 
@@ -1398,7 +1399,8 @@ _gl_TS_dir ?= src
 
 ALL_RECURSIVE_TARGETS += sc_tight_scope
 sc_tight_scope: tight-scope.mk
-	@if ! grep '^ *export _gl_TS_headers *=' $(srcdir)/cfg.mk	\
+	@fail=0;							\
+	if ! grep '^ *export _gl_TS_headers *=' $(srcdir)/cfg.mk	\
 		> /dev/null						\
 	   && ! grep -w noinst_HEADERS $(srcdir)/$(_gl_TS_dir)/Makefile.am \
 		> /dev/null 2>&1; then					\
@@ -1410,8 +1412,9 @@ sc_tight_scope: tight-scope.mk
 		-f $(abs_top_builddir)/$<				\
 	      _gl_tight_scope						\
 		|| fail=1;						\
-	fi
-	@rm -f $<
+	fi;								\
+	rm -f $<;							\
+	exit $$fail
 
 tight-scope.mk: $(ME)
 	@rm -f $@ $@-t
