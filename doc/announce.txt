@@ -1,18 +1,19 @@
 To: help-libidn@gnu.org
-Subject: libidn2 0.6
+Subject: libidn2 0.8
 <#secure method=pgpmime mode=sign>
 Libidn2 is a free software implementation of IDNA2008.
 
-* Version 0.6 (released 2011-05-25) [alpha]
+* Version 0.8 (released 2011-09-28) [alpha]
 
-** tests: Use -no-install instead of -static to fix --disable-static.
-Reported by Robert Scheck <robert@fedoraproject.org>.
+** idn2: Fix build warnings.
+Reported by Didier Raboud <odyx@debian.org> in
+<http://bugs.debian.org/643427>.
 
-** API and ABI is backwards compatible with the previous version.
+** Update gnulib files.
 
 Download release:
-  ftp://alpha.gnu.org/gnu/libidn/libidn2-0.6.tar.gz      (1.4MB)
-  ftp://alpha.gnu.org/gnu/libidn/libidn2-0.6.tar.gz.sig  (OpenPGP signature)
+  ftp://alpha.gnu.org/gnu/libidn/libidn2-0.8.tar.gz      (1.5MB)
+  ftp://alpha.gnu.org/gnu/libidn/libidn2-0.8.tar.gz.sig  (OpenPGP signature)
 
 Webpage:
   http://www.gnu.org/software/libidn/#libidn2
