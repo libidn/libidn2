@@ -2,7 +2,7 @@
 # This Makefile fragment tries to be general-purpose enough to be
 # used by many projects via the gnulib maintainer-makefile module.
 
-## Copyright (C) 2001-2011 Free Software Foundation, Inc.
+## Copyright (C) 2001-2012 Free Software Foundation, Inc.
 ##
 ## This program is free software: you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -126,7 +126,7 @@ export LC_ALL = C
 
 _cfg_mk := $(shell test -f $(srcdir)/cfg.mk && echo '$(srcdir)/cfg.mk')
 
-# Collect the names of rules starting with `sc_'.
+# Collect the names of rules starting with 'sc_'.
 syntax-check-rules := $(sort $(shell sed -n 's/^\(sc_[a-zA-Z0-9_-]*\):.*/\1/p' \
 			$(srcdir)/$(ME) $(_cfg_mk)))
 .PHONY: $(syntax-check-rules)
@@ -178,6 +178,13 @@ syntax-check: $(local-check)
 #     Regular expression (ERE) denoting either a forbidden construct
 #     or a required construct.  Those arguments are exclusive.
 #
+#  exclude
+#
+#     Regular expression (ERE) denoting lines to ignore that matched
+#     a prohibit construct.  For example, this can be used to exclude
+#     comments that mention why the nearby code uses an alternative
+#     construct instead of the simpler prohibited construct.
+#
 #  in_vc_files | in_files
 #
 #     grep-E-style regexp denoting the files to check.  If no files
@@ -212,6 +219,17 @@ syntax-check: $(local-check)
 # when filtering by name via in_files, we explicitly filter out matching
 # names here as well.
 
+# Initialize each, so that envvar settings cannot interfere.
+export require =
+export prohibit =
+export exclude =
+export in_vc_files =
+export in_files =
+export containing =
+export non_containing =
+export halt =
+export with_grep_options =
+
 # By default, _sc_search_regexp does not ignore case.
 export ignore_case =
 _ignore_case = $$(test -n "$$ignore_case" && printf %s -i || :)
@@ -220,15 +238,6 @@ define _sc_say_and_exit
    dummy=; : so we do not need a semicolon before each use;		\
    { printf '%s\n' "$(ME): $$msg" 1>&2; exit 1; };
 endef
-
-# _sc_search_regexp used to be named _prohibit_regexp.  However,
-# upgrading to the new definition and leaving the old name undefined
-# would usually convert each custom rule using $(_prohibit_regexp)
-# (usually defined in cfg.mk) into a no-op.  This definition ensures
-# that people know right away if they're still using the old name.
-# FIXME: remove in 2012.
-_prohibit_regexp = \
-  $(error '*** you need to s/_prohibit_regexp/_sc_search_regexp/, and adapt')
 
 define _sc_search_regexp
    dummy=; : so we do not need a semicolon before each use;		\
@@ -239,6 +248,9 @@ define _sc_search_regexp
           $(_sc_say_and_exit) } || :;					\
    test -z "$$prohibit" && test -z "$$require"				\
      && { msg='Should specify either prohibit or require'		\
+          $(_sc_say_and_exit) } || :;					\
+   test -z "$$prohibit" && test -n "$$exclude"				\
+     && { msg='Use of exclude requires a prohibit pattern'		\
           $(_sc_say_and_exit) } || :;					\
    test -n "$$in_vc_files" && test -n "$$in_files"			\
      && { msg='Cannot specify both in_vc_files and in_files'		\
@@ -267,6 +279,7 @@ define _sc_search_regexp
    if test -n "$$files"; then						\
      if test -n "$$prohibit"; then					\
        grep $$with_grep_options $(_ignore_case) -nE "$$prohibit" $$files \
+         | grep -vE "$${exclude-^$$}"					\
          && { msg="$$halt" $(_sc_say_and_exit) } || :;			\
      else								\
        grep $$with_grep_options $(_ignore_case) -LE "$$require" $$files \
@@ -285,17 +298,17 @@ sc_avoid_if_before_free:
 	    exit 1; } || :
 
 sc_cast_of_argument_to_free:
-	@prohibit='\<free *\( *\(' halt='don'\''t cast free argument'	\
+	@prohibit='\<free *\( *\(' halt="don't cast free argument"	\
 	  $(_sc_search_regexp)
 
 sc_cast_of_x_alloc_return_value:
 	@prohibit='\*\) *x(m|c|re)alloc\>'				\
-	halt='don'\''t cast x*alloc return value'			\
+	halt="don't cast x*alloc return value"				\
 	  $(_sc_search_regexp)
 
 sc_cast_of_alloca_return_value:
 	@prohibit='\*\) *alloca\>'					\
-	halt='don'\''t cast alloca return value'			\
+	halt="don't cast alloca return value"				\
 	  $(_sc_search_regexp)
 
 sc_space_tab:
@@ -303,7 +316,7 @@ sc_space_tab:
 	halt='found SPACE-TAB sequence; remove the SPACE'		\
 	  $(_sc_search_regexp)
 
-# Don't use *scanf or the old ato* functions in `real' code.
+# Don't use *scanf or the old ato* functions in "real" code.
 # They provide no error checking mechanism.
 # Instead, use strto* functions.
 sc_prohibit_atoi_atof:
@@ -312,12 +325,12 @@ sc_prohibit_atoi_atof:
 	  $(_sc_search_regexp)
 
 # Use STREQ rather than comparing strcmp == 0, or != 0.
+sp_ = strcmp *\(.+\)
 sc_prohibit_strcmp:
-	@grep -nE '! *str''cmp *\(|\<str''cmp *\(.+\) *[!=]='	\
-	    $$($(VC_LIST_EXCEPT))					\
-	  | grep -vE ':# *define STRN?EQ\(' &&				\
-	  { echo '$(ME): replace str''cmp calls above with STREQ/STRNEQ' \
-		1>&2; exit 1; } || :
+	@prohibit='! *strcmp *\(|\<$(sp_) *[!=]=|[!=]= *$(sp_)'		\
+	exclude=':# *define STRN?EQ\('					\
+	halt='$(ME): replace strcmp calls above with STREQ/STRNEQ'	\
+	  $(_sc_search_regexp)
 
 # Pass EXIT_*, not number, to usage, exit, and error (when exiting)
 # Convert all uses automatically, via these two commands:
@@ -335,15 +348,15 @@ sc_prohibit_magic_number_exit:
 	  $(_sc_search_regexp)
 
 # Using EXIT_SUCCESS as the first argument to error is misleading,
-# since when that parameter is 0, error does not exit.  Use `0' instead.
+# since when that parameter is 0, error does not exit.  Use '0' instead.
 sc_error_exit_success:
 	@prohibit='error *\(EXIT_SUCCESS,'				\
 	in_vc_files='\.[chly]$$'					\
 	halt='found error (EXIT_SUCCESS'				\
 	 $(_sc_search_regexp)
 
-# `FATAL:' should be fully upper-cased in error messages
-# `WARNING:' should be fully upper-cased, or fully lower-cased
+# "FATAL:" should be fully upper-cased in error messages
+# "WARNING:" should be fully upper-cased, or fully lower-cased
 sc_error_message_warn_fatal:
 	@grep -nEA2 '[^rp]error *\(' $$($(VC_LIST_EXCEPT))		\
 	    | grep -E '"Warning|"Fatal|"fatal' &&			\
@@ -511,7 +524,7 @@ sc_prohibit_same_without_use:
 
 sc_prohibit_hash_pjw_without_use:
 	@h='hash-pjw.h' \
-	re='\<hash_pjw *\(' \
+	re='\<hash_pjw\>' \
 	  $(_sc_header_without_use)
 
 sc_prohibit_safe_read_without_use:
@@ -525,7 +538,7 @@ sc_prohibit_argmatch_without_use:
 
 sc_prohibit_canonicalize_without_use:
 	@h='canonicalize.h' \
-	re='CAN_(EXISTING|ALL_BUT_LAST|MISSING)|canonicalize_(mode_t|filename_mode)' \
+	re='CAN_(EXISTING|ALL_BUT_LAST|MISSING)|canonicalize_(mode_t|filename_mode|file_name)' \
 	  $(_sc_header_without_use)
 
 sc_prohibit_root_dev_ino_without_use:
@@ -717,12 +730,10 @@ _gl_translatable_diag_func_re ?= error
 # Look for diagnostics that aren't marked for translation.
 # This won't find any for which error's format string is on a separate line.
 sc_unmarked_diagnostics:
-	@grep -nE							\
-	    '\<$(_gl_translatable_diag_func_re) *\([^"]*"[^"]*[a-z]{3}' \
-		$$($(VC_LIST_EXCEPT))					\
-	  | grep -Ev '(_|ngettext ?)\(' &&				\
-	  { echo '$(ME): found unmarked diagnostic(s)' 1>&2;		\
-	    exit 1; } || :
+	@prohibit='\<$(_gl_translatable_diag_func_re) *\([^"]*"[^"]*[a-z]{3}' \
+	exclude='(_|ngettext ?)\('					\
+	halt='$(ME): found unmarked diagnostic(s)'			\
+	  $(_sc_search_regexp)
 
 # Avoid useless parentheses like those in this example:
 # #if defined (SYMBOL) || defined (SYM2)
@@ -847,7 +858,7 @@ sc_prohibit_cvs_keyword:
 #
 # This is a perl script that is expected to be the single-quoted argument
 # to a command-line "-le".  The remaining arguments are file names.
-# Print the name of each file that ends in exactly one newline byte.
+# Print the name of each file that does not end in exactly one newline byte.
 # I.e., warn if there are blank lines (2 or more newlines), or if the
 # last byte is not a newline.  However, currently we don't complain
 # about any file that contains exactly one byte.
@@ -983,10 +994,10 @@ sc_redundant_const:
 	  $(_sc_search_regexp)
 
 sc_const_long_option:
-	@grep '^ *static.*struct option ' $$($(VC_LIST_EXCEPT))		\
-	  | grep -Ev 'const struct option|struct option const' && {	\
-	      echo 1>&2 '$(ME): add "const" to the above declarations'; \
-	      exit 1; } || :
+	@prohibit='^ *static.*struct option '				\
+	exclude='const struct option|struct option const'		\
+	halt='$(ME): add "const" to the above declarations'		\
+	  $(_sc_search_regexp)
 
 NEWS_hash =								\
   $$(sed -n '/^\*.* $(PREV_VERSION_REGEXP) ([0-9-]*)/,$$p'		\
@@ -1024,8 +1035,8 @@ update-NEWS-hash: NEWS
 # setting this to ' && !/PRAGMA_SYSTEM_HEADER/'.
 _makefile_at_at_check_exceptions ?=
 sc_makefile_at_at_check:
-	@perl -ne '/\@[A-Z_0-9]+\@/'					\
-          -e ' && !/([A-Z_0-9]+)\s+=.*\@\1\@$$/'			\
+	@perl -ne '/\@\w+\@/'						\
+          -e ' && !/(\w+)\s+=.*\@\1\@$$/'				\
           -e ''$(_makefile_at_at_check_exceptions)			\
 	  -e 'and (print "$$ARGV:$$.: $$_"), $$m=1; END {exit !$$m}'	\
 	    $$($(VC_LIST_EXCEPT) | grep -E '(^|/)(Makefile\.am|[^/]+\.mk)$$') \
@@ -1087,15 +1098,15 @@ sc_po_check:
 
 # Sometimes it is useful to change the PATH environment variable
 # in Makefiles.  When doing so, it's better not to use the Unix-centric
-# path separator of `:', but rather the automake-provided `$(PATH_SEPARATOR)'.
-msg = '$(ME): Do not use `:'\'' above; use $$(PATH_SEPARATOR) instead'
+# path separator of ':', but rather the automake-provided '$(PATH_SEPARATOR)'.
+msg = '$(ME): Do not use ":" above; use $$(PATH_SEPARATOR) instead'
 sc_makefile_path_separator_check:
 	@prohibit='PATH[=].*:'						\
 	in_vc_files='akefile|\.mk$$'					\
 	halt=$(msg)							\
 	  $(_sc_search_regexp)
 
-# Check that `make alpha' will not fail at the end of the process,
+# Check that 'make alpha' will not fail at the end of the process,
 # i.e., when pkg-M.N.tar.xz already exists (either in "." or in ../release)
 # and is read-only.
 writable-files:
@@ -1156,6 +1167,16 @@ sc_cross_check_PATH_usage_in_tests:
 	    { echo "$(ME): the above files use path_prepend_ inconsistently" \
 		1>&2; exit 1; } || :;					\
 	fi
+
+# BRE regex of file contents to identify a test script.
+_test_script_regex ?= \<init\.sh\>
+
+# In tests, use "compare expected actual", not the reverse.
+sc_prohibit_reversed_compare_failure:
+	@prohibit='\<compare [^ ]+ ([^ ]*exp|/dev/null)'		\
+	containing='$(_test_script_regex)'				\
+	halt='reversed compare arguments'				\
+	  $(_sc_search_regexp)
 
 # #if HAVE_... will evaluate to false for any non numeric string.
 # That would be flagged by using -Wundef, however gnulib currently
@@ -1233,7 +1254,8 @@ announcement: NEWS ChangeLog $(rel-files)
 	    --gpg-key-id=$(gpg_key_ID)					\
 	    --news=$(srcdir)/NEWS					\
 	    --bootstrap-tools=$(bootstrap-tools)			\
-	    --gnulib-version=$(gnulib-version)				\
+	    $$(case ,$(bootstrap-tools), in (*,gnulib,*)		\
+	       echo --gnulib-version=$(gnulib-version);; esac)		\
 	    --no-print-checksums					\
 	    $(addprefix --url-dir=, $(url_dir_list))
 
@@ -1310,7 +1332,7 @@ alpha beta stable: $(local-check) writable-files $(submodule-checks)
 	$(MAKE) vc-diff-check
 	$(MAKE) news-check
 	$(MAKE) distcheck
-	$(MAKE) dist XZ_OPT=-9ev
+	$(MAKE) dist
 	$(MAKE) $(release-prep-hook) RELEASE_TYPE=$@
 	$(MAKE) -s emit_upload_commands RELEASE_TYPE=$@
 
@@ -1438,16 +1460,16 @@ sc_tight_scope: tight-scope.mk
 
 tight-scope.mk: $(ME)
 	@rm -f $@ $@-t
-	@perl -ne '/^# TS-start/.../^# TS-end/ and print' $(ME) > $@-t
+	@perl -ne '/^# TS-start/.../^# TS-end/ and print' $(srcdir)/$(ME) > $@-t
 	@chmod a=r $@-t && mv $@-t $@
 
 ifeq (a,b)
 # TS-start
 
 # Most functions should have static scope.
-# Any that don't must be marked with `extern', but `main'
-# and `usage' are exceptions: they're always extern, but
-# do not need to be marked.  Symbols matching `__.*' are
+# Any that don't must be marked with 'extern', but 'main'
+# and 'usage' are exceptions: they're always extern, but
+# do not need to be marked.  Symbols matching '__.*' are
 # reserved by the compiler, so are automatically excluded below.
 _gl_TS_unmarked_extern_functions ?= main usage
 _gl_TS_function_match ?= /^(?:$(_gl_TS_extern)) +.*?(\S+) *\(/
@@ -1457,9 +1479,9 @@ _gl_TS_function_match ?= /^(?:$(_gl_TS_extern)) +.*?(\S+) *\(/
 # export _gl_TS_extern = extern|XTERN
 _gl_TS_extern ?= extern
 
-# The second nm|grep checks for file-scope variables with `extern' scope.
+# The second nm|grep checks for file-scope variables with 'extern' scope.
 # Without gnulib's progname module, you might put program_name here.
-# Symbols matching `__.*' are reserved by the compiler,
+# Symbols matching '__.*' are reserved by the compiler,
 # so are automatically excluded below.
 _gl_TS_unmarked_extern_vars ?=
 

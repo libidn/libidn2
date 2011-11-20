@@ -1,5 +1,5 @@
 # DO NOT EDIT! GENERATED AUTOMATICALLY!
-# Copyright (C) 2002-2011 Free Software Foundation, Inc.
+# Copyright (C) 2002-2012 Free Software Foundation, Inc.
 #
 # This file is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -57,9 +57,9 @@ AC_DEFUN([gl_EARLY],
   # Code from module stdarg:
   dnl Some compilers (e.g., AIX 5.3 cc) need to be in c99 mode
   dnl for the builtin va_copy to work.  With Autoconf 2.60 or later,
-  dnl AC_PROG_CC_STDC arranges for this.  With older Autoconf AC_PROG_CC_STDC
+  dnl gl_PROG_CC_C99 arranges for this.  With older Autoconf gl_PROG_CC_C99
   dnl shouldn't hurt, though installers are on their own to set c99 mode.
-  AC_REQUIRE([AC_PROG_CC_STDC])
+  gl_PROG_CC_C99
   # Code from module stddef:
   # Code from module strerror:
   # Code from module strerror-override:
