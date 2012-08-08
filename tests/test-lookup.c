@@ -1,5 +1,5 @@
 /* test-lookup.c --- Self tests for IDNA processing
-   Copyright (C) 2011 Simon Josefsson
+   Copyright (C) 2011-2012 Simon Josefsson
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -689,6 +689,11 @@ static const struct idna idna[] = {
     "xn--ksaaaa036cea4345b", IDN2_OK
     /* Contextj: U+750 U+0300 U+200C U+0300 U+0300 U+0300 U+0750.
        U+0300 is T, U+0750 is D. */
+  },
+  {
+    "\xd8\xa8\xe2\x80\x8c\xd8\xa7\xe2\x80\x8c\xd8\xa7", "", IDN2_CONTEXTJ
+    /* Contextj: U+0628 U+200C U+0627 U+200C U+0627.
+       http://article.gmane.org/gmane.ietf.idnabis/7366 */
   },
   {
     "\xc2\xb7", "xn--uba", IDN2_OK
