@@ -115,6 +115,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module unistr/u8-to-u32:
   # Code from module unistr/u8-uctomb:
   # Code from module unitypes:
+  # Code from module update-copyright:
   # Code from module useless-if-before-free:
   # Code from module valgrind-tests:
   # Code from module vc-list-files:
@@ -386,6 +387,7 @@ AC_DEFUN([gl_FILE_LIST], [
   build-aux/snippet/c++defs.h
   build-aux/snippet/unused-parameter.h
   build-aux/snippet/warn-on-use.h
+  build-aux/update-copyright
   build-aux/useless-if-before-free
   build-aux/vc-list-files
   doc/gendocs_template
