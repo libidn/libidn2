@@ -33,6 +33,7 @@ exclude_file_name_regexp--sc_prohibit_empty_lines_at_EOF = ^doc/reference/versio
 exclude_file_name_regexp--sc_trailing_blank = ^(tests/IdnaTest.(txt|inc))|(doc/gdoc)$$
 exclude_file_name_regexp--sc_require_config_h = ^examples/.*\.c$$
 exclude_file_name_regexp--sc_require_config_h_first = ^examples/.*\.c$$
+exclude_file_name_regexp--sc_prohibit_strncpy = ^src/idn2.c$$
 
 update-copyright-env = \
 	UPDATE_COPYRIGHT_USE_INTERVALS=2 \
