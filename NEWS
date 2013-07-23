@@ -4,6 +4,8 @@ See the end for copying conditions.
 
 * Version 0.9 (unreleased) [alpha]
 
+** Fix automake bootstrap issue.
+
 ** Update gnulib files.
 
 ** API and ABI is backwards compatible with the previous version.
