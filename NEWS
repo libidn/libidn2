@@ -2,6 +2,10 @@ Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
 Copyright (C) 2011-2013 Simon Josefsson
 See the end for copying conditions.
 
+* Version 0.10 (unreleased) [alpha]
+
+** API and ABI is backwards compatible with the previous version.
+
 * Version 0.9 (released 2013-07-23) [alpha]
 
 ** Fix broken IANA link.
