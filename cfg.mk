@@ -34,7 +34,9 @@ exclude_file_name_regexp--sc_trailing_blank = ^(tests/IdnaTest.(txt|inc))|(doc/g
 exclude_file_name_regexp--sc_require_config_h = ^examples/.*\.c$$
 exclude_file_name_regexp--sc_require_config_h_first = ^examples/.*\.c$$
 
-update-copyright-env = UPDATE_COPYRIGHT_HOLDER="Simon Josefsson"
+update-copyright-env = \
+	UPDATE_COPYRIGHT_USE_INTERVALS=2 \
+	UPDATE_COPYRIGHT_HOLDER="Simon Josefsson"
 
 INDENT_SOURCES = \
 	bidi.c \
