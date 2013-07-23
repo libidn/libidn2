@@ -1,4 +1,4 @@
-# Copyright (C) 2011 Simon Josefsson
+# Copyright (C) 2011-2013 Simon Josefsson
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@ AM_INIT_AUTOMAKE([-Wall -Werror])
 
 AC_PROG_CC
 gl_EARLY
+m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
 LT_INIT([win32-dll])
 gl_INIT
 GTK_DOC_CHECK(1.1)

@@ -1,4 +1,4 @@
-# Copyright (C) 2011 Simon Josefsson
+# Copyright (C) 2011-2013 Simon Josefsson
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-AC_INIT([idn2], [0.8], [simon@josefsson.org],,
+AC_INIT([idn2], [0.9], [simon@josefsson.org],,
   [http://www.gnu.org/software/libidn/#libidn2])
 
 AC_CONFIG_AUX_DIR([../build-aux])
@@ -23,6 +23,7 @@ AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 
 AC_PROG_CC
 gl_EARLY
+m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
 AC_PROG_LIBTOOL
 gl_INIT
 
