@@ -11,6 +11,7 @@ bidi.gcda
 bidi.gcno
 bidi.lo
 bidi.o
+build-aux/ar-lib
 build-aux/compile
 build-aux/config.guess
 build-aux/config.sub
@@ -19,6 +20,7 @@ build-aux/install-sh
 build-aux/ltmain.sh
 build-aux/mdate-sh
 build-aux/missing
+build-aux/test-driver
 build-aux/texinfo.tex
 config.h
 config.h.in
@@ -47,6 +49,7 @@ doc/libidn2.ky
 doc/libidn2.log
 doc/libidn2.pdf
 doc/libidn2.pg
+doc/libidn2.t2p/
 doc/libidn2.toc
 doc/libidn2.tp
 doc/libidn2.vr
@@ -314,7 +317,10 @@ src/gl/progname.gcno
 src/gl/progname.lo
 src/gl/progname.o
 src/gl/string.h
+src/gl/sys/
 src/gl/unistd.h
+src/gl/unistd.lo
+src/gl/unistd.o
 src/gl/version-etc.gcno
 src/gl/version-etc.lo
 src/gl/version-etc.o
@@ -340,15 +346,22 @@ tests/Makefile.in
 tests/test-lookup
 tests/test-lookup.gcda
 tests/test-lookup.gcno
+tests/test-lookup.log
 tests/test-lookup.o
+tests/test-lookup.trs
 tests/test-punycode
 tests/test-punycode.gcda
 tests/test-punycode.gcno
+tests/test-punycode.log
 tests/test-punycode.o
+tests/test-punycode.trs
 tests/test-register
 tests/test-register.gcda
 tests/test-register.gcno
+tests/test-register.log
 tests/test-register.o
+tests/test-register.trs
+tests/test-suite.log
 version.gcda
 version.gcno
 version.lo
