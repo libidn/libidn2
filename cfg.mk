@@ -142,7 +142,7 @@ gtkdoc-copy:
 	cp -v doc/reference/$(PACKAGE).pdf \
 		doc/reference/html/*.html \
 		doc/reference/html/*.png \
-		doc/reference/html/*.devhelp \
+		doc/reference/html/*.devhelp2 \
 		doc/reference/html/*.css \
 		$(htmldir)/reference/
 
@@ -151,7 +151,7 @@ gtkdoc-upload:
 		cvs add reference || true && \
 		cvs add -kb reference/*.png reference/*.pdf || true && \
 		cvs add reference/*.html reference/*.css \
-			reference/*.devhelp || true && \
+			reference/*.devhelp2 || true && \
 		cvs commit -m "Update." reference/
 
 source:
