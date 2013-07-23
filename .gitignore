@@ -31,6 +31,7 @@ context.gcda
 context.gcno
 context.lo
 context.o
+data.gcno
 data.lo
 data.o
 doc/Makefile
@@ -174,6 +175,7 @@ gl/unictype/.dirstamp
 gl/unictype/bidi_of.gcno
 gl/unictype/bidi_of.lo
 gl/unictype/bidi_of.o
+gl/unictype/categ_M.gcno
 gl/unictype/categ_M.lo
 gl/unictype/categ_M.o
 gl/unictype/categ_none.gcno
@@ -211,10 +213,13 @@ gl/uninorm/composition.o
 gl/uninorm/decompose-internal.gcno
 gl/uninorm/decompose-internal.lo
 gl/uninorm/decompose-internal.o
+gl/uninorm/decomposition-table.gcno
 gl/uninorm/decomposition-table.lo
 gl/uninorm/decomposition-table.o
+gl/uninorm/nfc.gcno
 gl/uninorm/nfc.lo
 gl/uninorm/nfc.o
+gl/uninorm/nfd.gcno
 gl/uninorm/nfd.lo
 gl/uninorm/nfd.o
 gl/uninorm/u32-normalize.gcno
@@ -227,11 +232,13 @@ gl/unistr/.dirstamp
 gl/unistr/u32-cpy.gcno
 gl/unistr/u32-cpy.lo
 gl/unistr/u32-cpy.o
+gl/unistr/u32-mbtouc-unsafe.gcno
 gl/unistr/u32-mbtouc-unsafe.lo
 gl/unistr/u32-mbtouc-unsafe.o
 gl/unistr/u32-to-u8.gcno
 gl/unistr/u32-to-u8.lo
 gl/unistr/u32-to-u8.o
+gl/unistr/u32-uctomb.gcno
 gl/unistr/u32-uctomb.lo
 gl/unistr/u32-uctomb.o
 gl/unistr/u8-check.gcno
@@ -246,8 +253,10 @@ gl/unistr/u8-mbtouc-aux.o
 gl/unistr/u8-mbtouc-unsafe-aux.gcno
 gl/unistr/u8-mbtouc-unsafe-aux.lo
 gl/unistr/u8-mbtouc-unsafe-aux.o
+gl/unistr/u8-mbtouc-unsafe.gcno
 gl/unistr/u8-mbtouc-unsafe.lo
 gl/unistr/u8-mbtouc-unsafe.o
+gl/unistr/u8-mbtouc.gcno
 gl/unistr/u8-mbtouc.lo
 gl/unistr/u8-mbtouc.o
 gl/unistr/u8-mbtoucr.gcno
@@ -265,6 +274,7 @@ gl/unistr/u8-to-u32.o
 gl/unistr/u8-uctomb-aux.gcno
 gl/unistr/u8-uctomb-aux.lo
 gl/unistr/u8-uctomb-aux.o
+gl/unistr/u8-uctomb.gcno
 gl/unistr/u8-uctomb.lo
 gl/unistr/u8-uctomb.o
 gl/unistr/unistr
@@ -277,6 +287,7 @@ idna.gcno
 idna.lo
 idna.o
 libidn2-*.tar.gz
+libidn2-*.tar.gz.sig
 libidn2-*/
 libidn2.la
 libtool
@@ -318,6 +329,7 @@ src/gl/progname.lo
 src/gl/progname.o
 src/gl/string.h
 src/gl/sys/
+src/gl/unistd.gcno
 src/gl/unistd.h
 src/gl/unistd.lo
 src/gl/unistd.o
