@@ -4,6 +4,9 @@ See the end for copying conditions.
 
 * Version 0.9 (unreleased) [alpha]
 
+** Fix broken IANA link.
+Apparently IANA does not provide persistant URLs to their registries.
+
 ** Fix automake bootstrap issue.
 
 ** Update gnulib files.
