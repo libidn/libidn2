@@ -2,7 +2,7 @@ Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
 Copyright (C) 2011-2014 Simon Josefsson
 See the end for copying conditions.
 
-* Version 0.10 (unreleased) [alpha]
+* Version 0.10 (released 2014-06-25) [alpha]
 
 ** Update gnulib files.
 
