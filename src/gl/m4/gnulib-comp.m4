@@ -1,5 +1,5 @@
 # DO NOT EDIT! GENERATED AUTOMATICALLY!
-# Copyright (C) 2002-2013 Free Software Foundation, Inc.
+# Copyright (C) 2002-2014 Free Software Foundation, Inc.
 #
 # This file is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -38,6 +38,7 @@ AC_DEFUN([gl_EARLY],
   m4_pattern_allow([^gl_LIBOBJS$])dnl a variable
   m4_pattern_allow([^gl_LTLIBOBJS$])dnl a variable
   AC_REQUIRE([gl_PROG_AR_RANLIB])
+  # Code from module absolute-header:
   # Code from module configmake:
   # Code from module errno:
   # Code from module error:
@@ -62,6 +63,7 @@ AC_DEFUN([gl_EARLY],
   dnl shouldn't hurt, though installers are on their own to set c99 mode.
   gl_PROG_CC_C99
   # Code from module stddef:
+  # Code from module stdio:
   # Code from module strerror:
   # Code from module strerror-override:
   # Code from module string:
@@ -112,6 +114,7 @@ AC_DEFUN([gl_INIT],
   gt_TYPE_SSIZE_T
   gl_STDARG_H
   gl_STDDEF_H
+  gl_STDIO_H
   gl_FUNC_STRERROR
   if test $REPLACE_STRERROR = 1; then
     AC_LIBOBJ([strerror])
@@ -281,6 +284,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/progname.h
   lib/stdarg.in.h
   lib/stddef.in.h
+  lib/stdio.in.h
   lib/strerror-override.c
   lib/strerror-override.h
   lib/strerror.c
@@ -292,6 +296,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/version-etc.c
   lib/version-etc.h
   m4/00gnulib.m4
+  m4/absolute-header.m4
   m4/configmake.m4
   m4/errno_h.m4
   m4/error.m4
@@ -307,6 +312,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/ssize_t.m4
   m4/stdarg.m4
   m4/stddef_h.m4
+  m4/stdio_h.m4
   m4/strerror.m4
   m4/string_h.m4
   m4/sys_socket_h.m4

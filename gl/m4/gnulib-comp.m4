@@ -1,5 +1,5 @@
 # DO NOT EDIT! GENERATED AUTOMATICALLY!
-# Copyright (C) 2002-2013 Free Software Foundation, Inc.
+# Copyright (C) 2002-2014 Free Software Foundation, Inc.
 #
 # This file is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -39,6 +39,7 @@ AC_DEFUN([gl_EARLY],
   m4_pattern_allow([^gl_LTLIBOBJS$])dnl a variable
   AC_REQUIRE([gl_PROG_AR_RANLIB])
   AC_REQUIRE([AM_PROG_CC_C_O])
+  # Code from module absolute-header:
   # Code from module alloca-opt:
   # Code from module array-mergesort:
   # Code from module c-ctype:
@@ -47,6 +48,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module configmake:
   # Code from module extensions:
   AC_REQUIRE([gl_USE_SYSTEM_EXTENSIONS])
+  # Code from module extern-inline:
   # Code from module gendocs:
   # Code from module git-version-gen:
   # Code from module gnumakefile:
@@ -70,6 +72,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module snippet/c++defs:
   # Code from module snippet/unused-parameter:
   # Code from module snippet/warn-on-use:
+  # Code from module ssize_t:
   # Code from module stdbool:
   # Code from module stddef:
   # Code from module stdint:
@@ -78,6 +81,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module striconveha:
   # Code from module string:
   # Code from module strverscmp:
+  # Code from module sys_types:
   # Code from module uniconv/base:
   # Code from module uniconv/u8-conv-from-enc:
   # Code from module uniconv/u8-strconv-from-enc:
@@ -139,6 +143,7 @@ AC_DEFUN([gl_INIT],
   gl_source_base='gl'
   gl_FUNC_ALLOCA
   gl_CONFIGMAKE_PREP
+  AC_REQUIRE([gl_EXTERN_INLINE])
   # Autoconf 2.61a.99 and earlier don't support linking a file only
   # in VPATH builds.  But since GNUmakefile is for maintainer use
   # only, it does not matter if we skip the link with older autoconf.
@@ -169,6 +174,7 @@ AC_DEFUN([gl_INIT],
   AC_SUBST([LOCALCHARSET_TESTS_ENVIRONMENT])
   AC_CONFIG_COMMANDS_PRE([m4_ifdef([AH_HEADER],
     [AC_SUBST([CONFIG_INCLUDE], m4_defn([AH_HEADER]))])])
+  AC_REQUIRE([AC_PROG_SED])
   gl_MALLOCA
   gl_MULTIARCH
   gl_FUNC_RAWMEMCHR
@@ -177,6 +183,7 @@ AC_DEFUN([gl_INIT],
     gl_PREREQ_RAWMEMCHR
   fi
   gl_STRING_MODULE_INDICATOR([rawmemchr])
+  gt_TYPE_SSIZE_T
   AM_STDBOOL_H
   gl_STDDEF_H
   gl_STDINT_H
@@ -197,6 +204,8 @@ AC_DEFUN([gl_INIT],
     gl_PREREQ_STRVERSCMP
   fi
   gl_STRING_MODULE_INDICATOR([strverscmp])
+  gl_SYS_TYPES_H
+  AC_PROG_MKDIR_P
   gl_LIBUNISTRING_LIBHEADER([0.9], [uniconv.h])
   gl_LIBUNISTRING_MODULE([0.9], [uniconv/u8-conv-from-enc])
   gl_LIBUNISTRING_MODULE([0.9], [uniconv/u8-strconv-from-enc])
@@ -430,6 +439,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/striconveha.h
   lib/string.in.h
   lib/strverscmp.c
+  lib/sys_types.in.h
   lib/uniconv.in.h
   lib/uniconv/u-strconv-from-enc.h
   lib/uniconv/u8-conv-from-enc.c
@@ -488,11 +498,13 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/unitypes.in.h
   lib/verify.h
   m4/00gnulib.m4
+  m4/absolute-header.m4
   m4/alloca.m4
   m4/codeset.m4
   m4/configmake.m4
   m4/eealloc.m4
   m4/extensions.m4
+  m4/extern-inline.m4
   m4/fcntl-o.m4
   m4/glibc21.m4
   m4/gnulib-common.m4
@@ -511,14 +523,17 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/malloca.m4
   m4/manywarnings.m4
   m4/multiarch.m4
+  m4/off_t.m4
   m4/onceonly.m4
   m4/rawmemchr.m4
+  m4/ssize_t.m4
   m4/stdbool.m4
   m4/stddef_h.m4
   m4/stdint.m4
   m4/strchrnul.m4
   m4/string_h.m4
   m4/strverscmp.m4
+  m4/sys_types_h.m4
   m4/valgrind-tests.m4
   m4/visibility.m4
   m4/warn-on-use.m4
