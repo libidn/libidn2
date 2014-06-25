@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-## Copyright (c) 2002-2013 Simon Josefsson
+## Copyright (c) 2002-2014 Simon Josefsson
 ##                    added -texinfo, -listfunc, -pkg-name
 ##                    man page revamp
 ##                    various improvements
