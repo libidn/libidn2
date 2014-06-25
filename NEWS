@@ -6,6 +6,8 @@ See the end for copying conditions.
 
 ** Update gnulib files.
 
+** Dual-license the library.
+
 ** API and ABI is backwards compatible with the previous version.
 
 * Version 0.9 (released 2013-07-23) [alpha]
