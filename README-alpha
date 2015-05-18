@@ -1,5 +1,5 @@
 Libidn2 README-alpha -- Information for developers.             -*- outline -*-
-Copyright (C) 2011-2014 Simon Josefsson
+Copyright (C) 2011-2015 Simon Josefsson
 See the end for copying conditions.
 
 This file contains instructions for developers and advanced users that
@@ -27,7 +27,7 @@ apt-get install help2man gtk-doc-tools valgrind gengetopt
 
 Download the version controlled sources:
 
-$ git clone git://gitorious.org/libidn2/libidn2.git
+$ git clone https://gitlab.com/jas/libidn2.git
 $ cd libidn2
 
 The next step is to run autoreconf, ./configure, etc:
