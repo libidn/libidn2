@@ -14,7 +14,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 AM_CPPFLAGS = -I$(srcdir)/.. -I$(builddir)/..
-AM_LDFLAGS = -no-install
-
-bin_PROGRAMS = lookup register
 LDADD = ../libidn2.la
+
+noinst_PROGRAMS = lookup register
