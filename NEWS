@@ -1,6 +1,15 @@
 Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
-Copyright (C) 2011-2014 Simon Josefsson
+Copyright (C) 2011-2016 Simon Josefsson
 See the end for copying conditions.
+
+* Version 0.11 (unreleased) [alpha]
+
+** Fix stack underflow in 'idn2' command line tool.
+Reported by Hanno Böck <hanno@hboeck.de>.
+
+** Fix gdoc script to fix texinfo syntax error.
+
+** API and ABI is backwards compatible with the previous version.
 
 * Version 0.10 (released 2014-06-25) [alpha]
 

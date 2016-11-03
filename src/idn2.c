@@ -1,5 +1,5 @@
 /* idn2.c - command line interface to libidn2
-   Copyright (C) 2011-2014 Simon Josefsson
+   Copyright (C) 2011-2016 Simon Josefsson
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -178,7 +178,7 @@ main (int argc, char *argv[])
 	  error (EXIT_FAILURE, errno, "%s", _("input error"));
 	}
 
-      if (readbuf[strlen (readbuf) - 1] == '\n')
+      if (strlen(readbuf) > 0 && readbuf[strlen (readbuf) - 1] == '\n' )
 	readbuf[strlen (readbuf) - 1] = '\0';
 
       if (strcmp (readbuf, "show w") == 0)
