@@ -9,6 +9,9 @@ Reported by Hanno Böck <hanno@hboeck.de>.
 
 ** Fix gdoc script to fix texinfo syntax error.
 
+** Fix build failure of self-tests on platforms without version scripts.
+Reported by Dagobert Michelsen <dam@opencsw.org>.
+
 ** API and ABI is backwards compatible with the previous version.
 
 * Version 0.10 (released 2014-06-25) [alpha]
