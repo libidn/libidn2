@@ -1,5 +1,5 @@
 /* test-punycode.c --- Self tests for Libidn2 punycode.
-   Copyright (C) 2002-2014 Simon Josefsson
+   Copyright (C) 2002-2016 Simon Josefsson
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
