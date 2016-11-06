@@ -206,6 +206,7 @@ main (int argc, char *argv[])
 	    hexdump ("output", readbuf);
 
 	  printf ("%s\n", output);
+	  free (output);
 	}
       else
 	error (EXIT_FAILURE, 0, "%s: %s",
