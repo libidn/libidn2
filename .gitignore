@@ -22,6 +22,7 @@ build-aux/mdate-sh
 build-aux/missing
 build-aux/test-driver
 build-aux/texinfo.tex
+config.cache
 config.h
 config.h.in
 config.log
