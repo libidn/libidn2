@@ -46,7 +46,7 @@ libidn2_la_LDFLAGS = \
 
 BUILT_SOURCES = data.c
 EXTRA_DIST += gen-tables-from-rfc5892.pl gen-tables-from-iana.pl
-IANA_URL = ftp://ftp.iana.org/assignments/idna-tables-5.2.0/idna-tables-5.2.0.txt
+IANA_URL = ftp://ftp.iana.org/assignments/idna-tables-6.3.0/idna-tables-6.3.0.txt
 RFC5892_URL = http://www.ietf.org/rfc/rfc5892.txt
 data.c: $(srcdir)/gen-tables-from-rfc5892.pl $(srcdir)/gen-tables-from-iana.pl
 	wget -O - $(RFC5892_URL) | $(srcdir)/gen-tables-from-rfc5892.pl
