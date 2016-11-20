@@ -40,7 +40,7 @@ static const struct idna idna[] = {
   {"..", "..", IDN2_OK}, /* XXX should we disallow this? */
 
   /* U+19DA */
-  {"\xe1\xa7\x9a", "xn--pkf", IDN2_OK},
+  {"\xe1\xa7\x9a", "xn--pkf", IDN2_DISALLOWED},
 
   /* UTC's test vectors. */
 #include "IdnaTest.inc"
