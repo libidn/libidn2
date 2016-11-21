@@ -32,6 +32,7 @@ context.gcda
 context.gcno
 context.lo
 context.o
+data.c
 data.gcno
 data.lo
 data.o
@@ -288,6 +289,7 @@ idna.gcda
 idna.gcno
 idna.lo
 idna.o
+idna-tables-6.3.0.txt
 libidn2-*.tar.gz
 libidn2-*.tar.gz.sig
 libidn2-*/

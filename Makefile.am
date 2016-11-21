@@ -45,17 +45,16 @@ libidn2_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) -no-undefined
 
 BUILT_SOURCES = data.c
-EXTRA_DIST += gen-tables-from-rfc5892.pl gen-tables-from-iana.pl
-IANA_URL = ftp://ftp.iana.org/assignments/idna-tables-6.3.0/idna-tables-6.3.0.txt
-RFC5892_URL = http://www.ietf.org/rfc/rfc5892.txt
-data.c: $(srcdir)/gen-tables-from-rfc5892.pl $(srcdir)/gen-tables-from-iana.pl
-	wget -O - $(RFC5892_URL) | $(srcdir)/gen-tables-from-rfc5892.pl
-	mv data.c tmp
-	wget -O - $(IANA_URL) | $(srcdir)/gen-tables-from-iana.pl
-	diff -u tmp data.c
-	rm -f tmp
+EXTRA_DIST += gen-tables-from-iana.pl
+IDNA_TABLE = idna-tables-6.3.0.txt
+IANA_URL = https://ftp.iana.org/assignments/idna-tables-6.3.0/$(IDNA_TABLE)
 
-TLD_URL = http://www.iana.org/domains/root/db/
+data.c: $(srcdir)/gen-tables-from-iana.pl
+# let's keep the original data table for development
+	test -s $(IDNA_TABLE) || wget $(IANA_URL)
+	cat $(IDNA_TABLE) | $(srcdir)/gen-tables-from-iana.pl
+
+TLD_URL = https://www.iana.org/domains/root/db/
 tv.c: $(srcdir)/gen-idn-tld-tv.pl
 	(cat tld-cache || wget -O - $(TLD_URL)) | $(srcdir)/gen-idn-tld-tv.pl
 
