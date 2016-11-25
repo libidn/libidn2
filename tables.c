@@ -30,25 +30,32 @@
 
 #include "tables.h"
 
-#include <stdlib.h>		/* abort */
+#include <stdlib.h>		/* bsearch */
 
 #include "data.h"
 
 static int
+_compare(const struct idna_table *m1, const struct idna_table *m2)
+{
+  if (m1->start < m2->start)
+    return -1;
+  if (m1->start > m2->end)
+    return 1;
+  return 0;
+}
+
+static int
 property (uint32_t cp)
 {
-  const struct idna_table *p = idna_table;
+  const struct idna_table *result;
+  struct idna_table key;
 
-  while (p->start != 0 || p->end != 0)
-    {
-      if (p->end == 0 && p->start == cp)
-	return p->state;
-      else if (p->start <= cp && p->end >= cp)
-	return p->state;
-      p++;
-    }
+  key.start = cp;
 
-  abort ();
+  result = bsearch(&key, idna_table, idna_table_size,
+    sizeof(struct idna_table), (int(*)(const void *, const void *))_compare);
+
+  return result ? result->state : UNASSIGNED;
 }
 
 int

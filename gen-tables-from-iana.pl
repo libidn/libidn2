@@ -23,6 +23,7 @@ use strict;
 my ($intable) = 0;
 my ($filename) = "data.c";
 my ($line, $start, $end, $state);
+my ($tablesize) = 0;
 
 open(FH, ">$filename") or die "cannot open $filename for writing";
 
@@ -39,19 +40,21 @@ while(<>) {
 
     next if m,^    Codepoint    Property,;
     next if m,^ +PROSGEGRAMMENI$,;
+    next if m, UNASSIGNED ,;
 
-    if (m, +([0-9A-F]+)(-([0-9A-F]+))? (PVALID|CONTEXTJ|CONTEXTO|DISALLOWED|UNASSIGNED) ,) {
+    if (m, +([0-9A-F]+)(-([0-9A-F]+))? (PVALID|CONTEXTJ|CONTEXTO|DISALLOWED) ,) {
 	$start = $1;
 	$end = $3;
 	$state = $4;
 	printf FH "  {0x$start, 0x$end, $state},\n" if $end;
-	printf FH "  {0x$start, 0x0, $state},\n" if !$end;
+	printf FH "  {0x$start, 0x$start, $state},\n" if !$end;
+   $tablesize++;
     } else {
 	die "regexp failed on line: -->$_<--";
     }
 }
 
-printf FH "  {0x0, 0x0, 0}\n";
 print FH "};\n";
+print FH "const size_t idna_table_size = $tablesize;\n";
 
 close FH or die "cannot close $filename";

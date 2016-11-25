@@ -27,6 +27,7 @@
 */
 
 #include <stdint.h>
+#include <sys/types.h>
 
 enum
 {
@@ -41,3 +42,4 @@ struct idna_table
 };
 
 extern const struct idna_table idna_table[];
+extern const size_t idna_table_size;
