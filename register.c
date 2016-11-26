@@ -235,14 +235,18 @@ int
 idn2_register_ul (const char *ulabel, const char *alabel,
 		  char **insertname, int flags)
 {
-  uint8_t *utf8ulabel = u8_strconv_from_locale (ulabel);
+  uint8_t *utf8ulabel = NULL;
   int rc;
 
-  if (utf8ulabel == NULL)
+  if (ulabel)
     {
-      if (errno == ENOMEM)
-	return IDN2_MALLOC;
-      return IDN2_ICONV_FAIL;
+      utf8ulabel = u8_strconv_from_locale(ulabel);
+      if (utf8ulabel == NULL)
+        {
+	  if (errno == ENOMEM)
+	    return IDN2_MALLOC;
+	  return IDN2_ICONV_FAIL;
+	}
     }
 
   rc = idn2_register_u8 (utf8ulabel, (const uint8_t *) alabel,
