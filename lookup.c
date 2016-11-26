@@ -122,6 +122,9 @@ label (const uint8_t * src, size_t srclen, uint8_t * dst, size_t * dstlen,
  * testing.  Multiple flags may be specified by binary or:ing them
  * together, for example %IDN2_NFC_INPUT | %IDN2_ALABEL_ROUNDTRIP.
  *
+ * After version 0.11: @lookupname may be NULL to test lookup of @src
+ * without allocating memory.
+ *
  * Returns: On successful conversion %IDN2_OK is returned, if the
  *   output domain or any label would have been too long
  *   %IDN2_TOO_BIG_DOMAIN or %IDN2_TOO_BIG_LABEL is returned, or
@@ -131,14 +134,11 @@ int
 idn2_lookup_u8 (const uint8_t * src, uint8_t ** lookupname, int flags)
 {
   size_t lookupnamelen = 0;
+  uint8_t _lookupname[IDN2_DOMAIN_MAX_LENGTH + 1];
   int rc;
 
   if (src == NULL)
     return IDN2_OK;
-
-  *lookupname = malloc (IDN2_DOMAIN_MAX_LENGTH + 1);
-  if (*lookupname == NULL)
-    return IDN2_MALLOC;
 
   do
     {
@@ -151,37 +151,38 @@ idn2_lookup_u8 (const uint8_t * src, uint8_t ** lookupname, int flags)
 
       rc = label (src, labellen, tmp, &tmplen, flags);
       if (rc != IDN2_OK)
-	{
-	  free (*lookupname);
-	  return rc;
-	}
+	return rc;
 
       if (lookupnamelen + tmplen
 	  > IDN2_DOMAIN_MAX_LENGTH - (tmplen == 0 && *end == '\0' ? 1 : 2))
-	{
-	  free (*lookupname);
-	  return IDN2_TOO_BIG_DOMAIN;
-	}
+	return IDN2_TOO_BIG_DOMAIN;
 
-      memcpy (*lookupname + lookupnamelen, tmp, tmplen);
+      memcpy (_lookupname + lookupnamelen, tmp, tmplen);
       lookupnamelen += tmplen;
 
       if (*end == '.')
 	{
 	  if (lookupnamelen + 1 > IDN2_DOMAIN_MAX_LENGTH)
-	    {
-	      free (*lookupname);
-	      return IDN2_TOO_BIG_DOMAIN;
-	    }
+	    return IDN2_TOO_BIG_DOMAIN;
 
-	  (*lookupname)[lookupnamelen] = '.';
+	  _lookupname[lookupnamelen] = '.';
 	  lookupnamelen++;
 	}
-      (*lookupname)[lookupnamelen] = '\0';
+      _lookupname[lookupnamelen] = '\0';
 
       src = end;
     }
   while (*src++);
+
+  if (lookupname) {
+    uint8_t *tmp = malloc (lookupnamelen + 1);
+
+    if (_lookupname == NULL)
+      return IDN2_MALLOC;
+
+    memcpy (tmp, _lookupname, lookupnamelen + 1);
+    *lookupname = tmp;
+  }
 
   return IDN2_OK;
 }
@@ -199,6 +200,9 @@ idn2_lookup_u8 (const uint8_t * src, uint8_t ** lookupname, int flags)
  *
  * Pass %IDN2_ALABEL_ROUNDTRIP in @flags to convert any input A-labels
  * to U-labels and perform additional testing.
+ *
+ * After version 0.11: @lookupname may be NULL to test lookup of @src
+ * without allocating memory.
  *
  * Returns: On successful conversion %IDN2_OK is returned, if
  *   conversion from locale to UTF-8 fails then %IDN2_ICONV_FAIL is
