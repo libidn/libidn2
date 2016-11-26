@@ -59,6 +59,9 @@
  * in only @alabel is better than only @ulabel.  See RFC 5891 section
  * 4 for more information.
  *
+ * After version 0.11: @insertname may be NULL to test conversion of @src
+ * without allocating memory.
+ *
  * Returns: On successful conversion %IDN2_OK is returned, when the
  *   given @ulabel and @alabel does not match each other
  *   %IDN2_UALABEL_MISMATCH is returned, when either of the input
@@ -74,17 +77,10 @@ idn2_register_u8 (const uint8_t * ulabel, const uint8_t * alabel,
 
   if (ulabel == NULL && alabel == NULL)
     {
-      *insertname = NULL;
+      if (insertname)
+        *insertname = NULL;
       return IDN2_OK;
     }
-
-  if (ulabel && strlen (ulabel) >= IDN2_LABEL_MAX_LENGTH)
-    return IDN2_TOO_BIG_LABEL;
-  if (alabel && strlen (alabel) >= IDN2_LABEL_MAX_LENGTH)
-    return IDN2_TOO_BIG_LABEL;
-
-  if (alabel && !_idn2_ascii_p (alabel, strlen (alabel)))
-    return IDN2_INVALID_ALABEL;
 
   if (alabel)
     {
@@ -94,11 +90,17 @@ idn2_register_u8 (const uint8_t * ulabel, const uint8_t * alabel,
       uint8_t u8[IDN2_DOMAIN_MAX_LENGTH + 1];
       size_t u8len;
 
+      if (alabellen >= IDN2_LABEL_MAX_LENGTH)
+        return IDN2_TOO_BIG_LABEL;
+
       if (alabellen <= 4)
 	return IDN2_INVALID_ALABEL;
       if (alabel[0] != 'x'
 	  || alabel[1] != 'n' || alabel[2] != '-' || alabel[3] != '-')
 	return IDN2_INVALID_ALABEL;
+
+      if (!_idn2_ascii_p (alabel, alabellen))
+        return IDN2_INVALID_ALABEL;
 
       rc = _idn2_punycode_decode (alabellen - 4, alabel + 4,
 				  &u32len, u32, NULL);
@@ -125,31 +127,42 @@ idn2_register_u8 (const uint8_t * ulabel, const uint8_t * alabel,
       if (rc != 0)
 	return IDN2_UALABEL_MISMATCH;
 
-      *insertname = strdup (alabel);
+      if (insertname)
+	{
+          uint8_t *m = strdup (alabel);
+	  if (!m)
+	    return IDN2_MALLOC;
+
+          *insertname = m;
+        }
     }
   else				/* ulabel only */
     {
+      size_t ulabellen = strlen (ulabel);
       uint32_t *u32;
       size_t u32len;
       size_t tmpl;
+      uint8_t tmp[IDN2_LABEL_MAX_LENGTH + 1];
 
-      *insertname = malloc (IDN2_LABEL_MAX_LENGTH + 1);
-      if (*insertname == NULL)
-	return IDN2_MALLOC;
+      if (ulabel && ulabellen >= IDN2_LABEL_MAX_LENGTH)
+        return IDN2_TOO_BIG_LABEL;
 
-      if (_idn2_ascii_p (ulabel, strlen (ulabel)))
+      if (_idn2_ascii_p (ulabel, ulabellen))
 	{
-	  strcpy (*insertname, ulabel);
+	  if (insertname)
+	    {
+	      uint8_t *m = strdup (ulabel);
+	      if (!m)
+		return IDN2_MALLOC;
+	      *insertname = m;
+	    }
 	  return IDN2_OK;
 	}
 
-      rc = _idn2_u8_to_u32_nfc (ulabel, strlen (ulabel), &u32, &u32len,
+      rc = _idn2_u8_to_u32_nfc (ulabel, ulabellen, &u32, &u32len,
 				flags & IDN2_NFC_INPUT);
       if (rc != IDN2_OK)
-	{
-	  free (*insertname);
-	  return rc;
-	}
+	return rc;
 
       rc = _idn2_label_test (TEST_NFC
 			     | TEST_DISALLOWED
@@ -161,26 +174,30 @@ idn2_register_u8 (const uint8_t * ulabel, const uint8_t * alabel,
 			     | TEST_CONTEXTO_RULE | TEST_BIDI, u32, u32len);
       if (rc != IDN2_OK)
 	{
-	  free (*insertname);
 	  free (u32);
 	  return rc;
 	}
 
-      (*insertname)[0] = 'x';
-      (*insertname)[1] = 'n';
-      (*insertname)[2] = '-';
-      (*insertname)[3] = '-';
+      tmp[0] = 'x';
+      tmp[1] = 'n';
+      tmp[2] = '-';
+      tmp[3] = '-';
 
       tmpl = IDN2_LABEL_MAX_LENGTH - 4;
-      rc = _idn2_punycode_encode (u32len, u32, NULL, &tmpl, *insertname + 4);
+      rc = _idn2_punycode_encode (u32len, u32, NULL, &tmpl, tmp + 4);
       free (u32);
       if (rc != IDN2_OK)
-	{
-	  free (*insertname);
-	  return rc;
-	}
+	return rc;
 
-      (*insertname)[4 + tmpl] = '\0';
+      tmp[4 + tmpl] = '\0';
+
+      if (insertname)
+	{
+	  uint8_t *m = strdup(tmp);
+	  if (!m)
+	    return IDN2_MALLOC;
+	  *insertname = m;
+	}
     }
 
   return IDN2_OK;
@@ -203,6 +220,9 @@ idn2_register_u8 (const uint8_t * ulabel, const uint8_t * alabel,
  * error checking, but supplying just one of them will work.  Passing
  * in only @alabel is better than only @ulabel.  See RFC 5891 section
  * 4 for more information.
+ *
+ * After version 0.11: @insertname may be NULL to test conversion of @src
+ * without allocating memory.
  *
  * Returns: On successful conversion %IDN2_OK is returned, when the
  *   given @ulabel and @alabel does not match each other
