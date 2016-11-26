@@ -138,7 +138,11 @@ idn2_lookup_u8 (const uint8_t * src, uint8_t ** lookupname, int flags)
   int rc;
 
   if (src == NULL)
-    return IDN2_OK;
+    {
+      if (lookupname)
+        *lookupname = NULL;
+      return IDN2_OK;
+    }
 
   do
     {
@@ -213,14 +217,18 @@ idn2_lookup_u8 (const uint8_t * src, uint8_t ** lookupname, int flags)
 int
 idn2_lookup_ul (const char *src, char **lookupname, int flags)
 {
-  uint8_t *utf8src = u8_strconv_from_locale (src);
+  uint8_t *utf8src = NULL;
   int rc;
 
-  if (utf8src == NULL)
+  if (src)
     {
-      if (errno == ENOMEM)
-	return IDN2_MALLOC;
-      return IDN2_ICONV_FAIL;
+      utf8src = u8_strconv_from_locale (src);
+      if (utf8src == NULL)
+        {
+	  if (errno == ENOMEM)
+	    return IDN2_MALLOC;
+          return IDN2_ICONV_FAIL;
+	}
     }
 
   rc = idn2_lookup_u8 (utf8src, (uint8_t **) lookupname,
