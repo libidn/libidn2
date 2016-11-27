@@ -100,6 +100,8 @@ extern "C"
   {
     IDN2_NFC_INPUT = 1,
     IDN2_ALABEL_ROUNDTRIP = 2,
+    IDN2_TRANSITIONAL = 4,
+    IDN2_NONTRANSITIONAL = 8,
   } idn2_flags;
 
 /* IDNA2008 with UTF-8 encoded inputs. */
@@ -135,6 +137,7 @@ extern "C"
  * @IDN2_TOO_BIG_LABEL: Domain label longer than 63 characters.
  * @IDN2_INVALID_ALABEL: Input A-label is not valid.
  * @IDN2_UALABEL_MISMATCH: Input A-label and U-label does not match.
+ * @IDN2_INVALID_FLAGS: Invalid combination of flags.
  * @IDN2_NOT_NFC: String is not NFC.
  * @IDN2_2HYPHEN: String has forbidden two hyphens.
  * @IDN2_HYPHEN_STARTEND: String has forbidden starting/ending hyphen.
@@ -146,6 +149,9 @@ extern "C"
  * @IDN2_CONTEXTO_NO_RULE: String has context-o character with no rull.
  * @IDN2_UNASSIGNED: String has forbidden unassigned character.
  * @IDN2_BIDI: String has forbidden bi-directional properties.
+ * @IDN2_DOT_IN_LABEL: Label has forbidden dot (TR46).
+ * @IDN2_INVALID_TRANSITIONAL: Label has character forbidden in transitional mode (TR46).
+ * @IDN2_INVALID_NONTRANSITIONAL: Label has character forbidden in non-transitional mode (TR46).
  *
  * Return codes for IDN2 functions.  All return codes are negative
  * except for the successful code IDN2_OK which are guaranteed to be
@@ -169,6 +175,7 @@ extern "C"
     IDN2_TOO_BIG_LABEL = -206,
     IDN2_INVALID_ALABEL = -207,
     IDN2_UALABEL_MISMATCH = -208,
+    IDN2_INVALID_FLAGS = -209,
     IDN2_NOT_NFC = -300,
     IDN2_2HYPHEN = -301,
     IDN2_HYPHEN_STARTEND = -302,
@@ -179,7 +186,10 @@ extern "C"
     IDN2_CONTEXTO = -307,
     IDN2_CONTEXTO_NO_RULE = -308,
     IDN2_UNASSIGNED = -309,
-    IDN2_BIDI = -310
+    IDN2_BIDI = -310,
+    IDN2_DOT_IN_LABEL = -311,
+    IDN2_INVALID_TRANSITIONAL = -312,
+    IDN2_INVALID_NONTRANSITIONAL = -313,
   } idn2_rc;
 
 /* Auxilliary functions. */

@@ -84,7 +84,7 @@ idn2_register_u8 (const uint8_t * ulabel, const uint8_t * alabel,
 
   if (alabel)
     {
-      size_t alabellen = strlen (alabel), u32len = IDN2_LABEL_MAX_LENGTH * 4;
+      size_t alabellen = u8_strlen (alabel), u32len = IDN2_LABEL_MAX_LENGTH * 4;
       uint32_t u32[IDN2_DOMAIN_MAX_LENGTH * 4];
       uint8_t *tmp;
       uint8_t u8[IDN2_DOMAIN_MAX_LENGTH + 1];
@@ -138,7 +138,7 @@ idn2_register_u8 (const uint8_t * ulabel, const uint8_t * alabel,
     }
   else				/* ulabel only */
     {
-      size_t ulabellen = strlen (ulabel);
+      size_t ulabellen = u8_strlen (ulabel);
       uint32_t *u32;
       size_t u32len;
       size_t tmpl;

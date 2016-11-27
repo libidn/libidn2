@@ -36,6 +36,7 @@
 #include "bidi.h"
 #include "tables.h"
 #include "context.h"
+#include "tr46map.h"
 
 #include <unictype.h>		/* uc_is_general_category, UC_CATEGORY_M */
 #include <uninorm.h>		/* u32_normalize */
@@ -203,6 +204,31 @@ _idn2_label_test (int what, const uint32_t * label, size_t llen)
       int rc = _idn2_bidi (label, llen);
       if (rc != IDN2_OK)
 	return rc;
+    }
+
+  if (what & (TEST_TRANSITIONAL | TEST_NONTRANSITIONAL))
+    {
+      size_t i;
+      int transitional = what & TEST_TRANSITIONAL;
+
+      /* TR46: 4. The label must not contain a U+002E ( . ) FULL STOP */
+      for (i = 0; i < llen; i++)
+	if (label[i] == 0x002E)
+	  return IDN2_DOT_IN_LABEL;
+
+      /* TR46: 6. Each code point in the label must only have certain status
+       * values according to Section 5, IDNA Mapping Table:
+       *    a. For Transitional Processing, each value must be valid.
+       *    b. For Nontransitional Processing, each value must be either valid or deviation. */
+      for (i = 0; i < llen; i++)
+	{
+	  IDNAMap *map = _get_map(label[i]);
+
+	  if (map->valid || (map->deviation && !transitional))
+	    continue;
+
+	  return transitional ? IDN2_INVALID_TRANSITIONAL : IDN2_INVALID_NONTRANSITIONAL;
+	}
     }
 
   return IDN2_OK;

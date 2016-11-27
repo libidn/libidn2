@@ -38,21 +38,42 @@ libidn2_la_SOURCES += error.c
 libidn2_la_SOURCES += punycode.h punycode.c
 libidn2_la_SOURCES += free.c
 libidn2_la_SOURCES += data.h data.c
+libidn2_la_SOURCES += tr46map.h tr46map.c
 libidn2_la_SOURCES += tables.h tables.c
 libidn2_la_SOURCES += context.h context.c
 libidn2_la_LIBADD = gl/libgnu.la
 libidn2_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) -no-undefined
 
-BUILT_SOURCES = data.c
-EXTRA_DIST += gen-tables-from-iana.pl
+BUILT_SOURCES = data.c tr46map.c
+EXTRA_DIST += gen-tables-from-iana.pl gentr46map.c
 IDNA_TABLE = idna-tables-6.3.0.txt
 IANA_URL = https://ftp.iana.org/assignments/idna-tables-6.3.0/$(IDNA_TABLE)
+TR46MAP = IdnaMappingTable.txt
+TR46MAP_URL = http://www.unicode.org/Public/idna/6.3.0/IdnaMappingTable.txt
+NFCQC = DerivedNormalizationProps.txt
+NFCQC_URL = http://www.unicode.org/Public/6.3.0/ucd/DerivedNormalizationProps.txt
 
-data.c: $(srcdir)/gen-tables-from-iana.pl
-# let's keep the original data table for development
-	test -s $(IDNA_TABLE) || wget $(IANA_URL)
+data.c: $(srcdir)/gen-tables-from-iana.pl $(IDNA_TABLE)
 	cat $(IDNA_TABLE) | $(srcdir)/gen-tables-from-iana.pl
+
+$(IDNA_TABLE):
+	rm -f $(IDNA_TABLE)
+	wget $(IANA_URL)
+
+$(TR46MAP):
+	rm -f $(TR46MAP)
+	wget $(TR46MAP_URL)
+
+$(NFCQC):
+	rm -f $(NFCQC)
+	wget $(NFCQC_URL)
+
+tr46map.c: $(srcdir)/gentr46map $(TR46MAP) $(NFCQC)
+	$(srcdir)/gentr46map >tr46map.c
+
+gentr46map: $(srcdir)/gentr46map.c
+	$(CC) -Wall gentr46map.c -o gentr46map
 
 TLD_URL = https://www.iana.org/domains/root/db/
 tv.c: $(srcdir)/gen-idn-tld-tv.pl

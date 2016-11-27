@@ -37,8 +37,10 @@
 
 #include "uniconv.h"		/* u8_strconv_from_locale */
 #include "uninorm.h"		/* u32_normalize */
+#include "unistr.h"		/* u32_to_u8, u8_to_u32 */
 
 #include "idna.h"		/* _idn2_label_test */
+#include "tr46map.h"		/* defintion for tr46map.c */
 
 static int
 label (const uint8_t * src, size_t srclen, uint8_t * dst, size_t * dstlen,
@@ -106,6 +108,179 @@ label (const uint8_t * src, size_t srclen, uint8_t * dst, size_t * dstlen,
   return IDN2_OK;
 }
 
+/*// _isNFC() is described at http://unicode.org/reports/tr15/#Detecting_Normalization_Forms
+static int
+_isNFC(uint32_t *label, size_t len)
+{
+  int lastCanonicalClass = 0;
+  int result = 1;
+
+  for (size_t it = 0; it < len; it++) {
+    uint32_t ch = label[it];
+
+    // supplementary code point
+    if (ch >= 0x10000)
+      continue;
+
+    int canonicalClass = uc_combining_class(ch);
+    if (lastCanonicalClass > canonicalClass && canonicalClass != 0)
+      return 0;
+
+    NFCQCMap *map = _get_nfcqc_map(ch);
+    if (map) {
+      if (map->check == 0)
+	return 0;
+      result = -1;
+    }
+
+    lastCanonicalClass = canonicalClass;
+  }
+
+  return result;
+}
+*/
+#define TR46_TRANSITIONAL_CHECK \
+  (TEST_NFC | TEST_2HYPHEN | TEST_HYPHEN_STARTEND | TEST_LEADING_COMBINING | TEST_TRANSITIONAL)
+#define TR46_NONTRANSITIONAL_CHECK \
+  (TEST_NFC | TEST_2HYPHEN | TEST_HYPHEN_STARTEND | TEST_LEADING_COMBINING | TEST_NONTRANSITIONAL)
+
+static int
+_tr46 (const uint8_t *domain_u8, uint8_t **out, int transitional)
+{
+  size_t len, it, it2;
+  uint32_t *domain_u32;
+  int err = IDN2_OK, rc;
+
+  /* convert UTF-8 to UTF-32 */
+  if (!(domain_u32 = u8_to_u32(domain_u8, u8_strlen(domain_u8) + 1, NULL, &len)))
+    {
+      if (errno == ENOMEM)
+	return IDN2_MALLOC;
+      return IDN2_ENCODING_ERROR;
+    }
+
+  size_t len2 = 0;
+  for (it = 0; it < len; it++) {
+    IDNAMap *map = _get_map(domain_u32[it]);
+
+    if (!map || map->disallowed) {
+      if (domain_u32[it]) {
+	free(domain_u32);
+	return IDN2_DISALLOWED;
+      }
+      len2++;
+    } else if (map->mapped) {
+      len2 += map->nmappings;
+    } else if (map->valid) {
+      len2++;
+    } else if (map->ignored) {
+      continue;
+    } else if (map->deviation) {
+      if (transitional) {
+	len2 += map->nmappings;
+      } else
+	len2++;
+    }
+  }
+
+  uint32_t *tmp = malloc(len2 * sizeof (uint32_t));
+
+  len2 = 0;
+  for (it = 0; it < len; it++) {
+    uint32_t c = domain_u32[it];
+    IDNAMap *map = _get_map(c);
+
+    if (!map || map->disallowed) {
+      tmp[len2++] = c;
+    } else if (map->mapped) {
+      for (it2 = 0; it2 < map->nmappings; it2++)
+	tmp[len2++] = mapdata[map->offset + it2];
+    } else if (map->valid) {
+      tmp[len2++] = c;
+    } else if (map->ignored) {
+      continue;
+    } else if (map->deviation) {
+      if (transitional) {
+	for (it2 = 0; it2 < map->nmappings; it2++)
+	  tmp[len2++] = mapdata[map->offset + it2];
+      } else
+	tmp[len2++] = c;
+    }
+  }
+  free(domain_u32);
+
+  /* Normalize to NFC */
+  domain_u32 = u32_normalize(UNINORM_NFC, tmp, len2, NULL, &len);
+  free(tmp);
+  tmp = NULL;
+
+  if (!domain_u32) {
+    if (errno == ENOMEM)
+      return IDN2_MALLOC;
+    return IDN2_ENCODING_ERROR;
+  }
+
+  /* split into labels and check */
+  uint32_t *e, *s;
+  e = s = domain_u32;
+  for (e = s = domain_u32; *e; s = e) {
+    while (*e && *e != '.') e++;
+
+    if (e - s >= 4 && s[0] == 'x' && s[1] == 'n' && s[2] == '-' && s[3] == '-') {
+      /* decode punycode and check result non-transitional */
+      size_t ace_len;
+      uint32_t name_u32[IDN2_LABEL_MAX_LENGTH];
+      size_t name_len = IDN2_LABEL_MAX_LENGTH;
+      uint8_t *ace;
+
+      ace = u32_to_u8(s + 4, e - s - 4, NULL, &ace_len);
+      if (!ace) {
+	free(domain_u32);
+	if (errno == ENOMEM)
+	  return IDN2_MALLOC;
+	return IDN2_ENCODING_ERROR;
+      }
+
+      rc = _idn2_punycode_decode (ace_len, (char *) ace, &name_len, name_u32, NULL);
+
+      free(ace);
+
+      if (rc)
+	{
+	  free(domain_u32);
+	  return rc;
+	}
+
+      if ((rc = _idn2_label_test(TR46_NONTRANSITIONAL_CHECK, name_u32, name_len)))
+	err = rc;
+    } else {
+      if ((rc = _idn2_label_test(transitional ? TR46_TRANSITIONAL_CHECK : TR46_NONTRANSITIONAL_CHECK, s, e - s)))
+	err = rc;
+    }
+
+    if (*e)
+      e++;
+  }
+
+  if (err == IDN2_OK && out)
+    {
+      uint8_t *_out = u32_to_u8(domain_u32, len, NULL, &len);
+      free(domain_u32);
+
+      if (!_out) {
+	if (errno == ENOMEM)
+	  return IDN2_MALLOC;
+	return IDN2_ENCODING_ERROR;
+      }
+
+      *out = _out;
+    }
+  else
+    free(domain_u32);
+
+  return err;
+}
+
 /**
  * idn2_lookup_u8:
  * @src: input zero-terminated UTF-8 string in Unicode NFC normalized form.
@@ -135,7 +310,8 @@ idn2_lookup_u8 (const uint8_t * src, uint8_t ** lookupname, int flags)
 {
   size_t lookupnamelen = 0;
   uint8_t _lookupname[IDN2_DOMAIN_MAX_LENGTH + 1];
-  int rc;
+  uint8_t _mapped[IDN2_DOMAIN_MAX_LENGTH + 1];
+  int rc, tr46_mode = 0;
 
   if (src == NULL)
     {
@@ -144,9 +320,38 @@ idn2_lookup_u8 (const uint8_t * src, uint8_t ** lookupname, int flags)
       return IDN2_OK;
     }
 
+  if ((flags & (IDN2_TRANSITIONAL|IDN2_NONTRANSITIONAL)) == (IDN2_TRANSITIONAL|IDN2_NONTRANSITIONAL))
+    return IDN2_INVALID_FLAGS;
+
+  if (flags & IDN2_TRANSITIONAL)
+    tr46_mode = IDN2_TRANSITIONAL;
+  else if (flags & IDN2_NONTRANSITIONAL)
+    tr46_mode = IDN2_NONTRANSITIONAL;
+
+  if (tr46_mode)
+    {
+      uint8_t *out;
+      size_t outlen;
+
+      rc = _tr46 (src, &out, tr46_mode == IDN2_TRANSITIONAL);
+      if (rc != IDN2_OK)
+	return rc;
+
+      outlen = u8_strlen(out);
+      if (outlen >= sizeof(_mapped))
+	{
+	  free(out);
+	  return IDN2_TOO_BIG_DOMAIN;
+	}
+
+      memcpy(_mapped, out, outlen + 1);
+      src = _mapped;
+      free(out);
+    }
+
   do
     {
-      const uint8_t *end = strchrnul ((const char *) src, '.');
+      const uint8_t *end = (uint8_t *) strchrnul ((const char *) src, '.');
       /* XXX Do we care about non-U+002E dots such as U+3002, U+FF0E
          and U+FF61 here?  Perhaps when IDN2_NFC_INPUT? */
       size_t labellen = end - src;
