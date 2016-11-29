@@ -27,7 +27,8 @@ AC_SUBST(LT_AGE, 0)
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
-AM_INIT_AUTOMAKE([-Wall -Werror])
+AM_INIT_AUTOMAKE([-Wall -Werror subdir-objects])
+AC_CANONICAL_HOST
 
 AC_PROG_CC
 gl_EARLY
@@ -36,6 +37,21 @@ LT_INIT([win32-dll])
 gl_INIT
 GTK_DOC_CHECK(1.1)
 AM_MISSING_PROG(HELP2MAN, help2man, $missing_dir)
+
+#
+# Gettext
+#
+m4_ifdef([AM_GNU_GETTEXT], [
+  AM_GNU_GETTEXT([external],[need-ngettext])
+  AC_CONFIG_FILES([po/Makefile.in])
+  AM_CONDITIONAL([HAVE_PO], [true])
+], [
+  AM_CONDITIONAL([HAVE_PO], [false])
+])
+m4_ifdef([AM_GNU_GETTEXT_VERSION], [
+#do not indent here
+AM_GNU_GETTEXT_VERSION([0.19.8])
+])
 
 AC_ARG_ENABLE([gcc-warnings],
   [AS_HELP_STRING([--enable-gcc-warnings],
@@ -71,7 +87,7 @@ if test "$gl_gcc_warnings" = yes; then
   gl_WARN_ADD([-fdiagnostics-show-option])
 fi
 
-AC_CONFIG_SUBDIRS([src])
+#AC_CONFIG_SUBDIRS([src])
 
 AC_CONFIG_FILES([
   Makefile
@@ -80,7 +96,19 @@ AC_CONFIG_FILES([
   doc/reference/Makefile
   doc/reference/version.xml
   examples/Makefile
-  gl/Makefile
+  lib/Makefile
   tests/Makefile
+  src/Makefile
 ])
 AC_OUTPUT
+
+AC_MSG_NOTICE([Summary of build options:
+  Version:           ${PACKAGE_VERSION}
+  Host OS:           ${host_os}
+  Install prefix:    ${prefix}
+  Compiler:          ${CC}
+  CFlags:            ${CFLAGS} ${CPPFLAGS} ${WARN_CFLAGS}
+  LDFlags:           ${LDFLAGS}
+  Libs:              ${LIBS}
+  Tests:             ${TESTS_INFO}
+])

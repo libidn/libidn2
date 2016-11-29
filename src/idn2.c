@@ -16,7 +16,6 @@
 */
 
 #include <config.h>
-#include "configmake.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -27,6 +26,7 @@
 
 #include <idn2.h>
 
+#include <unitypes.h>
 #include <uniconv.h>
 #include <unistr.h>
 

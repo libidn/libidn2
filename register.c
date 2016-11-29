@@ -35,8 +35,9 @@
 
 #include "punycode.h"
 
-#include "uniconv.h"		/* u8_strconv_from_locale */
-#include "unistr.h"		/* u32_to_u8 */
+#include <unitypes.h>
+#include <uniconv.h>		/* u8_strconv_from_locale */
+#include <unistr.h>		/* u32_to_u8 */
 
 #include "idna.h"		/* _idn2_label_test */
 

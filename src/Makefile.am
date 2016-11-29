@@ -13,25 +13,26 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-SUBDIRS = gl
-ACLOCAL_AMFLAGS = -I ../m4 -I gl/m4
-EXTRA_DIST = gl/m4/gnulib-cache.m4
+DEFS = @DEFS@ -DLOCALEDIR=\"$(localedir)\"
 
-AM_CPPFLAGS = -I.
-AM_CPPFLAGS += -I$(srcdir)/.. -I$(builddir)/..
-AM_CPPFLAGS += -I$(srcdir)/../gl -I$(builddir)/../gl
-AM_CPPFLAGS += -I$(srcdir)/gl -I$(builddir)/gl
+AM_CPPFLAGS = -I$(top_srcdir) -I$(srcdir) -I$(top_builddir)/lib -I$(top_srcdir)/lib
 AM_CFLAGS = $(WARN_CFLAGS)
 
-bin_PROGRAMS = idn2
-idn2_SOURCES = idn2.c blurbs.h
-idn2_LDADD = libidn2_cmd.la ../libidn2.la gl/libgnu.la
+bin_PROGRAMS = idn2 idn2_noinstall
 
-idn2.c: $(BUILT_SOURCES)
+idn2_SOURCES = idn2.c blurbs.h $(BUILT_SOURCES)
+idn2_LDADD = libidn2_cmd.la ../libidn2.la $(LIBS)
+
+# have idn2_noinstall linked with local libidn2 for testing
+idn2_noinstall_SOURCES = $(idn2_SOURCES)
+idn2_noinstall_LDFLAGS = -no-install
+idn2_noinstall_LDADD = $(idn2_LDADD)
+
+#idn2.c: $(BUILT_SOURCES)
 
 noinst_LTLIBRARIES = libidn2_cmd.la
 libidn2_cmd_la_SOURCES =  idn2.ggo idn2_cmd.c idn2_cmd.h
-libidn2_cmd_la_LIBADD = ../gl/libgnu.la gl/libgnu.la
+libidn2_cmd_la_LIBADD = ../lib/libgnu.la
 libidn2_cmd_la_CFLAGS =
 
 idn2_cmd.c idn2_cmd.h: idn2.ggo Makefile.am

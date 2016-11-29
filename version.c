@@ -32,6 +32,10 @@
 
 #include <string.h>		/* strverscmp */
 
+const char version_etc_copyright[] =
+  /* Do *not* mark this string for translation */
+  "Copyright (C) 2011-2016  Simon Josefsson";
+
 /**
  * idn2_check_version:
  * @req_version: version string to compare with, or NULL.

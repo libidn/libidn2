@@ -35,9 +35,10 @@
 
 #include "punycode.h"
 
-#include "uniconv.h"		/* u8_strconv_from_locale */
-#include "uninorm.h"		/* u32_normalize */
-#include "unistr.h"		/* u32_to_u8, u8_to_u32 */
+#include <unitypes.h>
+#include <uniconv.h>		/* u8_strconv_from_locale */
+#include <uninorm.h>		/* u32_normalize */
+#include <unistr.h>		/* u8_to_u32 */
 
 #include "idna.h"		/* _idn2_label_test */
 #include "tr46map.h"		/* defintion for tr46map.c */

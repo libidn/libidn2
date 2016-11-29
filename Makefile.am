@@ -15,12 +15,12 @@
 
 DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc
 
-SUBDIRS = gl . src doc examples tests
-ACLOCAL_AMFLAGS = -I m4 -I gl/m4
-EXTRA_DIST = gl/m4/gnulib-cache.m4
+SUBDIRS = lib . src doc examples tests po
+ACLOCAL_AMFLAGS = -I m4
+EXTRA_DIST = m4/gnulib-cache.m4
 
 AM_CPPFLAGS = -DIDN2_BUILDING
-AM_CPPFLAGS += -I$(srcdir)/gl -I$(builddir)/gl
+AM_CPPFLAGS += -I$(top_builddir)/lib -I$(top_srcdir)/lib
 AM_CFLAGS = $(WARN_CFLAGS)
 AM_CFLAGS += $(CFLAG_VISIBILITY)
 
@@ -41,7 +41,7 @@ libidn2_la_SOURCES += data.h data.c
 libidn2_la_SOURCES += tr46map.h tr46map.c
 libidn2_la_SOURCES += tables.h tables.c
 libidn2_la_SOURCES += context.h context.c
-libidn2_la_LIBADD = gl/libgnu.la
+libidn2_la_LIBADD = $(LTLIBICONV) $(LTLIBINTL) $(LTLIBUNISTRING) lib/libgnu.la
 libidn2_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) -no-undefined
 

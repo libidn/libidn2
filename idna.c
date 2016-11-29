@@ -38,6 +38,7 @@
 #include "context.h"
 #include "tr46map.h"
 
+#include <unitypes.h>
 #include <unictype.h>		/* uc_is_general_category, UC_CATEGORY_M */
 #include <uninorm.h>		/* u32_normalize */
 #include <unistr.h>		/* u8_to_u32 */
