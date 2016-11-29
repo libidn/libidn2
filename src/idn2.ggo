@@ -15,5 +15,7 @@
 
 option "lookup" l "Lookup domain name (default)" no
 option "register" r "Register label" no
+option "tr46t" T "Enable TR46 transitional processing" flag off
+option "tr46nt" N "Eable TR46 non-transitional processing" flag off
 option "debug" - "Print debugging information" flag off
 option "quiet" - "Silent operation" flag off

@@ -88,6 +88,10 @@ Mandatory arguments to long options are mandatory for short options too.\n\
   -r, --register           Register label\n\
 "), stdout);
       fputs (_("\
+  -T, --tr46t              Enable TR46 transitional processing\n\
+  -N, --tr46nt             Enable TR46 non-transitional processing\n\
+"), stdout);
+      fputs (_("\
       --debug              Print debugging information\n\
       --quiet              Silent operation\n\
 "), stdout);
@@ -126,7 +130,7 @@ hexdump (const char *prefix, const char *str)
 static struct gengetopt_args_info args_info;
 
 static void
-process_input(char *readbuf)
+process_input(char *readbuf, int flags)
 {
   size_t len = strlen(readbuf);
   char *output;
@@ -147,9 +151,9 @@ process_input(char *readbuf)
     hexdump("input", readbuf);
 
   if (args_info.register_given)
-    rc = idn2_register_ul(readbuf, NULL, &output, 0);
+    rc = idn2_register_ul(readbuf, NULL, &output, flags);
   else
-    rc = idn2_lookup_ul(readbuf, &output, 0);
+    rc = idn2_lookup_ul(readbuf, &output, flags);
 
   if (rc == IDN2_OK) {
     if (args_info.debug_given)
@@ -167,6 +171,7 @@ int
 main (int argc, char *argv[])
 {
   unsigned cmdn;
+  int flags = 0;
 
   setlocale (LC_ALL, "");
   set_program_name (argv[0]);
@@ -198,8 +203,13 @@ main (int argc, char *argv[])
     fprintf (stderr, "%s", _("Type each input string on a line by itself, "
 			     "terminated by a newline character.\n"));
 
+  if (args_info.tr46t_given)
+    flags = IDN2_TRANSITIONAL;
+  else if (args_info.tr46nt_given)
+    flags = IDN2_NONTRANSITIONAL;
+
   for (cmdn = 0; cmdn < args_info.inputs_num; cmdn++)
-    process_input(args_info.inputs[cmdn]);
+    process_input(args_info.inputs[cmdn], flags);
 
   if (!cmdn)
     {
@@ -207,13 +217,15 @@ main (int argc, char *argv[])
       size_t bufsize = 0;
 
       while (getline (&buf, &bufsize, stdin) > 0)
-        process_input(buf);
+        process_input(buf, flags);
 
       free(buf);
     }
 
   if (ferror (stdin))
     error (EXIT_FAILURE, errno, "%s", _("input error"));
+
+  cmdline_parser_free(&args_info);
 
   return EXIT_SUCCESS;
 }
