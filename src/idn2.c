@@ -123,12 +123,50 @@ hexdump (const char *prefix, const char *str)
 	       prefix, (unsigned long) i, u32[i]);
 }
 
+static struct gengetopt_args_info args_info;
+
+static void
+process_input(char *readbuf)
+{
+  size_t len = strlen(readbuf);
+  char *output;
+  int rc;
+
+  if (len && readbuf[len - 1] == '\n')
+    readbuf[len - 1] = '\0';
+
+  if (strcmp(readbuf, "show w") == 0) {
+    puts(WARRANTY);
+    return;
+  } else if (strcmp(readbuf, "show c") == 0) {
+    puts(CONDITIONS);
+    return;
+  }
+
+  if (args_info.debug_given)
+    hexdump("input", readbuf);
+
+  if (args_info.register_given)
+    rc = idn2_register_ul(readbuf, NULL, &output, 0);
+  else
+    rc = idn2_lookup_ul(readbuf, &output, 0);
+
+  if (rc == IDN2_OK) {
+    if (args_info.debug_given)
+      hexdump("output", readbuf);
+
+    printf("%s\n", output);
+    free(output);
+  } else
+    error(EXIT_FAILURE, 0, "%s: %s",
+      args_info.register_given ? "register" : "lookup",
+      idn2_strerror(rc));
+}
+
 int
 main (int argc, char *argv[])
 {
-  struct gengetopt_args_info args_info;
-  char readbuf[BUFSIZ];
-  unsigned cmdn = 0;
+  unsigned cmdn;
 
   setlocale (LC_ALL, "");
   set_program_name (argv[0]);
@@ -160,61 +198,22 @@ main (int argc, char *argv[])
     fprintf (stderr, "%s", _("Type each input string on a line by itself, "
 			     "terminated by a newline character.\n"));
 
-  do
+  for (cmdn = 0; cmdn < args_info.inputs_num; cmdn++)
+    process_input(args_info.inputs[cmdn]);
+
+  if (!cmdn)
     {
-      char *output;
-      int rc;
+      char *buf = NULL;
+      size_t bufsize = 0;
 
-      if (cmdn < args_info.inputs_num)
-	{
-	  strncpy (readbuf, args_info.inputs[cmdn++], BUFSIZ - 1);
-	  readbuf[BUFSIZ - 1] = '\0';
-	}
-      else if (fgets (readbuf, BUFSIZ, stdin) == NULL)
-	{
-	  if (feof (stdin))
-	    break;
+      while (getline (&buf, &bufsize, stdin) > 0)
+        process_input(buf);
 
-	  error (EXIT_FAILURE, errno, "%s", _("input error"));
-	}
-
-      if (strlen(readbuf) > 0 && readbuf[strlen (readbuf) - 1] == '\n' )
-	readbuf[strlen (readbuf) - 1] = '\0';
-
-      if (strcmp (readbuf, "show w") == 0)
-	{
-	  puts (WARRANTY);
-	  continue;
-	}
-      else if (strcmp (readbuf, "show c") == 0)
-	{
-	  puts (CONDITIONS);
-	  continue;
-	}
-
-      if (args_info.debug_given)
-	hexdump ("input", readbuf);
-
-      if (args_info.register_given)
-	rc = idn2_register_ul (readbuf, NULL, &output, 0);
-      else
-	rc = idn2_lookup_ul (readbuf, &output, 0);
-
-      if (rc == IDN2_OK)
-	{
-	  if (args_info.debug_given)
-	    hexdump ("output", readbuf);
-
-	  printf ("%s\n", output);
-	  free (output);
-	}
-      else
-	error (EXIT_FAILURE, 0, "%s: %s",
-	       args_info.register_given ? "register" : "lookup",
-	       idn2_strerror (rc));
+      free(buf);
     }
-  while (!feof (stdin) && !ferror (stdin) && (args_info.inputs_num == 0 ||
-					      cmdn < args_info.inputs_num));
+
+  if (ferror (stdin))
+    error (EXIT_FAILURE, errno, "%s", _("input error"));
 
   return EXIT_SUCCESS;
 }
