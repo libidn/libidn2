@@ -16,7 +16,7 @@
 AM_CPPFLAGS = -I$(top_srcdir) -I$(top_builddir)
 AM_LDFLAGS = -no-install
 
-LDADD = ../libidn2.la
+LDADD = ../libidn2.la -lunistring
 
 TESTS = test-punycode test-lookup test-register
 check_PROGRAMS = test-punycode test-lookup test-register
