@@ -23,8 +23,6 @@ check_PROGRAMS = test-punycode test-lookup test-register
 
 test_lookup_SOURCES = test-lookup.c IdnaTest.inc
 
-TESTS_ENVIRONMENT = $(VALGRIND)
-
 EXTRA_DIST = IdnaTest.txt gen-utc-test.pl
 
 IdnaTest.txt:

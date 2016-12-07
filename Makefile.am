@@ -87,3 +87,7 @@ endif
 
 backup:
 	rsync -av . jas@yxa-vi.extundo.com:libidn2
+
+check-valgrind:
+	TESTS_ENVIRONMENT="valgrind --error-exitcode=301 --leak-check=yes --show-reachable=yes --track-origins=yes" $(MAKE) check
+
