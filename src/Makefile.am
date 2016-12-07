@@ -43,4 +43,4 @@ idn2_cmd.c idn2_cmd.h: idn2.ggo Makefile.am
 	perl -pi -e 's/\[FILES\]/\[STRING\]/g' idn2_cmd.c
 
 BUILT_SOURCES = idn2_cmd.c idn2_cmd.h
-MAINTAINERCLEANFILES = $(BUILT_SOURCES)
+CLEANFILES = $(BUILT_SOURCES)
