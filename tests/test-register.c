@@ -164,8 +164,8 @@ main (void)
 	  if (strcmp (out, tmp) != 0)
 	    fail ("lookup and register different? lookup %s register %s\n",
 		  tmp, out);
-	  free (tmp);
-	  free (out);
+	  idn2_free (tmp);
+	  idn2_free (out);
 	}
     }
   puts ("-----------------------------------------------------------"

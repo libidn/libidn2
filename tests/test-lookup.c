@@ -887,7 +887,7 @@ test_homebrewed(void)
 	ok++;
 
       if (rc == IDN2_OK)
-	free (out);
+	idn2_free (out);
 
       if (failed && break_on_error)
 	exit (EXIT_FAILURE);
@@ -976,7 +976,7 @@ _check_toASCII(char *source, char *expected, int transitional, int expected_toAS
   }
 
   if (rc == IDN2_OK)
-    free(ace);
+    idn2_free(ace);
 }
 
 static int
