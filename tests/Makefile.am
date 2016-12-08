@@ -18,8 +18,8 @@ AM_LDFLAGS = -no-install
 
 LDADD = ../libidn2.la -lunistring
 
-TESTS = test-punycode test-lookup test-register
-check_PROGRAMS = test-punycode test-lookup test-register
+TESTS = test-punycode test-lookup test-register test-strerror
+check_PROGRAMS = $(TESTS)
 
 test_lookup_SOURCES = test-lookup.c IdnaTest.inc
 
