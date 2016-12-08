@@ -892,6 +892,39 @@ test_homebrewed(void)
       if (failed && break_on_error)
 	exit (EXIT_FAILURE);
     }
+
+  /* special calls to cover edge cases */
+  if ((rc = idn2_lookup_u8 (NULL, NULL, 0)) != IDN2_OK) {
+    failed++;
+    printf("special #1 failed with %d\n", rc);
+  } else
+    ok++;
+
+  out = (void *) 0x123;
+  if ((rc = idn2_lookup_u8 (NULL, &out, 0)) != IDN2_OK) {
+    failed++;
+    printf("special #2 failed with %d\n", rc);
+  } else if (out) {
+    failed++;
+    printf("special #2 failed with out!=NULL\n");
+  } else
+    ok++;
+
+  if ((rc = idn2_lookup_ul (NULL, NULL, 0)) != IDN2_OK) {
+    failed++;
+    printf("special #3 failed with %d\n", rc);
+  } else
+    ok++;
+
+  out = (void *) 0x123;
+  if ((rc = idn2_lookup_ul (NULL, (char **) &out, 0)) != IDN2_OK) {
+    failed++;
+    printf("special #4 failed with %d\n", rc);
+  } else if (out) {
+    failed++;
+    printf("special #2 failed with out!=NULL\n");
+  } else
+    ok++;
 }
 
 // decode embedded UTF-16/32 sequences
