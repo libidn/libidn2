@@ -45,6 +45,42 @@
 
 #include "idna.h"
 
+/*
+ * NFC Quick Check from http://unicode.org/reports/tr15/#Detecting_Normalization_Forms
+ * 
+ * They say, this is much faster than 'brute force' normalization.
+ * Strings a very likely already in NFC form.
+ */
+static int
+_isNFC(uint32_t *label, size_t len)
+{
+  int lastCanonicalClass = 0;
+  int result = 1;
+
+  for (size_t it = 0; it < len; it++) {
+    uint32_t ch = label[it];
+
+    // supplementary code point
+    if (ch >= 0x10000)
+      it++;
+
+    int canonicalClass = uc_combining_class(ch);
+    if (lastCanonicalClass > canonicalClass && canonicalClass != 0)
+      return 0;
+
+    NFCQCMap *map = _get_nfcqc_map(ch);
+    if (map) {
+      if (map->check == 0)
+	return 0;
+      result = -1;
+    }
+
+    lastCanonicalClass = canonicalClass;
+  }
+
+  return result;
+}
+
 int
 _idn2_u8_to_u32_nfc (const uint8_t * src, size_t srclen,
 		     uint32_t ** out, size_t * outlen, int nfc)
@@ -60,7 +96,7 @@ _idn2_u8_to_u32_nfc (const uint8_t * src, size_t srclen,
       return IDN2_ENCODING_ERROR;
     }
 
-  if (nfc)
+  if (nfc && !_isNFC(p, plen))
     {
       size_t tmplen;
       uint32_t *tmp = u32_normalize (UNINORM_NFC, p, plen, NULL, &tmplen);
