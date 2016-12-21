@@ -1,19 +1,37 @@
 To: help-libidn@gnu.org
-Subject: libidn2 0.10
+Subject: libidn2 0.12
 <#secure method=pgpmime mode=sign>
-Libidn2 is a free software implementation of IDNA2008.
+Libidn2 is a free software implementation of IDNA2008/TR46.
 
-* Version 0.10 (released 2014-06-25) [alpha]
+* Version 0.12 (released 2016-12-21) [alpha]
 
-** Update gnulib files.
+** Builds/links with libunistring.
 
-** Dual-license the library.
+** Fix two possible crashes with unchecked NULL pointers.
+
+** Memleak fix.
+
+** Binary search for codepoints in tables.
+
+** Do not taint output variable on error in idn2_register_u8().
+
+** Do not taint output variable on error in idn2_lookup_u8().
+
+** Update to Unicode 6.3.0 IDNA tables.
+
+** Add TR46 / UTS#46 support to API and idn2 utility.
+
+** Add NFC quick check.
+
+** Add make target 'check-coverage' for test coverage report.
+
+** Add tests to increase test code coverage.
 
 ** API and ABI is backwards compatible with the previous version.
 
 Download release:
-  ftp://alpha.gnu.org/gnu/libidn/libidn2-0.10.tar.gz      (1.6MB)
-  ftp://alpha.gnu.org/gnu/libidn/libidn2-0.10.tar.gz.sig  (OpenPGP signature)
+  ftp://alpha.gnu.org/gnu/libidn/libidn2-0.12.tar.gz      (1.6MB)
+  ftp://alpha.gnu.org/gnu/libidn/libidn2-0.12.tar.gz.sig  (OpenPGP signature)
 
 Webpage:
   http://www.gnu.org/software/libidn/#libidn2

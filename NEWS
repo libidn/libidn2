@@ -2,6 +2,36 @@ Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
 Copyright (C) 2011-2016 Simon Josefsson
 See the end for copying conditions.
 
+* Version 0.12 (released 2016-12-21) [alpha]
+
+** All changes by Tim Rühsen <tim.ruehsen@gmx.de> except
+   stated otherwise.
+
+** Builds/links with libunistring.
+
+** Fix two possible crashes with unchecked NULL pointers.
+
+** Memleak fix.
+Reported by Hanno Böck <hanno@hboeck.de>.
+
+** Binary search for codepoints in tables.
+
+** Do not taint output variable on error in idn2_register_u8().
+
+** Do not taint output variable on error in idn2_lookup_u8().
+
+** Update to Unicode 6.3.0 IDNA tables.
+
+** Add TR46 / UTS#46 support to API and idn2 utility.
+
+** Add NFC quick check.
+
+** Add make target 'check-coverage' for test coverage report.
+
+** Add tests to increase test code coverage.
+
+** API and ABI is backwards compatible with the previous version.
+
 * Version 0.11 (released 2016-11-03) [alpha]
 
 ** Fix stack underflow in 'idn2' command line tool.
