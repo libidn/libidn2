@@ -1088,7 +1088,8 @@ main (int argc, const char *argv[])
   separator();
 
   // test all IDNA cases from Unicode 9.0.0
-  if (_scan_file(argc == 1 ? "IdnaTest.txt" : argv[1], test_IdnaTest))
+  printf("srcdir=%s\n", SRCDIR);
+  if (_scan_file(argc == 1 ? SRCDIR"/IdnaTest.txt" : argv[1], test_IdnaTest))
     return EXIT_FAILURE;
 
   separator();

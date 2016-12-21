@@ -53,6 +53,7 @@ TR46MAP = IdnaMappingTable.txt
 TR46MAP_URL = http://www.unicode.org/Public/idna/6.3.0/IdnaMappingTable.txt
 NFCQC = DerivedNormalizationProps.txt
 NFCQC_URL = http://www.unicode.org/Public/6.3.0/ucd/DerivedNormalizationProps.txt
+DISTCLEANFILES = $(IDNA_TABLE) $(TR46MAP) $(NFCQC) tr46map.c gentr46map
 
 data.c: $(srcdir)/gen-tables-from-iana.pl $(IDNA_TABLE)
 	cat $(IDNA_TABLE) | $(srcdir)/gen-tables-from-iana.pl
@@ -69,11 +70,11 @@ $(NFCQC):
 	rm -f $(NFCQC)
 	wget $(NFCQC_URL)
 
-tr46map.c: $(srcdir)/gentr46map $(TR46MAP) $(NFCQC)
-	$(srcdir)/gentr46map >tr46map.c
+tr46map.c: gentr46map $(TR46MAP) $(NFCQC)
+	./gentr46map >tr46map.c
 
 gentr46map: $(srcdir)/gentr46map.c
-	$(CC) -Wall gentr46map.c -o gentr46map
+	$(CC) -Wall $(srcdir)/gentr46map.c -o gentr46map
 
 TLD_URL = https://www.iana.org/domains/root/db/
 tv.c: $(srcdir)/gen-idn-tld-tv.pl
