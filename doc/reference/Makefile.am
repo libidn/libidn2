@@ -58,8 +58,8 @@ EXTRA_HFILES=
 
 # Header files to ignore when scanning. Use base file name, no paths
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h
-IGNORE_HFILES=bidi.h config.h context.h data.h punycode.h tables.h
-IGNORE_HFILES+=build-aux gl src
+IGNORE_HFILES=bidi.h config.h context.h data.h idna.h punycode.h tables.h tr46map.h
+IGNORE_HFILES+=build-aux gnulib lib src
 IGNORE_HFILES+=idn2_cmd.h
 
 # Images to copy into HTML directory.
