@@ -20,7 +20,7 @@ AM_CFLAGS = $(WARN_CFLAGS)
 
 bin_PROGRAMS = idn2 idn2_noinstall
 
-idn2_SOURCES = idn2.c blurbs.h $(BUILT_SOURCES)
+idn2_SOURCES = idn2.c blurbs.h
 idn2_LDADD = libidn2_cmd.la ../libidn2.la $(LIBS)
 
 # have idn2_noinstall linked with local libidn2 for testing
@@ -35,12 +35,12 @@ libidn2_cmd_la_SOURCES =  idn2.ggo idn2_cmd.c idn2_cmd.h
 libidn2_cmd_la_LIBADD = ../lib/libgnu.la
 libidn2_cmd_la_CFLAGS =
 
-idn2_cmd.c idn2_cmd.h: idn2.ggo Makefile.am
+idn2_cmd.c: idn2.ggo Makefile.am
 	gengetopt --unamed-opts --no-handle-version --no-handle-help \
 		--set-package="idn2" \
 		--input $^ --file-name idn2_cmd
 	perl -pi -e 's/\[OPTIONS\]/\[OPTION\]/g' idn2_cmd.c
 	perl -pi -e 's/\[FILES\]/\[STRING\]/g' idn2_cmd.c
 
-BUILT_SOURCES = idn2_cmd.c idn2_cmd.h
-CLEANFILES = $(BUILT_SOURCES)
+BUILT_SOURCES = idn2_cmd.c
+CLEANFILES = $(BUILT_SOURCES) idn2_cmd.h
