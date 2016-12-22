@@ -32,7 +32,7 @@ register.c: $(top_srcdir)/examples/register.c
 	mv $@.tmp $@
 
 dist_man_MANS = idn2.1 $(gdoc_MANS)
-MAINTAINERCLEANFILES = $(dist_man_MANS)
+CLEANFILES = $(dist_man_MANS) lookup.c register.c stamp-vti version.texi $(srcdir)/libidn2.info
 
 idn2.1: $(top_srcdir)/src/idn2.c $(top_srcdir)/src/idn2.ggo $(top_srcdir)/configure.ac
 	$(HELP2MAN) \
@@ -49,3 +49,6 @@ GDOC_MAN_PREFIX = man/
 GDOC_MAN_EXTRA_ARGS = -module $(PACKAGE) -sourceversion $(VERSION) \
 	-includefuncprefix -seeinfo $(PACKAGE)
 include $(srcdir)/Makefile.gdoci
+
+clean-local:
+	rm -rf man texi

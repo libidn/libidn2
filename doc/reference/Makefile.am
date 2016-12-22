@@ -59,7 +59,7 @@ EXTRA_HFILES=
 # Header files to ignore when scanning. Use base file name, no paths
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h
 IGNORE_HFILES=bidi.h config.h context.h data.h idna.h punycode.h tables.h tr46map.h
-IGNORE_HFILES+=build-aux gnulib lib src
+IGNORE_HFILES+=build-aux gnulib gnulib lib src
 IGNORE_HFILES+=idn2_cmd.h
 
 # Images to copy into HTML directory.
@@ -102,3 +102,14 @@ if ENABLE_GTK_DOC
 endif
 
 -include $(top_srcdir)/git.mk
+
+CLEANFILES ?=
+CLEANFILES += libpsl-overrides.txt libpsl-decl.txt libpsl-decl-list.txt
+
+clean-local:
+	rm -rf xml html tmpl
+
+dist-hook-local: all-local
+
+libidn2-docs-clean: clean
+	cd $(srcdir) && rm -rf xml html tmpl
