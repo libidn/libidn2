@@ -13,8 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-DEFS = @DEFS@ -DSRCDIR=\"$(srcdir)\"
-AM_CPPFLAGS = -I$(top_srcdir) -I$(top_builddir)
+AM_CPPFLAGS = -I$(top_srcdir) -I$(srcdir) -I$(top_builddir)
 AM_LDFLAGS = -no-install
 
 LDADD = ../libidn2.la -lunistring
@@ -22,12 +21,16 @@ LDADD = ../libidn2.la -lunistring
 TESTS = test-punycode test-lookup test-register test-strerror
 check_PROGRAMS = $(TESTS)
 
-test_lookup_SOURCES = test-lookup.c IdnaTest.inc
+IDNA_TXT = IdnaTest.txt
+IDNA_INC = IdnaTest.inc
+test_lookup_SOURCES = test-lookup.c
 
-EXTRA_DIST = IdnaTest.txt gen-utc-test.pl
+BUILT_SOURCES = $(IDNA_TXT) $(IDNA_INC)
+DISTCLEANFILES = $(BUILT_SOURCES)
+EXTRA_DIST = gen-utc-test.pl
 
-IdnaTest.txt:
+$(IDNA_TXT):
 	wget http://www.unicode.org/Public/idna/6.3.0/IdnaTest.txt
 
-IdnaTest.inc: $(srcdir)/IdnaTest.txt $(srcdir)/gen-utc-test.pl
-	$(srcdir)/gen-utc-test.pl < $(srcdir)/IdnaTest.txt > IdnaTest.inc
+$(IDNA_INC): $(IDNA_TXT) $(srcdir)/gen-utc-test.pl
+	$(srcdir)/gen-utc-test.pl < $(IDNA_TXT) > $(IDNA_INC)
