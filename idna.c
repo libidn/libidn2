@@ -57,8 +57,9 @@ _isNFC (uint32_t * label, size_t len)
 {
   int lastCanonicalClass = 0;
   int result = 1;
+  size_t it;
 
-  for (size_t it = 0; it < len; it++)
+  for (it = 0; it < len; it++)
     {
       uint32_t ch = label[it];
 
