@@ -10,24 +10,24 @@
 
 @copying
 This manual is for Libidn2 (version @value{VERSION}, @value{UPDATED}),
-an implementation of IDNA2008 internationalized domain names.
+an implementation of IDNA2008/TR46 internationalized domain names.
 
 Copyright @copyright{} 2011-2016 Simon Josefsson
 @end copying
 
 @dircategory Software libraries
 @direntry
-* libidn2: (libidn2).	Internationalized domain names (IDNA2008) processing.
+* libidn2: (libidn2).	Internationalized domain names (IDNA2008/TR46) processing.
 @end direntry
 
 @dircategory Localization
 @direntry
-* idn2: (libidn2)Invoking idn2.	Internationalized Domain Name (IDNA2008) conversion.
+* idn2: (libidn2)Invoking idn2.	Internationalized Domain Name (IDNA2008/TR46) conversion.
 @end direntry
 
 @titlepage
 @title Libidn2
-@subtitle Internationalized Domain Names (IDNA2008)
+@subtitle Internationalized Domain Names (IDNA2008/TR46)
 @subtitle Version @value{VERSION}, @value{UPDATED}
 @author Simon Josefsson
 @page
@@ -59,6 +59,22 @@ Copyright @copyright{} 2011-2016 Simon Josefsson
 @chapter Introduction
 
 Libidn2 is a free software implementation of IDNA2008.
+
+For technical reference, see RFC 5890
+(@uref{https://tools.ietf.org/html/rfc5890}), RFC 5891
+(@uref{https://tools.ietf.org/html/rfc5891}), RFC 5892
+(@uref{https://tools.ietf.org/html/rfc5892}), RFC 5893
+(@uref{https://tools.ietf.org/html/rfc5893}), and TR46
+(@uref{http://www.unicode.org/reports/tr46/}).
+
+Libidn2 uses GNU libunistring
+(@uref{https://www.gnu.org/software/libunistring/}) for Unicode
+processing and GNU libiconv
+(@uref{https://www.gnu.org/software/libiconv/}) for character set
+conversion.
+
+Libidn2 is believed to be a complete IDNA2008 and TR46 implementation,
+but has yet to be as extensively used as the IDNA2003 Libidn library.
 
 @node Library Functions
 @chapter Library Functions
@@ -104,6 +120,14 @@ Apply NFC normalization on input.
 
 @deftypevr {Global flag} {idn2_flags} IDN2_ALABEL_ROUNDTRIP
 Apply additional round-trip conversion of A-label inputs.
+@end deftypevr
+
+@deftypevr {Global flag} {idn2_flags} IDN2_TRANSITIONAL
+Perform Unicode TR46 transitional processing.
+@end deftypevr
+
+@deftypevr {Global flag} {idn2_flags} IDN2_NONTRANSITIONAL
+Perform Unicode TR46 non-transitional processing.
 @end deftypevr
 
 @section Error Handling
@@ -167,6 +191,10 @@ Input A-label is not valid.
 Input A-label and U-label does not match.
 @end deftypevr
 
+@deftypevr {Return code} {idn2_rc} IDN2_INVALID_FLAGS
+Invalid combination of flags.
+@end deftypevr
+
 @deftypevr {Return code} {idn2_rc} IDN2_NOT_NFC
 String is not NFC.
 @end deftypevr
@@ -209,6 +237,18 @@ String has forbidden unassigned character.
 
 @deftypevr {Return code} {idn2_rc} IDN2_BIDI
 String has forbidden bi-directional properties.
+@end deftypevr
+
+@deftypevr {Return code} {idn2_rc} IDN2_DOT_IN_LABEL
+Label has forbidden dot (TR46).
+@end deftypevr
+
+@deftypevr {Return code} {idn2_rc} IDN2_INVALID_TRANSITIONAL
+Label has character forbidden in transitional mode (TR46).
+@end deftypevr
+
+@deftypevr {Return code} {idn2_rc} IDN2_INVALID_NONTRANSITIONAL
+Label has character forbidden in non-transitional mode (TR46).
 @end deftypevr
 
 @section Memory Handling
