@@ -60,7 +60,10 @@ INDENT_SOURCES = \
 	src/idn2.c \
 	tables.c \
 	tables.h \
-	version.c
+	version.c \
+	tr46map.h \
+	tr46map.c \
+	gentr46map.c
 
 doc/Makefile.gdoc:
 	printf "gdoc_MANS =\ngdoc_TEXINFOS =\n" > doc/Makefile.gdoc

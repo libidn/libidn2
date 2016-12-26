@@ -146,14 +146,16 @@ _isNFC(uint32_t *label, size_t len)
   (TEST_NFC | TEST_2HYPHEN | TEST_HYPHEN_STARTEND | TEST_LEADING_COMBINING | TEST_NONTRANSITIONAL)
 
 static int
-_tr46 (const uint8_t *domain_u8, uint8_t **out, int transitional)
+_tr46 (const uint8_t * domain_u8, uint8_t ** out, int transitional)
 {
   size_t len, it, it2;
   uint32_t *domain_u32;
   int err = IDN2_OK, rc;
 
   /* convert UTF-8 to UTF-32 */
-  if (!(domain_u32 = u8_to_u32(domain_u8, u8_strlen(domain_u8) + 1, NULL, &len)))
+  if (!
+      (domain_u32 =
+       u8_to_u32 (domain_u8, u8_strlen (domain_u8) + 1, NULL, &len)))
     {
       if (errno == ENOMEM)
 	return IDN2_MALLOC;
@@ -161,123 +163,163 @@ _tr46 (const uint8_t *domain_u8, uint8_t **out, int transitional)
     }
 
   size_t len2 = 0;
-  for (it = 0; it < len; it++) {
-    IDNAMap *map = _get_map(domain_u32[it]);
+  for (it = 0; it < len; it++)
+    {
+      IDNAMap *map = _get_map (domain_u32[it]);
 
-    if (!map || map->disallowed) {
-      if (domain_u32[it]) {
-	free(domain_u32);
-	return IDN2_DISALLOWED;
-      }
-      len2++;
-    } else if (map->mapped) {
-      len2 += map->nmappings;
-    } else if (map->valid) {
-      len2++;
-    } else if (map->ignored) {
-      continue;
-    } else if (map->deviation) {
-      if (transitional) {
-	len2 += map->nmappings;
-      } else
-	len2++;
+      if (!map || map->disallowed)
+	{
+	  if (domain_u32[it])
+	    {
+	      free (domain_u32);
+	      return IDN2_DISALLOWED;
+	    }
+	  len2++;
+	}
+      else if (map->mapped)
+	{
+	  len2 += map->nmappings;
+	}
+      else if (map->valid)
+	{
+	  len2++;
+	}
+      else if (map->ignored)
+	{
+	  continue;
+	}
+      else if (map->deviation)
+	{
+	  if (transitional)
+	    {
+	      len2 += map->nmappings;
+	    }
+	  else
+	    len2++;
+	}
     }
-  }
 
-  uint32_t *tmp = malloc(len2 * sizeof (uint32_t));
+  uint32_t *tmp = malloc (len2 * sizeof (uint32_t));
 
   len2 = 0;
-  for (it = 0; it < len; it++) {
-    uint32_t c = domain_u32[it];
-    IDNAMap *map = _get_map(c);
+  for (it = 0; it < len; it++)
+    {
+      uint32_t c = domain_u32[it];
+      IDNAMap *map = _get_map (c);
 
-    if (!map || map->disallowed) {
-      tmp[len2++] = c;
-    } else if (map->mapped) {
-      for (it2 = 0; it2 < map->nmappings; it2++)
-	tmp[len2++] = mapdata[map->offset + it2];
-    } else if (map->valid) {
-      tmp[len2++] = c;
-    } else if (map->ignored) {
-      continue;
-    } else if (map->deviation) {
-      if (transitional) {
-	for (it2 = 0; it2 < map->nmappings; it2++)
-	  tmp[len2++] = mapdata[map->offset + it2];
-      } else
-	tmp[len2++] = c;
+      if (!map || map->disallowed)
+	{
+	  tmp[len2++] = c;
+	}
+      else if (map->mapped)
+	{
+	  for (it2 = 0; it2 < map->nmappings; it2++)
+	    tmp[len2++] = mapdata[map->offset + it2];
+	}
+      else if (map->valid)
+	{
+	  tmp[len2++] = c;
+	}
+      else if (map->ignored)
+	{
+	  continue;
+	}
+      else if (map->deviation)
+	{
+	  if (transitional)
+	    {
+	      for (it2 = 0; it2 < map->nmappings; it2++)
+		tmp[len2++] = mapdata[map->offset + it2];
+	    }
+	  else
+	    tmp[len2++] = c;
+	}
     }
-  }
-  free(domain_u32);
+  free (domain_u32);
 
   /* Normalize to NFC */
-  domain_u32 = u32_normalize(UNINORM_NFC, tmp, len2, NULL, &len);
-  free(tmp);
+  domain_u32 = u32_normalize (UNINORM_NFC, tmp, len2, NULL, &len);
+  free (tmp);
   tmp = NULL;
 
-  if (!domain_u32) {
-    if (errno == ENOMEM)
-      return IDN2_MALLOC;
-    return IDN2_ENCODING_ERROR;
-  }
+  if (!domain_u32)
+    {
+      if (errno == ENOMEM)
+	return IDN2_MALLOC;
+      return IDN2_ENCODING_ERROR;
+    }
 
   /* split into labels and check */
   uint32_t *e, *s;
   e = s = domain_u32;
-  for (e = s = domain_u32; *e; s = e) {
-    while (*e && *e != '.') e++;
+  for (e = s = domain_u32; *e; s = e)
+    {
+      while (*e && *e != '.')
+	e++;
 
-    if (e - s >= 4 && s[0] == 'x' && s[1] == 'n' && s[2] == '-' && s[3] == '-') {
-      /* decode punycode and check result non-transitional */
-      size_t ace_len;
-      uint32_t name_u32[IDN2_LABEL_MAX_LENGTH];
-      size_t name_len = IDN2_LABEL_MAX_LENGTH;
-      uint8_t *ace;
-
-      ace = u32_to_u8(s + 4, e - s - 4, NULL, &ace_len);
-      if (!ace) {
-	free(domain_u32);
-	if (errno == ENOMEM)
-	  return IDN2_MALLOC;
-	return IDN2_ENCODING_ERROR;
-      }
-
-      rc = _idn2_punycode_decode (ace_len, (char *) ace, &name_len, name_u32, NULL);
-
-      free(ace);
-
-      if (rc)
+      if (e - s >= 4 && s[0] == 'x' && s[1] == 'n' && s[2] == '-'
+	  && s[3] == '-')
 	{
-	  free(domain_u32);
-	  return rc;
+	  /* decode punycode and check result non-transitional */
+	  size_t ace_len;
+	  uint32_t name_u32[IDN2_LABEL_MAX_LENGTH];
+	  size_t name_len = IDN2_LABEL_MAX_LENGTH;
+	  uint8_t *ace;
+
+	  ace = u32_to_u8 (s + 4, e - s - 4, NULL, &ace_len);
+	  if (!ace)
+	    {
+	      free (domain_u32);
+	      if (errno == ENOMEM)
+		return IDN2_MALLOC;
+	      return IDN2_ENCODING_ERROR;
+	    }
+
+	  rc =
+	    _idn2_punycode_decode (ace_len, (char *) ace, &name_len, name_u32,
+				   NULL);
+
+	  free (ace);
+
+	  if (rc)
+	    {
+	      free (domain_u32);
+	      return rc;
+	    }
+
+	  if ((rc =
+	       _idn2_label_test (TR46_NONTRANSITIONAL_CHECK, name_u32,
+				 name_len)))
+	    err = rc;
+	}
+      else
+	{
+	  if ((rc =
+	       _idn2_label_test (transitional ? TR46_TRANSITIONAL_CHECK :
+				 TR46_NONTRANSITIONAL_CHECK, s, e - s)))
+	    err = rc;
 	}
 
-      if ((rc = _idn2_label_test(TR46_NONTRANSITIONAL_CHECK, name_u32, name_len)))
-	err = rc;
-    } else {
-      if ((rc = _idn2_label_test(transitional ? TR46_TRANSITIONAL_CHECK : TR46_NONTRANSITIONAL_CHECK, s, e - s)))
-	err = rc;
+      if (*e)
+	e++;
     }
-
-    if (*e)
-      e++;
-  }
 
   if (err == IDN2_OK && out)
     {
-      uint8_t *_out = u32_to_u8(domain_u32, len, NULL, &len);
-      free(domain_u32);
+      uint8_t *_out = u32_to_u8 (domain_u32, len, NULL, &len);
+      free (domain_u32);
 
-      if (!_out) {
-	if (errno == ENOMEM)
-	  return IDN2_MALLOC;
-	return IDN2_ENCODING_ERROR;
-      }
+      if (!_out)
+	{
+	  if (errno == ENOMEM)
+	    return IDN2_MALLOC;
+	  return IDN2_ENCODING_ERROR;
+	}
 
       *out = _out;
     }
   else
-    free(domain_u32);
+    free (domain_u32);
 
   return err;
 }
@@ -317,11 +359,12 @@ idn2_lookup_u8 (const uint8_t * src, uint8_t ** lookupname, int flags)
   if (src == NULL)
     {
       if (lookupname)
-        *lookupname = NULL;
+	*lookupname = NULL;
       return IDN2_OK;
     }
 
-  if ((flags & (IDN2_TRANSITIONAL|IDN2_NONTRANSITIONAL)) == (IDN2_TRANSITIONAL|IDN2_NONTRANSITIONAL))
+  if ((flags & (IDN2_TRANSITIONAL | IDN2_NONTRANSITIONAL)) ==
+      (IDN2_TRANSITIONAL | IDN2_NONTRANSITIONAL))
     return IDN2_INVALID_FLAGS;
 
   if (flags & IDN2_TRANSITIONAL)
@@ -338,16 +381,16 @@ idn2_lookup_u8 (const uint8_t * src, uint8_t ** lookupname, int flags)
       if (rc != IDN2_OK)
 	return rc;
 
-      outlen = u8_strlen(out);
-      if (outlen >= sizeof(_mapped))
+      outlen = u8_strlen (out);
+      if (outlen >= sizeof (_mapped))
 	{
-	  free(out);
+	  free (out);
 	  return IDN2_TOO_BIG_DOMAIN;
 	}
 
-      memcpy(_mapped, out, outlen + 1);
+      memcpy (_mapped, out, outlen + 1);
       src = _mapped;
-      free(out);
+      free (out);
     }
 
   do
@@ -384,15 +427,16 @@ idn2_lookup_u8 (const uint8_t * src, uint8_t ** lookupname, int flags)
     }
   while (*src++);
 
-  if (lookupname) {
-    uint8_t *tmp = malloc (lookupnamelen + 1);
+  if (lookupname)
+    {
+      uint8_t *tmp = malloc (lookupnamelen + 1);
 
-    if (_lookupname == NULL)
-      return IDN2_MALLOC;
+      if (_lookupname == NULL)
+	return IDN2_MALLOC;
 
-    memcpy (tmp, _lookupname, lookupnamelen + 1);
-    *lookupname = tmp;
-  }
+      memcpy (tmp, _lookupname, lookupnamelen + 1);
+      *lookupname = tmp;
+    }
 
   return IDN2_OK;
 }
@@ -430,10 +474,10 @@ idn2_lookup_ul (const char *src, char **lookupname, int flags)
     {
       utf8src = u8_strconv_from_locale (src);
       if (utf8src == NULL)
-        {
+	{
 	  if (errno == ENOMEM)
 	    return IDN2_MALLOC;
-          return IDN2_ICONV_FAIL;
+	  return IDN2_ICONV_FAIL;
 	}
     }
 

@@ -130,41 +130,46 @@ hexdump (const char *prefix, const char *str)
 static struct gengetopt_args_info args_info;
 
 static void
-process_input(char *readbuf, int flags)
+process_input (char *readbuf, int flags)
 {
-  size_t len = strlen(readbuf);
+  size_t len = strlen (readbuf);
   char *output;
   int rc;
 
   if (len && readbuf[len - 1] == '\n')
     readbuf[len - 1] = '\0';
 
-  if (strcmp(readbuf, "show w") == 0) {
-    puts(WARRANTY);
-    return;
-  } else if (strcmp(readbuf, "show c") == 0) {
-    puts(CONDITIONS);
-    return;
-  }
+  if (strcmp (readbuf, "show w") == 0)
+    {
+      puts (WARRANTY);
+      return;
+    }
+  else if (strcmp (readbuf, "show c") == 0)
+    {
+      puts (CONDITIONS);
+      return;
+    }
 
   if (args_info.debug_given)
-    hexdump("input", readbuf);
+    hexdump ("input", readbuf);
 
   if (args_info.register_given)
-    rc = idn2_register_ul(readbuf, NULL, &output, flags);
+    rc = idn2_register_ul (readbuf, NULL, &output, flags);
   else
-    rc = idn2_lookup_ul(readbuf, &output, flags);
+    rc = idn2_lookup_ul (readbuf, &output, flags);
 
-  if (rc == IDN2_OK) {
-    if (args_info.debug_given)
-      hexdump("output", readbuf);
+  if (rc == IDN2_OK)
+    {
+      if (args_info.debug_given)
+	hexdump ("output", readbuf);
 
-    printf("%s\n", output);
-    free(output);
-  } else
-    error(EXIT_FAILURE, 0, "%s: %s",
-      args_info.register_given ? "register" : "lookup",
-      idn2_strerror(rc));
+      printf ("%s\n", output);
+      free (output);
+    }
+  else
+    error (EXIT_FAILURE, 0, "%s: %s",
+	   args_info.register_given ? "register" : "lookup",
+	   idn2_strerror (rc));
 }
 
 int
@@ -209,7 +214,7 @@ main (int argc, char *argv[])
     flags = IDN2_NONTRANSITIONAL;
 
   for (cmdn = 0; cmdn < args_info.inputs_num; cmdn++)
-    process_input(args_info.inputs[cmdn], flags);
+    process_input (args_info.inputs[cmdn], flags);
 
   if (!cmdn)
     {
@@ -217,15 +222,15 @@ main (int argc, char *argv[])
       size_t bufsize = 0;
 
       while (getline (&buf, &bufsize, stdin) > 0)
-        process_input(buf, flags);
+	process_input (buf, flags);
 
-      free(buf);
+      free (buf);
     }
 
   if (ferror (stdin))
     error (EXIT_FAILURE, errno, "%s", _("input error"));
 
-  cmdline_parser_free(&args_info);
+  cmdline_parser_free (&args_info);
 
   return EXIT_SUCCESS;
 }

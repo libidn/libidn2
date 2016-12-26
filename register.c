@@ -79,20 +79,21 @@ idn2_register_u8 (const uint8_t * ulabel, const uint8_t * alabel,
   if (ulabel == NULL && alabel == NULL)
     {
       if (insertname)
-        *insertname = NULL;
+	*insertname = NULL;
       return IDN2_OK;
     }
 
   if (alabel)
     {
-      size_t alabellen = u8_strlen (alabel), u32len = IDN2_LABEL_MAX_LENGTH * 4;
+      size_t alabellen = u8_strlen (alabel), u32len =
+	IDN2_LABEL_MAX_LENGTH * 4;
       uint32_t u32[IDN2_DOMAIN_MAX_LENGTH * 4];
       uint8_t *tmp;
       uint8_t u8[IDN2_DOMAIN_MAX_LENGTH + 1];
       size_t u8len;
 
       if (alabellen >= IDN2_LABEL_MAX_LENGTH)
-        return IDN2_TOO_BIG_LABEL;
+	return IDN2_TOO_BIG_LABEL;
 
       if (alabellen <= 4)
 	return IDN2_INVALID_ALABEL;
@@ -101,7 +102,7 @@ idn2_register_u8 (const uint8_t * ulabel, const uint8_t * alabel,
 	return IDN2_INVALID_ALABEL;
 
       if (!_idn2_ascii_p (alabel, alabellen))
-        return IDN2_INVALID_ALABEL;
+	return IDN2_INVALID_ALABEL;
 
       rc = _idn2_punycode_decode (alabellen - 4, alabel + 4,
 				  &u32len, u32, NULL);
@@ -130,12 +131,12 @@ idn2_register_u8 (const uint8_t * ulabel, const uint8_t * alabel,
 
       if (insertname)
 	{
-          uint8_t *m = strdup (alabel);
+	  uint8_t *m = strdup (alabel);
 	  if (!m)
 	    return IDN2_MALLOC;
 
-          *insertname = m;
-        }
+	  *insertname = m;
+	}
     }
   else				/* ulabel only */
     {
@@ -146,7 +147,7 @@ idn2_register_u8 (const uint8_t * ulabel, const uint8_t * alabel,
       uint8_t tmp[IDN2_LABEL_MAX_LENGTH + 1];
 
       if (ulabel && ulabellen >= IDN2_LABEL_MAX_LENGTH)
-        return IDN2_TOO_BIG_LABEL;
+	return IDN2_TOO_BIG_LABEL;
 
       if (_idn2_ascii_p (ulabel, ulabellen))
 	{
@@ -194,7 +195,7 @@ idn2_register_u8 (const uint8_t * ulabel, const uint8_t * alabel,
 
       if (insertname)
 	{
-	  uint8_t *m = strdup(tmp);
+	  uint8_t *m = strdup (tmp);
 	  if (!m)
 	    return IDN2_MALLOC;
 	  *insertname = m;
@@ -241,9 +242,9 @@ idn2_register_ul (const char *ulabel, const char *alabel,
 
   if (ulabel)
     {
-      utf8ulabel = u8_strconv_from_locale(ulabel);
+      utf8ulabel = u8_strconv_from_locale (ulabel);
       if (utf8ulabel == NULL)
-        {
+	{
 	  if (errno == ENOMEM)
 	    return IDN2_MALLOC;
 	  return IDN2_ICONV_FAIL;

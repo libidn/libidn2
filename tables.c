@@ -35,7 +35,7 @@
 #include "data.h"
 
 static int
-_compare(const struct idna_table *m1, const struct idna_table *m2)
+_compare (const struct idna_table *m1, const struct idna_table *m2)
 {
   if (m1->start < m2->start)
     return -1;
@@ -52,8 +52,9 @@ property (uint32_t cp)
 
   key.start = cp;
 
-  result = bsearch(&key, idna_table, idna_table_size,
-    sizeof(struct idna_table), (int(*)(const void *, const void *))_compare);
+  result = bsearch (&key, idna_table, idna_table_size,
+		    sizeof (struct idna_table),
+		    (int (*)(const void *, const void *)) _compare);
 
   return result ? result->state : UNASSIGNED;
 }

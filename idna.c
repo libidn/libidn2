@@ -53,31 +53,33 @@
  * Strings a very likely already in NFC form.
  */
 static int
-_isNFC(uint32_t *label, size_t len)
+_isNFC (uint32_t * label, size_t len)
 {
   int lastCanonicalClass = 0;
   int result = 1;
 
-  for (size_t it = 0; it < len; it++) {
-    uint32_t ch = label[it];
+  for (size_t it = 0; it < len; it++)
+    {
+      uint32_t ch = label[it];
 
-    // supplementary code point
-    if (ch >= 0x10000)
-      it++;
+      // supplementary code point
+      if (ch >= 0x10000)
+	it++;
 
-    int canonicalClass = uc_combining_class(ch);
-    if (lastCanonicalClass > canonicalClass && canonicalClass != 0)
-      return 0;
-
-    NFCQCMap *map = _get_nfcqc_map(ch);
-    if (map) {
-      if (map->check == 0)
+      int canonicalClass = uc_combining_class (ch);
+      if (lastCanonicalClass > canonicalClass && canonicalClass != 0)
 	return 0;
-      result = -1;
-    }
 
-    lastCanonicalClass = canonicalClass;
-  }
+      NFCQCMap *map = _get_nfcqc_map (ch);
+      if (map)
+	{
+	  if (map->check == 0)
+	    return 0;
+	  result = -1;
+	}
+
+      lastCanonicalClass = canonicalClass;
+    }
 
   return result;
 }
@@ -97,7 +99,7 @@ _idn2_u8_to_u32_nfc (const uint8_t * src, size_t srclen,
       return IDN2_ENCODING_ERROR;
     }
 
-  if (nfc && !_isNFC(p, plen))
+  if (nfc && !_isNFC (p, plen))
     {
       size_t tmplen;
       uint32_t *tmp = u32_normalize (UNINORM_NFC, p, plen, NULL, &tmplen);
@@ -260,12 +262,13 @@ _idn2_label_test (int what, const uint32_t * label, size_t llen)
        *    b. For Nontransitional Processing, each value must be either valid or deviation. */
       for (i = 0; i < llen; i++)
 	{
-	  IDNAMap *map = _get_map(label[i]);
+	  IDNAMap *map = _get_map (label[i]);
 
 	  if (map->valid || (map->deviation && !transitional))
 	    continue;
 
-	  return transitional ? IDN2_INVALID_TRANSITIONAL : IDN2_INVALID_NONTRANSITIONAL;
+	  return transitional ? IDN2_INVALID_TRANSITIONAL :
+	    IDN2_INVALID_NONTRANSITIONAL;
 	}
     }
 
