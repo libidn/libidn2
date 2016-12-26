@@ -2,10 +2,9 @@ Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
 Copyright (C) 2011-2016 Simon Josefsson
 See the end for copying conditions.
 
-* Version 0.12 (released 2016-12-21) [alpha]
+* Version 0.12 (unreleased) [alpha]
 
-** All changes by Tim Rühsen <tim.ruehsen@gmx.de> except
-   stated otherwise.
+** All changes by Tim Rühsen <tim.ruehsen@gmx.de> except stated otherwise.
 
 ** Builds/links with libunistring.
 
