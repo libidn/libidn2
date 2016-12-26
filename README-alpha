@@ -18,6 +18,7 @@ several tools installed, including:
 - Perl <http://www.cpan.org/>
 - Valgrind <http://valgrind.org/> (optional)
 - libunistring <https://www.gnu.org/software/libunistring/>
+- texinfo <https://www.gnu.org/software/texinfo/>
 
 The required software is typically distributed with your operating
 system, and the instructions for installing them differ.  Here are
