@@ -145,3 +145,5 @@ tests/test-register.log
 tests/test-register.trs
 tests/test-suite.log
 tr46map.c
+/GNUmakefile
+/maint.mk

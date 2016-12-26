@@ -92,6 +92,8 @@ extern "C"
  * idn2_flags:
  * @IDN2_NFC_INPUT: Normalize input string using normalization form C.
  * @IDN2_ALABEL_ROUNDTRIP: Perform optional IDNA2008 lookup roundtrip check.
+ * @IDN2_TRANSITIONAL: Perform Unicode TR46 transitional processing.
+ * @IDN2_NONTRANSITIONAL: Perform Unicode TR46 non-transitional processing.
  *
  * Flags to IDNA2008 functions, to be binary or:ed together.  Specify
  * only 0 if you want the default behaviour.
