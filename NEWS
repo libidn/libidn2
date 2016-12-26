@@ -2,6 +2,10 @@ Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
 Copyright (C) 2011-2016 Simon Josefsson
 See the end for copying conditions.
 
+* Version 0.13 (unreleased) [alpha]
+
+** API and ABI is backwards compatible with the previous version.
+
 * Version 0.12 (released 2016-12-26) [alpha]
 
 ** All changes by Tim Rühsen <tim.ruehsen@gmx.de> except stated otherwise.
