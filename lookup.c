@@ -109,37 +109,6 @@ label (const uint8_t * src, size_t srclen, uint8_t * dst, size_t * dstlen,
   return IDN2_OK;
 }
 
-/*// _isNFC() is described at http://unicode.org/reports/tr15/#Detecting_Normalization_Forms
-static int
-_isNFC(uint32_t *label, size_t len)
-{
-  int lastCanonicalClass = 0;
-  int result = 1;
-
-  for (size_t it = 0; it < len; it++) {
-    uint32_t ch = label[it];
-
-    // supplementary code point
-    if (ch >= 0x10000)
-      continue;
-
-    int canonicalClass = uc_combining_class(ch);
-    if (lastCanonicalClass > canonicalClass && canonicalClass != 0)
-      return 0;
-
-    NFCQCMap *map = _get_nfcqc_map(ch);
-    if (map) {
-      if (map->check == 0)
-	return 0;
-      result = -1;
-    }
-
-    lastCanonicalClass = canonicalClass;
-  }
-
-  return result;
-}
-*/
 #define TR46_TRANSITIONAL_CHECK \
   (TEST_NFC | TEST_2HYPHEN | TEST_HYPHEN_STARTEND | TEST_LEADING_COMBINING | TEST_TRANSITIONAL)
 #define TR46_NONTRANSITIONAL_CHECK \
