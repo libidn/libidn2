@@ -81,13 +81,6 @@ glimport:
 
 htmldir = ../www-libidn/libidn2
 
-coverage-my:
-	ln -s . gl/uniconv/uniconv
-	ln -s . gl/unictype/unictype
-	ln -s . gl/uninorm/uninorm
-	ln -s . gl/unistr/unistr
-	$(MAKE) coverage
-
 coverage-copy:
 	rm -fv `find $(htmldir)/coverage -type f | grep -v CVS`
 	mkdir -p $(htmldir)/coverage/
@@ -164,7 +157,7 @@ source:
 	-git commit -m Generated. ChangeLog
 	git tag -u 54265e8c -m $(VERSION) $(PACKAGE)-$(VERSION)
 
-release-check: syntax-check tarball gendoc-copy gtkdoc-copy coverage-my coverage-copy clang clang-copy
+release-check: syntax-check tarball gendoc-copy gtkdoc-copy coverage coverage-copy clang clang-copy
 
 release-upload-www: gendoc-upload gtkdoc-upload coverage-upload clang-upload
 
