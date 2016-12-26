@@ -46,8 +46,9 @@
 #include "idna.h"
 
 /*
- * NFC Quick Check from http://unicode.org/reports/tr15/#Detecting_Normalization_Forms
- * 
+ * NFC Quick Check from
+ * http://unicode.org/reports/tr15/#Detecting_Normalization_Forms
+ *
  * They say, this is much faster than 'brute force' normalization.
  * Strings a very likely already in NFC form.
  */

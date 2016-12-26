@@ -35,6 +35,8 @@ exclude_file_name_regexp--sc_require_config_h = ^examples/.*\.c$$
 exclude_file_name_regexp--sc_require_config_h_first = ^examples/.*\.c$$
 exclude_file_name_regexp--sc_prohibit_strncpy = ^src/idn2.c$$
 exclude_file_name_regexp--sc_GPL_version = ^[^/]*.[ch]
+exclude_file_name_regexp--sc_prohibit_atoi_atof = ^gentr46map\.c$$
+exclude_file_name_regexp--sc_makefile_at_at_check = ^src/Makefile\.am$$
 
 update-copyright-env = \
 	UPDATE_COPYRIGHT_USE_INTERVALS=2 \
