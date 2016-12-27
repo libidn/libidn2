@@ -13,6 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+DEFS = @DEFS@ -DSRCDIR=\"$(srcdir)\"
 AM_CPPFLAGS = -I$(top_srcdir) -I$(srcdir) -I$(top_builddir)
 AM_CPPFLAGS += -I$(top_builddir)/lib -I$(top_srcdir)/lib
 AM_LDFLAGS = -no-install
@@ -27,7 +28,7 @@ IDNA_INC = IdnaTest.inc
 test_lookup_SOURCES = test-lookup.c
 
 BUILT_SOURCES = $(IDNA_TXT) $(IDNA_INC)
-DISTCLEANFILES = $(BUILT_SOURCES)
+MAINTAINERCLEANFILES = $(BUILT_SOURCES)
 EXTRA_DIST = gen-utc-test.pl $(IDNA_TXT) $(IDNA_INC)
 
 $(IDNA_TXT):

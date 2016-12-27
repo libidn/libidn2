@@ -13,6 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+DEFS = @DEFS@ -DSRCDIR=\"$(srcdir)\"
 DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc
 
 SUBDIRS = lib . src doc examples tests po
@@ -47,33 +48,42 @@ libidn2_la_LIBADD = $(LTLIBICONV) $(LTLIBINTL) $(LTLIBUNISTRING) lib/libgnu.la
 libidn2_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) -no-undefined
 
-BUILT_SOURCES = data.c tr46map.c
-EXTRA_DIST += gen-tables-from-iana.pl gentr46map.c
-IDNA_TABLE = idna-tables-6.3.0.txt
+IDNA_TABLE = $(builddir)/idna-tables-6.3.0.txt
 IANA_URL = https://ftp.iana.org/assignments/idna-tables-6.3.0/$(IDNA_TABLE)
 TR46MAP = IdnaMappingTable.txt
 TR46MAP_URL = http://www.unicode.org/Public/idna/6.3.0/IdnaMappingTable.txt
 NFCQC = DerivedNormalizationProps.txt
 NFCQC_URL = http://www.unicode.org/Public/6.3.0/ucd/DerivedNormalizationProps.txt
-DISTCLEANFILES = $(IDNA_TABLE) $(TR46MAP) $(NFCQC) tr46map.c gentr46map
+
+BUILT_SOURCES = data.c tr46map.c
+CLEANFILES = gentr46map
+DISTCLEANFILES =  tr46map.c
+MAINTAINERCLEANFILES = $(IDNA_TABLE) $(TR46MAP) $(NFCQC)
+EXTRA_DIST += gen-tables-from-iana.pl $(IDNA_TABLE) $(TR46MAP) $(NFCQC) tr46map.c gentr46map.c data.c
 
 data.c: $(srcdir)/gen-tables-from-iana.pl $(IDNA_TABLE)
 	cat $(IDNA_TABLE) | $(srcdir)/gen-tables-from-iana.pl
 
 $(IDNA_TABLE):
-	rm -f $(IDNA_TABLE)
-	wget $(IANA_URL)
-	echo "4ebaf0c72061474d20078897d254768d894507de $(IDNA_TABLE)" | sha1sum -c -
+	if ! echo "4ebaf0c72061474d20078897d254768d894507de $(IDNA_TABLE)" | sha1sum -c -; then \
+	  rm -f $(IDNA_TABLE); \
+	  wget -O$(IDNA_TABLE) $(IANA_URL); \
+	  echo "4ebaf0c72061474d20078897d254768d894507de $(IDNA_TABLE)" | sha1sum -c -; \
+	fi
 
 $(TR46MAP):
-	rm -f $(TR46MAP)
-	wget $(TR46MAP_URL)
-	echo "e852821860396e2b500e2c1661cc9fb14e1c2738 $(TR46MAP)" | sha1sum -c -
+	if ! echo "e852821860396e2b500e2c1661cc9fb14e1c2738 $(TR46MAP)" | sha1sum -c -; then \
+	  rm -f $(TR46MAP); \
+	  wget $(TR46MAP_URL); \
+	  echo "e852821860396e2b500e2c1661cc9fb14e1c2738 $(TR46MAP)" | sha1sum -c -; \
+	fi
 
 $(NFCQC):
-	rm -f $(NFCQC)
-	wget $(NFCQC_URL)
-	echo "8f220108eebacb130fe4b36469c25d6d2e613a97 $(NFCQC)" | sha1sum -c -
+	if ! echo "8f220108eebacb130fe4b36469c25d6d2e613a97 $(NFCQC)" | sha1sum -c -; then \
+	  rm -f $(NFCQC); \
+	  wget $(NFCQC_URL); \
+	  echo "8f220108eebacb130fe4b36469c25d6d2e613a97 $(NFCQC)" | sha1sum -c -; \
+	fi
 
 tr46map.c: gentr46map $(TR46MAP) $(NFCQC)
 	./gentr46map >tr46map.c

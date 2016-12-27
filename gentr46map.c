@@ -289,11 +289,11 @@ main (void)
   int it;
 
   // read IDNA mappings
-  if (_scan_file ("IdnaMappingTable.txt", read_IdnaMappings))
+  if (_scan_file (SRCDIR"/IdnaMappingTable.txt", read_IdnaMappings))
     return 1;
 
   // read NFC QuickCheck table
-  if (_scan_file ("DerivedNormalizationProps.txt", read_NFCQC))
+  if (_scan_file (SRCDIR"/DerivedNormalizationProps.txt", read_NFCQC))
     return 1;
 
   qsort (nfcqc_map, nfcqc_pos, sizeof (NFCQCMap),
