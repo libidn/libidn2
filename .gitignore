@@ -127,8 +127,6 @@ src/libidn2_cmd.la
 src/libidn2_cmd_la-idn2_cmd.lo
 src/libidn2_cmd_la-idn2_cmd.o
 stamp-h1
-tests/IdnaTest.inc
-tests/IdnaTest.txt
 tests/Makefile
 tests/Makefile.in
 tests/test-lookup
