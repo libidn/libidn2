@@ -76,6 +76,9 @@ conversion.
 Libidn2 is believed to be a complete IDNA2008 and TR46 implementation,
 but has yet to be as extensively used as the IDNA2003 Libidn library.
 
+Libidn2 is dual-licensed under LGPLv3|GPLv2, see the file COPYING for
+detailed information.
+
 @node Library Functions
 @chapter Library Functions
 @cindex Library Functions
