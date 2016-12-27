@@ -63,14 +63,17 @@ data.c: $(srcdir)/gen-tables-from-iana.pl $(IDNA_TABLE)
 $(IDNA_TABLE):
 	rm -f $(IDNA_TABLE)
 	wget $(IANA_URL)
+	echo "4ebaf0c72061474d20078897d254768d894507de $(IDNA_TABLE)" | sha1sum -c -
 
 $(TR46MAP):
 	rm -f $(TR46MAP)
 	wget $(TR46MAP_URL)
+	echo "e852821860396e2b500e2c1661cc9fb14e1c2738 $(TR46MAP)" | sha1sum -c -
 
 $(NFCQC):
 	rm -f $(NFCQC)
 	wget $(NFCQC_URL)
+	echo "8f220108eebacb130fe4b36469c25d6d2e613a97 $(NFCQC)" | sha1sum -c -
 
 tr46map.c: gentr46map $(TR46MAP) $(NFCQC)
 	./gentr46map >tr46map.c
