@@ -36,7 +36,7 @@ CLEANFILES = $(dist_man_MANS) lookup.c register.c stamp-vti version.texi $(srcdi
 
 idn2.1: $(top_srcdir)/src/idn2.c $(top_srcdir)/src/idn2.ggo $(top_srcdir)/configure.ac
 	$(HELP2MAN) \
-		--name="Libidn2 Internationalized Domain Names (IDNA2008) conversion" \
+		--name="Libidn2 Internationalized Domain Names (IDNA2008/TR46) conversion" \
 		--output=$@ \
 		$(top_builddir)/src/idn2$(EXEEXT)
 
