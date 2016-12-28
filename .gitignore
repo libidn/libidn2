@@ -8,6 +8,7 @@
 .libs/
 /ABOUT-NLS
 /build-aux
+ChangeLog
 DerivedNormalizationProps.txt
 GNUmakefile
 INSTALL
@@ -146,6 +147,8 @@ tests/test-punycode.trs
 tests/test-register
 tests/test-register.log
 tests/test-register.trs
+tests/test-strerror
+tests/test-strerror.log
+tests/test-strerror.trs
 tests/test-suite.log
 tr46map.c
-~lib/Makefile.am
