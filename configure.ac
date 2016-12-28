@@ -107,8 +107,12 @@ AC_MSG_NOTICE([Summary of build options:
   Host OS:           ${host_os}
   Install prefix:    ${prefix}
   Compiler:          ${CC}
-  CFlags:            ${CFLAGS} ${CPPFLAGS} ${WARN_CFLAGS}
+  Warning flags:     ${WARN_CFLAGS}
+  CFLAGS:            ${CFLAGS} ${CPPFLAGS}
   LDFlags:           ${LDFLAGS}
-  Libs:              ${LIBS}
-  Tests:             ${TESTS_INFO}
+  Library types:     Shared=${enable_shared}, Static=${enable_static}
+  Libiconv:          $am_cv_func_iconv
+  Libunistring:      $LTLIBUNISTRING (version $LIBUNISTRING_VERSION)
+  Valgrind:          ${VALGRIND}
+  Version script:    $have_ld_version_script
 ])
