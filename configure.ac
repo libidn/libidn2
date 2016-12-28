@@ -103,6 +103,7 @@ AC_CONFIG_FILES([
 AC_OUTPUT
 
 AC_MSG_NOTICE([Summary of build options:
+
   Version:           ${PACKAGE_VERSION}
   Host OS:           ${host_os}
   Install prefix:    ${prefix}
@@ -111,8 +112,8 @@ AC_MSG_NOTICE([Summary of build options:
   CFLAGS:            ${CFLAGS} ${CPPFLAGS}
   LDFlags:           ${LDFLAGS}
   Library types:     Shared=${enable_shared}, Static=${enable_static}
-  Libiconv:          $am_cv_func_iconv
-  Libunistring:      $LTLIBUNISTRING (version $LIBUNISTRING_VERSION)
+  Libiconv:          $am_cv_func_iconv $LTLIBICONV
+  Libunistring:      $ac_cv_libunistring $LIBUNISTRING_VERSION $LTLIBUNISTRING
   Valgrind:          ${VALGRIND}
   Version script:    $have_ld_version_script
 ])
