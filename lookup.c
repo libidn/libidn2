@@ -306,8 +306,11 @@ _tr46 (const uint8_t * domain_u8, uint8_t ** out, int transitional)
  * Pass %IDN2_NFC_INPUT in @flags to convert input to NFC form before
  * further processing.  Pass %IDN2_ALABEL_ROUNDTRIP in @flags to
  * convert any input A-labels to U-labels and perform additional
- * testing.  Multiple flags may be specified by binary or:ing them
- * together, for example %IDN2_NFC_INPUT | %IDN2_ALABEL_ROUNDTRIP.
+ * testing.  Pass %IDN2_TRANSITIONAL to enable Unicode TR46
+ * transitional processing, and %IDN2_NONTRANSITIONAL to enable
+ * Unicode TR46 non-transitional processing.  Multiple flags may be
+ * specified by binary or:ing them together, for example
+ * %IDN2_NFC_INPUT | %IDN2_NONTRANSITIONAL.
  *
  * After version 0.11: @lookupname may be NULL to test lookup of @src
  * without allocating memory.
@@ -422,7 +425,13 @@ idn2_lookup_u8 (const uint8_t * src, uint8_t ** lookupname, int flags)
  * transcoded to UTF-8 and NFC normalized by this function.
  *
  * Pass %IDN2_ALABEL_ROUNDTRIP in @flags to convert any input A-labels
- * to U-labels and perform additional testing.
+ * to U-labels and perform additional testing.  Pass
+ * %IDN2_TRANSITIONAL to enable Unicode TR46 transitional processing,
+ * and %IDN2_NONTRANSITIONAL to enable Unicode TR46 non-transitional
+ * processing.  Multiple flags may be specified by binary or:ing them
+ * together, for example %IDN2_ALABEL_ROUNDTRIP |
+ * %IDN2_NONTRANSITIONAL.  The %IDN2_NFC_INPUT in @flags is always
+ * enabled in this function.
  *
  * After version 0.11: @lookupname may be NULL to test lookup of @src
  * without allocating memory.
