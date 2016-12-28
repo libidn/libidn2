@@ -14,9 +14,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 AM_CPPFLAGS = -I$(top_srcdir) -I$(srcdir) -I$(top_builddir)
+AM_CPPFLAGS += -I$(top_builddir)/lib -I$(top_srcdir)/lib
 AM_LDFLAGS = -no-install
 
-LDADD = ../libidn2.la -lunistring
+LDADD = ../libidn2.la ../lib/libgnu.la
 
 TESTS = test-punycode test-lookup test-register test-strerror
 check_PROGRAMS = $(TESTS)
