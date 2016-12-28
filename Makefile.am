@@ -19,6 +19,8 @@ SUBDIRS = lib . src doc examples tests po
 ACLOCAL_AMFLAGS = -I m4
 EXTRA_DIST = m4/gnulib-cache.m4
 
+EXTRA_DIST = CONTRIBUTING
+
 AM_CPPFLAGS = -DIDN2_BUILDING
 AM_CPPFLAGS += -I$(top_builddir)/lib -I$(top_srcdir)/lib
 AM_CFLAGS = $(WARN_CFLAGS)
