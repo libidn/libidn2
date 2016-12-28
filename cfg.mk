@@ -120,6 +120,7 @@ ChangeLog:
 
 tarball:
 	! git tag -l $(PACKAGE)-$(VERSION) | grep $(PACKAGE) > /dev/null
+	rm -f ChangeLog
 	$(MAKE) ChangeLog distcheck
 
 gendoc-copy:
