@@ -76,14 +76,15 @@ fi
 
 AC_CONFIG_FILES([
   Makefile
-  idn2.h
   doc/Makefile
   doc/reference/Makefile
   doc/reference/version.xml
   examples/Makefile
+  idn2.h
   lib/Makefile
-  tests/Makefile
+  po/Makefile.in
   src/Makefile
+  tests/Makefile
 ])
 AC_OUTPUT
 
