@@ -1,6 +1,6 @@
 GNU/Linux build:
   before_script:
-    - apt-get update -qq && apt-get install -y -qq git autoconf automake libtool libunistring-dev help2man gtk-doc-tools valgrind gengetopt
+    - apt-get update -qq && apt-get install -y -qq git autoconf automake libtool texinfo libunistring-dev help2man gtk-doc-tools valgrind gengetopt
   script:
   - ./bootstrap && ./configure --enable-gtk-doc --enable-gtk-doc-pdf --enable-gcc-warnings --enable-valgrind-tests && make check || (cat */tests/test-suite.log; exit 1)
   tags:
