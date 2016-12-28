@@ -43,7 +43,7 @@
 static IDNAMap idna_map[10000];
 static size_t map_pos;
 
-static uint32_t genmapdata[8192];
+static uint8_t genmapdata[16384];
 static size_t mapdata_pos;
 
 static NFCQCMap nfcqc_map[140];
@@ -115,6 +115,107 @@ _scan_file (const char *fname, int (*scan) (char *))
   return ret;
 }
 
+static size_t
+_u32_stream_len(uint32_t *src, size_t len)
+{
+  int it;
+  size_t n = 0;
+
+/*
+1 byte: 0-0x7f -> 0xxxxxxx
+2 bytes: 0x80-0x3fff ->1xxxxxxx 0xxxxxxx
+3 bytes: 0x4000-0x1fffff ->1xxxxxxx 1xxxxxxx 0xxxxxxx
+4 bytes: 0x200000-0xFFFFFFF -> 1xxxxxxx 1xxxxxxx 1xxxxxxx 0xxxxxxx
+5 bytes: 0x10000000->0xFFFFFFFF -> 1xxxxxxx 1xxxxxxx 1xxxxxxx 1xxxxxxx
+*/
+  for (it = 0; it < len; it++)
+    {
+      uint32_t cp = src[it];
+
+      if (cp <= 0x7f)
+	n += 1;
+      else if (cp <= 0x3fff)
+	n += 2;
+      else if (cp <= 0x1fffff)
+	n += 3;
+      else if (cp <= 0xFFFFFFF)
+	n += 4;
+      else
+	n += 5;
+    }
+
+  return n;
+}
+
+static size_t
+_u32_to_stream(uint8_t *dst, size_t dst_size, uint32_t *src, size_t len)
+{
+  int it;
+  size_t n = 0;
+
+  n = _u32_stream_len(src, len);
+
+  if (!dst)
+    return n;
+
+  if (dst_size < n)
+    return 0;
+
+  for (it = 0; it < len; it++)
+    {
+      uint32_t cp = src[it];
+
+      if (cp <= 0x7f)
+	*dst++ = cp & 0x7F;
+      else if (cp <= 0x3fff)
+	{
+	  *dst++ = 0x80 | ((cp >> 7) & 0x7F);
+	  *dst++ = cp & 0x7F;
+	}
+      else if (cp <= 0x1fffff)
+        {
+	  *dst++ = 0x80 | ((cp >> 14) & 0x7F);
+	  *dst++ = 0x80 | ((cp >> 7) & 0x7F);
+	  *dst++ = cp & 0x7F;
+        }
+      else if (cp <= 0xFFFFFFF)
+        {
+	  *dst++ = 0x80 | ((cp >> 21) & 0x7F);
+	  *dst++ = 0x80 | ((cp >> 14) & 0x7F);
+	  *dst++ = 0x80 | ((cp >> 7) & 0x7F);
+	  *dst++ = cp & 0x7F;
+        }
+      else
+        {
+	  *dst++ = 0x80 | ((cp >> 28) & 0x7F);
+	  *dst++ = 0x80 | ((cp >> 21) & 0x7F);
+	  *dst++ = 0x80 | ((cp >> 14) & 0x7F);
+	  *dst++ = 0x80 | ((cp >> 7) & 0x7F);
+	  *dst++ = cp & 0x7F;
+        }
+    }
+
+  return n;
+}
+
+/* copy 'n' codepoints from stream 'src' to 'dst' */
+static void
+_copy_from_stream (uint32_t *dst, const uint8_t *src, size_t n)
+{
+  uint32_t cp = 0;
+
+  for (; n; src++)
+    {
+      cp = (cp << 7) | (*src & 0x7F);
+      if ((*src & 0x80) == 0)
+	{
+	  *dst++ = cp;
+	  cp = 0;
+	  n--;
+	}
+    }
+}
+
 static int
 read_IdnaMappings (char *linep)
 {
@@ -170,8 +271,9 @@ read_IdnaMappings (char *linep)
 
   if (mapping && *mapping)
     {
-      uint32_t cp;
+      uint32_t cp, tmp[20], tmp2[20];
       int n, pos;
+      uint8_t *stream = genmapdata + mapdata_pos;
 
       while ((n = sscanf (mapping, " %X%n", &cp, &pos)) == 1)
 	{
@@ -182,12 +284,24 @@ read_IdnaMappings (char *linep)
 	    }
 
 	  if (map->nmappings == 0)
-	    map->offset = mapdata_pos;
+	    {
+	      map->offset = mapdata_pos;
+	      if (map->offset != mapdata_pos)
+		printf("offset overflow (%zu)\n", mapdata_pos);
+	    }
 
-	  genmapdata[mapdata_pos++] = cp;
+	  tmp[map->nmappings] = cp;
+	  mapdata_pos += _u32_to_stream(genmapdata + mapdata_pos, 5, &cp, 1);
+//	  genmapdata[mapdata_pos++] = cp;
 	  map->nmappings++;
 	  mapping += pos;
 	}
+
+      /* selftest */
+      _copy_from_stream(tmp2, genmapdata + map->offset, map->nmappings);
+      for (int it = 0; it < map->nmappings; it++)
+	if (tmp[it] != tmp2[it])
+	  abort();
     }
   else if (map->mapped || map->disallowed_std3_mapped || map->deviation)
     {
@@ -297,7 +411,7 @@ _compare_map_by_maplen (IDNAMap * m1, IDNAMap * m2)
   return 0;
 }
 
-uint32_t *
+static uint32_t *
 _u32_memmem(uint32_t *haystack, size_t hlen, uint32_t *needle, size_t nlen)
 {
   uint32_t *p;
@@ -314,8 +428,42 @@ _u32_memmem(uint32_t *haystack, size_t hlen, uint32_t *needle, size_t nlen)
   return NULL;
 }
 
+static uint8_t *
+_u8_memmem(uint8_t *haystack, size_t hlen, uint8_t *needle, size_t nlen)
+{
+  uint8_t *p;
+
+  if (nlen == 0)
+    return haystack;
+
+  for (p = haystack; hlen >= nlen; p++, hlen--)
+    {
+      if (*p == *needle && (nlen == 1 || memcmp(p, needle, nlen) == 0))
+	return p;
+    }
+
+  return NULL;
+}
+
+static size_t
+_u32_cp_stream_len(const uint8_t *stream, size_t ncp)
+{
+  const uint8_t *end;
+
+  for (end = stream; ncp; end++)
+    {
+      if ((*end & 0x80) == 0)
+	ncp--;
+    }
+
+  return end - stream;
+}
+
 /* Remove doubled mappings. With Unicode 6.3.0 the mapping data shrinks
-   from 7272 to 4322 entries of uint32_t. */
+ *  from 7272 to 4322 entries of uint32_t (29088 to 17288 bytes).
+ * Converting those 4322 uin32_t values to a uint8_t stream, we decrease mapping
+ *  table size from 17288 to 9153 bytes.
+ */
 void
 _compact_idna_map(void)
 {
@@ -325,8 +473,8 @@ _compact_idna_map(void)
   qsort (idna_map, map_pos, sizeof (IDNAMap),
 	 (int (*)(const void *, const void *)) _compare_map_by_maplen);
 
-  uint32_t *data = calloc(sizeof(uint32_t), mapdata_pos), *p;
-  size_t ndata = 0;
+  uint8_t *data = calloc(sizeof(uint8_t), mapdata_pos), *p;
+  size_t ndata = 0, slen;
 
   for (it = 0; it < map_pos; it++)
     {
@@ -335,19 +483,22 @@ _compact_idna_map(void)
       if (!map->nmappings)
 	continue;
 
-      if ((p = _u32_memmem(data, ndata, genmapdata + map->offset, map->nmappings)))
+      slen = _u32_cp_stream_len(genmapdata + map->offset, map->nmappings);
+
+      if ((p = _u8_memmem(data, ndata, genmapdata + map->offset, slen)))
 	{
 	  map->offset = p - data;
 	  continue;
 	}
 
-      u32_cpy(data + ndata, genmapdata + map->offset, map->nmappings);
+      memcpy(data + ndata, genmapdata + map->offset, slen);
       map->offset = ndata;
-      ndata += map->nmappings;
+      ndata += slen;
     }
 
-  u32_cpy(genmapdata, data, ndata);
+  memcpy(genmapdata, data, ndata);
   mapdata_pos = ndata;
+  free(data);
 
   /* sort into 'lowest codepoint first' */
   qsort (idna_map, map_pos, sizeof (IDNAMap),
@@ -376,7 +527,7 @@ main (void)
   printf ("#include <sys/types.h>\n");
   printf ("#include <stdlib.h>\n");
   printf ("#include \"tr46map.h\"\n\n");
-  printf ("IDNAMap idna_map[] = {\n");
+  printf ("IDNAMap idna_map[%zu] = {\n", map_pos);
   for (it = 0; it < map_pos; it++)
     {
       IDNAMap *map = idna_map + it;
@@ -396,14 +547,14 @@ main (void)
   printf ("};\n");
   printf ("const size_t map_pos = %zu;\n\n", map_pos);
 
-  printf ("uint32_t mapdata[] = {\n");
+  printf ("uint8_t mapdata[%zu] = {\n", mapdata_pos);
   for (it = 0; it < mapdata_pos; it++)
     {
-      printf ("0x%X,%s", genmapdata[it], it % 16 == 15 ? "\n" : "");
+      printf ("0x%02X,%s", genmapdata[it], it % 16 == 15 ? "\n" : "");
     }
   printf ("};\n\n");
 
-  printf ("NFCQCMap nfcqc_map[] = {\n");
+  printf ("NFCQCMap nfcqc_map[%zu] = {\n", nfcqc_pos);
   for (it = 0; it < nfcqc_pos; it++)
     {
       NFCQCMap *map = nfcqc_map + it;

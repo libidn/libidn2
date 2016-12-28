@@ -109,6 +109,24 @@ label (const uint8_t * src, size_t srclen, uint8_t * dst, size_t * dstlen,
   return IDN2_OK;
 }
 
+/* copy 'n' codepoints from stream 'src' to 'dst' */
+static void
+_copy_from_stream (uint32_t *dst, const uint8_t *src, size_t n)
+{
+  uint32_t cp = 0;
+
+  for (; n; src++)
+    {
+      cp = (cp << 7) | (*src & 0x7F);
+      if ((*src & 0x80) == 0)
+	{
+	  *dst++ = cp;
+	  cp = 0;
+	  n--;
+	}
+    }
+}
+
 #define TR46_TRANSITIONAL_CHECK \
   (TEST_NFC | TEST_2HYPHEN | TEST_HYPHEN_STARTEND | TEST_LEADING_COMBINING | TEST_TRANSITIONAL)
 #define TR46_NONTRANSITIONAL_CHECK \
@@ -182,8 +200,8 @@ _tr46 (const uint8_t * domain_u8, uint8_t ** out, int transitional)
 	}
       else if (map->mapped)
 	{
-	  for (it2 = 0; it2 < map->nmappings; it2++)
-	    tmp[len2++] = mapdata[map->offset + it2];
+	_copy_from_stream(tmp + len2, mapdata + map->offset, map->nmappings);
+	len2 += map->nmappings;
 	}
       else if (map->valid)
 	{
@@ -197,8 +215,8 @@ _tr46 (const uint8_t * domain_u8, uint8_t ** out, int transitional)
 	{
 	  if (transitional)
 	    {
-	      for (it2 = 0; it2 < map->nmappings; it2++)
-		tmp[len2++] = mapdata[map->offset + it2];
+	      _copy_from_stream(tmp +len2, mapdata + map->offset, map->nmappings);
+	      len2 += map->nmappings;
 	    }
 	  else
 	    tmp[len2++] = c;
