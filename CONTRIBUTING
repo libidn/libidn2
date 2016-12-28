@@ -25,7 +25,7 @@ system, and the instructions for installing them differ.  Here are
 some hints for gNewSense/Debian/Ubuntu:
 
 apt-get install git autoconf automake libtool
-apt-get install help2man gtk-doc-tools valgrind gengetopt
+apt-get install libunistring-dev help2man gtk-doc-tools valgrind gengetopt
 
 Download the version controlled sources:
 
