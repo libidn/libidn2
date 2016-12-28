@@ -26,6 +26,7 @@ config.log
 config.status
 configure
 data.c
+doc/.gitignore
 doc/Makefile
 doc/Makefile.gdoc
 doc/Makefile.in
@@ -118,12 +119,6 @@ po/*
 scan.tmp/
 src/Makefile
 src/Makefile.in
-src/aclocal.m4
-src/config.h
-src/config.h.in
-src/config.log
-src/config.status
-src/configure
 src/idn2
 src/idn2_cmd.c
 src/idn2_cmd.h
@@ -131,8 +126,6 @@ src/idn2_noinstall
 src/libidn2_cmd.la
 src/libidn2_cmd_la-idn2_cmd.lo
 src/libidn2_cmd_la-idn2_cmd.o
-src/libtool
-src/stamp-h1
 stamp-h1
 tests/IdnaTest.inc
 tests/IdnaTest.txt
