@@ -34,6 +34,8 @@
 #include <errno.h>
 #include <ctype.h>
 
+#include <unistr.h>
+
 #include "tr46map.h"
 
 #define countof(a) (sizeof(a)/sizeof(*(a)))
@@ -283,6 +285,75 @@ read_NFCQC (char *linep)
   return 0;
 }
 
+static int
+_compare_map_by_maplen (IDNAMap * m1, IDNAMap * m2)
+{
+  if (m1->nmappings != m2->nmappings)
+    return m2->nmappings - m1->nmappings;
+  if (m1->cp1 < m2->cp1)
+    return -1;
+  if (m1->cp1 > m2->cp2)
+    return 1;
+  return 0;
+}
+
+uint32_t *
+_u32_memmem(uint32_t *haystack, size_t hlen, uint32_t *needle, size_t nlen)
+{
+  uint32_t *p;
+
+  if (nlen == 0)
+    return haystack;
+
+  for (p = haystack; hlen >= nlen; p++, hlen--)
+    {
+      if (*p == *needle && (nlen == 1 || u32_cmp(p, needle, nlen) == 0))
+	return p;
+    }
+
+  return NULL;
+}
+
+/* Remove doubled mappings. With Unicode 6.3.0 the mapping data shrinks
+   from 7272 to 4322 entries of uint32_t. */
+void
+_compact_idna_map(void)
+{
+  int it;
+
+  /* sort into 'longest mappings first' */
+  qsort (idna_map, map_pos, sizeof (IDNAMap),
+	 (int (*)(const void *, const void *)) _compare_map_by_maplen);
+
+  uint32_t *data = calloc(sizeof(uint32_t), mapdata_pos), *p;
+  size_t ndata = 0;
+
+  for (it = 0; it < map_pos; it++)
+    {
+      IDNAMap *map = idna_map + it;
+
+      if (!map->nmappings)
+	continue;
+
+      if ((p = _u32_memmem(data, ndata, genmapdata + map->offset, map->nmappings)))
+	{
+	  map->offset = p - data;
+	  continue;
+	}
+
+      u32_cpy(data + ndata, genmapdata + map->offset, map->nmappings);
+      map->offset = ndata;
+      ndata += map->nmappings;
+    }
+
+  u32_cpy(genmapdata, data, ndata);
+  mapdata_pos = ndata;
+
+  /* sort into 'lowest codepoint first' */
+  qsort (idna_map, map_pos, sizeof (IDNAMap),
+	 (int (*)(const void *, const void *)) _compare_map);
+}
+
 int
 main (void)
 {
@@ -291,6 +362,8 @@ main (void)
   // read IDNA mappings
   if (_scan_file (SRCDIR"/IdnaMappingTable.txt", read_IdnaMappings))
     return 1;
+
+  _compact_idna_map();
 
   // read NFC QuickCheck table
   if (_scan_file (SRCDIR"/DerivedNormalizationProps.txt", read_NFCQC))

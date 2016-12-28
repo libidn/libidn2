@@ -89,7 +89,7 @@ tr46map.c: gentr46map $(TR46MAP) $(NFCQC)
 	./gentr46map >tr46map.c
 
 gentr46map: $(srcdir)/gentr46map.c
-	$(COMPILE) $(srcdir)/gentr46map.c -o gentr46map
+	$(COMPILE) $(srcdir)/gentr46map.c -o gentr46map $(LTLIBUNISTRING)
 
 TLD_URL = https://www.iana.org/domains/root/db/
 tv.c: $(srcdir)/gen-idn-tld-tv.pl
