@@ -34,9 +34,11 @@ exclude_file_name_regexp--sc_trailing_blank = ^(tests/IdnaTest.(txt|inc))|(doc/g
 exclude_file_name_regexp--sc_require_config_h = ^examples/.*\.c$$
 exclude_file_name_regexp--sc_require_config_h_first = ^examples/.*\.c$$
 exclude_file_name_regexp--sc_prohibit_strncpy = ^src/idn2.c$$
-exclude_file_name_regexp--sc_GPL_version = ^[^/]*.[ch]
+exclude_file_name_regexp--sc_GPL_version = ^COPYINGv2|[^/]*.[ch](.in)?$$
 exclude_file_name_regexp--sc_prohibit_atoi_atof = ^gentr46map\.c$$
-exclude_file_name_regexp--sc_makefile_at_at_check = ^src/Makefile\.am$$
+exclude_file_name_regexp--sc_makefile_at_at_check = ^Makefile.am|src/Makefile\.am|tests/Makefile.am$$
+exclude_file_name_regexp--sc_prohibit_empty_lines_at_EOF = ^IdnaMappingTable.txt|doc/reference/version.xml.in$$
+exclude_file_name_regexp--sc_prohibit_undesirable_word_seq = ^idna-tables-6.3.0.txt$$
 
 update-copyright-env = \
 	UPDATE_COPYRIGHT_USE_INTERVALS=2 \
