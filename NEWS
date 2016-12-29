@@ -4,6 +4,14 @@ See the end for copying conditions.
 
 * Version 0.13 (unreleased) [alpha]
 
+** build: Doesn't download external files during build.
+
+** doc: Clarify license.
+
+** build: Generate ChangeLog file properly.
+
+** doc: API documentation related to TR46 flags.
+
 ** API and ABI is backwards compatible with the previous version.
 
 * Version 0.12 (released 2016-12-26) [alpha]
