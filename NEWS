@@ -2,9 +2,15 @@ Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
 Copyright (C) 2011-2016 Simon Josefsson
 See the end for copying conditions.
 
+* Version 0.15 (unreleased) [alpha]
+
+** API and ABI is backwards compatible with the previous version.
+
 * Version 0.14 (released 2016-12-30) [alpha]
 
 ** build: Fix gentr46map build.
+
+** API and ABI is backwards compatible with the previous version.
 
 * Version 0.13 (released 2016-12-29) [alpha]
 

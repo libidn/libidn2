@@ -67,7 +67,7 @@ extern "C"
  * digits are used to enumerate development snapshots, but for all
  * public releases they will be 0000.
  */
-#define IDN2_VERSION_NUMBER 0x00140000
+#define IDN2_VERSION_NUMBER 0x00150000
 
 /**
  * IDN2_LABEL_MAX_LENGTH
