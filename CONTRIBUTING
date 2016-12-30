@@ -40,12 +40,26 @@ $ cd libidn2
 Prepare building with
 
 $ ./bootstrap
-$ ./configure
+$ ./configure --enable-gtk-doc --enable-gtk-doc-pdf --enable-gcc-warnings --enable-valgrind-tests
+
+You may want to use --gnulib-srcdir=/foo/bar/gnulib to avoid having to
+checkout gnulib every time.  Make sure the gnulib directory you point
+to is up to date.
 
 Then build the project normally:
 
 $ make
 $ make check
+
+The release process consists of:
+
+* Make sure version number is updated in configure.ac and idn2.h.in.
+
+* Make sure library version is updated in configure.ac.
+
+* Prepare NEWS.
+
+* Do 'make release'
 
 Happy hacking!
 
