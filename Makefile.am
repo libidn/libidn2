@@ -56,13 +56,20 @@ NFCQC = DerivedNormalizationProps.txt
 NFCQC_URL = http://www.unicode.org/Public/6.3.0/ucd/DerivedNormalizationProps.txt
 
 BUILT_SOURCES = data.c tr46map.c
-CLEANFILES = gentr46map
 DISTCLEANFILES =  tr46map.c
 MAINTAINERCLEANFILES = $(IDNA_TABLE) $(TR46MAP) $(NFCQC)
-EXTRA_DIST += gen-tables-from-iana.pl $(IDNA_TABLE) $(TR46MAP) $(NFCQC) tr46map.c gentr46map.c data.c
+EXTRA_DIST += gen-tables-from-iana.pl $(IDNA_TABLE) $(TR46MAP) $(NFCQC) tr46map.c data.c
 
 data.c: $(srcdir)/gen-tables-from-iana.pl $(IDNA_TABLE)
-	cat $(IDNA_TABLE) | $(srcdir)/gen-tables-from-iana.pl
+	cat $(IDNA_TABLE) | $(srcdir)/gen-tables-from-iana.pl > $@.new
+	mv $@.new $@
+
+noinst_PROGRAMS = gentr46map
+gentr46map_LDADD = $(LTLIBUNISTRING)
+
+tr46map.c: gentr46map.c gentr46map$(EXEEXT) $(TR46MAP) $(NFCQC)
+	$(builddir)/gentr46map$(EXEEXT) > $@.new
+	mv $@.new $@
 
 $(IDNA_TABLE):
 	if ! echo "4ebaf0c72061474d20078897d254768d894507de $(IDNA_TABLE)" | sha1sum -c -; then \
@@ -85,24 +92,11 @@ $(NFCQC):
 	  echo "8f220108eebacb130fe4b36469c25d6d2e613a97 $(NFCQC)" | sha1sum -c -; \
 	fi
 
-tr46map.c: gentr46map $(TR46MAP) $(NFCQC)
-	./gentr46map >tr46map.c
-
-gentr46map: $(srcdir)/gentr46map.c
-	$(COMPILE) $(srcdir)/gentr46map.c -o gentr46map $(LTLIBUNISTRING)
-
-TLD_URL = https://www.iana.org/domains/root/db/
-tv.c: $(srcdir)/gen-idn-tld-tv.pl
-	(cat tld-cache || wget -O - $(TLD_URL)) | $(srcdir)/gen-idn-tld-tv.pl
-
 if HAVE_LD_VERSION_SCRIPT
 libidn2_la_LDFLAGS += -Wl,--version-script=$(srcdir)/idn2.map
 else
 libidn2_la_LDFLAGS += -export-symbols-regex '^idn2_.*|_idn2_punycode_..code'
 endif
-
-backup:
-	rsync -av . jas@yxa-vi.extundo.com:libidn2
 
 check-valgrind:
 	TESTS_ENVIRONMENT="valgrind --error-exitcode=301 --leak-check=yes --show-reachable=yes --track-origins=yes" $(MAKE) check
