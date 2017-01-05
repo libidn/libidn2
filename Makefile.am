@@ -13,7 +13,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-DEFS = @DEFS@ -DSRCDIR=\"$(srcdir)\"
 DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc
 
 SUBDIRS = lib . src doc examples tests po
@@ -22,7 +21,7 @@ EXTRA_DIST = m4/gnulib-cache.m4
 
 EXTRA_DIST += CONTRIBUTING
 
-AM_CPPFLAGS = -DIDN2_BUILDING
+AM_CPPFLAGS = -DIDN2_BUILDING -DSRCDIR=\"$(srcdir)\"
 AM_CPPFLAGS += -I$(top_builddir)/lib -I$(top_srcdir)/lib
 AM_CFLAGS = $(WARN_CFLAGS)
 AM_CFLAGS += $(CFLAG_VISIBILITY)
