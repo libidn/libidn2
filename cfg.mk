@@ -23,6 +23,7 @@ local-checks-to-skip += sc_unmarked_diagnostics sc_bindtextdomain # Re-add when 
 local-checks-to-skip += sc_immutable_NEWS
 local-checks-to-skip += sc_prohibit_strcmp
 local-checks-to-skip += sc_copyright_check
+local-checks-to-skip += sc_GPL_version
 
 # Ignore gnulib files.
 VC_LIST_ALWAYS_EXCLUDE_REGEX = ^(maint.mk|build-aux/gnupload|src/gl/.*|gl/.*|m4/.*)$$
