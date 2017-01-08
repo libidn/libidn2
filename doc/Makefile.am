@@ -18,10 +18,14 @@ SUBDIRS = reference
 EXTRA_DIST = gdoc libidn2.html libidn2.pdf texinfo.css
 
 info_TEXINFOS = libidn2.texi
-libidn2_TEXINFOS = libidn2.texi lookup.c register.c $(gdoc_TEXINFOS)
+libidn2_TEXINFOS = libidn2.texi decode.c lookup.c register.c $(gdoc_TEXINFOS)
 
 AM_MAKEINFOHTMLFLAGS = $(AM_MAKEINFOFLAGS) \
 	--no-split --number-sections --css-include=texinfo.css
+
+decode.c: $(top_srcdir)/examples/decode.c
+	tail -n +18 $< > $@.tmp
+	mv $@.tmp $@
 
 lookup.c: $(top_srcdir)/examples/lookup.c
 	tail -n +18 $< > $@.tmp
@@ -32,7 +36,7 @@ register.c: $(top_srcdir)/examples/register.c
 	mv $@.tmp $@
 
 dist_man_MANS = idn2.1 $(gdoc_MANS)
-CLEANFILES = $(dist_man_MANS) lookup.c register.c stamp-vti version.texi $(srcdir)/libidn2.info
+CLEANFILES = $(dist_man_MANS) decode.c lookup.c register.c stamp-vti version.texi $(srcdir)/libidn2.info
 
 idn2.1: $(top_srcdir)/src/idn2.c $(top_srcdir)/src/idn2.ggo $(top_srcdir)/configure.ac
 	$(HELP2MAN) \
@@ -42,7 +46,7 @@ idn2.1: $(top_srcdir)/src/idn2.c $(top_srcdir)/src/idn2.ggo $(top_srcdir)/config
 
 # GDOC
 
-GDOC_SRC = $(top_srcdir)/lookup.c $(top_srcdir)/register.c	\
+GDOC_SRC = $(top_srcdir)/decode.c $(top_srcdir)/lookup.c $(top_srcdir)/register.c \
 	$(top_srcdir)/error.c $(top_srcdir)/version.c $(top_srcdir)/free.c
 GDOC_TEXI_PREFIX = texi/
 GDOC_MAN_PREFIX = man/

@@ -32,6 +32,7 @@ include_HEADERS = idn2.h
 
 libidn2_la_SOURCES = idn2.map idn2.h
 libidn2_la_SOURCES += idna.h idna.c
+libidn2_la_SOURCES += decode.c
 libidn2_la_SOURCES += lookup.c
 libidn2_la_SOURCES += register.c
 libidn2_la_SOURCES += bidi.h bidi.c

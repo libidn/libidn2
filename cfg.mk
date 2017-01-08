@@ -50,6 +50,7 @@ INDENT_SOURCES = \
 	context.c \
 	context.h \
 	data.h \
+	decode.c \
 	error.c \
 	free.c \
 	idn2.h.in \

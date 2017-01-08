@@ -17,6 +17,7 @@
 
 #include <config.h>
 
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -78,6 +79,7 @@ Mandatory arguments to long options are mandatory for short options too.\n\
   -V, --version            Print version and exit\n\
 "), stdout);
       fputs (_("\
+  -d, --decode             Decode (punycode) domain name\n\
   -l, --lookup             Lookup domain name (default)\n\
   -r, --register           Register label\n\
 "), stdout);
@@ -128,6 +130,7 @@ process_input (char *readbuf, int flags)
 {
   size_t len = strlen (readbuf);
   char *output;
+  const char *tag;
   int rc;
 
   if (len && readbuf[len - 1] == '\n')
@@ -148,9 +151,20 @@ process_input (char *readbuf, int flags)
     hexdump ("input", readbuf);
 
   if (args_info.register_given)
-    rc = idn2_register_ul (readbuf, NULL, &output, flags);
+    {
+      rc = idn2_register_ul(readbuf, NULL, &output, flags);
+      tag = "register";
+    }
+  else if (args_info.decode_given)
+    {
+      rc = idn2_fromASCII(readbuf, (uint8_t **) & output);
+      tag = "decode";
+    }
   else
-    rc = idn2_lookup_ul (readbuf, &output, flags);
+    {
+      rc = idn2_lookup_ul (readbuf, &output, flags);
+      tag = "lookup";
+    }
 
   if (rc == IDN2_OK)
     {
@@ -161,9 +175,7 @@ process_input (char *readbuf, int flags)
       free (output);
     }
   else
-    error (EXIT_FAILURE, 0, "%s: %s",
-	   args_info.register_given ? "register" : "lookup",
-	   idn2_strerror (rc));
+    error (EXIT_FAILURE, 0, "%s: %s", tag, idn2_strerror (rc));
 }
 
 int

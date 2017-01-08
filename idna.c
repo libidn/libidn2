@@ -50,7 +50,7 @@
  * http://unicode.org/reports/tr15/#Detecting_Normalization_Forms
  *
  * They say, this is much faster than 'brute force' normalization.
- * Strings a very likely already in NFC form.
+ * Strings are very likely already in NFC form.
  */
 static int
 _isNFC (uint32_t * label, size_t len)

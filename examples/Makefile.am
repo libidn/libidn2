@@ -16,4 +16,4 @@
 AM_CPPFLAGS = -I$(srcdir)/.. -I$(builddir)/..
 LDADD = ../libidn2.la
 
-noinst_PROGRAMS = lookup register
+noinst_PROGRAMS = decode lookup register
