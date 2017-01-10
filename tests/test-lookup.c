@@ -783,6 +783,18 @@ static const struct idna idna[] = {
   },
   {"\xe2\x84\xab", "", IDN2_NOT_NFC},
   {"\xe2\x84\xa6", "", IDN2_NOT_NFC},
+  {
+    /* blåbærgrød.no composed */
+    "\x62\x6c\xc3\xa5\x62\xc3\xa6\x72\x67\x72\xc3\xb8\x64\x2e\x6e\x6f", "xn--blbrgrd-fxak7p.no", IDN2_OK
+  },
+  {
+    /* blåbærgrød.no partially decomposed */
+    "\x62\x6c\x61\xcc\x8a\x62\xc3\xa6\x72\x67\x72\xc3\xb8\x64\x2e\x6e\x6f", "", IDN2_NOT_NFC
+  },
+  {
+    /* blåbærgrød.no partially decomposed */
+    "\x62\x6c\x61\xcc\x8a\x62\xc3\xa6\x72\x67\x72\xc3\xb8\x64\x2e\x6e\x6f", "xn--blbrgrd-fxak7p.no", IDN2_OK, IDN2_NFC_INPUT
+  },
 };
 
 static int debug = 1;

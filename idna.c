@@ -74,7 +74,7 @@ _isNFC (uint32_t * label, size_t len)
       NFCQCMap *map = _get_nfcqc_map (ch);
       if (map)
 	{
-	  if (map->check == 0)
+	  if (map->check)
 	    return 0;
 	  result = -1;
 	}

@@ -379,9 +379,9 @@ read_NFCQC (char *linep)
     }
 
   if (*check == 'N')
-    map->check = 0;
-  else if (*check == 'M')
     map->check = 1;
+  else if (*check == 'M')
+    map->check = 2;
   else
     {
       printf ("NFQQC: Unknown value '%s'\n", check);
