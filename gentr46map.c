@@ -321,9 +321,7 @@ read_IdnaMappings (char *linep)
 	  && prev->deviation == map->deviation
 	  && prev->disallowed == map->disallowed
 	  && prev->disallowed_std3_mapped == map->disallowed_std3_mapped
-	  && prev->disallowed_std3_valid == map->disallowed_std3_valid
-	  && prev->transitional == map->transitional
-	  && prev->nontransitional == map->nontransitional)
+	  && prev->disallowed_std3_valid == map->disallowed_std3_valid)
 	{
 	  prev->cp2 = map->cp2;
 	  memset (map, 0, sizeof (*map));	/* clean up */
@@ -539,9 +537,7 @@ main (void)
       printf ("%d,", map->deviation);
       printf ("%d,", map->disallowed);
       printf ("%d,", map->disallowed_std3_mapped);
-      printf ("%d,", map->disallowed_std3_valid);
-      printf ("%d,", map->transitional);
-      printf ("%d", map->nontransitional);
+      printf ("%d", map->disallowed_std3_valid);
       printf ("},\n");
     }
   printf ("};\n");

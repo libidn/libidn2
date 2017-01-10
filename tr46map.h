@@ -11,7 +11,7 @@ typedef struct
     deviation:1,
     disallowed:1,
     disallowed_std3_mapped:1,
-    disallowed_std3_valid:1, transitional:1, nontransitional:1;
+    disallowed_std3_valid:1;
 } IDNAMap;
 
 typedef struct
