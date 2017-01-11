@@ -571,7 +571,7 @@ main (void)
     }
   printf ("};\n\n");
 
-  printf ("uint8_t mapdata[%zu] = {\n", mapdata_pos);
+  printf ("static uint8_t mapdata[%zu] = {\n", mapdata_pos);
   for (it = 0; it < mapdata_pos; it++)
     {
       printf ("0x%02X,%s", genmapdata[it], it % 16 == 15 ? "\n" : "");
