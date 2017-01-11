@@ -54,10 +54,10 @@ TR46MAP_URL = http://www.unicode.org/Public/idna/6.3.0/IdnaMappingTable.txt
 NFCQC = DerivedNormalizationProps.txt
 NFCQC_URL = http://www.unicode.org/Public/6.3.0/ucd/DerivedNormalizationProps.txt
 
-BUILT_SOURCES = data.c tr46map.c
-DISTCLEANFILES =  tr46map.c
+BUILT_SOURCES = data.c tr46map_data.c
+DISTCLEANFILES =  tr46map_data.c
 MAINTAINERCLEANFILES = $(IDNA_TABLE) $(TR46MAP) $(NFCQC)
-EXTRA_DIST += gen-tables-from-iana.pl $(IDNA_TABLE) $(TR46MAP) $(NFCQC) tr46map.c data.c
+EXTRA_DIST += gen-tables-from-iana.pl $(IDNA_TABLE) $(TR46MAP) $(NFCQC) tr46map_data.c data.c
 
 data.c: $(srcdir)/gen-tables-from-iana.pl $(IDNA_TABLE)
 	cat $(IDNA_TABLE) | $(srcdir)/gen-tables-from-iana.pl > $@.new
@@ -66,7 +66,7 @@ data.c: $(srcdir)/gen-tables-from-iana.pl $(IDNA_TABLE)
 noinst_PROGRAMS = gentr46map
 gentr46map_LDADD = $(LTLIBUNISTRING)
 
-tr46map.c: gentr46map.c gentr46map$(EXEEXT) $(TR46MAP) $(NFCQC)
+tr46map_data.c: gentr46map.c gentr46map$(EXEEXT) $(TR46MAP) $(NFCQC)
 	$(builddir)/gentr46map$(EXEEXT) > $@.new
 	mv $@.new $@
 

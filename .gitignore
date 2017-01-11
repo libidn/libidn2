@@ -140,4 +140,4 @@ tests/test-strerror
 tests/test-strerror.log
 tests/test-strerror.trs
 tests/test-suite.log
-tr46map.c
+tr46map_data.c
