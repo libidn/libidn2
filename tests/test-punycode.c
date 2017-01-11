@@ -226,7 +226,7 @@ main (void)
   for (i = 0; i < sizeof (punycode) / sizeof (punycode[0]); i++)
     {
       if (debug)
-	printf ("PUNYCODE entry %d: %s\n", i, punycode[i].name);
+	printf ("PUNYCODE entry %d: %s\n", (int) i, punycode[i].name);
 
       if (debug)
 	{
@@ -239,7 +239,7 @@ main (void)
 				    NULL, &outlen, p);
       if (rc != punycode[i].rc)
 	{
-	  fail ("punycode_encode() entry %d failed: %d\n", i, rc);
+	  fail ("punycode_encode() entry %d failed: %d\n", (int) i, rc);
 	  if (debug)
 	    printf ("FATAL\n");
 	  continue;
@@ -261,7 +261,7 @@ main (void)
 	  if (strlen (punycode[i].out) != strlen (p) ||
 	      memcmp (punycode[i].out, p, strlen (p)) != 0)
 	    {
-	      fail ("punycode() entry %d failed\n", i);
+	      fail ("punycode() entry %d failed\n", (int) i);
 	      if (debug)
 		printf ("ERROR\n");
 	    }
@@ -281,7 +281,7 @@ main (void)
 				    &outlen, q, NULL);
       if (rc != punycode[i].rc)
 	{
-	  fail ("punycode() entry %d failed: %d\n", i, rc);
+	  fail ("punycode() entry %d failed: %d\n", (int) i, rc);
 	  if (debug)
 	    printf ("FATAL\n");
 	  continue;
@@ -302,7 +302,7 @@ main (void)
 	  if (punycode[i].inlen != outlen ||
 	      memcmp (punycode[i].in, q, outlen) != 0)
 	    {
-	      fail ("punycode_decode() entry %d failed\n", i);
+	      fail ("punycode_decode() entry %d failed\n", (int) i);
 	      if (debug)
 		printf ("ERROR\n");
 	    }

@@ -892,7 +892,7 @@ test_homebrewed(void)
   for (i = 0; i < sizeof (idna) / sizeof (idna[0]); i++)
     {
       rc = idn2_lookup_u8 (idna[i].in, &out, idna[i].flags);
-      printf ("%3d  %-25s %-40s %s\n", i, idn2_strerror_name (rc),
+      printf ("%3d  %-25s %-40s %s\n", (int) i, idn2_strerror_name (rc),
 	      rc == IDN2_OK ? idna[i].out : "", idna[i].in);
 
       if (rc != idna[i].rc && rc == IDN2_ENCODING_ERROR) {
