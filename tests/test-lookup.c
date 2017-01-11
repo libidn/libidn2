@@ -795,6 +795,14 @@ static const struct idna idna[] = {
     /* blåbærgrød.no partially decomposed */
     "\x62\x6c\x61\xcc\x8a\x62\xc3\xa6\x72\x67\x72\xc3\xb8\x64\x2e\x6e\x6f", "xn--blbrgrd-fxak7p.no", IDN2_OK, IDN2_NFC_INPUT
   },
+  {
+    /* blåbærgrød.no partially decomposed */
+    "\x62\x6c\x61\xcc\x8a\x62\xc3\xa6\x72\x67\x72\xc3\xb8\x64\x2e\x6e\x6f", "xn--blbrgrd-fxak7p.no", IDN2_OK, IDN2_TRANSITIONAL
+  },
+  {
+    /* blåbærgrød.no partially decomposed */
+    "\x62\x6c\x61\xcc\x8a\x62\xc3\xa6\x72\x67\x72\xc3\xb8\x64\x2e\x6e\x6f", "xn--blbrgrd-fxak7p.no", IDN2_OK, IDN2_NONTRANSITIONAL
+  },
 };
 
 static int debug = 1;
