@@ -214,7 +214,7 @@ main (int argc, char *argv[])
     flags = IDN2_NONTRANSITIONAL;
 
   for (cmdn = 0; cmdn < args_info.inputs_num; cmdn++)
-    process_input (args_info.inputs[cmdn], flags);
+    process_input (args_info.inputs[cmdn], flags | IDN2_NFC_INPUT);
 
   if (!cmdn)
     {

@@ -109,24 +109,6 @@ label (const uint8_t * src, size_t srclen, uint8_t * dst, size_t * dstlen,
   return IDN2_OK;
 }
 
-/* copy 'n' codepoints from stream 'src' to 'dst' */
-static void
-_copy_from_stream (uint32_t *dst, const uint8_t *src, size_t n)
-{
-  uint32_t cp = 0;
-
-  for (; n; src++)
-    {
-      cp = (cp << 7) | (*src & 0x7F);
-      if ((*src & 0x80) == 0)
-	{
-	  *dst++ = cp;
-	  cp = 0;
-	  n--;
-	}
-    }
-}
-
 #define TR46_TRANSITIONAL_CHECK \
   (TEST_NFC | TEST_2HYPHEN | TEST_HYPHEN_STARTEND | TEST_LEADING_COMBINING | TEST_TRANSITIONAL)
 #define TR46_NONTRANSITIONAL_CHECK \
@@ -149,10 +131,11 @@ _tr46 (const uint8_t * domain_u8, uint8_t ** out, int transitional)
       return IDN2_ENCODING_ERROR;
     }
 
+//  uint8_t *mapdata = get
   size_t len2 = 0;
   for (it = 0; it < len; it++)
     {
-      IDNAMap *map = _get_map (domain_u32[it]);
+      IDNAMap *map = get_idna_map (domain_u32[it]);
 
       if (!map || map->disallowed)
 	{
@@ -192,7 +175,7 @@ _tr46 (const uint8_t * domain_u8, uint8_t ** out, int transitional)
   for (it = 0; it < len; it++)
     {
       uint32_t c = domain_u32[it];
-      IDNAMap *map = _get_map (c);
+      IDNAMap *map = get_idna_map (c);
 
       if (!map || map->disallowed)
 	{
@@ -200,8 +183,7 @@ _tr46 (const uint8_t * domain_u8, uint8_t ** out, int transitional)
 	}
       else if (map->mapped)
 	{
-	_copy_from_stream(tmp + len2, mapdata + map->offset, map->nmappings);
-	len2 += map->nmappings;
+	len2 += get_map_data (tmp + len2, map);
 	}
       else if (map->valid)
 	{
@@ -215,8 +197,7 @@ _tr46 (const uint8_t * domain_u8, uint8_t ** out, int transitional)
 	{
 	  if (transitional)
 	    {
-	      _copy_from_stream(tmp +len2, mapdata + map->offset, map->nmappings);
-	      len2 += map->nmappings;
+	      len2 += get_map_data (tmp + len2, map);
 	    }
 	  else
 	    tmp[len2++] = c;

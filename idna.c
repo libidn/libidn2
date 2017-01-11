@@ -71,7 +71,7 @@ _isNFC (uint32_t * label, size_t len)
       if (lastCanonicalClass > canonicalClass && canonicalClass != 0)
 	return 0;
 
-      NFCQCMap *map = _get_nfcqc_map (ch);
+      NFCQCMap *map = get_nfcqc_map (ch);
       if (map)
 	{
 	  if (map->check)
@@ -263,7 +263,7 @@ _idn2_label_test (int what, const uint32_t * label, size_t llen)
        *    b. For Nontransitional Processing, each value must be either valid or deviation. */
       for (i = 0; i < llen; i++)
 	{
-	  IDNAMap *map = _get_map (label[i]);
+	  IDNAMap *map = get_idna_map (label[i]);
 
 	  if (map->valid || (map->deviation && !transitional))
 	    continue;

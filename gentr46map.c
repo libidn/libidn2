@@ -40,7 +40,21 @@
 
 #define countof(a) (sizeof(a)/sizeof(*(a)))
 
-static IDNAMap idna_map[10000];
+typedef struct
+{
+  uint32_t cp1, cp2;
+  unsigned nmappings:5,		/* 0-18, # of uint32_t at <offset> */
+    offset:14,			/* 0-16383, byte offset into mapdata */
+    valid:1,
+    mapped:1,
+    ignored:1,
+    deviation:1,
+    disallowed:1,
+    disallowed_std3_mapped:1,
+    disallowed_std3_valid:1;
+} IDNAMap_gen;
+
+static IDNAMap_gen idna_map[10000];
 static size_t map_pos;
 
 static uint8_t genmapdata[16384];
@@ -118,7 +132,7 @@ _scan_file (const char *fname, int (*scan) (char *))
 static size_t
 _u32_stream_len(uint32_t *src, size_t len)
 {
-  int it;
+  unsigned it;
   size_t n = 0;
 
 /*
@@ -150,7 +164,7 @@ _u32_stream_len(uint32_t *src, size_t len)
 static size_t
 _u32_to_stream(uint8_t *dst, size_t dst_size, uint32_t *src, size_t len)
 {
-  int it;
+  unsigned it;
   size_t n = 0;
 
   n = _u32_stream_len(src, len);
@@ -219,7 +233,7 @@ _copy_from_stream (uint32_t *dst, const uint8_t *src, size_t n)
 static int
 read_IdnaMappings (char *linep)
 {
-  IDNAMap *map = &idna_map[map_pos];
+  IDNAMap_gen *map = &idna_map[map_pos];
   char *flag, *codepoint, *mapping;
   int n;
 
@@ -272,8 +286,7 @@ read_IdnaMappings (char *linep)
   if (mapping && *mapping)
     {
       uint32_t cp, tmp[20], tmp2[20];
-      int n, pos;
-      uint8_t *stream = genmapdata + mapdata_pos;
+      int pos;
 
       while ((n = sscanf (mapping, " %X%n", &cp, &pos)) == 1)
 	{
@@ -292,7 +305,6 @@ read_IdnaMappings (char *linep)
 
 	  tmp[map->nmappings] = cp;
 	  mapdata_pos += _u32_to_stream(genmapdata + mapdata_pos, 5, &cp, 1);
-//	  genmapdata[mapdata_pos++] = cp;
 	  map->nmappings++;
 	  mapping += pos;
 	}
@@ -312,7 +324,7 @@ read_IdnaMappings (char *linep)
   if (map_pos && map->nmappings == 0)
     {
       /* merge with previous if possible */
-      IDNAMap *prev = &idna_map[map_pos - 1];
+      IDNAMap_gen *prev = &idna_map[map_pos - 1];
       if (prev->cp2 + 1 == map->cp1
 	  && prev->nmappings == 0
 	  && prev->valid == map->valid
@@ -339,7 +351,7 @@ read_IdnaMappings (char *linep)
 }
 
 static int
-_compare_map (IDNAMap * m1, IDNAMap * m2)
+_compare_map (IDNAMap_gen * m1, IDNAMap_gen * m2)
 {
   if (m1->cp1 < m2->cp1)
     return -1;
@@ -398,7 +410,7 @@ read_NFCQC (char *linep)
 }
 
 static int
-_compare_map_by_maplen (IDNAMap * m1, IDNAMap * m2)
+_compare_map_by_maplen (IDNAMap_gen * m1, IDNAMap_gen * m2)
 {
   if (m1->nmappings != m2->nmappings)
     return m2->nmappings - m1->nmappings;
@@ -409,6 +421,7 @@ _compare_map_by_maplen (IDNAMap * m1, IDNAMap * m2)
   return 0;
 }
 
+/*
 static uint32_t *
 _u32_memmem(uint32_t *haystack, size_t hlen, uint32_t *needle, size_t nlen)
 {
@@ -425,6 +438,7 @@ _u32_memmem(uint32_t *haystack, size_t hlen, uint32_t *needle, size_t nlen)
 
   return NULL;
 }
+*/
 
 static uint8_t *
 _u8_memmem(uint8_t *haystack, size_t hlen, uint8_t *needle, size_t nlen)
@@ -462,13 +476,13 @@ _u32_cp_stream_len(const uint8_t *stream, size_t ncp)
  * Converting those 4322 uin32_t values to a uint8_t stream, we decrease mapping
  *  table size from 17288 to 9153 bytes.
  */
-void
+static void
 _compact_idna_map(void)
 {
-  int it;
+  unsigned it;
 
   /* sort into 'longest mappings first' */
-  qsort (idna_map, map_pos, sizeof (IDNAMap),
+  qsort (idna_map, map_pos, sizeof (IDNAMap_gen),
 	 (int (*)(const void *, const void *)) _compare_map_by_maplen);
 
   uint8_t *data = calloc(sizeof(uint8_t), mapdata_pos), *p;
@@ -476,7 +490,7 @@ _compact_idna_map(void)
 
   for (it = 0; it < map_pos; it++)
     {
-      IDNAMap *map = idna_map + it;
+      IDNAMap_gen *map = idna_map + it;
 
       if (!map->nmappings)
 	continue;
@@ -499,14 +513,15 @@ _compact_idna_map(void)
   free(data);
 
   /* sort into 'lowest codepoint first' */
-  qsort (idna_map, map_pos, sizeof (IDNAMap),
+  qsort (idna_map, map_pos, sizeof (IDNAMap_gen),
 	 (int (*)(const void *, const void *)) _compare_map);
 }
 
 int
 main (void)
 {
-  int it;
+  unsigned it;
+  int it2, splits = 0;
 
   // read IDNA mappings
   if (_scan_file (SRCDIR"/IdnaMappingTable.txt", read_IdnaMappings))
@@ -525,11 +540,24 @@ main (void)
   printf ("#include <sys/types.h>\n");
   printf ("#include <stdlib.h>\n");
   printf ("#include \"tr46map.h\"\n\n");
-  printf ("IDNAMap idna_map[%zu] = {\n", map_pos);
+  printf ("static IDNAMap idna_map[] = {\n");
   for (it = 0; it < map_pos; it++)
     {
-      IDNAMap *map = idna_map + it;
-      printf ("{0x%X,0x%X,%d,%d,", map->cp1, map->cp2, map->nmappings,
+      IDNAMap_gen *map = idna_map + it;
+      uint32_t cp1 = map->cp1;
+      uint32_t cp2;
+      int n = (map->cp2 - cp1) / 0x10000;
+
+      if (n > 0)
+	splits += n - 1;
+
+      for (it2 = 0; it2 <= n; it2++)
+      {
+	if (it2 == n)
+	  cp2 = map->cp2;
+	else
+	  cp2 = cp1 + 0xFFFF;
+      printf ("{0x%X,%d,%d,%d,", cp1, cp2 - cp1, map->nmappings,
 	      map->offset);
       printf ("%d,", map->valid);
       printf ("%d,", map->mapped);
@@ -539,9 +567,11 @@ main (void)
       printf ("%d,", map->disallowed_std3_mapped);
       printf ("%d", map->disallowed_std3_valid);
       printf ("},\n");
+      cp1 = cp2 + 1;
+      }
     }
   printf ("};\n");
-  printf ("const size_t map_pos = %zu;\n\n", map_pos);
+  /* printf ("static const size_t map_pos = %zu;\n\n", map_pos + splits); */
 
   printf ("uint8_t mapdata[%zu] = {\n", mapdata_pos);
   for (it = 0; it < mapdata_pos; it++)
@@ -550,32 +580,56 @@ main (void)
     }
   printf ("};\n\n");
 
-  printf ("NFCQCMap nfcqc_map[%zu] = {\n", nfcqc_pos);
+  printf ("static NFCQCMap nfcqc_map[%zu] = {\n", nfcqc_pos);
   for (it = 0; it < nfcqc_pos; it++)
     {
       NFCQCMap *map = nfcqc_map + it;
       printf ("{0x%X,0x%X,%d},\n", map->cp1, map->cp2, map->check);
     }
   printf ("};\n");
-  printf ("const size_t nfcqc_pos = %zu;\n\n", nfcqc_pos);
+  /* printf ("static const size_t nfcqc_pos = %zu;\n\n", nfcqc_pos); */
 
-  printf ("/* arg1 works with 'uint32_t *' and with 'IDNAMap *' */\n"
-	  "int _compare_map(uint32_t *c, IDNAMap *m2)\n"
+  printf ("#define countof(a) (sizeof(a)/sizeof(*(a)))\n\n"
+	  "static int _compare_idna_map(uint32_t *c, IDNAMap *m2)\n"
 	  "{\n"
-	  "	if (*c < m2->cp1)\n"
-	  "		return -1;\n"
-	  "	if (*c > m2->cp2)\n"
-	  "		return 1;\n"
-	  "	return 0;\n"
+	  "  if (*c < m2->cp1)\n"
+	  "    return -1;\n"
+	  "  if (*c > m2->cp1 + m2->range)\n"
+	  "    return 1;\n"
+	  "  return 0;\n"
 	  "}\n\n"
-	  "IDNAMap *_get_map(uint32_t c)\n"
+	  "IDNAMap *get_idna_map(uint32_t c)\n"
 	  "{\n"
-	  "	return bsearch(&c, idna_map, map_pos, sizeof(IDNAMap), (int(*)(const void *, const void *))_compare_map);\n"
+	  "  return bsearch(&c, idna_map, countof(idna_map), sizeof(IDNAMap), (int(*)(const void *, const void *))_compare_idna_map);\n"
 	  "}\n\n"
-	  "NFCQCMap *_get_nfcqc_map(uint32_t c)\n"
+	  "static int _compare_nfcqc_map(uint32_t *c, NFCQCMap *m2)\n"
 	  "{\n"
-	  "	return bsearch(&c, nfcqc_map, nfcqc_pos, sizeof(NFCQCMap), (int(*)(const void *, const void *))_compare_map);\n"
-	  "}\n");
+	  "  if (*c < m2->cp1)\n"
+	  "    return -1;\n"
+	  "  if (*c > m2->cp2)\n"
+	  "    return 1;\n"
+	  "  return 0;\n"
+	  "}\n\n"
+	  "NFCQCMap *get_nfcqc_map(uint32_t c)\n"
+	  "{\n"
+	  "  return bsearch(&c, nfcqc_map, countof(nfcqc_map), sizeof(NFCQCMap), (int(*)(const void *, const void *))_compare_nfcqc_map);\n"
+	  "}\n\n");
+
+  printf("/* copy 'n' codepoints from mapdata stream */\n"
+	 "int get_map_data (uint32_t *dst, const IDNAMap *map)\n"
+	 "{\n"
+	 "  int n = map->nmappings;\n"
+	 "  uint8_t *src = mapdata + map->offset;\n\n"
+	 "  for (; (ssize_t) n > 0; n--)\n"
+	 "    {\n"
+	 "      uint32_t cp = 0;\n"
+	 "      do\n"
+	 "        cp = (cp << 7) | (*src & 0x7F);\n"
+	 "      while (*src++ & 0x80);\n"
+	 "      *dst++ = cp;\n"
+	 "    }\n\n"
+	 "  return map->nmappings;\n"
+	 "}\n");
 
   return 0;
 }
