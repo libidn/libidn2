@@ -135,7 +135,7 @@ _copy_from_stream (uint32_t *dst, const uint8_t *src, size_t n)
 static int
 _tr46 (const uint8_t * domain_u8, uint8_t ** out, int transitional)
 {
-  size_t len, it, it2;
+  size_t len, it;
   uint32_t *domain_u32;
   int err = IDN2_OK, rc;
 
@@ -421,7 +421,7 @@ idn2_lookup_u8 (const uint8_t * src, uint8_t ** lookupname, int flags)
     {
       uint8_t *tmp = malloc (lookupnamelen + 1);
 
-      if (_lookupname == NULL)
+      if (tmp == NULL)
 	return IDN2_MALLOC;
 
       memcpy (tmp, _lookupname, lookupnamelen + 1);
