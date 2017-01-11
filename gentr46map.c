@@ -551,23 +551,25 @@ main (void)
 	splits += n - 1;
 
       for (it2 = 0; it2 <= n; it2++)
-      {
-	if (it2 == n)
-	  cp2 = map->cp2;
-	else
-	  cp2 = cp1 + 0xFFFF;
-      printf ("{0x%X,%d,%d,%d,", cp1, cp2 - cp1, map->nmappings,
-	      map->offset);
-      printf ("%d,", map->valid);
-      printf ("%d,", map->mapped);
-      printf ("%d,", map->ignored);
-      printf ("%d,", map->deviation);
-      printf ("%d,", map->disallowed);
-      printf ("%d,", map->disallowed_std3_mapped);
-      printf ("%d", map->disallowed_std3_valid);
-      printf ("},\n");
-      cp1 = cp2 + 1;
-      }
+	{
+	  if (it2 == n)
+	    cp2 = map->cp2;
+	  else
+	    cp2 = cp1 + 0xFFFF;
+
+	  printf ("{0x%X,%d,%d,%d,",
+		  cp1, cp2 - cp1, map->nmappings, map->offset);
+	  printf ("%d,", map->valid);
+	  printf ("%d,", map->mapped);
+	  printf ("%d,", map->ignored);
+	  printf ("%d,", map->deviation);
+	  printf ("%d,", map->disallowed);
+	  printf ("%d,", map->disallowed_std3_mapped);
+	  printf ("%d", map->disallowed_std3_valid);
+	  printf ("},\n");
+
+	  cp1 = cp2 + 1;
+	}
     }
   printf ("};\n\n");
 
