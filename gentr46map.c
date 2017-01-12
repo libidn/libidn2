@@ -557,7 +557,7 @@ main (void)
 	  else
 	    cp2 = cp1 + 0xFFFF;
 
-	  printf ("{0x%X,%d,%d,%d,",
+	  printf ("{0x%X,%u,%d,%d,",
 		  cp1, cp2 - cp1, map->nmappings, map->offset);
 	  printf ("%d,", map->valid);
 	  printf ("%d,", map->mapped);

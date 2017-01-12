@@ -114,7 +114,7 @@ hexdump (const char *prefix, const char *str)
 
   for (i = 0; i < strlen (str); i++)
     fprintf (stderr, "%s[%lu] = 0x%02x\n",
-	     prefix, (unsigned long) i, str[i] & 0xFF);
+	     prefix, (unsigned long) i, (unsigned) (str[i] & 0xFF));
 
   if (u8 && strcmp (str, (char *) u8) != 0)
     for (i = 0; i < strlen ((char *) u8); i++)
