@@ -132,11 +132,13 @@ _tr46 (const uint8_t * domain_u8, uint8_t ** out, int transitional)
     }
 
   size_t len2 = 0;
-  for (it = 0; it < len; it++)
+  for (it = 0; it < len - 1; it++)
     {
-      IDNAMap *map = get_idna_map (domain_u32[it]);
+      IDNAMap map;
 
-      if (!map || map_is(map, TR46_FLG_DISALLOWED))
+      get_idna_map (domain_u32[it], &map);
+
+      if (map_is(&map, TR46_FLG_DISALLOWED))
 	{
 	  if (domain_u32[it])
 	    {
@@ -145,23 +147,23 @@ _tr46 (const uint8_t * domain_u8, uint8_t ** out, int transitional)
 	    }
 	  len2++;
 	}
-      else if (map_is(map, TR46_FLG_MAPPED))
+      else if (map_is(&map, TR46_FLG_MAPPED))
 	{
-	  len2 += map->nmappings;
+	  len2 += map.nmappings;
 	}
-      else if (map_is(map, TR46_FLG_VALID))
+      else if (map_is(&map, TR46_FLG_VALID))
 	{
 	  len2++;
 	}
-      else if (map_is(map, TR46_FLG_IGNORED))
+      else if (map_is(&map, TR46_FLG_IGNORED))
 	{
 	  continue;
 	}
-      else if (map_is(map, TR46_FLG_DEVIATION))
+      else if (map_is(&map, TR46_FLG_DEVIATION))
 	{
 	  if (transitional)
 	    {
-	      len2 += map->nmappings;
+	      len2 += map.nmappings;
 	    }
 	  else
 	    len2++;
@@ -171,32 +173,34 @@ _tr46 (const uint8_t * domain_u8, uint8_t ** out, int transitional)
   uint32_t *tmp = malloc ((len2 + 1) * sizeof (uint32_t));
 
   len2 = 0;
-  for (it = 0; it < len; it++)
+  for (it = 0; it < len - 1; it++)
     {
       uint32_t c = domain_u32[it];
-      IDNAMap *map = get_idna_map (c);
+      IDNAMap map;
 
-      if (!map || map_is(map, TR46_FLG_DISALLOWED))
+      get_idna_map (c, &map);
+
+      if (map_is(&map, TR46_FLG_DISALLOWED))
 	{
 	  tmp[len2++] = c;
 	}
-      else if (map_is(map, TR46_FLG_MAPPED))
+      else if (map_is(&map, TR46_FLG_MAPPED))
 	{
-	len2 += get_map_data (tmp + len2, map);
+	len2 += get_map_data (tmp + len2, &map);
 	}
-      else if (map_is(map, TR46_FLG_VALID))
+      else if (map_is(&map, TR46_FLG_VALID))
 	{
 	  tmp[len2++] = c;
 	}
-      else if (map_is(map, TR46_FLG_IGNORED))
+      else if (map_is(&map, TR46_FLG_IGNORED))
 	{
 	  continue;
 	}
-      else if (map_is(map, TR46_FLG_DEVIATION))
+      else if (map_is(&map, TR46_FLG_DEVIATION))
 	{
 	  if (transitional)
 	    {
-	      len2 += get_map_data (tmp + len2, map);
+	      len2 += get_map_data (tmp + len2, &map);
 	    }
 	  else
 	    tmp[len2++] = c;

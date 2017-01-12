@@ -28,12 +28,60 @@
 
 #include <config.h>
 #include <stdint.h>
-#include <stdlib.h>
+#include <stdlib.h> /* bsearch */
+#include <string.h> /* memset */
 
 #include "tr46map_data.c"
 
 #define countof(a) (sizeof(a)/sizeof(*(a)))
 
+static void
+_fill_map(uint32_t c, const uint8_t *p, IDNAMap *map)
+{
+  uint32_t value;
+
+  if (c <= 0xFF)
+    {
+      map->cp1 = *p++;
+      map->range = *p++;
+    }
+  else if (c <= 0xFFFF)
+    {
+      map->cp1 = (p[0] << 8) | p[1];
+      map->range = (p[2] << 8) | p[3];
+      p += 4;
+    }
+  else
+    {
+      map->cp1 = (p[0] << 16) | (p[1] << 8) | p[2];
+      map->range = (p[3] << 8) | p[4];
+      p += 5;
+    }
+
+  value = (p[0] << 16) | (p[1] << 8) | p[2];
+
+  /* deconstruct value, construction was
+   *   value = (((map->nmappings << 14) | map->offset) << 3) | map->flag_index; */
+  map->flag_index = value & 0x7;
+  map->offset = (value >> 3) & 0x3FFF;
+  map->nmappings = (value >> 17) & 0x1F;
+}
+
+static int
+_compare_idna_map(const uint32_t *c, const uint8_t *p)
+{
+  IDNAMap map;
+
+  _fill_map(*c, p, &map);
+
+  if (*c < map.cp1)
+    return -1;
+  if (*c > map.cp1 + map.range)
+    return 1;
+  return 0;
+}
+
+/*
 static int
 _compare_idna_map(uint32_t *c, IDNAMap *m2)
 {
@@ -48,6 +96,31 @@ IDNAMap
 *get_idna_map(uint32_t c)
 {
   return bsearch(&c, idna_map, countof(idna_map), sizeof(IDNAMap), (int(*)(const void *, const void *))_compare_idna_map);
+}
+*/
+
+int
+get_idna_map(uint32_t c, IDNAMap *map)
+{
+  uint8_t *p;
+
+  if (c <= 0xFF)
+    p = bsearch(&c, idna_map_8, sizeof(idna_map_8) / 5, 5, (int(*)(const void *, const void *))_compare_idna_map);
+  else if (c <= 0xFFFF)
+    p = bsearch(&c, idna_map_16, sizeof(idna_map_16) / 7, 7, (int(*)(const void *, const void *))_compare_idna_map);
+  else if (c <= 0xFFFFFF)
+    p = bsearch(&c, idna_map_24, sizeof(idna_map_24) / 8, 8, (int(*)(const void *, const void *))_compare_idna_map);
+  else
+    p = NULL;
+
+  if (!p)
+    {
+      memset(map, 0, sizeof(IDNAMap));
+      return -1;
+    }
+
+  _fill_map(c, p, map);
+  return 0;
 }
 
 int
@@ -77,7 +150,7 @@ int
 get_map_data (uint32_t *dst, const IDNAMap *map)
 {
   int n = map->nmappings;
-  uint8_t *src = mapdata + map->offset;
+  const uint8_t *src = mapdata + map->offset;
 
   for (; (ssize_t) n > 0; n--)
     {

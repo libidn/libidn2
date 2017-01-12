@@ -551,11 +551,73 @@ _combine_idna_flags(void)
     }
 }
 
+static int
+_print_tr46_map(uint32_t min, uint32_t max, int do_print)
+{
+  unsigned it;
+  int it2, entries = 0;
+
+  for (it = 0; it < map_pos; it++)
+    {
+      const IDNAMap_gen *map = idna_map + it;
+      uint32_t cp2, cp1 = map->cp1, value, range;
+      int n;
+
+      if (cp1 < min)
+	continue;
+
+      if (cp1 > max)
+	break;
+
+      n = (map->cp2 - cp1) / 0x10000;
+
+      for (it2 = 0; it2 <= n; it2++, cp1 = cp2 + 1)
+	{
+	  entries++;
+
+	  if (it2 == n)
+	    cp2 = map->cp2;
+	  else
+	    cp2 = cp1 + 0xFFFF;
+
+	  if (!do_print)
+	    continue;
+
+	  range = cp2 - cp1;
+	  value = (((map->nmappings << 14) | map->offset) << 3) | map->flag_index;
+
+	  if (max == 0xFF)
+	    printf ("0x%X,0x%X,",
+	      cp1 & 0xFF,
+	      range & 0xFF);
+	  else if (max == 0xFFFF)
+	    printf ("0x%X,0x%X,0x%X,0x%X,",
+	      (cp1 >> 8) & 0xFF, cp1 & 0xFF,
+	      (range >> 8) & 0xFF, range & 0xFF);
+	  else if (max == 0xFFFFFF)
+	    printf ("0x%X,0x%X,0x%X,0x%X,0x%X,",
+	      (cp1 >> 16) & 0xFF, (cp1 >> 8) & 0xFF, cp1 & 0xFF,
+	      (range >> 8) & 0xFF, range & 0xFF);
+
+	  printf ("0x%X,0x%X,0x%X,\n",
+	      (value >> 16) & 0xFF, (value >> 8) & 0xFF, value & 0xFF);
+	}
+    }
+
+  if (max == 0xFF)
+    return entries * 5;
+  if (max == 0xFFFF)
+    return entries * 7;
+  if (max == 0xFFFFFF)
+    return entries * 8;
+
+  return 0;
+}
+
 int
 main (void)
 {
   unsigned it;
-  int it2, splits = 0;
 
   // read IDNA mappings
   if (_scan_file (SRCDIR"/IdnaMappingTable.txt", read_IdnaMappings))
@@ -575,48 +637,36 @@ main (void)
   printf ("#include <stdint.h>\n");
   printf ("#include \"tr46map.h\"\n\n");
 
-  printf ("static uint8_t idna_flags[%u] =\n{", flag_combinations);
+  printf ("static const uint8_t idna_flags[%u] =\n{", flag_combinations);
   for (it = 0; it < flag_combinations; it++)
     {
       printf ("0x%X,", flag_combination[it]);
     }
   printf ("};\n\n");
 
-  printf ("static IDNAMap idna_map[] = {\n");
-  for (it = 0; it < map_pos; it++)
-    {
-      IDNAMap_gen *map = idna_map + it;
-      uint32_t cp1 = map->cp1;
-      uint32_t cp2;
-      int n = (map->cp2 - cp1) / 0x10000;
-
-      if (n > 0)
-	splits += n - 1;
-
-      for (it2 = 0; it2 <= n; it2++)
-	{
-	  if (it2 == n)
-	    cp2 = map->cp2;
-	  else
-	    cp2 = cp1 + 0xFFFF;
-
-	  printf ("{0x%X,%u,%d,%d,%d},\n",
-	    cp1, cp2 - cp1,
-	    map->nmappings, map->offset, map->flag_index);
-
-	  cp1 = cp2 + 1;
-	}
-    }
+  printf ("static const uint8_t idna_map_8[%d] = {\n",
+    _print_tr46_map(0x0, 0xFF, 0));
+  _print_tr46_map(0x0, 0xFF, 1);
   printf ("};\n\n");
 
-  printf ("static uint8_t mapdata[%zu] = {\n", mapdata_pos);
+  printf ("static const uint8_t idna_map_16[%d] = {\n",
+    _print_tr46_map(0x100, 0xFFFF, 0));
+  _print_tr46_map(0x100, 0xFFFF, 1);
+  printf ("};\n\n");
+
+  printf ("static const uint8_t idna_map_24[%d] = {\n",
+    _print_tr46_map(0x10000, 0xFFFFFF, 0));
+  _print_tr46_map(0x10000, 0xFFFFFF, 1);
+  printf ("};\n\n");
+
+  printf ("static const uint8_t mapdata[%zu] = {\n", mapdata_pos);
   for (it = 0; it < mapdata_pos; it++)
     {
       printf ("0x%02X,%s", genmapdata[it], it % 16 == 15 ? "\n" : "");
     }
   printf ("};\n\n");
 
-  printf ("static NFCQCMap nfcqc_map[%zu] = {\n", nfcqc_pos);
+  printf ("static const NFCQCMap nfcqc_map[%zu] = {\n", nfcqc_pos);
   for (it = 0; it < nfcqc_pos; it++)
     {
       NFCQCMap *map = nfcqc_map + it;

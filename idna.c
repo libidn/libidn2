@@ -263,10 +263,12 @@ _idn2_label_test (int what, const uint32_t * label, size_t llen)
        *    b. For Nontransitional Processing, each value must be either valid or deviation. */
       for (i = 0; i < llen; i++)
 	{
-	  IDNAMap *map = get_idna_map (label[i]);
+	  IDNAMap map;
 
-	  if (map_is(map, TR46_FLG_VALID) ||
-	    (!transitional && map_is(map, TR46_FLG_DEVIATION)))
+	  get_idna_map (label[i], &map);
+
+	  if (map_is(&map, TR46_FLG_VALID) ||
+	    (!transitional && map_is(&map, TR46_FLG_DEVIATION)))
 	    continue;
 
 	  return transitional ? IDN2_INVALID_TRANSITIONAL :

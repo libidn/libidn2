@@ -53,7 +53,7 @@ typedef struct
   char check;			/* 0=NO 2=MAYBE (YES if codepoint has no table entry) */
 } NFCQCMap;
 
-IDNAMap *get_idna_map (uint32_t c);
+int get_idna_map (uint32_t c, IDNAMap *map);
 int get_map_data (uint32_t *dst, const IDNAMap *map);
 int map_is(const IDNAMap *map, unsigned flags);
 
