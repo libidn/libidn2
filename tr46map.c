@@ -26,6 +26,7 @@
    not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <config.h>
 #include <stdint.h>
 #include <stdlib.h>
 
@@ -47,6 +48,12 @@ IDNAMap
 *get_idna_map(uint32_t c)
 {
   return bsearch(&c, idna_map, countof(idna_map), sizeof(IDNAMap), (int(*)(const void *, const void *))_compare_idna_map);
+}
+
+int
+map_is(const IDNAMap *map, unsigned flags)
+{
+  return (idna_flags[map->flag_index] & flags) == flags;
 }
 
 static int

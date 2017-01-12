@@ -26,21 +26,25 @@
    not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <config.h>
 #include <stdint.h>
+
+#define TR46_FLG_VALID                   1
+#define TR46_FLG_MAPPED                  2
+#define TR46_FLG_IGNORED                 4
+#define TR46_FLG_DEVIATION               8
+#define TR46_FLG_DISALLOWED             16
+#define TR46_FLG_DISALLOWED_STD3_MAPPED 32
+#define TR46_FLG_DISALLOWED_STD3_VALID  64
 
 typedef struct
 {
   uint32_t cp1;
   uint16_t range;
-  unsigned nmappings:5,		/* 0-18, # of uint32_t at <offset> */
-    offset:14,			/* 0-16383, byte offset into mapdata */
-    valid:1,
-    mapped:1,
-    ignored:1,
-    deviation:1,
-    disallowed:1,
-    disallowed_std3_mapped:1,
-    disallowed_std3_valid:1;
+  unsigned
+    nmappings:5,  /* 0-18, # of uint32_t at <offset> */
+    offset:14,    /* 0-16383, byte offset into mapdata */
+    flag_index:3; /* 0-7, index into flags */
 } IDNAMap;
 
 typedef struct
@@ -51,5 +55,6 @@ typedef struct
 
 IDNAMap *get_idna_map (uint32_t c);
 int get_map_data (uint32_t *dst, const IDNAMap *map);
+int map_is(const IDNAMap *map, unsigned flags);
 
 NFCQCMap *get_nfcqc_map (uint32_t c);
