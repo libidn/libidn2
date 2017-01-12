@@ -72,6 +72,7 @@ if test "$gl_gcc_warnings" = yes; then
 
   gl_WARN_ADD([-Wno-pointer-sign])     # Too many warnings for now
   gl_WARN_ADD([-fdiagnostics-show-option])
+  gl_WARN_ADD([-fdiagnostics-color=always]) # colors even when using ccache
 fi
 
 AC_CONFIG_FILES([
