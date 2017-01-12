@@ -169,7 +169,7 @@ _tr46 (const uint8_t * domain_u8, uint8_t ** out, int transitional)
 	}
     }
 
-  uint32_t *tmp = malloc (len2 * sizeof (uint32_t));
+  uint32_t *tmp = malloc ((len2 + 1) * sizeof (uint32_t));
 
   len2 = 0;
   for (it = 0; it < len; it++)
@@ -206,7 +206,8 @@ _tr46 (const uint8_t * domain_u8, uint8_t ** out, int transitional)
   free (domain_u32);
 
   /* Normalize to NFC */
-  domain_u32 = u32_normalize (UNINORM_NFC, tmp, len2, NULL, &len);
+  tmp[len2] = 0;
+  domain_u32 = u32_normalize (UNINORM_NFC, tmp, len2 + 1, NULL, &len);
   free (tmp);
   tmp = NULL;
 
