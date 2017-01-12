@@ -40,6 +40,9 @@ AM_MISSING_PROG(HELP2MAN, help2man, $missing_dir)
 AM_GNU_GETTEXT(external)
 AM_GNU_GETTEXT_VERSION(0.19.3)
 
+# Non-verbose make
+m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
+
 AC_ARG_ENABLE([gcc-warnings],
   [AS_HELP_STRING([--enable-gcc-warnings],
 		  [turn on lots of GCC warnings (for developers)])],
