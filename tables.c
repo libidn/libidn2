@@ -1,5 +1,5 @@
 /* tables.c - IDNA table checking functions
-   Copyright (C) 2011-2016 Simon Josefsson
+   Copyright (C) 2011-2017 Simon Josefsson
 
    Libidn2 is free software: you can redistribute it and/or modify it
    under the terms of either:

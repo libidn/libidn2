@@ -1,5 +1,5 @@
 Libidn2 README -- Introduction information.                     -*- outline -*-
-Copyright (C) 2011-2016 Simon Josefsson
+Copyright (C) 2011-2017 Simon Josefsson
 See the end for copying conditions.
 
 Libidn2 is a free software implementation of IDNA2008 and TR46.
