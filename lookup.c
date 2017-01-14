@@ -138,7 +138,7 @@ _tr46 (const uint8_t * domain_u8, uint8_t ** out, int transitional)
 
       get_idna_map (domain_u32[it], &map);
 
-      if (map_is(&map, TR46_FLG_DISALLOWED))
+      if (map_is (&map, TR46_FLG_DISALLOWED))
 	{
 	  if (domain_u32[it])
 	    {
@@ -147,19 +147,19 @@ _tr46 (const uint8_t * domain_u8, uint8_t ** out, int transitional)
 	    }
 	  len2++;
 	}
-      else if (map_is(&map, TR46_FLG_MAPPED))
+      else if (map_is (&map, TR46_FLG_MAPPED))
 	{
 	  len2 += map.nmappings;
 	}
-      else if (map_is(&map, TR46_FLG_VALID))
+      else if (map_is (&map, TR46_FLG_VALID))
 	{
 	  len2++;
 	}
-      else if (map_is(&map, TR46_FLG_IGNORED))
+      else if (map_is (&map, TR46_FLG_IGNORED))
 	{
 	  continue;
 	}
-      else if (map_is(&map, TR46_FLG_DEVIATION))
+      else if (map_is (&map, TR46_FLG_DEVIATION))
 	{
 	  if (transitional)
 	    {
@@ -180,23 +180,23 @@ _tr46 (const uint8_t * domain_u8, uint8_t ** out, int transitional)
 
       get_idna_map (c, &map);
 
-      if (map_is(&map, TR46_FLG_DISALLOWED))
+      if (map_is (&map, TR46_FLG_DISALLOWED))
 	{
 	  tmp[len2++] = c;
 	}
-      else if (map_is(&map, TR46_FLG_MAPPED))
+      else if (map_is (&map, TR46_FLG_MAPPED))
 	{
-	len2 += get_map_data (tmp + len2, &map);
+	  len2 += get_map_data (tmp + len2, &map);
 	}
-      else if (map_is(&map, TR46_FLG_VALID))
+      else if (map_is (&map, TR46_FLG_VALID))
 	{
 	  tmp[len2++] = c;
 	}
-      else if (map_is(&map, TR46_FLG_IGNORED))
+      else if (map_is (&map, TR46_FLG_IGNORED))
 	{
 	  continue;
 	}
-      else if (map_is(&map, TR46_FLG_DEVIATION))
+      else if (map_is (&map, TR46_FLG_DEVIATION))
 	{
 	  if (transitional)
 	    {

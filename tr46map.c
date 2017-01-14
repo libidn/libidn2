@@ -28,15 +28,15 @@
 
 #include <config.h>
 #include <stdint.h>
-#include <stdlib.h> /* bsearch */
-#include <string.h> /* memset */
+#include <stdlib.h>		/* bsearch */
+#include <string.h>		/* memset */
 
 #include "tr46map_data.c"
 
 #define countof(a) (sizeof(a)/sizeof(*(a)))
 
 static void
-_fill_map(uint32_t c, const uint8_t *p, IDNAMap *map)
+_fill_map (uint32_t c, const uint8_t * p, IDNAMap * map)
 {
   uint32_t value;
 
@@ -68,11 +68,11 @@ _fill_map(uint32_t c, const uint8_t *p, IDNAMap *map)
 }
 
 static int
-_compare_idna_map(const uint32_t *c, const uint8_t *p)
+_compare_idna_map (const uint32_t * c, const uint8_t * p)
 {
   IDNAMap map;
 
-  _fill_map(*c, p, &map);
+  _fill_map (*c, p, &map);
 
   if (*c < map.cp1)
     return -1;
@@ -100,37 +100,43 @@ IDNAMap
 */
 
 int
-get_idna_map(uint32_t c, IDNAMap *map)
+get_idna_map (uint32_t c, IDNAMap * map)
 {
   uint8_t *p;
 
   if (c <= 0xFF)
-    p = bsearch(&c, idna_map_8, sizeof(idna_map_8) / 5, 5, (int(*)(const void *, const void *))_compare_idna_map);
+    p =
+      bsearch (&c, idna_map_8, sizeof (idna_map_8) / 5, 5,
+	       (int (*)(const void *, const void *)) _compare_idna_map);
   else if (c <= 0xFFFF)
-    p = bsearch(&c, idna_map_16, sizeof(idna_map_16) / 7, 7, (int(*)(const void *, const void *))_compare_idna_map);
+    p =
+      bsearch (&c, idna_map_16, sizeof (idna_map_16) / 7, 7,
+	       (int (*)(const void *, const void *)) _compare_idna_map);
   else if (c <= 0xFFFFFF)
-    p = bsearch(&c, idna_map_24, sizeof(idna_map_24) / 8, 8, (int(*)(const void *, const void *))_compare_idna_map);
+    p =
+      bsearch (&c, idna_map_24, sizeof (idna_map_24) / 8, 8,
+	       (int (*)(const void *, const void *)) _compare_idna_map);
   else
     p = NULL;
 
   if (!p)
     {
-      memset(map, 0, sizeof(IDNAMap));
+      memset (map, 0, sizeof (IDNAMap));
       return -1;
     }
 
-  _fill_map(c, p, map);
+  _fill_map (c, p, map);
   return 0;
 }
 
 int
-map_is(const IDNAMap *map, unsigned flags)
+map_is (const IDNAMap * map, unsigned flags)
 {
   return (idna_flags[map->flag_index] & flags) == flags;
 }
 
 static int
-_compare_nfcqc_map(uint32_t *c, NFCQCMap *m2)
+_compare_nfcqc_map (uint32_t * c, NFCQCMap * m2)
 {
   if (*c < m2->cp1)
     return -1;
@@ -139,15 +145,16 @@ _compare_nfcqc_map(uint32_t *c, NFCQCMap *m2)
   return 0;
 }
 
-NFCQCMap
-*get_nfcqc_map(uint32_t c)
+NFCQCMap *
+get_nfcqc_map (uint32_t c)
 {
-  return bsearch(&c, nfcqc_map, countof(nfcqc_map), sizeof(NFCQCMap), (int(*)(const void *, const void *))_compare_nfcqc_map);
+  return bsearch (&c, nfcqc_map, countof (nfcqc_map), sizeof (NFCQCMap),
+		  (int (*)(const void *, const void *)) _compare_nfcqc_map);
 }
 
 /* copy 'n' codepoints from mapdata stream */
 int
-get_map_data (uint32_t *dst, const IDNAMap *map)
+get_map_data (uint32_t * dst, const IDNAMap * map)
 {
   int n = map->nmappings;
   const uint8_t *src = mapdata + map->offset;
@@ -156,7 +163,7 @@ get_map_data (uint32_t *dst, const IDNAMap *map)
     {
       uint32_t cp = 0;
       do
-        cp = (cp << 7) | (*src & 0x7F);
+	cp = (cp << 7) | (*src & 0x7F);
       while (*src++ & 0x80);
       *dst++ = cp;
     }

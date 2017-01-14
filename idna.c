@@ -267,8 +267,8 @@ _idn2_label_test (int what, const uint32_t * label, size_t llen)
 
 	  get_idna_map (label[i], &map);
 
-	  if (map_is(&map, TR46_FLG_VALID) ||
-	    (!transitional && map_is(&map, TR46_FLG_DEVIATION)))
+	  if (map_is (&map, TR46_FLG_VALID) ||
+	      (!transitional && map_is (&map, TR46_FLG_DEVIATION)))
 	    continue;
 
 	  return transitional ? IDN2_INVALID_TRANSITIONAL :

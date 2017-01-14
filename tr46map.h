@@ -40,10 +40,9 @@ typedef struct
 {
   uint32_t cp1;
   uint16_t range;
-  unsigned
-    nmappings:5,  /* 0-18, # of uint32_t at <offset> */
-    offset:14,    /* 0-16383, byte offset into mapdata */
-    flag_index:3; /* 0-7, index into flags */
+  unsigned nmappings:5,		/* 0-18, # of uint32_t at <offset> */
+    offset:14,			/* 0-16383, byte offset into mapdata */
+    flag_index:3;		/* 0-7, index into flags */
 } IDNAMap;
 
 typedef struct
@@ -52,8 +51,8 @@ typedef struct
   char check;			/* 0=NO 2=MAYBE (YES if codepoint has no table entry) */
 } NFCQCMap;
 
-int get_idna_map (uint32_t c, IDNAMap *map);
-int get_map_data (uint32_t *dst, const IDNAMap *map);
-int map_is(const IDNAMap *map, unsigned flags);
+int get_idna_map (uint32_t c, IDNAMap * map);
+int get_map_data (uint32_t * dst, const IDNAMap * map);
+int map_is (const IDNAMap * map, unsigned flags);
 
 NFCQCMap *get_nfcqc_map (uint32_t c);

@@ -128,7 +128,7 @@ _scan_file (const char *fname, int (*scan) (char *))
 }
 
 static size_t
-_u32_stream_len(uint32_t *src, size_t len)
+_u32_stream_len (uint32_t * src, size_t len)
 {
   unsigned it;
   size_t n = 0;
@@ -160,12 +160,12 @@ _u32_stream_len(uint32_t *src, size_t len)
 }
 
 static size_t
-_u32_to_stream(uint8_t *dst, size_t dst_size, uint32_t *src, size_t len)
+_u32_to_stream (uint8_t * dst, size_t dst_size, uint32_t * src, size_t len)
 {
   unsigned it;
   size_t n = 0;
 
-  n = _u32_stream_len(src, len);
+  n = _u32_stream_len (src, len);
 
   if (!dst)
     return n;
@@ -185,26 +185,26 @@ _u32_to_stream(uint8_t *dst, size_t dst_size, uint32_t *src, size_t len)
 	  *dst++ = cp & 0x7F;
 	}
       else if (cp <= 0x1fffff)
-        {
+	{
 	  *dst++ = 0x80 | ((cp >> 14) & 0x7F);
 	  *dst++ = 0x80 | ((cp >> 7) & 0x7F);
 	  *dst++ = cp & 0x7F;
-        }
+	}
       else if (cp <= 0xFFFFFFF)
-        {
+	{
 	  *dst++ = 0x80 | ((cp >> 21) & 0x7F);
 	  *dst++ = 0x80 | ((cp >> 14) & 0x7F);
 	  *dst++ = 0x80 | ((cp >> 7) & 0x7F);
 	  *dst++ = cp & 0x7F;
-        }
+	}
       else
-        {
+	{
 	  *dst++ = 0x80 | ((cp >> 28) & 0x7F);
 	  *dst++ = 0x80 | ((cp >> 21) & 0x7F);
 	  *dst++ = 0x80 | ((cp >> 14) & 0x7F);
 	  *dst++ = 0x80 | ((cp >> 7) & 0x7F);
 	  *dst++ = cp & 0x7F;
-        }
+	}
     }
 
   return n;
@@ -212,7 +212,7 @@ _u32_to_stream(uint8_t *dst, size_t dst_size, uint32_t *src, size_t len)
 
 /* copy 'n' codepoints from stream 'src' to 'dst' */
 static void
-_copy_from_stream (uint32_t *dst, const uint8_t *src, size_t n)
+_copy_from_stream (uint32_t * dst, const uint8_t * src, size_t n)
 {
   uint32_t cp = 0;
 
@@ -298,25 +298,26 @@ read_IdnaMappings (char *linep)
 	    {
 	      map->offset = mapdata_pos;
 	      if (map->offset != mapdata_pos)
-		printf("offset overflow (%zu)\n", mapdata_pos);
+		printf ("offset overflow (%zu)\n", mapdata_pos);
 	    }
 
 	  tmp[map->nmappings] = cp;
-	  mapdata_pos += _u32_to_stream(genmapdata + mapdata_pos, 5, &cp, 1);
+	  mapdata_pos += _u32_to_stream (genmapdata + mapdata_pos, 5, &cp, 1);
 	  map->nmappings++;
 	  mapping += pos;
 	}
 
       /* selftest */
-      _copy_from_stream(tmp2, genmapdata + map->offset, map->nmappings);
+      _copy_from_stream (tmp2, genmapdata + map->offset, map->nmappings);
       for (pos = 0; pos < map->nmappings; pos++)
 	if (tmp[pos] != tmp2[pos])
-	  abort();
+	  abort ();
     }
   else if (map->flags &
-    (TR46_FLG_MAPPED | TR46_FLG_DISALLOWED_STD3_MAPPED | TR46_FLG_DEVIATION))
+	   (TR46_FLG_MAPPED | TR46_FLG_DISALLOWED_STD3_MAPPED |
+	    TR46_FLG_DEVIATION))
     {
-      if (map->cp1 != 0x200C && map->cp1 != 0x200D) /* ZWNJ and ZWJ */
+      if (map->cp1 != 0x200C && map->cp1 != 0x200D)	/* ZWNJ and ZWJ */
 	printf ("Missing mapping for '%s'\n", codepoint);
     }
 
@@ -325,11 +326,10 @@ read_IdnaMappings (char *linep)
       /* merge with previous if possible */
       IDNAMap_gen *prev = &idna_map[map_pos - 1];
       if (prev->cp2 + 1 == map->cp1
-	  && prev->nmappings == 0
-	  && prev->flags == map->flags)
+	  && prev->nmappings == 0 && prev->flags == map->flags)
 	{
 	  prev->cp2 = map->cp2;
-	  memset (map, 0, sizeof (*map)); /* clean up */
+	  memset (map, 0, sizeof (*map));	/* clean up */
 	  return 0;
 	}
     }
@@ -434,7 +434,7 @@ _u32_memmem(uint32_t *haystack, size_t hlen, uint32_t *needle, size_t nlen)
 */
 
 static uint8_t *
-_u8_memmem(uint8_t *haystack, size_t hlen, uint8_t *needle, size_t nlen)
+_u8_memmem (uint8_t * haystack, size_t hlen, uint8_t * needle, size_t nlen)
 {
   uint8_t *p;
 
@@ -443,7 +443,7 @@ _u8_memmem(uint8_t *haystack, size_t hlen, uint8_t *needle, size_t nlen)
 
   for (p = haystack; hlen >= nlen; p++, hlen--)
     {
-      if (*p == *needle && (nlen == 1 || memcmp(p, needle, nlen) == 0))
+      if (*p == *needle && (nlen == 1 || memcmp (p, needle, nlen) == 0))
 	return p;
     }
 
@@ -451,7 +451,7 @@ _u8_memmem(uint8_t *haystack, size_t hlen, uint8_t *needle, size_t nlen)
 }
 
 static size_t
-_u32_cp_stream_len(const uint8_t *stream, size_t ncp)
+_u32_cp_stream_len (const uint8_t * stream, size_t ncp)
 {
   const uint8_t *end;
 
@@ -470,7 +470,7 @@ _u32_cp_stream_len(const uint8_t *stream, size_t ncp)
  *  table size from 17288 to 9153 bytes.
  */
 static void
-_compact_idna_map(void)
+_compact_idna_map (void)
 {
   unsigned it;
 
@@ -478,7 +478,7 @@ _compact_idna_map(void)
   qsort (idna_map, map_pos, sizeof (IDNAMap_gen),
 	 (int (*)(const void *, const void *)) _compare_map_by_maplen);
 
-  uint8_t *data = calloc(sizeof(uint8_t), mapdata_pos), *p;
+  uint8_t *data = calloc (sizeof (uint8_t), mapdata_pos), *p;
   size_t ndata = 0, slen;
 
   for (it = 0; it < map_pos; it++)
@@ -488,22 +488,22 @@ _compact_idna_map(void)
       if (!map->nmappings)
 	continue;
 
-      slen = _u32_cp_stream_len(genmapdata + map->offset, map->nmappings);
+      slen = _u32_cp_stream_len (genmapdata + map->offset, map->nmappings);
 
-      if ((p = _u8_memmem(data, ndata, genmapdata + map->offset, slen)))
+      if ((p = _u8_memmem (data, ndata, genmapdata + map->offset, slen)))
 	{
 	  map->offset = p - data;
 	  continue;
 	}
 
-      memcpy(data + ndata, genmapdata + map->offset, slen);
+      memcpy (data + ndata, genmapdata + map->offset, slen);
       map->offset = ndata;
       ndata += slen;
     }
 
-  memcpy(genmapdata, data, ndata);
+  memcpy (genmapdata, data, ndata);
   mapdata_pos = ndata;
-  free(data);
+  free (data);
 
   /* sort into 'lowest codepoint first' */
   qsort (idna_map, map_pos, sizeof (IDNAMap_gen),
@@ -511,7 +511,7 @@ _compact_idna_map(void)
 }
 
 static void
-_combine_idna_flags(void)
+_combine_idna_flags (void)
 {
   unsigned it, it2;
 
@@ -523,21 +523,24 @@ _combine_idna_flags(void)
 
       for (it2 = 0; it2 < flag_combinations && !found; it2++)
 	{
-	  if (flag_combination[it2] == map->flags) {
-	    map->flag_index = it2;
-	    found = 1;
-	  }
+	  if (flag_combination[it2] == map->flags)
+	    {
+	      map->flag_index = it2;
+	      found = 1;
+	    }
 	}
 
-      if (!found) {
-	if (flag_combinations >= countof (flag_combination))
-	  {
-	    fprintf (stderr, "flag_combination[] too small - increase and retry\n");
-	    exit(EXIT_FAILURE);
-	  }
-	map->flag_index = flag_combinations++;
-	flag_combination[map->flag_index] = map->flags;
-      }
+      if (!found)
+	{
+	  if (flag_combinations >= countof (flag_combination))
+	    {
+	      fprintf (stderr,
+		       "flag_combination[] too small - increase and retry\n");
+	      exit (EXIT_FAILURE);
+	    }
+	  map->flag_index = flag_combinations++;
+	  flag_combination[map->flag_index] = map->flags;
+	}
     }
   for (it = 0; it < map_pos; it++)
     {
@@ -545,14 +548,15 @@ _combine_idna_flags(void)
 
       if (map->flags != flag_combination[map->flag_index])
 	{
-	  fprintf(stderr, "Flags do not for 0x%X-0x%X)\n", map->cp1, map->cp2);
-	  exit(EXIT_FAILURE);
+	  fprintf (stderr, "Flags do not for 0x%X-0x%X)\n", map->cp1,
+		   map->cp2);
+	  exit (EXIT_FAILURE);
 	}
     }
 }
 
 static int
-_print_tr46_map(uint32_t min, uint32_t max, int do_print)
+_print_tr46_map (uint32_t min, uint32_t max, int do_print)
 {
   unsigned it;
   int it2, entries = 0;
@@ -584,23 +588,22 @@ _print_tr46_map(uint32_t min, uint32_t max, int do_print)
 	    continue;
 
 	  range = cp2 - cp1;
-	  value = (((map->nmappings << 14) | map->offset) << 3) | map->flag_index;
+	  value =
+	    (((map->nmappings << 14) | map->offset) << 3) | map->flag_index;
 
 	  if (max == 0xFF)
-	    printf ("0x%X,0x%X,",
-	      cp1 & 0xFF,
-	      range & 0xFF);
+	    printf ("0x%X,0x%X,", cp1 & 0xFF, range & 0xFF);
 	  else if (max == 0xFFFF)
 	    printf ("0x%X,0x%X,0x%X,0x%X,",
-	      (cp1 >> 8) & 0xFF, cp1 & 0xFF,
-	      (range >> 8) & 0xFF, range & 0xFF);
+		    (cp1 >> 8) & 0xFF, cp1 & 0xFF,
+		    (range >> 8) & 0xFF, range & 0xFF);
 	  else if (max == 0xFFFFFF)
 	    printf ("0x%X,0x%X,0x%X,0x%X,0x%X,",
-	      (cp1 >> 16) & 0xFF, (cp1 >> 8) & 0xFF, cp1 & 0xFF,
-	      (range >> 8) & 0xFF, range & 0xFF);
+		    (cp1 >> 16) & 0xFF, (cp1 >> 8) & 0xFF, cp1 & 0xFF,
+		    (range >> 8) & 0xFF, range & 0xFF);
 
 	  printf ("0x%X,0x%X,0x%X,\n",
-	      (value >> 16) & 0xFF, (value >> 8) & 0xFF, value & 0xFF);
+		  (value >> 16) & 0xFF, (value >> 8) & 0xFF, value & 0xFF);
 	}
     }
 
@@ -620,14 +623,14 @@ main (void)
   unsigned it;
 
   // read IDNA mappings
-  if (_scan_file (SRCDIR"/IdnaMappingTable.txt", read_IdnaMappings))
+  if (_scan_file (SRCDIR "/IdnaMappingTable.txt", read_IdnaMappings))
     return 1;
 
-  _compact_idna_map();
-  _combine_idna_flags();
+  _compact_idna_map ();
+  _combine_idna_flags ();
 
   // read NFC QuickCheck table
-  if (_scan_file (SRCDIR"/DerivedNormalizationProps.txt", read_NFCQC))
+  if (_scan_file (SRCDIR "/DerivedNormalizationProps.txt", read_NFCQC))
     return 1;
 
   qsort (nfcqc_map, nfcqc_pos, sizeof (NFCQCMap),
@@ -645,18 +648,18 @@ main (void)
   printf ("};\n\n");
 
   printf ("static const uint8_t idna_map_8[%d] = {\n",
-    _print_tr46_map(0x0, 0xFF, 0));
-  _print_tr46_map(0x0, 0xFF, 1);
+	  _print_tr46_map (0x0, 0xFF, 0));
+  _print_tr46_map (0x0, 0xFF, 1);
   printf ("};\n\n");
 
   printf ("static const uint8_t idna_map_16[%d] = {\n",
-    _print_tr46_map(0x100, 0xFFFF, 0));
-  _print_tr46_map(0x100, 0xFFFF, 1);
+	  _print_tr46_map (0x100, 0xFFFF, 0));
+  _print_tr46_map (0x100, 0xFFFF, 1);
   printf ("};\n\n");
 
   printf ("static const uint8_t idna_map_24[%d] = {\n",
-    _print_tr46_map(0x10000, 0xFFFFFF, 0));
-  _print_tr46_map(0x10000, 0xFFFFFF, 1);
+	  _print_tr46_map (0x10000, 0xFFFFFF, 0));
+  _print_tr46_map (0x10000, 0xFFFFFF, 1);
   printf ("};\n\n");
 
   printf ("static const uint8_t mapdata[%zu] = {\n", mapdata_pos);

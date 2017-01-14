@@ -29,6 +29,7 @@
 #ifndef _IDN2_H
 #define _IDN2_H
 
+/* *INDENT-OFF* */
 #ifndef _IDN2_API
 # if defined IDN2_BUILDING && defined HAVE_VISIBILITY && HAVE_VISIBILITY
 #  define _IDN2_API __attribute__((__visibility__("default")))
@@ -40,6 +41,7 @@
 #  define _IDN2_API
 # endif
 #endif
+/* *INDENT-ON* */
 
 #include <stdint.h>		/* uint32_t */
 #include <string.h>		/* size_t */
