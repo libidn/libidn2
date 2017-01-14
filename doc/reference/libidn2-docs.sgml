@@ -20,7 +20,7 @@
   <chapter id="libidn2">
     <title>Libidn2 Overview</title>
     <para>
-      Libidn2 is a free software implementation of IDNA2008.
+      Libidn2 is a free software implementation of IDNA2008 and TR46.
     </para>
 
     <xi:include href="xml/idn2.xml"/>
