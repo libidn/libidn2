@@ -42,12 +42,6 @@
 
 #include "blurbs.h"
 
-#define GREETING							\
-  "Copyright (C) 2011-2016  Simon Josefsson\n"				\
-  "This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.\n" \
-  "This is free software, and you are welcome to redistribute it\n" \
-  "under certain conditions; type `show c' for details.\n\n"
-
 const char version_etc_copyright[] =
   /* Do *not* mark this string for translation.  %s is a copyright
      symbol suitable for this locale, and %d is the copyright

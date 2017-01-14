@@ -1,5 +1,5 @@
 /* tr46map.c - implementation of IDNA2008 TR46 functions
-   Copyright (C) 2016 Tim Rühsen
+   Copyright (C) 2016-2017 Tim Rühsen
 
    Libidn2 is free software: you can redistribute it and/or modify it
    under the terms of either:

@@ -15,6 +15,12 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#define GREETING							\
+  "Copyright (C) 2011-2017  Simon Josefsson\n"				\
+  "This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.\n" \
+  "This is free software, and you are welcome to redistribute it\n"	\
+  "under certain conditions; type `show c' for details.\n\n"
+
 #define WARRANTY							\
   "THERE IS NO WARRANTY FOR THE PROGRAM, TO THE EXTENT PERMITTED BY\n"	\
   "APPLICABLE LAW.  EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT\n" \
