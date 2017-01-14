@@ -1,8 +1,14 @@
 Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
-Copyright (C) 2011-2016 Simon Josefsson
+Copyright (C) 2011-2017 Simon Josefsson
 See the end for copying conditions.
 
 * Version 0.15 (unreleased) [alpha]
+
+** Fix out-of-bounds read.
+
+** Fix NFC input conversion (regression).
+
+** Shrink TR46 static mapping data.
 
 ** API and ABI is backwards compatible with the previous version.
 
