@@ -30,7 +30,7 @@ libidn2_cmd_la_SOURCES =  idn2.ggo idn2_cmd.c idn2_cmd.h
 libidn2_cmd_la_LIBADD = ../lib/libgnu.la
 libidn2_cmd_la_CFLAGS =
 
-idn2_cmd.c: idn2.ggo Makefile.am
+idn2_cmd.c idn2_cmd.h: idn2.ggo Makefile.am
 	gengetopt --unamed-opts --no-handle-version --no-handle-help \
 		--set-package="idn2" \
 		--input $^ --file-name idn2_cmd
@@ -38,4 +38,4 @@ idn2_cmd.c: idn2.ggo Makefile.am
 	perl -pi -e 's/\[FILES\]/\[STRING\]/g' idn2_cmd.c
 
 BUILT_SOURCES = idn2_cmd.c idn2_cmd.h
-CLEANFILES = $(BUILT_SOURCES)
+MAINTAINERCLEANFILES = $(BUILT_SOURCES)
