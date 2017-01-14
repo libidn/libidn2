@@ -13,9 +13,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-DEFS = @DEFS@ -DLOCALEDIR=\"$(localedir)\"
-
-AM_CPPFLAGS = -I$(top_srcdir) -I$(srcdir) -I$(top_builddir)/lib -I$(top_srcdir)/lib
+AM_CPPFLAGS = -I$(top_builddir)/lib -I$(top_srcdir)/lib
+AM_CPPFLAGS += -I$(top_srcdir) -I$(srcdir)
+AM_CPPFLAGS += -DLOCALEDIR=\"$(localedir)\"
 AM_CFLAGS = $(WARN_CFLAGS)
 
 bin_PROGRAMS = idn2
