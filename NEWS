@@ -2,6 +2,10 @@ Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
 Copyright (C) 2011-2017 Simon Josefsson
 See the end for copying conditions.
 
+* Version 0.17 (unreleased) [alpha]
+
+** API and ABI is backwards compatible with the previous version.
+
 * Version 0.16 (released 2017-01-16) [alpha]
 
 ** build: Fix idn2_cmd.h build rule.
