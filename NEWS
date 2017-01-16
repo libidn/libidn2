@@ -4,6 +4,8 @@ See the end for copying conditions.
 
 * Version 0.16 (unreleased) [alpha]
 
+** build: Fix idn2_cmd.h build rule.
+
 ** API and ABI is backwards compatible with the previous version.
 
 * Version 0.15 (released 2017-01-14) [alpha]
