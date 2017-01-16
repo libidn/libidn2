@@ -13,9 +13,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-DEFS = @DEFS@ -DSRCDIR=\"$(srcdir)\"
 AM_CPPFLAGS = -I$(top_srcdir) -I$(srcdir) -I$(top_builddir)
 AM_CPPFLAGS += -I$(top_builddir)/lib -I$(top_srcdir)/lib
+AM_CPPFLAGS += -DLOCALEDIR=\"$(localedir)\"
 AM_LDFLAGS = -no-install
 
 LDADD = ../libidn2.la ../lib/libgnu.la
