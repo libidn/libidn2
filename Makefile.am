@@ -113,3 +113,6 @@ check-coverage:
 
 clean-local:
 	rm -rf */*.gc?? */*/*.gc?? $(LCOV_INFO) lcov
+
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = libidn2.pc

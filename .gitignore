@@ -110,6 +110,7 @@ libidn2-*.tar.gz
 libidn2-*.tar.gz.sig
 libidn2-*/
 libidn2.la
+libidn2.pc
 libtool
 m4/*
 maint.mk

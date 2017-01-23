@@ -86,6 +86,7 @@ AC_CONFIG_FILES([
   examples/Makefile
   idn2.h
   lib/Makefile
+  libidn2.pc
   po/Makefile.in
   src/Makefile
   tests/Makefile
