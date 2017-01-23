@@ -30,10 +30,11 @@ libidn2_cmd_la_SOURCES =  idn2.ggo idn2_cmd.c idn2_cmd.h
 libidn2_cmd_la_LIBADD = ../lib/libgnu.la
 libidn2_cmd_la_CFLAGS =
 
-idn2_cmd.c idn2_cmd.h: idn2.ggo Makefile.am
+# pattern rule (%) needed for parallel make (-j)
+idn2_cmd%c idn2_cmd%h: idn2.ggo
 	gengetopt --unamed-opts --no-handle-version --no-handle-help \
 		--set-package="idn2" \
-		--input $^ --file-name idn2_cmd
+		--input $< --file-name idn2_cmd
 	perl -pi -e 's/\[OPTIONS\]/\[OPTION\]/g' idn2_cmd.c
 	perl -pi -e 's/\[FILES\]/\[STRING\]/g' idn2_cmd.c
 
