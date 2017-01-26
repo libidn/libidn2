@@ -82,8 +82,9 @@ idn2_to_unicode_8z4z (const char * input, uint32_t ** output, int flags _GL_UNUS
       while (*e && *e != '.')
 	e++;
 
-      if (e - s >= 4 && s[0] == 'x' && s[1] == 'n' && s[2] == '-'
-	  && s[3] == '-')
+      if (e - s >= 4 && (s[0] == 'x' || s[0] == 'X')
+	  && (s[1] == 'n' || s[1] == 'N')
+	  && s[2] == '-' && s[3] == '-')
 	{
 	  s += 4;
 
