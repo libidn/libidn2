@@ -199,7 +199,17 @@ extern "C"
 /* Auxilliary functions. */
 
   extern _IDN2_API int
-    idn2_fromASCII (const uint8_t *src, uint8_t **dst);
+    idn2_to_unicode_8z4z (const char * input, uint32_t ** output, int flags);
+  extern _IDN2_API int
+    idn2_to_unicode_4z4z (const uint32_t * input, uint32_t ** output, int flags);
+  extern _IDN2_API int
+    idn2_to_unicode_44i (const uint32_t * in, size_t inlen, uint32_t * out, size_t * outlen, int flags);
+  extern _IDN2_API int
+    idn2_to_unicode_8z8z (const char * input, char ** output, int flags);
+  extern _IDN2_API int
+    idn2_to_unicode_8zlz (const char * input, char ** output, int flags);
+  extern _IDN2_API int
+    idn2_to_unicode_lzlz (const char * input, char ** output, int flags);
 
   extern _IDN2_API const char *idn2_strerror (int rc);
   extern _IDN2_API const char *idn2_strerror_name (int rc);

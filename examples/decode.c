@@ -40,7 +40,7 @@ main (int argc, char *argv[])
     }
   src[strlen (src) - 1] = '\0';
 
-  rc = idn2_fromASCII (src, (uint8_t **) &decoded);
+  rc = idn2_to_unicode_lzlz (src, &decoded, 0);
   if (rc != IDN2_OK)
     {
       fprintf (stderr, "error: %s (%s, %d)\n",

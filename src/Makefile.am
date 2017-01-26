@@ -18,10 +18,16 @@ AM_CPPFLAGS += -I$(top_srcdir) -I$(srcdir)
 AM_CPPFLAGS += -DLOCALEDIR=\"$(localedir)\"
 AM_CFLAGS = $(WARN_CFLAGS)
 
-bin_PROGRAMS = idn2
+bin_PROGRAMS = idn2 idn2_noinstall
 
 idn2_SOURCES = idn2.c blurbs.h
 idn2_LDADD = libidn2_cmd.la ../libidn2.la $(LIBS)
+
+# have idn2_noinstall linked with local libidn2 for testing
+# please do not remove !
+idn2_noinstall_SOURCES = $(idn2_SOURCES)
+idn2_noinstall_LDFLAGS = -no-install
+idn2_noinstall_LDADD = $(idn2_LDADD)
 
 idn2.c: $(BUILT_SOURCES)
 

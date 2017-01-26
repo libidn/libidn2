@@ -157,7 +157,7 @@ process_input (char *readbuf, int flags)
     }
   else if (args_info.decode_given)
     {
-      rc = idn2_fromASCII(readbuf, (uint8_t **) & output);
+      rc = idn2_to_unicode_lzlz (readbuf, &output, 0);
       tag = "decode";
     }
   else
