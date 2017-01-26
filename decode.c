@@ -179,10 +179,13 @@ idn2_to_unicode_4z4z (const uint32_t * input, uint32_t ** output, int flags)
   rc = idn2_to_unicode_8z4z (input_u8, &output_u32, flags);
   free (input_u8);
 
-  if (rc == IDN2_OK && output)
-    *output = output_u32;
-  else
-    free(output_u32);
+  if (rc == IDN2_OK)
+    {
+      if (output)
+	*output = output_u32;
+      else
+	free(output_u32);
+    }
 
   return rc;
 }
