@@ -20,7 +20,7 @@ AM_LDFLAGS = -no-install
 
 LDADD = ../libidn2.la ../lib/libgnu.la
 
-TESTS = test-punycode test-lookup test-register test-strerror
+TESTS = test-punycode test-lookup test-register test-strerror test-tounicode
 check_PROGRAMS = $(TESTS)
 
 IDNA_TXT = IdnaTest.txt
