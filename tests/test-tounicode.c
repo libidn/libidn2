@@ -23,6 +23,10 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
+#include <locale.h>
+
+#include <uniconv.h>  /* u8_strconv_from_locale */
+#include <unistr.h>
 
 #include <idn2.h>
 
@@ -258,7 +262,7 @@ static int debug = 1;
 static int error_count = 0;
 static int break_on_error = 0;
 
-static void
+_GL_ATTRIBUTE_FORMAT_PRINTF (1, 2) static void
 fail (const char *format, ...)
 {
   va_list arg_ptr;
@@ -266,7 +270,9 @@ fail (const char *format, ...)
   va_start (arg_ptr, format);
   vfprintf (stderr, format, arg_ptr);
   va_end (arg_ptr);
+
   error_count++;
+
   if (break_on_error)
     exit (EXIT_FAILURE);
 }
@@ -277,10 +283,7 @@ ucs4print (const uint32_t * str, size_t len)
   size_t i;
 
   for (i = 0; i < len; i++)
-    {
-      printf ("U+%04x%s", str[i],
-	(i + 1) % 8 ? " " : "\n");
-    }
+    printf ("U+%04x%s", str[i], (i + 1) % 8 ? " " : "\n");
 
   if (len % 8)
     printf ("\n");
@@ -306,15 +309,54 @@ _u32_strcmp(const uint32_t *s1, const uint32_t *s2)
   return *s1 - *s2;
 }
 
+static void
+_check_4z(const test_t *t, int rc, uint32_t *ucs4, const char *funcname)
+{
+  if (rc != t->rc_expected)
+    {
+      fail ("%s() entry %u failed: %s\n",
+	funcname, (unsigned) (test - t), idn2_strerror (rc));
+    }
+  else if (debug)
+    {
+      if (rc == IDN2_OK)
+	{
+	  if (_u32_strcmp (t->u32_expected, ucs4) != 0)
+	    {
+	      printf ("got:\n");
+	      ucs4print (ucs4, _u32_strlen (ucs4));
+	      printf ("expected:\n");
+	      ucs4print (t->u32_expected, _u32_strlen (t->u32_expected));
+	      fail ("%s() entry %u mismatch\n", funcname, (unsigned) (test - t));
+	    }
+      } else
+	printf ("returned %d expected %d (%s)\n",
+	  rc, t->rc_expected, idn2_strerror (t->rc_expected));
+    }
+
+  free (ucs4);
+}
+
 int
 main (void)
 {
-  char p[128];
   uint32_t q[128];
-  uint32_t *ucs4 = NULL;
-  int rc;
+  uint32_t *ucs4, *punycode_u32;
+  uint8_t *utf8, *utf8_lz;
+  size_t outlen, outlen2;
+  int rc, skip_lz = 0;
   unsigned i;
-  size_t outlen;
+
+  /* Need to set UTF-8 for u8_strconv_from_locale / u8_strconv_to_locale to work.
+   * At least on Debian with libunistring 0.9.6+really0.9.3-0.1 and LC_ALL=C valgrind
+   * reports Conditional jump or move depends on uninitialised value */
+  setlocale (LC_ALL, "C.UTF-8");
+
+  if (debug)
+    printf("charset=%s\n", locale_charset());
+
+  if (strcmp(locale_charset(), "UTF-8") != 0)
+    skip_lz = 1;
 
   for (i = 0; i < sizeof (test) / sizeof (test[0]); i++)
     {
@@ -323,31 +365,61 @@ main (void)
       if (debug)
 	printf ("\nPUNYCODE entry %u: %s\n", i, t->name);
 
+      ucs4 = NULL; /* freed by _check_4z */
       rc = idn2_to_unicode_8z4z (t->punycode, &ucs4, 0);
+      _check_4z (t, rc, ucs4, "idn2_to_unicode_8z4z");
 
-      if (rc != t->rc_expected)
-	{
-	  fail ("idn2_to_unicode_8z4z() entry %u failed: %s\n", i, idn2_strerror (rc));
-	  if (debug)
-	    printf ("FATAL\n");
-	}
-      else if (debug)
-	{
-	  if (rc == IDN2_OK)
-	    {
-	      if (_u32_strcmp(t->u32_expected, ucs4) != 0)
-		{
-		  printf ("got:\n");
-		  ucs4print (ucs4, _u32_strlen(ucs4));
-		  printf ("expected:\n");
-		  ucs4print (t->u32_expected, _u32_strlen(t->u32_expected));
-		  fail ("idn2_to_unicode_8z4z() entry %u mismatch\n", i);
-		}
-	  } else
-	    printf ("returned %d expected %d\n", rc, t->rc_expected);
-	}
+      punycode_u32 = u8_to_u32 (
+	t->punycode, u8_strlen (t->punycode) + 1, NULL, &outlen);
 
-      free (ucs4); ucs4 = NULL;
+      ucs4 = NULL; /* freed by _check_4z */
+      rc = idn2_to_unicode_4z4z (punycode_u32, &ucs4, 0);
+      _check_4z (t, rc, ucs4, "idn2_to_unicode_4z4z");
+
+      outlen2 = sizeof (q) / sizeof (q[0]) - 1;
+      rc = idn2_to_unicode_44i (punycode_u32, outlen - 1, q, &outlen2, 0);
+      ucs4 = u32_cpy_alloc (q, outlen2 + 1);
+      ucs4[outlen2] = 0;
+      _check_4z (t, rc, ucs4, "idn2_to_unicode_44i");
+
+      free (punycode_u32);
+
+      ucs4 = NULL;
+      rc = idn2_to_unicode_8z8z (t->punycode, (char **) &utf8, 0);
+      if (rc == IDN2_OK)
+	{
+	  ucs4 = u8_to_u32 (utf8, u8_strlen (utf8) + 1, NULL, &outlen);
+	  free (utf8);
+	}
+      _check_4z (t, rc, ucs4, "idn2_to_unicode_8z8z");
+
+      if (skip_lz)
+	continue;
+
+      ucs4 = NULL;
+      rc = idn2_to_unicode_8zlz (t->punycode, (char **) &utf8_lz, 0);
+      if (rc == IDN2_OK)
+	{
+	  utf8 = u8_strconv_from_locale (utf8_lz);
+	  free (utf8_lz);
+	  ucs4 = u8_to_u32 (utf8, u8_strlen (utf8) + 1, NULL, &outlen);
+	  free (utf8);
+	}
+      _check_4z (t, rc, ucs4, "idn2_to_unicode_8zlz");
+
+      /* Since the test punycodes are completely ASCII,
+         idn2_to_unicode_8zlz and idn2_to_unicode_lzlz should
+         have the same results */
+      ucs4 = NULL;
+      rc = idn2_to_unicode_lzlz (t->punycode, (char **) &utf8_lz, 0);
+      if (rc == IDN2_OK)
+	{
+	  utf8 = u8_strconv_from_locale (utf8_lz);
+	  free (utf8_lz);
+	  ucs4 = u8_to_u32 (utf8, u8_strlen (utf8) + 1, NULL, &outlen);
+	  free (utf8);
+	}
+      _check_4z (t, rc, ucs4, "idn2_to_unicode_lzlz");
     }
 
   if (debug && error_count)
