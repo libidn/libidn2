@@ -92,11 +92,10 @@ static const struct idna idna[] = {
    "xn--foobarbaz-dl5hq7z", IDN2_OK},
 };
 
-int debug = 1;
-int error_count = 0;
-int break_on_error = 1;
+static int error_count = 0;
+static int break_on_error = 1;
 
-void
+_GL_ATTRIBUTE_FORMAT_PRINTF (1, 2) static void
 fail (const char *format, ...)
 {
   va_list arg_ptr;
@@ -109,29 +108,11 @@ fail (const char *format, ...)
     exit (EXIT_FAILURE);
 }
 
-void
-hexprint (const char *str, size_t len)
-{
-  size_t i;
-
-  printf ("\t;; ");
-  if (str && len)
-    for (i = 0; i < len; i++)
-      {
-	printf ("%02x ", (str[i] & 0xFF));
-	if ((i + 1) % 8 == 0)
-	  printf (" ");
-	if ((i + 1) % 16 == 0 && i + 1 < len)
-	  printf ("\n\t;; ");
-      }
-  printf ("\n");
-}
-
 int
 main (void)
 {
   uint8_t *out;
-  size_t i;
+  unsigned i;
   int rc;
 
   puts ("-----------------------------------------------------------"
@@ -146,7 +127,7 @@ main (void)
       out = (void *) 0x1234;
       rc = idn2_register_u8 (idna[i].ulabel, idna[i].alabel,
 			     &out, idna[i].flags);
-      printf ("%3d  %-25s %-25s %-25s %s\n", i, idn2_strerror_name (rc),
+      printf ("%3u  %-25s %-25s %-25s %s\n", i, idn2_strerror_name (rc),
 	      rc == IDN2_OK ? idna[i].out : "",
 	      idna[i].alabel ? (char *) idna[i].alabel : "(null)",
 	      idna[i].ulabel ? (char *) idna[i].ulabel : "(null)");
@@ -164,7 +145,7 @@ main (void)
 
 	  rc = idn2_lookup_u8 (idna[i].ulabel, &tmp, idna[i].flags);
 	  if (rc != IDN2_OK)
-	    fail ("lookup failed?! tv %d", i);
+	    fail ("lookup failed?! tv %u", i);
 	  if (strcmp (out, tmp) != 0)
 	    fail ("lookup and register different? lookup %s register %s\n",
 		  tmp, out);

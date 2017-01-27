@@ -35,7 +35,7 @@ struct punycode
   int rc;
 };
 
-const struct punycode punycode[] = {
+static const struct punycode punycode[] = {
   {
    "(A) Arabic (Egyptian)", 17,
    {
@@ -162,11 +162,11 @@ const struct punycode punycode[] = {
     0x0020, 0x003C, 0x002D}, "-> $1.00 <--", IDN2_OK}
 };
 
-int debug = 0;
-int error_count = 0;
-int break_on_error = 0;
+static int debug = 0;
+static int error_count = 0;
+static int break_on_error = 0;
 
-void
+_GL_ATTRIBUTE_FORMAT_PRINTF (1, 2) static void
 fail (const char *format, ...)
 {
   va_list arg_ptr;
@@ -179,7 +179,7 @@ fail (const char *format, ...)
     exit (EXIT_FAILURE);
 }
 
-void
+static void
 ucs4print (const uint32_t * str, size_t len)
 {
   size_t i;

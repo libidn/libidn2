@@ -805,27 +805,8 @@ static const struct idna idna[] = {
   },
 };
 
-static int debug = 1;
 static int ok = 0, failed = 0;
 static int break_on_error = 0;
-
-static void
-hexprint (const char *str, size_t len)
-{
-  size_t i;
-
-  printf ("\t;; ");
-  if (str && len)
-    for (i = 0; i < len; i++)
-      {
-	printf ("%02x ", (str[i] & 0xFF));
-	if ((i + 1) % 8 == 0)
-	  printf (" ");
-	if ((i + 1) % 16 == 0 && i + 1 < len)
-	  printf ("\n\t;; ");
-      }
-  printf ("\n");
-}
 
 static char *_nextField(char **line)
 {
