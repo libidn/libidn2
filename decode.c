@@ -218,7 +218,7 @@ idn2_to_unicode_44i (const uint32_t * in, size_t inlen, uint32_t * out, size_t *
     return rc;
 
   len = u32_strlen (output_u32);
-  if (out)
+  if (out && outlen)
     u32_cpy (out, output_u32, len < *outlen ? len : *outlen);
   free (output_u32);
 
@@ -237,7 +237,7 @@ idn2_to_unicode_8z8z (const char * input, char ** output, int flags)
   int rc;
 
   rc = idn2_to_unicode_8z4z (input, &output_u32, flags);
-  if (rc != IDN2_OK)
+  if (rc != IDN2_OK || !input)
     return rc;
 
   output_u8 = u32_to_u8 (output_u32, u32_strlen(output_u32) + 1, NULL, &length);
@@ -265,7 +265,7 @@ idn2_to_unicode_8zlz (const char * input, char ** output, int flags)
   uint8_t *output_u8, *output_l8;
 
   rc = idn2_to_unicode_8z8z (input, (char **) &output_u8, flags);
-  if (rc != IDN2_OK)
+  if (rc != IDN2_OK || !input)
     return rc;
 
   output_l8 = u8_strconv_to_locale (output_u8);
