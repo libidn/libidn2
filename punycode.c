@@ -119,18 +119,6 @@ static char encode_digit(punycode_uint d, int flag)
 
 #define flagged(bcp) ((punycode_uint)(bcp) - 65 < 26)
 
-/* encode_basic(bcp,flag) forces a basic code point to lowercase */
-/* if flag is zero, uppercase if flag is nonzero, and returns    */
-/* the resulting code point.  The code point is unchanged if it  */
-/* is caseless.  The behavior is undefined if bcp is not a basic */
-/* code point.                                                   */
-
-static char encode_basic(punycode_uint bcp, int flag)
-{
-  bcp -= (bcp - 97 < 26) << 5;
-  return bcp + ((!flag && (bcp - 65 < 26)) << 5);
-}
-
 /*** Platform-specific constants ***/
 
 /* maxint is the maximum value of a punycode_uint variable: */
@@ -160,7 +148,6 @@ static punycode_uint adapt(
 int punycode_encode(
   size_t input_length_orig,
   const punycode_uint input[],
-  const unsigned char case_flags[],
   size_t *output_length,
   char output[] )
 {
@@ -187,8 +174,7 @@ int punycode_encode(
   for (j = 0;  j < input_length;  ++j) {
     if (basic(input[j])) {
       if (max_out - out < 2) return punycode_big_output;
-      output[out++] = case_flags ?
-        encode_basic(input[j], case_flags[j]) : (char) input[j];
+      output[out++] = (char) input[j];
     }
     /* else if (input[j] < n) return punycode_bad_input; */
     /* (not needed for Punycode with unsigned code points) */
@@ -240,7 +226,7 @@ int punycode_encode(
           q = (q - t) / (base - t);
         }
 
-        output[out++] = encode_digit(q, case_flags && case_flags[j]);
+        output[out++] = encode_digit(q, 0);
         bias = adapt(delta, h + 1, h == b);
         delta = 0;
         ++h;
@@ -260,8 +246,7 @@ int punycode_decode(
   size_t input_length,
   const char input[],
   size_t *output_length,
-  punycode_uint output[],
-  unsigned char case_flags[] )
+  punycode_uint output[])
 {
   punycode_uint n, out, i, max_out, bias, oldi, w, k, digit, t;
   size_t b, j, in;
@@ -282,7 +267,6 @@ int punycode_decode(
   if (b > max_out) return punycode_big_output;
 
   for (j = 0;  j < b;  ++j) {
-    if (case_flags) case_flags[out] = flagged(input[j]);
     if (!basic(input[j])) return punycode_bad_input;
     output[out++] = input[j];
   }
@@ -327,12 +311,6 @@ int punycode_decode(
     /* not needed for Punycode: */
     /* if (basic(n)) return punycode_bad_input; */
     if (out >= max_out) return punycode_big_output;
-
-    if (case_flags) {
-      memmove(case_flags + i + 1, case_flags + i, out - i);
-      /* Case of last ASCII code point determines case flag: */
-      case_flags[i] = flagged(input[in - 1]);
-    }
 
     memmove(output + i + 1, output + i, (out - i) * sizeof *output);
     output[i++] = n;

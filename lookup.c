@@ -99,7 +99,7 @@ label (const uint8_t * src, size_t srclen, uint8_t * dst, size_t * dstlen,
   dst[3] = '-';
 
   tmpl = *dstlen - 4;
-  rc = _idn2_punycode_encode (plen, p, NULL, &tmpl, (char *) dst + 4);
+  rc = _idn2_punycode_encode (plen, p, &tmpl, (char *) dst + 4);
   free (p);
   if (rc != IDN2_OK)
     return rc;
@@ -248,8 +248,7 @@ _tr46 (const uint8_t * domain_u8, uint8_t ** out, int transitional)
 	    }
 
 	  rc =
-	    _idn2_punycode_decode (ace_len, (char *) ace, &name_len, name_u32,
-				   NULL);
+	    _idn2_punycode_decode (ace_len, (char *) ace, &name_len, name_u32);
 
 	  free (ace);
 

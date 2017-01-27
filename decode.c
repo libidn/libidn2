@@ -89,8 +89,7 @@ idn2_to_unicode_8z4z (const char * input, uint32_t ** output, int flags _GL_UNUS
 	  s += 4;
 
 	  rc =
-	    _idn2_punycode_decode (e - s, (char *) s, &label_len, label_u32,
-				   NULL);
+	    _idn2_punycode_decode (e - s, (char *) s, &label_len, label_u32);
 	  if (rc)
 	    return rc;
 
