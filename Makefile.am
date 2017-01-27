@@ -105,10 +105,9 @@ LCOV_INFO=libidn2.info
 check-coverage:
 	CFLAGS=$$CFLAGS" --coverage -O0" LDFLAGS=$$LDFLAGS" --coverage" ./configure;
 	$(MAKE) clean && $(MAKE)
-	lcov --capture --initial --directory . --output-file $(LCOV_INFO)
+	lcov --capture --initial --directory .libs --output-file $(LCOV_INFO)
 	$(MAKE) check
-	lcov --capture --directory . --output-file $(LCOV_INFO)
-	lcov --remove $(LCOV_INFO) 'lib/*' 'tests/*' -o $(LCOV_INFO)
+	lcov --capture --directory .libs --output-file $(LCOV_INFO)
 	genhtml --prefix . $(LCOV_INFO) --legend --title "libidn2" --output-directory=lcov
 # now you can view lcov/index.html with your favorite browser
 
