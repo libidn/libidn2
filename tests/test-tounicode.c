@@ -264,6 +264,92 @@ const test_t test[] = {
     },
     IDN2_ENCODING_ERROR
   },
+
+  /* Test vectors from http://bugs.debian.org/610617 */
+  {
+    "Debian test #1",
+    "XN----7SBAABF4DLDYSIEHP4NTB.XN--P1AI",
+    {
+      0x0441, 0x0430, 0x043c, 0x0430, 0x0440, 0x0441, 0x043a, 0x0430,
+      0x044f, 0x002d, 0x043e, 0x0431, 0x043b, 0x0430, 0x0441, 0x0442,
+      0x044c, 0x002e, 0x0440, 0x0444, 0
+    },
+    IDN2_OK
+  },
+  {
+    "Debian test #2",
+    "xn----7SBAABF4DLDYSIEHP4NTB.XN--P1AI",
+    {
+      0x0441, 0x0430, 0x043c, 0x0430, 0x0440, 0x0441, 0x043a, 0x0430,
+      0x044f, 0x002d, 0x043e, 0x0431, 0x043b, 0x0430, 0x0441, 0x0442,
+      0x044c, 0x002e, 0x0440, 0x0444, 0
+    },
+    IDN2_OK
+  },
+  {
+    "Debian test #3",
+    "xn----7SBAABF4DLDYSIEHP4NTB.xn--P1AI",
+    {
+      0x0441, 0x0430, 0x043c, 0x0430, 0x0440, 0x0441, 0x043a, 0x0430,
+      0x044f, 0x002d, 0x043e, 0x0431, 0x043b, 0x0430, 0x0441, 0x0442,
+      0x044c, 0x002e, 0x0440, 0x0444, 0
+    },
+    IDN2_OK
+  },
+
+  /* Test vectors copied from gnutls */
+  {
+    "GnuTLS test #1",
+    "xn--nxasmm1c.com",
+    {
+      0x03b2, 0x03cc, 0x03bb, 0x03bf, 0x03c2, 0x002e, 0x0063, 0x006f,
+      0x006d, 0
+    },
+    IDN2_OK
+  },
+  {
+    "GnuTLS test #2",
+    "xn--nxasmq6b.com",
+    {
+      0x03b2, 0x03cc, 0x03bb, 0x03bf, 0x03c3, 0x002e, 0x0063, 0x006f,
+      0x006d, 0
+    },
+    IDN2_OK
+  },
+  {
+    "GnuTLS test #3",
+    "xn--fa-hia.de",
+    {
+      0x0066, 0x0061, 0x00df, 0x002e, 0x0064, 0x0065, 0
+    },
+    IDN2_OK
+  },
+  {
+    "GnuTLS test #4",
+    "xn--bcher-kva.de",
+    {
+      0x0062, 0x00fc, 0x0063, 0x0068, 0x0065, 0x0072, 0x002e, 0x0064,
+      0x0065, 0
+    },
+    IDN2_OK
+  },
+  {
+    "GnuTLS test #5",
+    "xn--wgv71a119e.jp",
+    {
+      0x65e5, 0x672c, 0x8a9e, 0x002e, 0x006a, 0x0070, 0
+    },
+    IDN2_OK
+  },
+  {
+    "GnuTLS test #6",
+    "xn--fiqu1az03c18t.xn--mxah1amo.com",
+    {
+      0x7b80, 0x4f53, 0x4e2d, 0x6587, 0x002e, 0x03b5, 0x03be, 0x03c4,
+      0x03c1, 0x03b1, 0x002e, 0x0063, 0x006f, 0x006d, 0
+    },
+    IDN2_OK
+  },
 };
 
 static int debug = 0;
@@ -325,22 +411,24 @@ _check_4z(const test_t *t, int rc, uint32_t *ucs4, const char *funcname)
       fail ("%s() entry %u failed: %s\n",
 	funcname, (unsigned) (t - test), idn2_strerror (rc));
     }
-  else if (debug)
+  else if (rc == IDN2_OK)
     {
-      if (rc == IDN2_OK)
+      if (_u32_strcmp (t->u32_expected, ucs4) != 0)
 	{
-	  if (_u32_strcmp (t->u32_expected, ucs4) != 0)
+	  if (debug)
 	    {
 	      printf ("got:\n");
 	      ucs4print (ucs4, _u32_strlen (ucs4));
 	      printf ("expected:\n");
 	      ucs4print (t->u32_expected, _u32_strlen (t->u32_expected));
-	      fail ("%s() entry %u mismatch\n", funcname, (unsigned) (t - test));
 	    }
-      } else
-	printf ("returned %d expected %d (%s)\n",
-	  rc, t->rc_expected, idn2_strerror (t->rc_expected));
+
+	  fail ("%s() entry %u mismatch\n", funcname, (unsigned) (t - test));
+        }
     }
+  else if (debug)
+    printf ("returned %d expected %d (%s)\n",
+      rc, t->rc_expected, idn2_strerror (t->rc_expected));
 
   free (ucs4);
 }
