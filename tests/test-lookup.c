@@ -803,6 +803,10 @@ static const struct idna idna[] = {
     /* blåbærgrød.no partially decomposed */
     "\x62\x6c\x61\xcc\x8a\x62\xc3\xa6\x72\x67\x72\xc3\xb8\x64\x2e\x6e\x6f", "xn--blbrgrd-fxak7p.no", IDN2_OK, IDN2_NONTRANSITIONAL
   },
+  {
+    /* 0x00FFFFFF, character with 5 bytes UTF-8 representation */
+    "\xf8\xbf\xbf\xbf\xbf", "", IDN2_OK, IDN2_NONTRANSITIONAL
+  },
 };
 
 static int ok = 0, failed = 0;
@@ -923,7 +927,13 @@ test_homebrewed(void)
     printf("special #4 failed with %d\n", rc);
   } else if (out) {
     failed++;
-    printf("special #2 failed with out!=NULL\n");
+    printf("special #4 failed with out!=NULL\n");
+  } else
+    ok++;
+
+  if ((rc = idn2_lookup_ul ("abc", NULL, 0)) != IDN2_OK) {
+    failed++;
+    printf("special #5 failed with %d\n", rc);
   } else
     ok++;
 }
@@ -1080,16 +1090,52 @@ separator(void)
 	"-------------------------------------");
 }
 
+static void
+test_unicode_range (void)
+{
+  uint32_t i, ucs4[2];
+  uint8_t *utf8, *out;
+  size_t len;
+  int rc;
+
+  /* Unicode range is 0-0x10FFFF, go a bit further */
+  for (i = 0; i < 0x11FFFF; i++)
+  {
+    ucs4[0] = i;
+    ucs4[1] = 0;
+
+    utf8 = u32_to_u8 (ucs4, 2, NULL, &len);
+
+    rc = idn2_lookup_u8 (utf8, &out, 0);
+    if (rc == IDN2_OK)
+      idn2_free (out);
+
+    rc = idn2_lookup_u8 (utf8, &out, IDN2_NFC_INPUT);
+    if (rc == IDN2_OK)
+      idn2_free (out);
+
+    rc = idn2_lookup_u8 (utf8, &out, IDN2_TRANSITIONAL);
+    if (rc == IDN2_OK)
+      idn2_free (out);
+
+    rc = idn2_lookup_u8 (utf8, &out, IDN2_NONTRANSITIONAL);
+    if (rc == IDN2_OK)
+      idn2_free (out);
+
+    free (utf8);
+  }
+}
+
 int
 main (int argc, const char *argv[])
 {
-  separator();
+  separator ();
   puts ("                                          IDNA2008 Lookup\n");
   puts ("  #  Result                    ACE output                  "
 	"             Unicode input");
   separator();
 
-  test_homebrewed();
+  test_homebrewed ();
 
   separator();
 
@@ -1098,6 +1144,8 @@ main (int argc, const char *argv[])
     return EXIT_FAILURE;
 
   separator();
+
+  test_unicode_range ();
 
   if (failed) {
     printf("Summary: %d out of %d tests failed\n", failed, ok + failed);
