@@ -256,6 +256,14 @@ const test_t test[] = {
     },
     IDN2_OK
   },
+  {
+    "(X) utf-8 crash ?",
+    "\200bad.com",
+    {
+      0
+    },
+    IDN2_ENCODING_ERROR
+  },
 };
 
 static int debug = 0;
@@ -315,7 +323,7 @@ _check_4z(const test_t *t, int rc, uint32_t *ucs4, const char *funcname)
   if (rc != t->rc_expected)
     {
       fail ("%s() entry %u failed: %s\n",
-	funcname, (unsigned) (test - t), idn2_strerror (rc));
+	funcname, (unsigned) (t - test), idn2_strerror (rc));
     }
   else if (debug)
     {
@@ -327,7 +335,7 @@ _check_4z(const test_t *t, int rc, uint32_t *ucs4, const char *funcname)
 	      ucs4print (ucs4, _u32_strlen (ucs4));
 	      printf ("expected:\n");
 	      ucs4print (t->u32_expected, _u32_strlen (t->u32_expected));
-	      fail ("%s() entry %u mismatch\n", funcname, (unsigned) (test - t));
+	      fail ("%s() entry %u mismatch\n", funcname, (unsigned) (t - test));
 	    }
       } else
 	printf ("returned %d expected %d (%s)\n",
@@ -372,17 +380,20 @@ main (void)
       punycode_u32 = u8_to_u32 (
 	t->punycode, u8_strlen (t->punycode) + 1, NULL, &outlen);
 
-      ucs4 = NULL; /* freed by _check_4z */
-      rc = idn2_to_unicode_4z4z (punycode_u32, &ucs4, 0);
-      _check_4z (t, rc, ucs4, "idn2_to_unicode_4z4z");
+      if (punycode_u32)
+	{
+	  ucs4 = NULL; /* freed by _check_4z */
+	  rc = idn2_to_unicode_4z4z(punycode_u32, &ucs4, 0);
+	  _check_4z(t, rc, ucs4, "idn2_to_unicode_4z4z");
 
-      outlen2 = sizeof (q) / sizeof (q[0]) - 1;
-      rc = idn2_to_unicode_44i (punycode_u32, outlen - 1, q, &outlen2, 0);
-      ucs4 = u32_cpy_alloc (q, outlen2 + 1);
-      ucs4[outlen2] = 0;
-      _check_4z (t, rc, ucs4, "idn2_to_unicode_44i");
+	  outlen2 = sizeof (q) / sizeof (q[0]) - 1;
+	  rc = idn2_to_unicode_44i(punycode_u32, outlen - 1, q, &outlen2, 0);
+	  ucs4 = u32_cpy_alloc(q, outlen2 + 1);
+	  ucs4[outlen2] = 0;
+	  _check_4z(t, rc, ucs4, "idn2_to_unicode_44i");
 
-      free (punycode_u32);
+	  free(punycode_u32);
+	}
 
       ucs4 = NULL;
       rc = idn2_to_unicode_8z8z (t->punycode, (char **) &utf8, 0);
