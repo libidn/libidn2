@@ -258,7 +258,7 @@ const test_t test[] = {
   },
 };
 
-static int debug = 1;
+static int debug = 0;
 static int error_count = 0;
 static int break_on_error = 0;
 
@@ -421,6 +421,46 @@ main (void)
 	}
       _check_4z (t, rc, ucs4, "idn2_to_unicode_lzlz");
     }
+
+  /* special checks with NULL values */
+  idn2_to_unicode_8z4z (NULL, NULL, 0);
+  idn2_to_unicode_8z4z (NULL, &ucs4, 0);
+  idn2_to_unicode_8z4z ("abc", NULL, 0);
+  idn2_to_unicode_8z4z ("xn--tda", NULL, 0);
+
+  idn2_to_unicode_4z4z (NULL, NULL, 0);
+  idn2_to_unicode_4z4z (NULL, &ucs4, 0);
+  idn2_to_unicode_4z4z (L"abc", NULL, 0);
+  idn2_to_unicode_4z4z (L"xn--tda", NULL, 0);
+
+  idn2_to_unicode_44i (NULL, 0, NULL, NULL, 0);
+  idn2_to_unicode_44i (NULL, 0, NULL, &outlen, 0);
+  idn2_to_unicode_44i (NULL, 0, q, NULL, 0);
+  outlen = 32; idn2_to_unicode_44i (NULL, 0, q, &outlen, 0);
+  outlen = 0; idn2_to_unicode_44i (NULL, 0, (uint32_t *) 123, &outlen, 0);
+
+  idn2_to_unicode_44i (L"abc", 0, NULL, NULL, 0);
+  idn2_to_unicode_44i (L"abc", 0, NULL, &outlen, 0);
+  idn2_to_unicode_44i (L"abc", 0, q, NULL, 0);
+  outlen = 32; idn2_to_unicode_44i (L"abc", 0, q, &outlen, 0);
+  outlen = 0; idn2_to_unicode_44i (L"abc", 0, (uint32_t *) 123, &outlen, 0);
+  outlen = 0; idn2_to_unicode_44i (L"abc", 3, (uint32_t *) 123, &outlen, 0);
+  outlen = 0; idn2_to_unicode_44i (L"abc", 3, (uint32_t *) 123, NULL, 0);
+
+  idn2_to_unicode_8z8z (NULL, NULL, 0);
+  idn2_to_unicode_8z8z (NULL, (char **) &utf8, 0);
+  idn2_to_unicode_8z8z ("abc", NULL, 0);
+  idn2_to_unicode_8z8z ("xn--tda", NULL, 0);
+
+  idn2_to_unicode_8zlz (NULL, NULL, 0);
+  idn2_to_unicode_8zlz (NULL, (char **) &utf8, 0);
+  idn2_to_unicode_8zlz ("abc", NULL, 0);
+  idn2_to_unicode_8zlz ("xn--tda", NULL, 0);
+
+  idn2_to_unicode_lzlz (NULL, NULL, 0);
+  idn2_to_unicode_lzlz (NULL, (char **) &utf8, 0);
+  idn2_to_unicode_lzlz ("abc", NULL, 0);
+  idn2_to_unicode_lzlz ("xn--tda", NULL, 0);
 
   if (debug && error_count)
     printf("error_count: %d\n", error_count);
