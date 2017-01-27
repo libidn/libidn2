@@ -218,6 +218,47 @@ extern "C"
 
   extern _IDN2_API void idn2_free (void *ptr);
 
+
+/*** libidn compatibility layer ***/
+#if !defined IDNA_H && !defined IDN2_SKIP_LIBIDN_COMPAT
+
+  typedef enum
+  {
+    IDNA_SUCCESS = IDN2_OK,
+    IDNA_STRINGPREP_ERROR = IDN2_ENCODING_ERROR,
+    IDNA_PUNYCODE_ERROR = IDN2_PUNYCODE_BAD_INPUT,
+    IDNA_CONTAINS_NON_LDH = IDN2_ENCODING_ERROR,
+    IDNA_CONTAINS_LDH = IDNA_CONTAINS_NON_LDH,
+    IDNA_CONTAINS_MINUS = IDN2_ENCODING_ERROR,
+    IDNA_INVALID_LENGTH = IDN2_DISALLOWED,
+    IDNA_NO_ACE_PREFIX = IDN2_ENCODING_ERROR,
+    IDNA_ROUNDTRIP_VERIFY_ERROR = IDN2_ENCODING_ERROR,
+    IDNA_CONTAINS_ACE_PREFIX = IDN2_ENCODING_ERROR,
+    IDNA_ICONV_ERROR = IDN2_ENCODING_ERROR,
+    IDNA_MALLOC_ERROR = IDN2_MALLOC,
+    IDNA_DLOPEN_ERROR = IDN2_MALLOC
+  } Idna_rc;
+
+  /* IDNA flags */
+  typedef enum
+  {
+    IDNA_ALLOW_UNASSIGNED = 0x0001,
+    IDNA_USE_STD3_ASCII_RULES = 0x0002
+  } Idna_flags;
+
+  #define idna_to_unicode_8z4z  idn2_to_unicode_8z4z
+  #define idna_to_unicode_4z4z  idn2_to_unicode_4z4z
+  #define idna_to_unicode_44i   idn2_to_unicode_44i
+  #define idna_to_unicode_8z8z  idn2_to_unicode_8z8z
+  #define idna_to_unicode_8zlz  idn2_to_unicode_8zlz
+  #define idna_to_unicode_lzlz  idn2_to_unicode_lzlz
+
+  #define idna_strerror         idn2_strerror
+  #define idna_free             idn2_free
+
+#endif /* IDNA_H */
+
+
 #ifdef __cplusplus
 }
 #endif
