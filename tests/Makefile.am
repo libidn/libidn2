@@ -16,6 +16,7 @@
 AM_CPPFLAGS = -I$(top_srcdir) -I$(srcdir) -I$(top_builddir)
 AM_CPPFLAGS += -I$(top_builddir)/lib -I$(top_srcdir)/lib
 AM_CPPFLAGS += -DSRCDIR=\"$(srcdir)\"
+AM_CFLAGS = $(WARN_CFLAGS) -Wno-missing-field-initializers
 AM_LDFLAGS = -no-install
 
 LDADD = ../libidn2.la ../lib/libgnu.la
