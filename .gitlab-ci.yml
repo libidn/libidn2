@@ -1,13 +1,50 @@
+image: debian:stretch
+
+
 GNU/Linux build:
   before_script:
-    - apt-get update -qq && apt-get install -y -qq abi-compliance-checker git autoconf automake libtool texinfo gperf libunistring-dev help2man gtk-doc-tools valgrind gengetopt
+   - apt-get update -qq
+   - apt-get install -y -qq abi-compliance-checker pkg-config gcc make gettext autopoint git autoconf automake libtool texinfo gperf libunistring-dev help2man gtk-doc-tools valgrind gengetopt
+   - ./bootstrap
   script:
   - ./bootstrap && ./configure --enable-gtk-doc --enable-gtk-doc-pdf --enable-gcc-warnings --enable-valgrind-tests && make -j$(nproc) check
   - make abi-check
   tags:
-  - linux
+  - shared
   artifacts:
-    expire_in: 1 month
+    expire_in: 2 weeks
+    when: on_failure
+    paths:
+      - tests/*.log
+      - compat_reports/
+
+ASAN build:
+  before_script:
+   - apt-get update -qq
+   - apt-get install -y -qq libasan2 pkg-config gcc make gettext autopoint git autoconf automake libtool texinfo gperf libunistring-dev help2man valgrind gengetopt
+   - ./bootstrap
+  script:
+  - CFLAGS="-fsanitize=address -g -O2" ./configure --enable-gcc-warnings && make -j$(nproc) check
+  tags:
+  - shared
+  artifacts:
+    expire_in: 2 weeks
+    when: on_failure
+    paths:
+      - tests/*.log
+      - compat_reports/
+
+UBSAN build:
+  before_script:
+   - apt-get update -qq
+   - apt-get install -y -qq libubsan0 pkg-config gcc make gettext autopoint git autoconf automake libtool texinfo gperf help2man libunistring-dev gengetopt
+   - ./bootstrap
+  script:
+  - CFLAGS="-fsanitize=undefined -fno-sanitize-recover -g -O2" ./configure --enable-gcc-warnings && make -j$(nproc) check
+  tags:
+  - shared
+  artifacts:
+    expire_in: 2 weeks
     when: on_failure
     paths:
       - tests/*.log
