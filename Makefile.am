@@ -116,3 +116,30 @@ clean-local:
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libidn2.pc
+
+TMPDIR="headers.abi.tmp"
+TMPFILE="abi-temp.xml"
+abi-check: idn2.h libidn2.la
+	@rm -f $(TMPFILE)
+	@echo "Checking libidn2 ABI"
+	@echo "<version>$(VERSION)</version>" >$(TMPFILE)
+	@echo "<headers>$(srcdir)/idn2.h" >>$(TMPFILE)
+	@echo "$(builddir)/idn2.h</headers>" >>$(TMPFILE)
+	@echo "<libs>$(builddir)/.libs</libs>" >>$(TMPFILE)
+	for i in 0.16;do \
+	test ! -f "$(srcdir)/devel/ABI-$$i-$$(uname -m).dump" || \
+		abi-compliance-checker -abi -lib libidn2 -old "$(srcdir)/devel/ABI-$$i-$$(uname -m).dump" -new $(TMPFILE); \
+	done
+	@rm -f $(TMPFILE)
+
+abi-dump: idn2.h libidn2.la
+	@rm -rf $(TMPDIR)
+	@mkdir -p $(TMPDIR)
+	@mkdir -p devel
+	@cp idn2.h $(TMPDIR)
+	@abi-dumper .libs/libidn2.so -o "./devel/ABI-$(VERSION)-$$(uname -m).dump" -public-headers $(TMPDIR)
+	@rm -rf $(TMPDIR)
+
+dist-hook: abi-check
+
+.PHONY: abi-dump abi-check

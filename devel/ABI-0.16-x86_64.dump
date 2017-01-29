@@ -1,0 +1,372 @@
+$VAR1 = {
+          'ABI_DUMPER_VERSION' => '0.99.16',
+          'ABI_DUMP_VERSION' => '3.2',
+          'Arch' => 'x86_64',
+          'GccVersion' => '6.3.0',
+          'Headers' => {
+                         'idn2.h' => 1
+                       },
+          'Language' => 'C',
+          'LibraryName' => 'libidn2.so.0.1.4',
+          'LibraryVersion' => '0.16',
+          'NameSpaces' => {},
+          'Needed' => {
+                        'libc.so.6' => 1,
+                        'libunistring.so.0' => 1
+                      },
+          'PublicABI' => '1',
+          'Sources' => {
+                         'error.c' => 1,
+                         'free.c' => 1,
+                         'lookup.c' => 1,
+                         'register.c' => 1,
+                         'version.c' => 1
+                       },
+          'SymbolInfo' => {
+                            '13792' => {
+                                         'Header' => 'idn2.h',
+                                         'Param' => {
+                                                      '0' => {
+                                                               'name' => 'req_version',
+                                                               'type' => '4395'
+                                                             }
+                                                    },
+                                         'Reg' => {
+                                                    '0' => 'rdi'
+                                                  },
+                                         'Return' => '4395',
+                                         'ShortName' => 'idn2_check_version',
+                                         'Source' => 'version.c',
+                                         'SourceLine' => '57'
+                                       },
+                            '14246' => {
+                                         'Header' => 'idn2.h',
+                                         'Param' => {
+                                                      '0' => {
+                                                               'name' => 'rc',
+                                                               'type' => '57'
+                                                             }
+                                                    },
+                                         'Reg' => {
+                                                    '0' => 'rdi'
+                                                  },
+                                         'Return' => '4395',
+                                         'ShortName' => 'idn2_strerror_name',
+                                         'Source' => 'error.c',
+                                         'SourceLine' => '175'
+                                       },
+                            '14305' => {
+                                         'Header' => 'idn2.h',
+                                         'Param' => {
+                                                      '0' => {
+                                                               'name' => 'rc',
+                                                               'type' => '57'
+                                                             }
+                                                    },
+                                         'Reg' => {
+                                                    '0' => 'rdi'
+                                                  },
+                                         'Return' => '4395',
+                                         'ShortName' => 'idn2_strerror',
+                                         'Source' => 'error.c',
+                                         'SourceLine' => '47'
+                                       },
+                            '16298' => {
+                                         'Header' => 'idn2.h',
+                                         'Param' => {
+                                                      '0' => {
+                                                               'name' => 'ptr',
+                                                               'type' => '4712'
+                                                             }
+                                                    },
+                                         'Reg' => {
+                                                    '0' => 'rdi'
+                                                  },
+                                         'Return' => '1',
+                                         'ShortName' => 'idn2_free',
+                                         'Source' => 'free.c',
+                                         'SourceLine' => '46'
+                                       },
+                            '4984' => {
+                                        'Header' => 'idn2.h',
+                                        'Param' => {
+                                                     '0' => {
+                                                              'name' => 'src',
+                                                              'type' => '4395'
+                                                            },
+                                                     '1' => {
+                                                              'name' => 'lookupname',
+                                                              'type' => '5198'
+                                                            },
+                                                     '2' => {
+                                                              'name' => 'flags',
+                                                              'type' => '57'
+                                                            }
+                                                   },
+                                        'Reg' => {
+                                                   '0' => 'rdi',
+                                                   '1' => 'rsi',
+                                                   '2' => 'rdx'
+                                                 },
+                                        'Return' => '57',
+                                        'ShortName' => 'idn2_lookup_ul',
+                                        'Source' => 'lookup.c',
+                                        'SourceLine' => '449'
+                                      },
+                            '5210' => {
+                                        'Header' => 'idn2.h',
+                                        'Param' => {
+                                                     '0' => {
+                                                              'name' => 'src',
+                                                              'type' => '3413'
+                                                            },
+                                                     '1' => {
+                                                              'name' => 'lookupname',
+                                                              'type' => '7379'
+                                                            },
+                                                     '2' => {
+                                                              'name' => 'flags',
+                                                              'type' => '57'
+                                                            }
+                                                   },
+                                        'Reg' => {
+                                                   '0' => 'rdi',
+                                                   '1' => 'rsi',
+                                                   '2' => 'rdx'
+                                                 },
+                                        'Return' => '57',
+                                        'ShortName' => 'idn2_lookup_u8',
+                                        'Source' => 'lookup.c',
+                                        'SourceLine' => '327'
+                                      },
+                            '8654' => {
+                                        'Header' => 'idn2.h',
+                                        'Param' => {
+                                                     '0' => {
+                                                              'name' => 'ulabel',
+                                                              'type' => '4395'
+                                                            },
+                                                     '1' => {
+                                                              'name' => 'alabel',
+                                                              'type' => '4395'
+                                                            },
+                                                     '2' => {
+                                                              'name' => 'insertname',
+                                                              'type' => '5198'
+                                                            },
+                                                     '3' => {
+                                                              'name' => 'flags',
+                                                              'type' => '57'
+                                                            }
+                                                   },
+                                        'Reg' => {
+                                                   '0' => 'rdi',
+                                                   '1' => 'rsi',
+                                                   '2' => 'rdx',
+                                                   '3' => 'rcx'
+                                                 },
+                                        'Return' => '57',
+                                        'ShortName' => 'idn2_register_ul',
+                                        'Source' => 'register.c',
+                                        'SourceLine' => '237'
+                                      },
+                            '8895' => {
+                                        'Header' => 'idn2.h',
+                                        'Param' => {
+                                                     '0' => {
+                                                              'name' => 'ulabel',
+                                                              'type' => '3413'
+                                                            },
+                                                     '1' => {
+                                                              'name' => 'alabel',
+                                                              'type' => '3413'
+                                                            },
+                                                     '2' => {
+                                                              'name' => 'insertname',
+                                                              'type' => '7379'
+                                                            },
+                                                     '3' => {
+                                                              'name' => 'flags',
+                                                              'type' => '57'
+                                                            }
+                                                   },
+                                        'Reg' => {
+                                                   '0' => 'rdi',
+                                                   '1' => 'rsi',
+                                                   '2' => 'rdx',
+                                                   '3' => 'rcx'
+                                                 },
+                                        'Return' => '57',
+                                        'ShortName' => 'idn2_register_u8',
+                                        'Source' => 'register.c',
+                                        'SourceLine' => '74'
+                                      }
+                          },
+          'SymbolVersion' => {
+                               '_idn2_punycode_decode' => '_idn2_punycode_decode@@IDN2_0.0.0',
+                               '_idn2_punycode_encode' => '_idn2_punycode_encode@@IDN2_0.0.0',
+                               'idn2_check_version' => 'idn2_check_version@@IDN2_0.0.0',
+                               'idn2_free' => 'idn2_free@@IDN2_0.0.0',
+                               'idn2_lookup_u8' => 'idn2_lookup_u8@@IDN2_0.0.0',
+                               'idn2_lookup_ul' => 'idn2_lookup_ul@@IDN2_0.0.0',
+                               'idn2_register_u8' => 'idn2_register_u8@@IDN2_0.0.0',
+                               'idn2_register_ul' => 'idn2_register_ul@@IDN2_0.0.0',
+                               'idn2_strerror' => 'idn2_strerror@@IDN2_0.0.0',
+                               'idn2_strerror_name' => 'idn2_strerror_name@@IDN2_0.0.0'
+                             },
+          'Symbols' => {
+                         'libidn2.so.0.1.4' => {
+                                                 '_idn2_punycode_decode@@IDN2_0.0.0' => 1,
+                                                 '_idn2_punycode_encode@@IDN2_0.0.0' => 1,
+                                                 'idn2_check_version@@IDN2_0.0.0' => 1,
+                                                 'idn2_free@@IDN2_0.0.0' => 1,
+                                                 'idn2_lookup_u8@@IDN2_0.0.0' => 1,
+                                                 'idn2_lookup_ul@@IDN2_0.0.0' => 1,
+                                                 'idn2_register_u8@@IDN2_0.0.0' => 1,
+                                                 'idn2_register_ul@@IDN2_0.0.0' => 1,
+                                                 'idn2_strerror@@IDN2_0.0.0' => 1,
+                                                 'idn2_strerror_name@@IDN2_0.0.0' => 1
+                                               }
+                       },
+          'Target' => 'unix',
+          'TypeInfo' => {
+                          '1' => {
+                                   'Name' => 'void',
+                                   'Type' => 'Intrinsic'
+                                 },
+                          '160' => {
+                                     'Name' => 'char',
+                                     'Size' => '1',
+                                     'Type' => 'Intrinsic'
+                                   },
+                          '3413' => {
+                                      'BaseType' => '82',
+                                      'Name' => 'uint8_t const*',
+                                      'Size' => '8',
+                                      'Type' => 'Pointer'
+                                    },
+                          '401' => {
+                                     'BaseType' => '160',
+                                     'Name' => 'char*',
+                                     'Size' => '8',
+                                     'Type' => 'Pointer'
+                                   },
+                          '4395' => {
+                                      'BaseType' => '4408',
+                                      'Name' => 'char const*',
+                                      'Size' => '8',
+                                      'Type' => 'Pointer'
+                                    },
+                          '4408' => {
+                                      'BaseType' => '160',
+                                      'Name' => 'char const',
+                                      'Size' => '1',
+                                      'Type' => 'Const'
+                                    },
+                          '4712' => {
+                                      'BaseType' => '1',
+                                      'Name' => 'void*',
+                                      'Size' => '8',
+                                      'Type' => 'Pointer'
+                                    },
+                          '5198' => {
+                                      'BaseType' => '401',
+                                      'Name' => 'char**',
+                                      'Size' => '8',
+                                      'Type' => 'Pointer'
+                                    },
+                          '5204' => {
+                                      'BaseType' => '71',
+                                      'Name' => 'uint8_t*',
+                                      'Size' => '8',
+                                      'Type' => 'Pointer'
+                                    },
+                          '57' => {
+                                    'Name' => 'int',
+                                    'Size' => '4',
+                                    'Type' => 'Intrinsic'
+                                  },
+                          '71' => {
+                                    'BaseType' => '87',
+                                    'Header' => 'stdint.h',
+                                    'Line' => '48',
+                                    'Name' => 'uint8_t',
+                                    'Size' => '1',
+                                    'Type' => 'Typedef'
+                                  },
+                          '7379' => {
+                                      'BaseType' => '5204',
+                                      'Name' => 'uint8_t**',
+                                      'Size' => '8',
+                                      'Type' => 'Pointer'
+                                    },
+                          '82' => {
+                                    'BaseType' => '71',
+                                    'Name' => 'uint8_t const',
+                                    'Size' => '1',
+                                    'Type' => 'Const'
+                                  },
+                          '87' => {
+                                    'Name' => 'unsigned char',
+                                    'Size' => '1',
+                                    'Type' => 'Intrinsic'
+                                  }
+                        },
+          'UndefinedSymbols' => {
+                                  'libidn2.so.0.1.4' => {
+                                                          'UC_CATEGORY_M' => 0,
+                                                          '_ITM_deregisterTMCloneTable' => 0,
+                                                          '_ITM_registerTMCloneTable' => 0,
+                                                          '_Jv_RegisterClasses' => 0,
+                                                          '__cxa_finalize@GLIBC_2.2.5' => 0,
+                                                          '__errno_location@GLIBC_2.2.5' => 0,
+                                                          '__fprintf_chk@GLIBC_2.3.4' => 0,
+                                                          '__gmon_start__' => 0,
+                                                          '__memcpy_chk@GLIBC_2.3.4' => 0,
+                                                          '__printf_chk@GLIBC_2.3.4' => 0,
+                                                          '__progname@GLIBC_2.2.5' => 0,
+                                                          '__progname_full@GLIBC_2.2.5' => 0,
+                                                          '__stack_chk_fail@GLIBC_2.4' => 0,
+                                                          '__strdup@GLIBC_2.2.5' => 0,
+                                                          '__uflow@GLIBC_2.2.5' => 0,
+                                                          'abort@GLIBC_2.2.5' => 0,
+                                                          'close@GLIBC_2.2.5' => 0,
+                                                          'dcgettext@GLIBC_2.2.5' => 0,
+                                                          'fclose@GLIBC_2.2.5' => 0,
+                                                          'fdopen@GLIBC_2.2.5' => 0,
+                                                          'fputs@GLIBC_2.2.5' => 0,
+                                                          'free@GLIBC_2.2.5' => 0,
+                                                          'fscanf@GLIBC_2.2.5' => 0,
+                                                          'fwrite@GLIBC_2.2.5' => 0,
+                                                          'getenv@GLIBC_2.2.5' => 0,
+                                                          'malloc@GLIBC_2.2.5' => 0,
+                                                          'memcmp@GLIBC_2.2.5' => 0,
+                                                          'memcpy@GLIBC_2.14' => 0,
+                                                          'memmove@GLIBC_2.2.5' => 0,
+                                                          'nl_langinfo@GLIBC_2.2.5' => 0,
+                                                          'open@GLIBC_2.2.5' => 0,
+                                                          'program_invocation_name@GLIBC_2.2.5' => 0,
+                                                          'program_invocation_short_name@GLIBC_2.2.5' => 0,
+                                                          'realloc@GLIBC_2.2.5' => 0,
+                                                          'stderr@GLIBC_2.2.5' => 0,
+                                                          'stdout@GLIBC_2.2.5' => 0,
+                                                          'strchrnul@GLIBC_2.2.5' => 0,
+                                                          'strcmp@GLIBC_2.2.5' => 0,
+                                                          'strlen@GLIBC_2.2.5' => 0,
+                                                          'strrchr@GLIBC_2.2.5' => 0,
+                                                          'strverscmp@GLIBC_2.2.5' => 0,
+                                                          'u32_normalize' => 0,
+                                                          'u32_to_u8' => 0,
+                                                          'u8_strconv_from_locale' => 0,
+                                                          'u8_strlen' => 0,
+                                                          'u8_to_u32' => 0,
+                                                          'uc_bidi_category' => 0,
+                                                          'uc_combining_class' => 0,
+                                                          'uc_is_general_category' => 0,
+                                                          'uc_script' => 0,
+                                                          'ungetc@GLIBC_2.2.5' => 0,
+                                                          'uninorm_nfc' => 0
+                                                        }
+                                },
+          'WordSize' => '8'
+        };
