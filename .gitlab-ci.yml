@@ -1,8 +1,9 @@
 GNU/Linux build:
   before_script:
-    - apt-get update -qq && apt-get install -y -qq git autoconf automake libtool texinfo gperf libunistring-dev help2man gtk-doc-tools valgrind gengetopt
+    - apt-get update -qq && apt-get install -y -qq abi-compliance-checker git autoconf automake libtool texinfo gperf libunistring-dev help2man gtk-doc-tools valgrind gengetopt
   script:
   - ./bootstrap && ./configure --enable-gtk-doc --enable-gtk-doc-pdf --enable-gcc-warnings --enable-valgrind-tests && make -j$(nproc) check
+  - make abi-check
   tags:
   - linux
   artifacts:
@@ -10,4 +11,4 @@ GNU/Linux build:
     when: on_failure
     paths:
       - tests/*.log
-
+      - compat_reports/
