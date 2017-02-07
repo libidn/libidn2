@@ -27,6 +27,11 @@ IDN2_0.0.0 {
     idn2_decode_ul;
     idn2_register_ul;
 
+	 idn2_to_ascii_4i;
+	 idn2_to_ascii_4z;
+	 idn2_to_ascii_8z;
+	 idn2_to_ascii_lz;
+
     idn2_to_unicode_8z4z;
     idn2_to_unicode_4z4z;
     idn2_to_unicode_44i;

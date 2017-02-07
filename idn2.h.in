@@ -199,6 +199,15 @@ extern "C"
 /* Auxilliary functions. */
 
   extern _IDN2_API int
+    idn2_to_ascii_4i (const uint32_t * in, size_t inlen, char * out, int flags);
+  extern _IDN2_API int
+    idn2_to_ascii_4z (const uint32_t * input, char ** output, int flags);
+  extern _IDN2_API int
+    idn2_to_ascii_8z (const char * input, char ** output, int flags);
+  extern _IDN2_API int
+    idn2_to_ascii_lz (const char * input, char ** output, int flags);
+
+  extern _IDN2_API int
     idn2_to_unicode_8z4z (const char * input, uint32_t ** output, int flags);
   extern _IDN2_API int
     idn2_to_unicode_4z4z (const uint32_t * input, uint32_t ** output, int flags);
@@ -245,6 +254,11 @@ extern "C"
     IDNA_ALLOW_UNASSIGNED = 0x0001,
     IDNA_USE_STD3_ASCII_RULES = 0x0002
   } Idna_flags;
+
+  #define idna_to_ascii_4i      idn2_to_ascii_4i
+  #define idna_to_ascii_4z      idn2_to_ascii_4z
+  #define idna_to_ascii_8z      idn2_to_ascii_8z
+  #define idna_to_ascii_lz      idn2_to_ascii_lz
 
   #define idna_to_unicode_8z4z  idn2_to_unicode_8z4z
   #define idna_to_unicode_4z4z  idn2_to_unicode_4z4z
