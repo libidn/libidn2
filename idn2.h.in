@@ -106,6 +106,8 @@ extern "C"
     IDN2_ALABEL_ROUNDTRIP = 2,
     IDN2_TRANSITIONAL = 4,
     IDN2_NONTRANSITIONAL = 8,
+    IDN2_ALLOW_UNASSIGNED = 16,
+    IDN2_USE_STD3_ASCII_RULES = 32
   } idn2_flags;
 
 /* IDNA2008 with UTF-8 encoded inputs. */
@@ -251,14 +253,14 @@ extern "C"
   /* IDNA flags */
   typedef enum
   {
-    IDNA_ALLOW_UNASSIGNED = 0x0001,
-    IDNA_USE_STD3_ASCII_RULES = 0x0002
+    IDNA_ALLOW_UNASSIGNED = IDN2_ALLOW_UNASSIGNED,
+    IDNA_USE_STD3_ASCII_RULES = IDN2_USE_STD3_ASCII_RULES
   } Idna_flags;
 
-  #define idna_to_ascii_4i      idn2_to_ascii_4i
-  #define idna_to_ascii_4z      idn2_to_ascii_4z
-  #define idna_to_ascii_8z      idn2_to_ascii_8z
-  #define idna_to_ascii_lz      idn2_to_ascii_lz
+  #define idna_to_ascii_4i(i,l,o,f)  idn2_to_ascii_4i(i,l,o,f|IDN2_NFC_INPUT|IDN2_NONTRANSITIONAL)
+  #define idna_to_ascii_4z(i,o,f)  idn2_to_ascii_4z(i,o,f|IDN2_NFC_INPUT|IDN2_NONTRANSITIONAL)
+  #define idna_to_ascii_8z(i,o,f)  idn2_to_ascii_8z(i,o,f|IDN2_NFC_INPUT|IDN2_NONTRANSITIONAL)
+  #define idna_to_ascii_lz(i,o,f)  idn2_to_ascii_lz(i,o,f|IDN2_NFC_INPUT|IDN2_NONTRANSITIONAL)
 
   #define idna_to_unicode_8z4z  idn2_to_unicode_8z4z
   #define idna_to_unicode_4z4z  idn2_to_unicode_4z4z
