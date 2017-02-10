@@ -96,6 +96,8 @@ extern "C"
  * @IDN2_ALABEL_ROUNDTRIP: Perform optional IDNA2008 lookup roundtrip check.
  * @IDN2_TRANSITIONAL: Perform Unicode TR46 transitional processing.
  * @IDN2_NONTRANSITIONAL: Perform Unicode TR46 non-transitional processing.
+ * @IDN2_ALLOW_UNASSIGNED: Libidn compatibility flag, unused.
+ * @IDN2_USE_STD3_ASCII_RULES: Libidn compatibility flag, unused.
  *
  * Flags to IDNA2008 functions, to be binary or:ed together.  Specify
  * only 0 if you want the default behaviour.
