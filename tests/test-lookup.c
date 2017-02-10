@@ -876,6 +876,7 @@ static void
 test_homebrewed(void)
 {
   uint8_t *out;
+  char outbuf[4];
   size_t i;
   int rc;
 
@@ -941,6 +942,38 @@ test_homebrewed(void)
     printf("special #5 failed with %d\n", rc);
   } else
     ok++;
+
+  /* test libidn compatibility functions */
+  if ((rc = idna_to_ascii_lz ("abc", (char **) &out, 0)) != IDN2_OK) {
+    failed++;
+    printf("special #5 failed with %d\n", rc);
+  } else {
+    idna_free (out);
+    ok++;
+  }
+
+  if ((rc = idna_to_ascii_8z ("abc", (char **) &out, 0)) != IDN2_OK) {
+    failed++;
+    printf("special #5 failed with %d\n", rc);
+  } else {
+    idna_free (out);
+    ok++;
+  }
+
+  if ((rc = idna_to_ascii_4z (L"abc", (char **) &out, 0)) != IDN2_OK) {
+    failed++;
+    printf("special #5 failed with %d\n", rc);
+  } else {
+    idna_free (out);
+    ok++;
+  }
+
+  if ((rc = idna_to_ascii_4i (L"abc", 4, outbuf, 0)) != IDN2_OK) {
+    failed++;
+    printf("special #5 failed with %d\n", rc);
+  } else {
+    ok++;
+  }
 }
 
 // decode embedded UTF-16/32 sequences
