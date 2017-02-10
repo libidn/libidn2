@@ -469,18 +469,46 @@ idn2_lookup_ul (const char * src, char ** lookupname, int flags)
   return rc;
 }
 
+/**
+ * idn2_to_ascii_4i:
+ * @input: zero terminated input Unicode (UCS-4) string.
+ * @output: pointer to newly allocated zero-terminated output string.
+ * @flags: are ignored
+ *
+ * The ToASCII operation takes a sequence of Unicode code points that make
+ * up one domain label and transforms it into a sequence of code points in 
+ * the ASCII range (0..7F). If ToASCII succeeds, the original sequence and
+ * the resulting sequence are equivalent labels.
+ *
+ * It is important to note that the ToASCII operation can fail.
+ * ToASCII fails if any step of it fails. If any step of the
+ * ToASCII operation fails on any label in a domain name, that domain
+ * name MUST NOT be used as an internationalized domain name.
+ * The method for dealing with this failure is application-specific.
+ *
+ * The inputs to ToASCII are a sequence of code points.
+ *
+ * ToASCII never alters a sequence of code points that are all in the ASCII
+ * range to begin with (although it could fail). Applying the ToASCII operation multiple
+ * effect as applying it just once.
+ *
+ * The flags to underlying IDN2 functions are assumed to be
+ * %IDN2_NONTRANSITIONAL and %IDN2_NFC_INPUT.
+ *
+ * Return value: Returns %IDN2_OK on success, or error code.
+ **/
 int
-idn2_to_ascii_4i (const uint32_t * in, size_t inlen, char * out, int flags)
+idn2_to_ascii_4i (const uint32_t * input, size_t inlen, char * output, int flags)
 {
   uint32_t *input_u32;
   uint8_t *input_u8, *output_u8;
   size_t length;
   int rc;
 
-  if (!in)
+  if (!input)
     {
-      if (out)
-	*out = 0;
+      if (output)
+	*output = 0;
       return IDN2_OK;
     }
 
@@ -488,7 +516,7 @@ idn2_to_ascii_4i (const uint32_t * in, size_t inlen, char * out, int flags)
   if (!input_u32)
     return IDN2_MALLOC;
 
-  u32_cpy (input_u32, in, inlen);
+  u32_cpy (input_u32, input, inlen);
   input_u32[inlen] = 0;
 
   input_u8 = u32_to_u8 (input_u32, inlen + 1, NULL, &length);
@@ -509,14 +537,29 @@ idn2_to_ascii_4i (const uint32_t * in, size_t inlen, char * out, int flags)
        * char * out  output zero terminated string that must have room for at
        * least 63 characters plus the terminating zero.
        */
-      if (out)
-	strcpy (out, (const char *) output_u8);
+      if (output)
+	strcpy (output, (const char *) output_u8);
     }
 
   free(output_u8);
   return rc;
 }
 
+/**
+ * idn2_to_ascii_4z:
+ * @input: zero terminated input Unicode (UCS-4) string.
+ * @output: pointer to newly allocated zero-terminated output string.
+ * @flags: are ignored
+ *
+ * Convert UCS-4 domain name to ASCII string using the IDNA2008
+ * rules.  The domain name may contain several labels, separated by dots.
+ * The output buffer must be deallocated by the caller.
+ *
+ * The flags to underlying IDN2 functions are assumed to be
+ * %IDN2_NONTRANSITIONAL and %IDN2_NFC_INPUT.
+ *
+ * Return value: Returns %IDN2_OK on success, or error code.
+ **/
 int
 idn2_to_ascii_4z (const uint32_t * input, char ** output, int flags)
 {
@@ -545,12 +588,42 @@ idn2_to_ascii_4z (const uint32_t * input, char ** output, int flags)
   return rc;
 }
 
+/**
+ * idn2_to_ascii_8z:
+ * @input: zero terminated input UTF-8 string.
+ * @output: pointer to newly allocated output string.
+ * @flags: are ignored
+ *
+ * Convert UTF-8 domain name to ASCII string using the IDNA2008
+ * rules.  The domain name may contain several labels, separated by dots.
+ * The output buffer must be deallocated by the caller.
+ *
+ * This is equivalent to idn2_lookup_u8() with %IDN2_NONTRANSITIONAL
+ * and %IDN2_NFC_INPUT flags.
+ *
+ * Return value: Returns %IDN2_OK on success, or error code.
+ **/
 int
 idn2_to_ascii_8z (const char * input, char ** output, int flags)
 {
   return idn2_lookup_u8 ((const uint8_t *) input, (uint8_t **) output, flags);
 }
 
+/**
+ * idn2_to_ascii_lz:
+ * @input: zero terminated input UTF-8 string.
+ * @output: pointer to newly allocated output string.
+ * @flags: are ignored
+ *
+ * Convert a domain name in locale's encoding to ASCII string using the IDNA2008
+ * rules.  The domain name may contain several labels, separated by dots.
+ * The output buffer must be deallocated by the caller.
+ *
+ * This is equivalent to idn2_lookup_ul() with %IDN2_NONTRANSITIONAL
+ * and %IDN2_NFC_INPUT flags.
+ *
+ * Return value: Returns %IDN2_OK on success, or error code.
+ **/
 int
 idn2_to_ascii_lz (const char * input, char ** output, int flags)
 {
