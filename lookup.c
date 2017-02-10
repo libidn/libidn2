@@ -472,8 +472,9 @@ idn2_lookup_ul (const char * src, char ** lookupname, int flags)
 /**
  * idn2_to_ascii_4i:
  * @input: zero terminated input Unicode (UCS-4) string.
+ * @inlen: number of elements in @input.
  * @output: pointer to newly allocated zero-terminated output string.
- * @flags: are ignored
+ * @flags: are ignored.
  *
  * The ToASCII operation takes a sequence of Unicode code points that make
  * up one domain label and transforms it into a sequence of code points in 
