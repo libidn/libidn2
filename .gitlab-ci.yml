@@ -2,7 +2,6 @@ image: debian:stretch
 
 
 GNU/Linux build:
-  image: debian:stretch
   before_script:
    - apt-get update -qq
    - apt-get install -y -qq abi-compliance-checker pkg-config gcc make gettext autopoint git autoconf automake libtool texinfo gperf libunistring-dev help2man gtk-doc-tools valgrind gengetopt
@@ -50,3 +49,25 @@ UBSAN build:
     paths:
       - tests/*.log
       - compat_reports/
+
+MinGW64:
+  image: fedora:25
+  before_script:
+  - dnf install -y git which coreutils which autoconf libtool gettext-devel automake autogen gawk gperf help2man elfutils binutils wine mingw64-gcc util-linux gengetopt
+  - mount -t binfmt_misc binfmt_misc /proc/sys/fs/binfmt_misc &&
+    echo ':DOSWin:M::MZ::/usr/bin/wine64:' > /proc/sys/fs/binfmt_misc/register
+  - ./bootstrap
+  script:
+  - mkdir -p build && cd build && mingw64-configure --disable-valgrind-tests --disable-doc &&
+    mingw64-make -j$(nproc)
+  tags:
+  - shared
+  - docker
+  except:
+  - tags
+  artifacts:
+    expire_in: 2 weeks
+    when: on_failure
+    paths:
+      - build/*.log
+      - build/tests/*.log
