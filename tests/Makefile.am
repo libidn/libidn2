@@ -19,7 +19,15 @@ AM_CPPFLAGS += -DSRCDIR=\"$(srcdir)\"
 AM_CFLAGS = $(WARN_CFLAGS) -Wno-missing-field-initializers
 AM_LDFLAGS = -no-install
 
+if !HAVE_LIBUNISTRING
+AM_CPPFLAGS += -I$(top_srcdir)/unistring/ -I$(top_builddir)/unistring/
+endif
+
 LDADD = ../idn2/libidn2.la ../lib/libgnu.la
+
+if !HAVE_LIBUNISTRING
+LDADD += ../unistring/libunistring.la
+endif
 
 TESTS = test-punycode test-lookup test-register test-strerror test-tounicode
 check_PROGRAMS = $(TESTS)

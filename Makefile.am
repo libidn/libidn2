@@ -17,6 +17,10 @@ DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc
 
 SUBDIRS = 
 
+if !HAVE_LIBUNISTRING
+SUBDIRS += unistring
+endif
+
 SUBDIRS += lib idn2 src doc examples tests po
 ACLOCAL_AMFLAGS = -I m4 -I unistring/m4
 EXTRA_DIST = m4/gnulib-cache.m4

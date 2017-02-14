@@ -20,6 +20,10 @@ AM_CPPFLAGS += -I$(top_builddir)/lib -I$(top_srcdir)/lib
 AM_CFLAGS = $(WARN_CFLAGS)
 AM_CFLAGS += $(CFLAG_VISIBILITY)
 
+if !HAVE_LIBUNISTRING
+AM_CPPFLAGS += -I$(top_srcdir)/unistring/ -I$(top_builddir)/unistring/
+endif
+
 lib_LTLIBRARIES = libidn2.la
 
 include_HEADERS = idn2.h
@@ -38,6 +42,10 @@ libidn2_la_SOURCES += tr46map.h tr46map.c
 libidn2_la_SOURCES += tables.h tables.c
 libidn2_la_SOURCES += context.h context.c
 libidn2_la_LIBADD = $(LTLIBICONV) $(LTLIBINTL) $(LTLIBUNISTRING) ../lib/libgnu.la
+
+if !HAVE_LIBUNISTRING
+libidn2_la_LIBADD += ../unistring/libunistring.la
+endif
 
 libidn2_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) -no-undefined

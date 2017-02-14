@@ -32,9 +32,11 @@ AC_CANONICAL_HOST
 
 AC_PROG_CC
 gl_EARLY
+unistring_EARLY
 m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
 LT_INIT([win32-dll])
 gl_INIT
+unistring_INIT
 GTK_DOC_CHECK(1.1)
 AM_MISSING_PROG(HELP2MAN, help2man, $missing_dir)
 AM_GNU_GETTEXT(external)
@@ -78,6 +80,12 @@ if test "$gl_gcc_warnings" = yes; then
   gl_WARN_ADD([-fdiagnostics-color=always]) # colors even when using ccache
 fi
 
+if test "$ac_cv_libunistring" = "yes";then
+	AC_SEARCH_LIBS(uc_joining_type, unistring, [], [ac_cv_libunistring=no])
+fi
+
+AM_CONDITIONAL(HAVE_LIBUNISTRING, test "$ac_cv_libunistring" = "yes")
+
 AC_CONFIG_FILES([
   Makefile
   doc/Makefile
@@ -86,6 +94,7 @@ AC_CONFIG_FILES([
   examples/Makefile
   idn2/idn2.h
   idn2/Makefile
+  unistring/Makefile
   lib/Makefile
   libidn2.pc
   po/Makefile.in
