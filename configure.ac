@@ -80,6 +80,11 @@ if test "$gl_gcc_warnings" = yes; then
   gl_WARN_ADD([-fdiagnostics-color=always]) # colors even when using ccache
 fi
 
+AC_ARG_ENABLE(doc,
+  AS_HELP_STRING([--disable-doc], [don't generate any documentation]),
+    enable_doc=$enableval, enable_doc=yes)
+AM_CONDITIONAL(ENABLE_DOC, test "$enable_doc" != "no")
+
 if test "$ac_cv_libunistring" = "yes";then
 	AC_SEARCH_LIBS(uc_joining_type, unistring, [], [ac_cv_libunistring=no])
 fi
@@ -112,6 +117,7 @@ AC_MSG_NOTICE([Summary of build options:
   Warning flags:     ${WARN_CFLAGS}
   CFLAGS:            ${CFLAGS} ${CPPFLAGS}
   LDFlags:           ${LDFLAGS}
+  Documentation:     ${enable_doc}
   Library types:     Shared=${enable_shared}, Static=${enable_static}
   Libiconv:          $am_cv_func_iconv $LTLIBICONV
   Libunistring:      $ac_cv_libunistring $LIBUNISTRING_VERSION $LTLIBUNISTRING

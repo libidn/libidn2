@@ -21,9 +21,13 @@ if !HAVE_LIBUNISTRING
 SUBDIRS += unistring
 endif
 
-SUBDIRS += lib idn2 src doc examples tests po
+SUBDIRS += lib idn2 src examples tests po
 ACLOCAL_AMFLAGS = -I m4 -I unistring/m4
 EXTRA_DIST = m4/gnulib-cache.m4
+
+if ENABLE_DOC
+SUBDIRS += doc
+endif
 
 EXTRA_DIST += CONTRIBUTING
 
