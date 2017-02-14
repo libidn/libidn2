@@ -46,8 +46,8 @@ idn2.1: $(top_srcdir)/src/idn2.c $(top_srcdir)/src/idn2.ggo $(top_srcdir)/config
 
 # GDOC
 
-GDOC_SRC = $(top_srcdir)/idn2/decode.c $(top_srcdir)/idn2/lookup.c $(top_srcdir)/idn2/register.c \
-	$(top_srcdir)/idn2/error.c $(top_srcdir)/idn2/version.c $(top_srcdir)/idn2/free.c
+GDOC_SRC = $(top_srcdir)/lib/decode.c $(top_srcdir)/lib/lookup.c $(top_srcdir)/lib/register.c \
+	$(top_srcdir)/lib/error.c $(top_srcdir)/lib/version.c $(top_srcdir)/lib/free.c
 GDOC_TEXI_PREFIX = texi/
 GDOC_MAN_PREFIX = man/
 GDOC_MAN_EXTRA_ARGS = -module $(PACKAGE) -sourceversion $(VERSION) \

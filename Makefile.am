@@ -21,7 +21,7 @@ if !HAVE_LIBUNISTRING
 SUBDIRS += unistring
 endif
 
-SUBDIRS += gl idn2 src examples tests po
+SUBDIRS += gl lib src examples tests po
 ACLOCAL_AMFLAGS = -I m4 -I unistring/m4
 EXTRA_DIST = m4/gnulib-cache.m4
 
@@ -38,9 +38,9 @@ LCOV_INFO=libidn2.info
 check-coverage:
 	CFLAGS=$$CFLAGS" --coverage -O0" LDFLAGS=$$LDFLAGS" --coverage" ./configure;
 	$(MAKE) clean && $(MAKE)
-	lcov --capture --initial --directory idn2/.libs --output-file $(LCOV_INFO)
+	lcov --capture --initial --directory lib/.libs --output-file $(LCOV_INFO)
 	$(MAKE) check
-	lcov --capture --directory idn2/.libs --output-file $(LCOV_INFO)
+	lcov --capture --directory lib/.libs --output-file $(LCOV_INFO)
 	genhtml --prefix . $(LCOV_INFO) --legend --title "libidn2" --output-directory=lcov
 # now you can view lcov/index.html with your favorite browser
 
@@ -52,25 +52,25 @@ pkgconfig_DATA = libidn2.pc
 
 TMPDIR="headers.abi.tmp"
 TMPFILE="abi-temp.xml"
-abi-check: idn2/idn2.h idn2/libidn2.la
+abi-check: lib/idn2.h lib/libidn2.la
 	@rm -f $(TMPFILE)
 	@echo "Checking libidn2 ABI"
 	@echo "<version>$(VERSION)</version>" >$(TMPFILE)
-	@echo "<headers>$(srcdir)/idn2/idn2.h" >>$(TMPFILE)
-	@echo "$(builddir)/idn2/idn2.h</headers>" >>$(TMPFILE)
-	@echo "<libs>$(builddir)/idn2/.libs</libs>" >>$(TMPFILE)
+	@echo "<headers>$(srcdir)/lib/idn2.h" >>$(TMPFILE)
+	@echo "$(builddir)/lib/idn2.h</headers>" >>$(TMPFILE)
+	@echo "<libs>$(builddir)/lib/.libs</libs>" >>$(TMPFILE)
 	for i in 0.16;do \
 	test ! -f "$(srcdir)/devel/ABI-$$i-$$(uname -m).dump" || \
 		abi-compliance-checker -abi -lib libidn2 -old "$(srcdir)/devel/ABI-$$i-$$(uname -m).dump" -new $(TMPFILE); \
 	done
 	@rm -f $(TMPFILE)
 
-abi-dump: idn2/idn2.h idn2/libidn2.la
+abi-dump: lib/idn2.h lib/libidn2.la
 	@rm -rf $(TMPDIR)
 	@mkdir -p $(TMPDIR)
 	@mkdir -p devel
-	@cp idn2/idn2.h $(TMPDIR)
-	@abi-dumper idn2/.libs/libidn2.so -o "./devel/ABI-$(VERSION)-$$(uname -m).dump" -public-headers $(TMPDIR)
+	@cp lib/idn2.h $(TMPDIR)
+	@abi-dumper lib/.libs/libidn2.so -o "./devel/ABI-$(VERSION)-$$(uname -m).dump" -public-headers $(TMPDIR)
 	@rm -rf $(TMPDIR)
 
 dist-hook: abi-check

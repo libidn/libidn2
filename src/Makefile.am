@@ -14,7 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 AM_CPPFLAGS = -I$(top_builddir)/gl -I$(top_srcdir)/gl
-AM_CPPFLAGS += -I$(top_srcdir) -I$(top_builddir) -I$(top_builddir)/idn2 -I$(srcdir)
+AM_CPPFLAGS += -I$(top_srcdir) -I$(top_builddir) -I$(top_builddir)/lib -I$(srcdir)
 AM_CPPFLAGS += -DLOCALEDIR=\"$(localedir)\"
 AM_CFLAGS = $(WARN_CFLAGS)
 
@@ -25,7 +25,7 @@ endif
 bin_PROGRAMS = idn2 idn2_noinstall
 
 idn2_SOURCES = idn2.c blurbs.h
-idn2_LDADD = libidn2_cmd.la ../idn2/libidn2.la $(LTLIBUNISTRING) $(LIBS)
+idn2_LDADD = libidn2_cmd.la ../lib/libidn2.la $(LTLIBUNISTRING) $(LIBS)
 
 # have idn2_noinstall linked with local libidn2 for testing
 # please do not remove !
