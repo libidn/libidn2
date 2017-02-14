@@ -166,7 +166,7 @@ package=$(sed -n "$extract_package_name" configure.ac) \
 gnulib_name=lib$package
 
 build_aux=build-aux
-source_base=lib
+source_base=gl
 m4_base=m4
 doc_base=doc
 tests_base=tests

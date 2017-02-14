@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-AM_CPPFLAGS = -I$(top_builddir)/lib -I$(top_srcdir)/lib
+AM_CPPFLAGS = -I$(top_builddir)/gl -I$(top_srcdir)/gl
 AM_CPPFLAGS += -I$(top_srcdir) -I$(top_builddir) -I$(top_builddir)/idn2 -I$(srcdir)
 AM_CPPFLAGS += -DLOCALEDIR=\"$(localedir)\"
 AM_CFLAGS = $(WARN_CFLAGS)
@@ -37,7 +37,7 @@ idn2.c: $(BUILT_SOURCES)
 
 noinst_LTLIBRARIES = libidn2_cmd.la
 libidn2_cmd_la_SOURCES =  idn2.ggo idn2_cmd.c idn2_cmd.h
-libidn2_cmd_la_LIBADD = ../lib/libgnu.la $(LTLIBUNISTRING)
+libidn2_cmd_la_LIBADD = ../gl/libgnu.la $(LTLIBUNISTRING)
 libidn2_cmd_la_CFLAGS =
 
 if !HAVE_LIBUNISTRING

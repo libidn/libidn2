@@ -16,7 +16,7 @@
 AM_CPPFLAGS =
 
 AM_CPPFLAGS += -DIDN2_BUILDING -DSRCDIR=\"$(srcdir)\"
-AM_CPPFLAGS += -I$(top_builddir)/lib -I$(top_srcdir)/lib
+AM_CPPFLAGS += -I$(top_builddir)/gl -I$(top_srcdir)/gl
 AM_CFLAGS = $(WARN_CFLAGS)
 AM_CFLAGS += $(CFLAG_VISIBILITY)
 
@@ -41,7 +41,7 @@ libidn2_la_SOURCES += data.h data.c
 libidn2_la_SOURCES += tr46map.h tr46map.c
 libidn2_la_SOURCES += tables.h tables.c
 libidn2_la_SOURCES += context.h context.c
-libidn2_la_LIBADD = $(LTLIBICONV) $(LTLIBINTL) $(LTLIBUNISTRING) ../lib/libgnu.la
+libidn2_la_LIBADD = $(LTLIBICONV) $(LTLIBINTL) $(LTLIBUNISTRING) ../gl/libgnu.la
 
 if !HAVE_LIBUNISTRING
 libidn2_la_LIBADD += ../unistring/libunistring.la
@@ -67,7 +67,7 @@ data.c: $(srcdir)/gen-tables-from-iana.pl $(IDNA_TABLE)
 	mv $@.new $@
 
 noinst_PROGRAMS = gentr46map
-gentr46map_LDADD = $(LTLIBUNISTRING) ../lib/libgnu.la
+gentr46map_LDADD = $(LTLIBUNISTRING) ../gl/libgnu.la
 
 tr46map_data.c: gentr46map.c gentr46map$(EXEEXT) $(TR46MAP) $(NFCQC)
 	$(builddir)/gentr46map$(EXEEXT) > $@.new

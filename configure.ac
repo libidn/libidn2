@@ -100,7 +100,7 @@ AC_CONFIG_FILES([
   idn2/idn2.h
   idn2/Makefile
   unistring/Makefile
-  lib/Makefile
+  gl/Makefile
   libidn2.pc
   po/Makefile.in
   src/Makefile
