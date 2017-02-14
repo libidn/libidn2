@@ -14,14 +14,14 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 AM_CPPFLAGS = -I$(top_builddir)/lib -I$(top_srcdir)/lib
-AM_CPPFLAGS += -I$(top_srcdir) -I$(srcdir)
+AM_CPPFLAGS += -I$(top_srcdir) -I$(top_builddir) -I$(top_builddir)/idn2 -I$(srcdir)
 AM_CPPFLAGS += -DLOCALEDIR=\"$(localedir)\"
 AM_CFLAGS = $(WARN_CFLAGS)
 
 bin_PROGRAMS = idn2 idn2_noinstall
 
 idn2_SOURCES = idn2.c blurbs.h
-idn2_LDADD = libidn2_cmd.la ../libidn2.la $(LIBS)
+idn2_LDADD = libidn2_cmd.la ../idn2/libidn2.la $(LTLIBUNISTRING) $(LIBS)
 
 # have idn2_noinstall linked with local libidn2 for testing
 # please do not remove !
@@ -33,7 +33,7 @@ idn2.c: $(BUILT_SOURCES)
 
 noinst_LTLIBRARIES = libidn2_cmd.la
 libidn2_cmd_la_SOURCES =  idn2.ggo idn2_cmd.c idn2_cmd.h
-libidn2_cmd_la_LIBADD = ../lib/libgnu.la
+libidn2_cmd_la_LIBADD = ../lib/libgnu.la $(LTLIBUNISTRING)
 libidn2_cmd_la_CFLAGS =
 
 # pattern rule (%) needed for parallel make (-j)

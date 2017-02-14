@@ -84,7 +84,8 @@ AC_CONFIG_FILES([
   doc/reference/Makefile
   doc/reference/version.xml
   examples/Makefile
-  idn2.h
+  idn2/idn2.h
+  idn2/Makefile
   lib/Makefile
   libidn2.pc
   po/Makefile.in

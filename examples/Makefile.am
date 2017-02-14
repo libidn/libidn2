@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-AM_CPPFLAGS = -I$(srcdir)/.. -I$(builddir)/..
-LDADD = ../libidn2.la
+AM_CPPFLAGS = -I$(top_srcdir)/idn2 -I$(top_builddir)/idn2 -I$(top_builddir)
+LDADD = ../idn2/libidn2.la
 
 noinst_PROGRAMS = decode lookup register

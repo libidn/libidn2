@@ -1,4 +1,4 @@
 # List of source files which contain translatable strings.
-error.c
+idn2/error.c
 lib/version-etc.c
 src/idn2.c

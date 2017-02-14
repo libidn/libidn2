@@ -13,13 +13,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-AM_CPPFLAGS = -I$(top_srcdir) -I$(srcdir) -I$(top_builddir)
+AM_CPPFLAGS = -I$(top_srcdir) -I$(top_srcdir)/idn2 -I$(top_builddir)/idn2 -I$(srcdir) -I$(top_builddir)
 AM_CPPFLAGS += -I$(top_builddir)/lib -I$(top_srcdir)/lib
 AM_CPPFLAGS += -DSRCDIR=\"$(srcdir)\"
 AM_CFLAGS = $(WARN_CFLAGS) -Wno-missing-field-initializers
 AM_LDFLAGS = -no-install
 
-LDADD = ../libidn2.la ../lib/libgnu.la
+LDADD = ../idn2/libidn2.la ../lib/libgnu.la
 
 TESTS = test-punycode test-lookup test-register test-strerror test-tounicode
 check_PROGRAMS = $(TESTS)
