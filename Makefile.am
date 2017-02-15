@@ -15,7 +15,7 @@
 
 DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc
 
-SUBDIRS = 
+SUBDIRS =
 
 if !HAVE_LIBUNISTRING
 SUBDIRS += unistring

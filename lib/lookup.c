@@ -477,7 +477,7 @@ idn2_lookup_ul (const char * src, char ** lookupname, int flags)
  * @flags: are ignored.
  *
  * The ToASCII operation takes a sequence of Unicode code points that make
- * up one domain label and transforms it into a sequence of code points in 
+ * up one domain label and transforms it into a sequence of code points in
  * the ASCII range (0..7F). If ToASCII succeeds, the original sequence and
  * the resulting sequence are equivalent labels.
  *

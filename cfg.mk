@@ -35,38 +35,16 @@ exclude_file_name_regexp--sc_require_config_h = ^examples/.*\.c$$
 exclude_file_name_regexp--sc_require_config_h_first = ^examples/.*\.c$$
 exclude_file_name_regexp--sc_prohibit_strncpy = ^src/idn2.c$$
 exclude_file_name_regexp--sc_GPL_version = ^COPYINGv2|[^/]*.[ch](.in)?$$
-exclude_file_name_regexp--sc_prohibit_atoi_atof = ^gentr46map\.c$$
+exclude_file_name_regexp--sc_prohibit_atoi_atof = ^lib/gentr46map\.c$$
 exclude_file_name_regexp--sc_makefile_at_at_check = ^Makefile.am|src/Makefile\.am|tests/Makefile.am$$
-exclude_file_name_regexp--sc_prohibit_empty_lines_at_EOF = ^IdnaMappingTable.txt|doc/reference/version.xml.in$$
-exclude_file_name_regexp--sc_prohibit_undesirable_word_seq = ^bootstrap|idna-tables-6.3.0.txt$$
+exclude_file_name_regexp--sc_prohibit_empty_lines_at_EOF = ^lib/IdnaMappingTable.txt|doc/reference/version.xml.in$$
+exclude_file_name_regexp--sc_prohibit_undesirable_word_seq = ^bootstrap|^lib/idna-tables-6.3.0.txt$$
 
 update-copyright-env = \
 	UPDATE_COPYRIGHT_USE_INTERVALS=2 \
 	UPDATE_COPYRIGHT_HOLDER="Simon Josefsson"
 
-INDENT_SOURCES = \
-	bidi.c \
-	bidi.h \
-	context.c \
-	context.h \
-	data.h \
-	decode.c \
-	error.c \
-	free.c \
-	idn2.h.in \
-	idna.c \
-	idna.h \
-	lookup.c \
-	punycode.h \
-	register.c \
-	src/blurbs.h \
-	src/idn2.c \
-	tables.c \
-	tables.h \
-	version.c \
-	tr46map.h \
-	tr46map.c \
-	gentr46map.c
+INDENT_SOURCES = lib/*.c lib/*.h src/*.c src/*.h tests/*.c
 
 doc/Makefile.gdoc:
 	printf "gdoc_MANS =\ngdoc_TEXINFOS =\n" > doc/Makefile.gdoc
