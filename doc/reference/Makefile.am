@@ -22,7 +22,7 @@ DOC_MAIN_SGML_FILE=$(DOC_MODULE)-docs.sgml
 # gtk-doc will search all .c and .h files beneath these paths
 # for inline comments documenting functions and macros.
 # e.g. DOC_SOURCE_DIR=../../../gtk ../../../gdk
-DOC_SOURCE_DIR=../../idn2
+DOC_SOURCE_DIR=../../lib
 
 # Extra options to pass to gtkdoc-scangobj. Not normally needed.
 SCANGOBJ_OPTIONS=
@@ -49,8 +49,8 @@ FIXXREF_OPTIONS=
 # Used for dependencies. The docs will be rebuilt if any of these change.
 # e.g. HFILE_GLOB=$(top_srcdir)/gtk/*.h
 # e.g. CFILE_GLOB=$(top_srcdir)/gtk/*.c
-HFILE_GLOB=$(top_srcdir)/idn2/*.h
-CFILE_GLOB=$(top_srcdir)/idn2/*.c
+HFILE_GLOB=$(top_srcdir)/lib/*.h
+CFILE_GLOB=$(top_srcdir)/lib/*.c
 
 # Extra header to include when scanning, which are not under DOC_SOURCE_DIR
 # e.g. EXTRA_HFILES=$(top_srcdir}/contrib/extra.h
@@ -59,7 +59,7 @@ EXTRA_HFILES=
 # Header files to ignore when scanning. Use base file name, no paths
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h
 IGNORE_HFILES=bidi.h config.h context.h data.h idna.h punycode.h tables.h tr46map.h
-IGNORE_HFILES+=build-aux gnulib gnulib lib src
+IGNORE_HFILES+=build-aux gnulib gl unistring src
 IGNORE_HFILES+=idn2_cmd.h
 
 # Images to copy into HTML directory.
@@ -104,7 +104,7 @@ endif
 -include $(top_srcdir)/git.mk
 
 CLEANFILES ?=
-CLEANFILES += libpsl-overrides.txt libpsl-decl.txt libpsl-decl-list.txt
+CLEANFILES += libdn2-overrides.txt libdn2-decl.txt libidn2-decl-list.txt
 
 clean-local:
 	rm -rf xml html tmpl
