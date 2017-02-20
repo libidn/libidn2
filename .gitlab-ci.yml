@@ -21,7 +21,7 @@ GNU/Linux build:
 ASAN build:
   before_script:
    - apt-get update -qq
-   - apt-get install -y -qq libasan2 pkg-config gcc make gettext autopoint git autoconf automake libtool texinfo gperf libunistring-dev help2man valgrind gengetopt
+   - apt-get install -y -qq libasan3 pkg-config gcc make gettext autopoint git autoconf automake libtool texinfo gperf libunistring-dev help2man valgrind gengetopt
    - ./bootstrap
   script:
   - CFLAGS="-fsanitize=address -g -O2" ./configure --enable-gcc-warnings && make -j$(nproc) check
