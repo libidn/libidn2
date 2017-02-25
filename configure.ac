@@ -53,7 +53,7 @@ AC_ARG_ENABLE([gcc-warnings],
      *)      AC_MSG_ERROR([bad value $enableval for gcc-warnings option]) ;;
    esac
    gl_gcc_warnings=$enableval],
-  [gl_gcc_warnings=no]
+  [gl_gcc_warnings=yes]
 )
 
 if test "$gl_gcc_warnings" = yes; then
@@ -63,7 +63,6 @@ if test "$gl_gcc_warnings" = yes; then
   nw="$nw -Wundef"                # All compiler preprocessors support #if UNDEF
   nw="$nw -Wtraditional"          # All compilers nowadays support ANSI C
   nw="$nw -Wconversion"           # These warnings usually don't point to mistakes.
-  nw="$nw -Wsign-conversion"      # Likewise.
   nw="$nw -Wpadded"               # Padding internal structs doesn't help.
   nw="$nw -Wc++-compat"           # Compile using a C compiler.
   nw="$nw -Wtraditional-conversion" # Too many complaints for now.
@@ -75,7 +74,6 @@ if test "$gl_gcc_warnings" = yes; then
     gl_WARN_ADD([$w])
   done
 
-  gl_WARN_ADD([-Wno-pointer-sign])     # Too many warnings for now
   gl_WARN_ADD([-fdiagnostics-show-option])
   gl_WARN_ADD([-fdiagnostics-color=always]) # colors even when using ccache
 fi
