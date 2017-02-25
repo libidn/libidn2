@@ -875,6 +875,7 @@ static int _scan_file(const char *fname, int(*scan)(char *))
 static void
 test_homebrewed(void)
 {
+  uint32_t dummy_u32[4] = { 'a', 'b', 'c', 0 };
   uint8_t *out;
   char outbuf[4];
   size_t i;
@@ -946,7 +947,7 @@ test_homebrewed(void)
   /* test libidn compatibility functions */
   if ((rc = idna_to_ascii_lz ("abc", (char **) &out, 0)) != IDN2_OK) {
     failed++;
-    printf("special #5 failed with %d\n", rc);
+    printf("special #6 failed with %d\n", rc);
   } else {
     idna_free (out);
     ok++;
@@ -954,23 +955,23 @@ test_homebrewed(void)
 
   if ((rc = idna_to_ascii_8z ("abc", (char **) &out, 0)) != IDN2_OK) {
     failed++;
-    printf("special #5 failed with %d\n", rc);
+    printf("special #7 failed with %d\n", rc);
   } else {
     idna_free (out);
     ok++;
   }
 
-  if ((rc = idna_to_ascii_4z (L"abc", (char **) &out, 0)) != IDN2_OK) {
+  if ((rc = idna_to_ascii_4z (dummy_u32, (char **) &out, 0)) != IDN2_OK) {
     failed++;
-    printf("special #5 failed with %d\n", rc);
+    printf("special #8 failed with %d\n", rc);
   } else {
     idna_free (out);
     ok++;
   }
 
-  if ((rc = idna_to_ascii_4i (L"abc", 4, outbuf, 0)) != IDN2_OK) {
+  if ((rc = idna_to_ascii_4i (dummy_u32, 4, outbuf, 0)) != IDN2_OK) {
     failed++;
-    printf("special #5 failed with %d\n", rc);
+    printf("special #9 failed with %d\n", rc);
   } else {
     ok++;
   }
