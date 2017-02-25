@@ -53,13 +53,14 @@ UBSAN build:
 MinGW64:
   image: fedora:25
   before_script:
-  - dnf install -y git which coreutils which autoconf libtool gettext-devel automake autogen gawk gperf help2man elfutils binutils wine mingw64-gcc util-linux gengetopt
+  - dnf install -y git which coreutils which autoconf libtool gettext-devel automake autogen gawk gperf help2man elfutils binutils wine mingw64-gcc mingw64-iconv util-linux gengetopt
   - mount -t binfmt_misc binfmt_misc /proc/sys/fs/binfmt_misc &&
     echo ':DOSWin:M::MZ::/usr/bin/wine64:' > /proc/sys/fs/binfmt_misc/register
   - ./bootstrap
   script:
-  - mkdir -p build && cd build && mingw64-configure --disable-valgrind-tests --disable-doc &&
-    mingw64-make -j$(nproc)
+  - mingw64-configure --disable-valgrind-tests --disable-doc
+  - mingw64-make -j$(nproc)
+  - mingw64-make -j$(nproc) check
   tags:
   - shared
   - docker
@@ -69,5 +70,5 @@ MinGW64:
     expire_in: 2 weeks
     when: on_failure
     paths:
-      - build/*.log
-      - build/tests/*.log
+      - ./*.log
+      - tests/*.log
