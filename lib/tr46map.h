@@ -53,6 +53,6 @@ typedef struct
 
 int get_idna_map (uint32_t c, IDNAMap * map);
 int get_map_data (uint32_t * dst, const IDNAMap * map);
-int map_is (const IDNAMap * map, unsigned flags);
+int map_is (const IDNAMap * map, unsigned flags) _GL_ATTRIBUTE_PURE;
 
-NFCQCMap *get_nfcqc_map (uint32_t c);
+NFCQCMap *get_nfcqc_map (uint32_t c) _GL_ATTRIBUTE_CONST;

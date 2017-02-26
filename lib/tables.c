@@ -45,6 +45,9 @@ _compare (const struct idna_table *m1, const struct idna_table *m2)
 }
 
 static int
+property (uint32_t cp) _GL_ATTRIBUTE_CONST;
+
+static int
 property (uint32_t cp)
 {
   const struct idna_table *result;

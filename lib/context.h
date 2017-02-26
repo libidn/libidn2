@@ -29,8 +29,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-int _idn2_contextj_rule (const uint32_t * label, size_t llen, size_t pos);
+int _idn2_contextj_rule (const uint32_t * label, size_t llen, size_t pos) _GL_ATTRIBUTE_PURE;
 
-int _idn2_contexto_rule (const uint32_t * label, size_t llen, size_t pos);
+int _idn2_contexto_rule (const uint32_t * label, size_t llen, size_t pos) _GL_ATTRIBUTE_PURE;
 
-bool _idn2_contexto_with_rule (uint32_t cp);
+bool _idn2_contexto_with_rule (uint32_t cp) _GL_ATTRIBUTE_CONST;

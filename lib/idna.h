@@ -55,6 +55,6 @@ enum
 extern int _idn2_u8_to_u32_nfc (const uint8_t * src, size_t srclen,
 				uint32_t ** out, size_t * outlen, int nfc);
 
-extern bool _idn2_ascii_p (const uint8_t * src, size_t srclen);
+extern bool _idn2_ascii_p (const uint8_t * src, size_t srclen) _GL_ATTRIBUTE_PURE;
 
 extern int _idn2_label_test (int what, const uint32_t * label, size_t llen);
