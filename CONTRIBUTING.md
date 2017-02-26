@@ -60,6 +60,12 @@ $ make
 $ make check
 ```
 
+## Test suite:
+
+New functionality should be accompanied by a test case which verifies
+the correctness of the new functionality as well as under failure. 
+The libidn2 test suite is run on "make check".
+
 ## Release process
 
 The release process consists of:
