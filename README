@@ -33,6 +33,9 @@ information on these packages:
 https://www.gnu.org/software/libunistring/
 https://www.gnu.org/software/libiconv/
 
+Note that the iconv dependency is optional, and required only for the
+functions involving locale to UTF conversions.
+
 ----------------------------------------------------------------------
 This file is free software: you can redistribute it and/or modify it
 under the terms of the GNU General Public License as published by the
