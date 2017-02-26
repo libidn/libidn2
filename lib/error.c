@@ -32,7 +32,7 @@
 
 /* Prepare for gettext. */
 #define _(x) x
-#define bindtextdomain(a,b) 0
+#define bindtextdomain(a,b)
 
 /**
  * idn2_strerror:
