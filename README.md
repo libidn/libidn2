@@ -1,40 +1,47 @@
-Libidn2 README -- Introduction information.                     -*- outline -*-
+![build status](https://gitlab.com/jas/libidn2/badges/master/build.svg)
+
+
+# Libidn2 README -- Introduction information
 Copyright (C) 2011-2017 Simon Josefsson
 See the end for copying conditions.
 
 Libidn2 is a free software implementation of IDNA2008 and TR46.
 
-RFC 5890: https://tools.ietf.org/html/rfc5890
-RFC 5891: https://tools.ietf.org/html/rfc5891
-RFC 5892: https://tools.ietf.org/html/rfc5892
-RFC 5893: https://tools.ietf.org/html/rfc5893
-TR46: http://www.unicode.org/reports/tr46/
+ * [RFC 5890](https://tools.ietf.org/html/rfc5890)
+ * [RFC 5891](https://tools.ietf.org/html/rfc5891)
+ * [RFC 5892](https://tools.ietf.org/html/rfc5892)
+ * [RFC 5893](https://tools.ietf.org/html/rfc5893)
+ * [TR46](http://www.unicode.org/reports/tr46/)
 
 Libidn2 is believed to be a complete IDNA2008 and TR46 implementation,
 but has yet to be as extensively used as the IDNA2003 Libidn library.
+
+# Obtaining the source
 
 The homepage of libidn2: https://www.gnu.org/software/libidn/#libidn2
 
 Software releases of libidn2 can be downloaded from
 https://alpha.gnu.org/gnu/libidn/ and ftp://alpha.gnu.org/gnu/libidn/
 
-Development of libidn2 is organized through GitLab --
-https://gitlab.com/jas/libidn2 -- and there is a issue tracker for
-reporting bugs, see: https://gitlab.com/jas/libidn2/issues
+Development of libidn2 is organized [through GitLab website](https://gitlab.com/jas/libidn2),
+and there is [an issue tracker for reporting bugs](https://gitlab.com/jas/libidn2/issues).
+
+# License
 
 The installed C library libidn2 is dual-licensed under LGPLv3+|GPLv2+,
-while the rest of the package is GPLv3+.  See the file COPYING for
-detailed information.
+while the rest of the package is GPLv3+.  See the file [COPYING](COPYING)
+for detailed information.
 
 Libidn2 uses GNU libunistring for Unicode processing and GNU libiconv
 for character set conversion.  See the following links for more
 information on these packages:
 
-https://www.gnu.org/software/libunistring/
-https://www.gnu.org/software/libiconv/
+ * [Unistring](https://www.gnu.org/software/libunistring/)
+ * [iconv](https://www.gnu.org/software/libiconv/)
 
 Note that the iconv dependency is optional, and required only for the
 functions involving locale to UTF conversions.
+
 
 ----------------------------------------------------------------------
 This file is free software: you can redistribute it and/or modify it

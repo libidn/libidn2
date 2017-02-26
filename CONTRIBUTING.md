@@ -1,4 +1,4 @@
-Libidn2 CONTRIBUTING -- Information for developers.             -*- outline -*-
+# Libidn2 CONTRIBUTING -- Information for developers
 Copyright (C) 2011-2017 Simon Josefsson
 See the end for copying conditions.
 
@@ -6,60 +6,68 @@ This file contains instructions for developers and advanced users that
 wants to build from version controlled sources.  You need to have
 several tools installed, including:
 
-- Make <http://www.gnu.org/software/make/>
-- Automake <http://www.gnu.org/software/automake/>
-- Autoconf <http://www.gnu.org/software/autoconf/>
-- Libtool <http://www.gnu.org/software/libtool/>
-- Gettext <http://www.gnu.org/software/gettext/>
-- Texinfo <http://www.gnu.org/software/texinfo/>
-- Gperf <http://www.gnu.org/software/gperf/>
-- help2man <http://www.gnu.org/software/help2man/>
-- Gengetopt <http://www.gnu.org/software/gengetopt/>
-- Tar <http://www.gnu.org/software/tar/>
-- Gzip <http://www.gnu.org/software/gzip/>
-- Texlive & epsf <http://www.tug.org/texlive/> (for PDF manual)
-- GTK-DOC <http://www.gtk.org/gtk-doc/> (for API manual)
-- Git <http://git.or.cz/>
-- Perl <http://www.cpan.org/>
-- Valgrind <http://valgrind.org/> (optional)
-- libunistring <https://www.gnu.org/software/libunistring/>
+ * [Make](http://www.gnu.org/software/make/)
+ * [Automake](http://www.gnu.org/software/automake/)
+ * [Autoconf](http://www.gnu.org/software/autoconf/)
+ * [Libtool](http://www.gnu.org/software/libtool/)
+ * [Gettext](http://www.gnu.org/software/gettext/)
+ * [Texinfo](http://www.gnu.org/software/texinfo/)
+ * [Gperf](http://www.gnu.org/software/gperf/)
+ * [help2man](http://www.gnu.org/software/help2man/)
+ * [Gengetopt](http://www.gnu.org/software/gengetopt/)
+ * [Tar](http://www.gnu.org/software/tar/)
+ * [Gzip](http://www.gnu.org/software/gzip/)
+ * [Texlive & epsf](http://www.tug.org/texlive/> (for PDF manual)
+ * [GTK-DOC](http://www.gtk.org/gtk-doc/> (for API manual)
+ * [Git](http://git.or.cz/)
+ * [Perl](http://www.cpan.org/)
+ * [Valgrind](http://valgrind.org/> (optional)
+ * [libunistring](https://www.gnu.org/software/libunistring/)
+
+## Obtaining sources
 
 The required software is typically distributed with your operating
 system, and the instructions for installing them differ.  Here are
 some hints.
 
 gNewSense/Debian/Ubuntu:
+```
 apt-get install git autoconf automake libtool texinfo gperf
 apt-get install libunistring-dev help2man gtk-doc-tools valgrind gengetopt
+```
 
 Download the version controlled sources:
-
+```
 $ git clone https://gitlab.com/jas/libidn2.git
 $ cd libidn2
+```
+
+## Building the project
 
 Prepare building with
-
+```
 $ ./bootstrap
 $ ./configure --enable-gtk-doc --enable-gtk-doc-pdf --enable-gcc-warnings --enable-valgrind-tests
+```
 
 You may want to use --gnulib-srcdir=/foo/bar/gnulib to avoid having to
 checkout gnulib every time.  Make sure the gnulib directory you point
 to is up to date.
 
 Then build the project normally:
-
+```
 $ make
 $ make check
+```
+
+## Release process
 
 The release process consists of:
 
-* Make sure version number is updated in configure.ac and idn2.h.in.
-
-* Make sure library version is updated in configure.ac.
-
-* Prepare NEWS.
-
-* Do 'make release'
+ * Make sure version number is updated in configure.ac and idn2.h.in.
+ * Make sure library version is updated in configure.ac.
+ * Prepare NEWS.
+ * Do 'make release'
 
 Happy hacking!
 
