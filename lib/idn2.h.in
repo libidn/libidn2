@@ -51,6 +51,14 @@ extern "C"
 {
 #endif
 
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+# define _IDN2_ATTRIBUTE_PURE __attribute__ ((__pure__))
+# define _IDN2_ATTRIBUTE_CONST __attribute__ ((__const__))
+#else
+# define _IDN2_ATTRIBUTE_PURE /* empty */
+# define _IDN2_ATTRIBUTE_CONST /* empty */
+#endif
+
 /**
  * IDN2_VERSION
  *
@@ -224,10 +232,10 @@ extern "C"
   extern _IDN2_API int
     idn2_to_unicode_lzlz (const char * input, char ** output, int flags);
 
-  extern _IDN2_API const char *idn2_strerror (int rc);
-  extern _IDN2_API const char *idn2_strerror_name (int rc);
+  extern _IDN2_API const char *idn2_strerror (int rc) _IDN2_ATTRIBUTE_CONST;
+  extern _IDN2_API const char *idn2_strerror_name (int rc) _IDN2_ATTRIBUTE_CONST;
 
-  extern _IDN2_API const char *idn2_check_version (const char *req_version);
+  extern _IDN2_API const char *idn2_check_version (const char *req_version) _IDN2_ATTRIBUTE_PURE;
 
   extern _IDN2_API void idn2_free (void *ptr);
 
