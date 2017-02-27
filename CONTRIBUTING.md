@@ -6,22 +6,22 @@ This file contains instructions for developers and advanced users that
 wants to build from version controlled sources.  You need to have
 several tools installed, including:
 
- * [Make](http://www.gnu.org/software/make/)
- * [Automake](http://www.gnu.org/software/automake/)
- * [Autoconf](http://www.gnu.org/software/autoconf/)
- * [Libtool](http://www.gnu.org/software/libtool/)
- * [Gettext](http://www.gnu.org/software/gettext/)
- * [Texinfo](http://www.gnu.org/software/texinfo/)
- * [Gperf](http://www.gnu.org/software/gperf/)
- * [help2man](http://www.gnu.org/software/help2man/)
- * [Gengetopt](http://www.gnu.org/software/gengetopt/)
- * [Tar](http://www.gnu.org/software/tar/)
- * [Gzip](http://www.gnu.org/software/gzip/)
- * [Texlive & epsf](http://www.tug.org/texlive/) (for PDF manual)
- * [GTK-DOC](http://www.gtk.org/gtk-doc/) (for API manual)
- * [Git](http://git.or.cz/)
- * [Perl](http://www.cpan.org/)
- * [Valgrind](http://valgrind.org/) (optional)
+ * [Make](https://www.gnu.org/software/make/)
+ * [Automake](https://www.gnu.org/software/automake/)
+ * [Autoconf](https://www.gnu.org/software/autoconf/)
+ * [Libtool](https://www.gnu.org/software/libtool/)
+ * [Gettext](https://www.gnu.org/software/gettext/)
+ * [Texinfo](https://www.gnu.org/software/texinfo/)
+ * [Gperf](https://www.gnu.org/software/gperf/)
+ * [help2man](https://www.gnu.org/software/help2man/)
+ * [Gengetopt](https://www.gnu.org/software/gengetopt/)
+ * [Tar](https://www.gnu.org/software/tar/)
+ * [Gzip](https://www.gnu.org/software/gzip/)
+ * [Texlive & epsf](https://www.tug.org/texlive/) (for PDF manual)
+ * [GTK-DOC](https://www.gtk.org/gtk-doc/) (for API manual)
+ * [Git](http://git.or.cz/) (HTTPS: Unknown certificate issuer)
+ * [Perl](http://www.cpan.org/) (HTTPS: www.cpan.org uses an invalid security certificate)
+ * [Valgrind](http://valgrind.org/) (optional) (No HTTPS at all)
  * [libunistring](https://www.gnu.org/software/libunistring/)
 
 ## Obtaining sources
@@ -89,4 +89,4 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this file.  If not, see <http://www.gnu.org/licenses/>.
+along with this file.  If not, see <https://www.gnu.org/licenses/>.
