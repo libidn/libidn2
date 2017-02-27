@@ -45,6 +45,9 @@
 
 #include "idna.h"
 
+static int
+_isNFC (uint32_t * label, size_t len) _GL_ATTRIBUTE_PURE;
+
 /*
  * NFC Quick Check from
  * http://unicode.org/reports/tr15/#Detecting_Normalization_Forms

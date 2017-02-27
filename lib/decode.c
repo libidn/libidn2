@@ -101,7 +101,7 @@ idn2_to_unicode_8z4z (const char * input, uint32_t ** output, int flags _GL_UNUS
       else
         {
 	  /* convert UTF-8 input to UTF-32 */
-	  if (!(domain_u32 = u8_to_u32 (s, e - s, NULL, &label_len)))
+	  if (!(domain_u32 = u8_to_u32 ((uint8_t*)s, e - s, NULL, &label_len)))
 	    {
 	      if (errno == ENOMEM)
 		return IDN2_MALLOC;
@@ -175,7 +175,7 @@ idn2_to_unicode_4z4z (const uint32_t * input, uint32_t ** output, int flags)
       return IDN2_ENCODING_ERROR;
     }
 
-  rc = idn2_to_unicode_8z4z (input_u8, &output_u32, flags);
+  rc = idn2_to_unicode_8z4z ((char*)input_u8, &output_u32, flags);
   free (input_u8);
 
   if (rc == IDN2_OK)
@@ -267,7 +267,7 @@ idn2_to_unicode_8zlz (const char * input, char ** output, int flags)
   if (rc != IDN2_OK || !input)
     return rc;
 
-  output_l8 = u8_strconv_to_locale (output_u8);
+  output_l8 = (uint8_t*)u8_strconv_to_locale (output_u8);
   free (output_u8);
 
   if (output)
@@ -299,7 +299,7 @@ idn2_to_unicode_lzlz (const char * input, char ** output, int flags)
       return IDN2_ENCODING_ERROR;
     }
 
-  rc = idn2_to_unicode_8zlz (input_l8, output, flags);
+  rc = idn2_to_unicode_8zlz ((char*)input_l8, output, flags);
   free (input_l8);
 
   return rc;

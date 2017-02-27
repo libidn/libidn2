@@ -40,6 +40,12 @@
 
 #include "tr46map.h"
 
+static size_t
+_u32_stream_len (uint32_t * src, size_t len) _GL_ATTRIBUTE_PURE;
+
+static size_t
+_u32_cp_stream_len (const uint8_t * stream, size_t ncp) _GL_ATTRIBUTE_PURE;
+
 #define countof(a) (sizeof(a)/sizeof(*(a)))
 
 typedef struct

@@ -113,12 +113,6 @@ static char encode_digit(punycode_uint d, int flag)
   /* 26..35 map to ASCII 0..9         */
 }
 
-/* flagged(bcp) tests whether a basic code point is flagged */
-/* (uppercase).  The behavior is undefined if bcp is not a  */
-/* basic code point.                                        */
-
-#define flagged(bcp) ((punycode_uint)(bcp) - 65 < 26)
-
 /*** Platform-specific constants ***/
 
 /* maxint is the maximum value of a punycode_uint variable: */
@@ -126,6 +120,9 @@ static const punycode_uint maxint = -1;
 /* Because maxint is unsigned, -1 becomes the maximum value. */
 
 /*** Bias adaptation function ***/
+
+static punycode_uint adapt(
+  punycode_uint delta, punycode_uint numpoints, int firsttime ) _GL_ATTRIBUTE_CONST;
 
 static punycode_uint adapt(
   punycode_uint delta, punycode_uint numpoints, int firsttime )
