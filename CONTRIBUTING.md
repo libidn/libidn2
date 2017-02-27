@@ -17,11 +17,11 @@ several tools installed, including:
  * [Gengetopt](http://www.gnu.org/software/gengetopt/)
  * [Tar](http://www.gnu.org/software/tar/)
  * [Gzip](http://www.gnu.org/software/gzip/)
- * [Texlive & epsf](http://www.tug.org/texlive/> (for PDF manual)
- * [GTK-DOC](http://www.gtk.org/gtk-doc/> (for API manual)
+ * [Texlive & epsf](http://www.tug.org/texlive/) (for PDF manual)
+ * [GTK-DOC](http://www.gtk.org/gtk-doc/) (for API manual)
  * [Git](http://git.or.cz/)
  * [Perl](http://www.cpan.org/)
- * [Valgrind](http://valgrind.org/> (optional)
+ * [Valgrind](http://valgrind.org/) (optional)
  * [libunistring](https://www.gnu.org/software/libunistring/)
 
 ## Obtaining sources
