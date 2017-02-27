@@ -26,11 +26,7 @@ https://alpha.gnu.org/gnu/libidn/ and ftp://alpha.gnu.org/gnu/libidn/
 Development of libidn2 is organized [through GitLab website](https://gitlab.com/jas/libidn2),
 and there is [an issue tracker for reporting bugs](https://gitlab.com/jas/libidn2/issues).
 
-# License
-
-The installed C library libidn2 is dual-licensed under LGPLv3+|GPLv2+,
-while the rest of the package is GPLv3+.  See the file [COPYING](COPYING)
-for detailed information.
+# Dependencies
 
 Libidn2 uses GNU libunistring for Unicode processing and GNU libiconv
 for character set conversion.  See the following links for more
@@ -41,6 +37,12 @@ information on these packages:
 
 Note that the iconv dependency is optional, and required only for the
 functions involving locale to UTF conversions.
+
+# License
+
+The installed C library libidn2 is dual-licensed under LGPLv3+|GPLv2+,
+while the rest of the package is GPLv3+.  See the file [COPYING](COPYING)
+for detailed information.
 
 
 ----------------------------------------------------------------------
