@@ -1,11 +1,11 @@
-image: debian:stretch
-
+variables:
+  BUILD_IMAGES_PROJECT: libidn/build-images
+  DEBIAN_BUILD: buildenv-debian-stretch
+  FEDORA_BUILD: buildenv-f25
+  GET_SOURCES_ATTEMPTS: "3"
 
 GNU/Linux build:
-  before_script:
-   - apt-get update -qq
-   - apt-get install -y -qq abi-compliance-checker pkg-config gcc make gettext autopoint git autoconf automake libtool texinfo gperf libunistring-dev help2man gtk-doc-tools valgrind gengetopt
-   - ./bootstrap
+  image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
   - ./bootstrap && ./configure --enable-gtk-doc --enable-gtk-doc-pdf --enable-gcc-warnings --enable-valgrind-tests && make -j$(nproc) check
   - make abi-check
@@ -19,11 +19,9 @@ GNU/Linux build:
       - compat_reports/
 
 ASAN build:
-  before_script:
-   - apt-get update -qq
-   - apt-get install -y -qq libasan3 pkg-config gcc make gettext autopoint git autoconf automake libtool texinfo gperf libunistring-dev help2man valgrind gengetopt
-   - ./bootstrap
+  image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
+  - ./bootstrap
   - CFLAGS="-fsanitize=address -g -O2" ./configure --enable-gcc-warnings && make -j$(nproc) check
   tags:
   - shared
@@ -35,11 +33,9 @@ ASAN build:
       - compat_reports/
 
 UBSAN build:
-  before_script:
-   - apt-get update -qq
-   - apt-get install -y -qq libubsan0 pkg-config gcc make gettext autopoint git autoconf automake libtool texinfo gperf help2man libunistring-dev gengetopt
-   - ./bootstrap
+  image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
+  - ./bootstrap
   - CFLAGS="-fsanitize=undefined -fno-sanitize-recover -g -O2" ./configure --enable-gcc-warnings && make -j$(nproc) check
   tags:
   - shared
@@ -51,13 +47,12 @@ UBSAN build:
       - compat_reports/
 
 MinGW64:
-  image: fedora:25
+  image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$FEDORA_BUILD
   before_script:
-  - dnf install -y git which coreutils which autoconf libtool gettext-devel automake autogen gawk gperf help2man elfutils binutils wine mingw64-gcc mingw64-iconv util-linux gengetopt
   - mount -t binfmt_misc binfmt_misc /proc/sys/fs/binfmt_misc &&
     echo ':DOSWin:M::MZ::/usr/bin/wine64:' > /proc/sys/fs/binfmt_misc/register
-  - ./bootstrap
   script:
+  - ./bootstrap
   - mingw64-configure --disable-valgrind-tests --disable-doc
   - mingw64-make -j$(nproc)
   - mingw64-make -j$(nproc) check
