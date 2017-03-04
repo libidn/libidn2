@@ -159,7 +159,7 @@ get_map_data (uint32_t * dst, const IDNAMap * map)
   int n = map->nmappings;
   const uint8_t *src = mapdata + map->offset;
 
-  for (; (ssize_t) n > 0; n--)
+  for (; n > 0; n--)
     {
       uint32_t cp = 0;
       do
