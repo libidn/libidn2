@@ -36,7 +36,8 @@ UBSAN build:
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
   - ./bootstrap
-  - CFLAGS="-fsanitize=undefined -fno-sanitize-recover -g -O2" ./configure --enable-gcc-warnings && make -j$(nproc) check
+  - CFLAGS="-fsanitize=undefined -fno-sanitize-recover -g -O2" ./configure --enable-code-coverage --enable-gcc-warnings && make -j$(nproc) check
+  - make local-code-coverage-output
   tags:
   - shared
   artifacts:
