@@ -51,6 +51,8 @@ clean-local:
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libidn2.pc
 
+@CODE_COVERAGE_RULES@
+
 TMPDIR="headers.abi.tmp"
 TMPFILE="abi-temp.xml"
 abi-check: lib/idn2.h lib/libidn2.la
