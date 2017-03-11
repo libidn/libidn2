@@ -51,6 +51,11 @@ clean-local:
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libidn2.pc
 
+@CODE_COVERAGE_RULES@
+
+local-code-coverage-output: code-coverage-capture
+	@cat libidn2-$(VERSION)-coverage/index.html|grep headerCovTableEntryHi|head -1|sed 's/^.*>\([0-9]\+\.[0-9]\+\s*%\)<.*$$/ coverage lines: \1/' || true
+
 TMPDIR="headers.abi.tmp"
 TMPFILE="abi-temp.xml"
 abi-check: lib/idn2.h lib/libidn2.la

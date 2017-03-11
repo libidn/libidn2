@@ -1,5 +1,5 @@
 ![build status](https://gitlab.com/jas/libidn2/badges/master/build.svg)
-
+![coverage report](https://gitlab.com/jas/libidn2/badges/master/coverage.svg)
 
 # Libidn2 README -- Introduction information
 Copyright (C) 2011-2017 Simon Josefsson
@@ -37,6 +37,17 @@ information on these packages:
 
 Note that the iconv dependency is optional, and required only for the
 functions involving locale to UTF conversions.
+
+# Estimating code coverage
+
+Dependencies:
+ * [lcov](http://linux-test-project.github.io/) (for code coverage)
+
+To test the code coverage of the test suite use the following:
+```
+$ ./configure --enable-code-coverage
+$ make && make check && make code-coverage-capture
+```
 
 # License
 

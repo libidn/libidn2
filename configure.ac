@@ -42,6 +42,8 @@ AM_MISSING_PROG(HELP2MAN, help2man, $missing_dir)
 AM_GNU_GETTEXT(external)
 AM_GNU_GETTEXT_VERSION(0.19.3)
 
+AX_CODE_COVERAGE
+
 # Non-verbose make
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 
