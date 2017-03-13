@@ -105,7 +105,10 @@ doc/version.texi
 examples/decode
 examples/lookup
 examples/register
+fuzz/idn2_to_ascii_8z_fuzzer
+fuzz/idn2_to_unicode_8z8z_fuzzer
 gentr46map
+gl/
 gnulib/
 idn2.h
 lib/*
@@ -133,9 +136,12 @@ tests/*.log
 tests/*.trs
 tests/Makefile
 tests/Makefile.in
+tests/repro-to-ascii-8z
+tests/repro-to-unicode-8z8z
 tests/test-lookup
 tests/test-punycode
 tests/test-register
 tests/test-strerror
 tests/test-tounicode
 tr46map_data.c
+unistring/
