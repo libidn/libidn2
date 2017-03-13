@@ -27,25 +27,26 @@
 
 #include "idn2.h"
 
-extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
+extern "C" int
+LLVMFuzzerTestOneInput (const uint8_t *data, size_t size)
 {
-    int ret;
-    char *in = (char*)malloc(size+1);
-    char *out;
+  int ret;
+  char *in = (char*) malloc (size + 1);
+  char *out;
 
-    assert(in != NULL);
+  assert (in != NULL);
 
-    /* null terminate */
-    memcpy(in, data, size);
-    in[size] = 0;
+  /* null terminate */
+  memcpy (in, data, size);
+  in[size] = 0;
 
-    ret = idn2_to_unicode_8z8z(in, &out, 0);
-    if (ret != 0)
-        goto cleanup;
+  ret = idn2_to_unicode_8z8z (in, &out, 0);
+  if (ret != 0)
+    goto cleanup;
 
-    free(in);
-    free(out);
+  free (in);
+  free (out);
 
- cleanup:
-    return 0;
+cleanup:
+  return 0;
 }
