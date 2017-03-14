@@ -31,6 +31,8 @@ AM_INIT_AUTOMAKE([foreign -Wall -Werror subdir-objects])
 AC_CANONICAL_HOST
 
 AC_PROG_CC
+AM_CONDITIONAL(cross_compiling,[test "$cross_compiling" = yes])
+AX_PROG_CC_FOR_BUILD
 gl_EARLY
 unistring_EARLY
 m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
