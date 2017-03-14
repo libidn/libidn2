@@ -36,206 +36,72 @@
 
 #include <unictype.h>
 
-/* The entire bidi rule could be rewritten into an one-pass approach;
-   the implementation below may in the worse case iterate through the
-   string a few times.  However, recall Knuth and premature
-   optimization is the root of all evil. */
-
 static bool
-rtl_ralanenescsetonbnnsm_ok (const uint32_t * label, size_t llen)
+_isBidi (const uint32_t *label, size_t llen)
 {
-  int bc;
+  while (llen-- > 0) {
+    int bc = uc_bidi_category (*label++);
 
-  for (; llen > 0; label++, llen--)
-    {
-      bc = uc_bidi_category (*label);
+    if (bc == UC_BIDI_R || bc == UC_BIDI_AL || bc == UC_BIDI_AN)
+      return 1;
+  }
 
-      switch (bc)
-	{
-	case UC_BIDI_R:
-	case UC_BIDI_AL:
-	case UC_BIDI_AN:
-	case UC_BIDI_EN:
-	case UC_BIDI_ES:
-	case UC_BIDI_CS:
-	case UC_BIDI_ET:
-	case UC_BIDI_ON:
-	case UC_BIDI_BN:
-	case UC_BIDI_NSM:
-	  break;
-
-	default:
-	  return false;
-	}
-    }
-
-  return true;
+  return 0;
 }
 
-static bool
-rtl_ends_ok (const uint32_t * label, size_t llen)
-{
-  const uint32_t *p;
-  int bc;
-
-  for (p = label + llen - 1; llen > 0; llen--, p--)
-    {
-      bc = uc_bidi_category (*p);
-      switch (bc)
-	{
-	case UC_BIDI_NSM:
-	  continue;
-
-	case UC_BIDI_R:
-	case UC_BIDI_AL:
-	case UC_BIDI_EN:
-	case UC_BIDI_AN:
-	  return true;
-
-	default:
-	  return false;
-	}
-    }
-
-  return false;
-}
-
-static bool
-rtl_enan_ok (const uint32_t * label, size_t llen)
-{
-  bool en = false;
-  bool an = false;
-  const uint32_t *p;
-  int bc;
-
-  for (p = label + llen - 1; llen > 0; llen--, p--)
-    {
-      bc = uc_bidi_category (*p);
-      switch (bc)
-	{
-	case UC_BIDI_EN:
-	  en = true;
-	  break;
-
-	case UC_BIDI_AN:
-	  an = true;
-	  break;
-	}
-    }
-
-  return !(en && an);
-}
-
-static int
-rtl (const uint32_t * label, size_t llen)
-{
-  if (rtl_ralanenescsetonbnnsm_ok (label, llen)
-      && rtl_ends_ok (label, llen) && rtl_enan_ok (label, llen))
-    return IDN2_OK;
-  return IDN2_BIDI;
-}
-
-static bool
-ltr_lenescsetonbnnsm_ok (const uint32_t * label, size_t llen)
-{
-  int bc;
-
-  for (; llen > 0; label++, llen--)
-    {
-      bc = uc_bidi_category (*label);
-      switch (bc)
-	{
-	case UC_BIDI_L:
-	case UC_BIDI_EN:
-	case UC_BIDI_ES:
-	case UC_BIDI_CS:
-	case UC_BIDI_ET:
-	case UC_BIDI_ON:
-	case UC_BIDI_BN:
-	case UC_BIDI_NSM:
-	  break;
-
-	default:
-	  return false;
-	}
-    }
-
-  return true;
-}
-
-static bool
-ltr_ends_ok (const uint32_t * label, size_t llen)
-{
-  const uint32_t *p;
-  int bc;
-
-  for (p = label + llen - 1; llen > 0; llen--, p--)
-    {
-      bc = uc_bidi_category (*p);
-      switch (bc)
-	{
-	case UC_BIDI_NSM:
-	  continue;
-
-	case UC_BIDI_L:
-	case UC_BIDI_EN:
-	  return true;
-
-	default:
-	  return false;
-	}
-    }
-
-  return false;
-}
-
-static int
-ltr (const uint32_t * label, size_t llen)
-{
-  if (ltr_lenescsetonbnnsm_ok (label, llen) && ltr_ends_ok (label, llen))
-    return IDN2_OK;
-  return IDN2_BIDI;
-}
-
-static bool
-bidi_p (const uint32_t * label, size_t llen)
-{
-  int bc;
-
-  for (; llen > 0; label++, llen--)
-    {
-      bc = uc_bidi_category (*label);
-
-      switch (bc)
-	{
-	case UC_BIDI_R:
-	case UC_BIDI_AL:
-	case UC_BIDI_AN:
-	  return true;
-	}
-    }
-
-  return false;
-}
-
+/* IDNA2008 BIDI check (RFC 5893) */
 int
 _idn2_bidi (const uint32_t * label, size_t llen)
 {
   int bc;
+  int endok = 1;
 
-  if (!bidi_p (label, llen))
+  if (!_isBidi (label, llen))
     return IDN2_OK;
 
-  bc = uc_bidi_category (*label);
-  switch (bc)
-    {
+  // 2.1
+  switch ((bc = uc_bidi_category (*label))) {
     case UC_BIDI_L:
-      return ltr (label, llen);
+      // check 2.5 & 2.6
+      for (size_t it = 1; it < llen; it++) {
+	bc = uc_bidi_category(label[it]);
+
+	if (bc == UC_BIDI_L || bc == UC_BIDI_EN || bc == UC_BIDI_NSM) {
+	  endok = 1;
+	} else {
+	  if (bc != UC_BIDI_ES && bc != UC_BIDI_CS && bc != UC_BIDI_ET && bc != UC_BIDI_ON && bc != UC_BIDI_BN) {
+	    /* printf("LTR label contains invalid code point\n"); */
+	    return IDN2_BIDI;
+	  }
+	  endok = 0;
+	}
+      }
+      /* printf("LTR label ends with invalid code point\n"); */
+      return endok ? IDN2_OK : IDN2_BIDI;
 
     case UC_BIDI_R:
     case UC_BIDI_AL:
-      return rtl (label, llen);
-    }
+      // check 2.2, 2.3, 2.4
+      /* printf("Label[0]=%04X: %s\n", label[0], uc_bidi_category_name(bc)); */
+      for (size_t it = 1; it < llen; it++) {
+	bc = uc_bidi_category(label[it]);
 
-  return IDN2_BIDI;
+	/* printf("Label[%zu]=%04X: %s\n", it, label[it], uc_bidi_category_name(bc)); */
+	if (bc == UC_BIDI_R || bc == UC_BIDI_AL || bc == UC_BIDI_EN || bc == UC_BIDI_AN || bc == UC_BIDI_NSM) {
+	  endok = 1;
+	} else {
+	  if (bc != UC_BIDI_ES && bc != UC_BIDI_CS && bc != UC_BIDI_ET && bc != UC_BIDI_ON && bc != UC_BIDI_BN) {
+	    /* printf("RTL label contains invalid code point\n"); */
+	    return IDN2_BIDI;
+	  }
+	  endok = 0;
+	}
+      }
+      /* printf("RTL label ends with invalid code point\n"); */
+      return endok ? IDN2_OK : IDN2_BIDI;
+
+    default:
+      /* printf("Label begins with invalid BIDI class %s\n", uc_bidi_category_name(bc)); */
+      return IDN2_BIDI;
+  }
 }
