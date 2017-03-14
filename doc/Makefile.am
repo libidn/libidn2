@@ -38,11 +38,15 @@ register.c: $(top_srcdir)/examples/register.c
 dist_man_MANS = idn2.1 $(gdoc_MANS)
 CLEANFILES = $(dist_man_MANS) decode.c lookup.c register.c stamp-vti version.texi $(srcdir)/libidn2.info
 
+# help2man makes problems when cross-compiling.
+# TODO: Stop using help2man and write proper documentation.
+if !cross_compiling
 idn2.1: $(top_srcdir)/src/idn2.c $(top_srcdir)/src/idn2.ggo $(top_srcdir)/configure.ac
 	$(HELP2MAN) \
 		--name="Libidn2 Internationalized Domain Names (IDNA2008/TR46) conversion" \
 		--output=$@ \
 		$(top_builddir)/src/idn2$(EXEEXT)
+endif
 
 # GDOC
 
