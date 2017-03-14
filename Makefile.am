@@ -35,18 +35,8 @@ EXTRA_DIST += cfg.mk maint.mk CONTRIBUTING.md README.md COPYING COPYING.LESSERv3
 check-valgrind:
 	TESTS_ENVIRONMENT="valgrind --error-exitcode=301 --leak-check=yes --show-reachable=yes --track-origins=yes" $(MAKE) check
 
-LCOV_INFO=libidn2.info
-check-coverage:
-	CFLAGS=$$CFLAGS" --coverage -O0" LDFLAGS=$$LDFLAGS" --coverage" ./configure;
-	$(MAKE) clean && $(MAKE)
-	lcov --capture --initial --directory lib/.libs --output-file $(LCOV_INFO)
-	$(MAKE) check
-	lcov --capture --directory lib/.libs --output-file $(LCOV_INFO)
-	genhtml --prefix . $(LCOV_INFO) --legend --title "libidn2" --output-directory=lcov
-# now you can view lcov/index.html with your favorite browser
-
 clean-local:
-	rm -rf */*.gc?? */*/*.gc?? $(LCOV_INFO) lcov
+	rm -rf */*.gc?? */*/*.gc??
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libidn2.pc
