@@ -38,7 +38,7 @@ apt-get install libunistring-dev help2man gtk-doc-tools valgrind gengetopt
 
 Download the version controlled sources:
 ```
-$ git clone https://gitlab.com/jas/libidn2.git
+$ git clone https://gitlab.com/libidn/libidn2.git
 $ cd libidn2
 ```
 

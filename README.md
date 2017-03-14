@@ -1,5 +1,5 @@
-![build status](https://gitlab.com/jas/libidn2/badges/master/build.svg)
-![coverage report](https://gitlab.com/jas/libidn2/badges/master/coverage.svg)
+![build status](https://gitlab.com/libidn/libidn2/badges/master/build.svg)
+![coverage report](https://gitlab.com/libidn/libidn2/badges/master/coverage.svg)
 
 # Libidn2 README -- Introduction information
 Copyright (C) 2011-2017 Simon Josefsson
@@ -23,8 +23,8 @@ The homepage of libidn2: https://www.gnu.org/software/libidn/#libidn2
 Software releases of libidn2 can be downloaded from
 https://alpha.gnu.org/gnu/libidn/ and ftp://alpha.gnu.org/gnu/libidn/
 
-Development of libidn2 is organized [through GitLab website](https://gitlab.com/jas/libidn2),
-and there is [an issue tracker for reporting bugs](https://gitlab.com/jas/libidn2/issues).
+Development of libidn2 is organized [through GitLab website](https://gitlab.com/libidn/libidn2),
+and there is [an issue tracker for reporting bugs](https://gitlab.com/libidn/libidn2/issues).
 
 # Dependencies
 
