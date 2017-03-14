@@ -64,6 +64,23 @@ UBSAN build:
       - tests/*.log
       - compat_reports/
 
+clang-analyzer/Fedora:
+  image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$FEDORA_BUILD
+  script:
+  - ./bootstrap
+  - scan-build ./configure --disable-doc --enable-gcc-warnings
+  - make -j$(nproc) -C gl
+  - scan-build --status-bugs -o scan-build-lib make -j$(nproc) -C lib
+  tags:
+  - shared
+  except:
+  - tags
+  artifacts:
+    expire_in: 2 weeks
+    when: on_failure
+    paths:
+      - scan-build-lib/*
+
 MinGW64:
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$FEDORA_BUILD
   before_script:
