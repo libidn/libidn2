@@ -35,7 +35,11 @@ register.c: $(top_srcdir)/examples/register.c
 	tail -n +18 $< > $@.tmp
 	mv $@.tmp $@
 
-dist_man_MANS = idn2.1 $(gdoc_MANS)
+dist_man_MANS = $(gdoc_MANS)
+if !cross_compiling
+dist_man_MANS += idn2.1
+endif
+
 CLEANFILES = $(dist_man_MANS) decode.c lookup.c register.c stamp-vti version.texi $(srcdir)/libidn2.info
 
 # help2man makes problems when cross-compiling.
