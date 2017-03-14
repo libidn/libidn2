@@ -66,12 +66,18 @@ data.c: $(srcdir)/gen-tables-from-iana.pl $(IDNA_TABLE)
 	cat $(IDNA_TABLE) | $(srcdir)/gen-tables-from-iana.pl > $@.new
 	mv $@.new $@
 
+if !cross_compiling
 noinst_PROGRAMS = gentr46map
 gentr46map_LDADD = $(LTLIBUNISTRING) ../gl/libgnu.la
-
 tr46map_data.c: gentr46map.c gentr46map$(EXEEXT) $(TR46MAP) $(NFCQC)
 	$(builddir)/gentr46map$(EXEEXT) > $@.new
+else
+gentr46map$(BUILD_EXEEXT): gentr46map.c
+	$(CC_FOR_BUILD) $(AM_CPPFLAGS) $(CFLAGS_FOR_BUILD) -lunistring $< -o $@
+tr46map_data.c: gentr46map.c gentr46map$(BUILD_EXEEXT) $(TR46MAP) $(NFCQC)
+	$(builddir)/gentr46map$(BUILD_EXEEXT) > $@.new
 	mv $@.new $@
+endif
 
 $(IDNA_TABLE):
 	if ! echo "4ebaf0c72061474d20078897d254768d894507de $(IDNA_TABLE)" | sha1sum -c -; then \
