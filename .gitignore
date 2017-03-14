@@ -109,7 +109,6 @@ fuzz/idn2_to_ascii_8z_fuzzer
 fuzz/idn2_to_unicode_8z8z_fuzzer
 gentr46map
 gl/
-gnulib/
 idn2.h
 lib/*
 libidn2-*.tar.gz
