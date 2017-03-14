@@ -71,6 +71,7 @@ noinst_PROGRAMS = gentr46map
 gentr46map_LDADD = $(LTLIBUNISTRING) ../gl/libgnu.la
 tr46map_data.c: gentr46map.c gentr46map$(EXEEXT) $(TR46MAP) $(NFCQC)
 	$(builddir)/gentr46map$(EXEEXT) > $@.new
+	mv $@.new $@
 else
 gentr46map$(BUILD_EXEEXT): gentr46map.c
 	$(CC_FOR_BUILD) $(AM_CPPFLAGS) $(CFLAGS_FOR_BUILD) -lunistring $< -o $@
