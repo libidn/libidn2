@@ -26,8 +26,6 @@
    not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <config.h>
-
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -41,10 +39,10 @@
 #include "tr46map.h"
 
 static size_t
-_u32_stream_len (uint32_t * src, size_t len) _GL_ATTRIBUTE_PURE;
+_u32_stream_len (uint32_t * src, size_t len);
 
 static size_t
-_u32_cp_stream_len (const uint8_t * stream, size_t ncp) _GL_ATTRIBUTE_PURE;
+_u32_cp_stream_len (const uint8_t * stream, size_t ncp);
 
 #define countof(a) (sizeof(a)/sizeof(*(a)))
 
