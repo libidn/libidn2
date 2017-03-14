@@ -2,15 +2,30 @@ variables:
   BUILD_IMAGES_PROJECT: libidn/build-images
   DEBIAN_BUILD: buildenv-debian-stretch
   FEDORA_BUILD: buildenv-f25
+  CENTOS7_BUILD: buildenv-centos7
   GET_SOURCES_ATTEMPTS: "3"
 
-GNU/Linux build:
+Debian GNU/Linux build:
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
   - ./bootstrap && ./configure --enable-gtk-doc --enable-gtk-doc-pdf --enable-gcc-warnings --enable-valgrind-tests && make -j$(nproc) check
   - make syntax-check
   - make abi-check
   - make distcheck
+  tags:
+  - shared
+  artifacts:
+    expire_in: 2 weeks
+    when: on_failure
+    paths:
+      - tests/*.log
+      - compat_reports/
+
+Centos7 build:
+  image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$CENTOS7_BUILD
+  script:
+  - sed -i 's/AM_GNU_GETTEXT_VERSION(0.19.3)/AM_GNU_GETTEXT_VERSION(0.18.2)/g' configure.ac
+  - ./bootstrap && ./configure --enable-gcc-warnings --disable-doc && make -j$(nproc) check
   tags:
   - shared
   artifacts:
