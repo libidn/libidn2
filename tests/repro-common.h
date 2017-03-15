@@ -47,7 +47,7 @@ static int load_file(const char *filename, char **output)
 static int getnextfile(DIR ** dirp, char **output)
 {
 	struct dirent *d;
-	char path[256];
+	char path[272];
 	char repro_dir[256];
 	const char *src;
 	int ret;
