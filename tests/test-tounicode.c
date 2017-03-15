@@ -436,9 +436,13 @@ _check_4z(const test_t *t, int rc, uint32_t *ucs4, const char *funcname)
 int
 main (void)
 {
+  static uint32_t abc_u32[] = { 'a', 'b', 'c', 0 };
+  static uint32_t xntda_u32[] = { 'x', 'n', '-', '-', 't', 'd', 'a', 0 };
+
   uint32_t q[128];
   uint32_t *ucs4, *punycode_u32;
-  uint8_t *utf8, *utf8_lz;
+  uint8_t *utf8;
+  char *utf8_lz;
   size_t outlen, outlen2;
   int rc, skip_lz = 0;
   unsigned i;
@@ -466,7 +470,7 @@ main (void)
       _check_4z (t, rc, ucs4, "idn2_to_unicode_8z4z");
 
       punycode_u32 = u8_to_u32 (
-	t->punycode, u8_strlen (t->punycode) + 1, NULL, &outlen);
+	(uint8_t *) t->punycode, strlen (t->punycode) + 1, NULL, &outlen);
 
       if (punycode_u32)
 	{
@@ -496,7 +500,7 @@ main (void)
 	continue;
 
       ucs4 = NULL;
-      rc = idn2_to_unicode_8zlz (t->punycode, (char **) &utf8_lz, 0);
+      rc = idn2_to_unicode_8zlz (t->punycode, &utf8_lz, 0);
       if (rc == IDN2_OK)
 	{
 	  utf8 = u8_strconv_from_locale (utf8_lz);
@@ -529,8 +533,8 @@ main (void)
 
   idn2_to_unicode_4z4z (NULL, NULL, 0);
   idn2_to_unicode_4z4z (NULL, &ucs4, 0);
-  idn2_to_unicode_4z4z (L"abc", NULL, 0);
-  idn2_to_unicode_4z4z (L"xn--tda", NULL, 0);
+  idn2_to_unicode_4z4z (abc_u32, NULL, 0);
+  idn2_to_unicode_4z4z (xntda_u32, NULL, 0);
 
   idn2_to_unicode_44i (NULL, 0, NULL, NULL, 0);
   idn2_to_unicode_44i (NULL, 0, NULL, &outlen, 0);
@@ -538,13 +542,13 @@ main (void)
   outlen = 32; idn2_to_unicode_44i (NULL, 0, q, &outlen, 0);
   outlen = 0; idn2_to_unicode_44i (NULL, 0, (uint32_t *) 123, &outlen, 0);
 
-  idn2_to_unicode_44i (L"abc", 0, NULL, NULL, 0);
-  idn2_to_unicode_44i (L"abc", 0, NULL, &outlen, 0);
-  idn2_to_unicode_44i (L"abc", 0, q, NULL, 0);
-  outlen = 32; idn2_to_unicode_44i (L"abc", 0, q, &outlen, 0);
-  outlen = 0; idn2_to_unicode_44i (L"abc", 0, (uint32_t *) 123, &outlen, 0);
-  outlen = 0; idn2_to_unicode_44i (L"abc", 3, (uint32_t *) 123, &outlen, 0);
-  outlen = 0; idn2_to_unicode_44i (L"abc", 3, (uint32_t *) 123, NULL, 0);
+  idn2_to_unicode_44i (abc_u32, 0, NULL, NULL, 0);
+  idn2_to_unicode_44i (abc_u32, 0, NULL, &outlen, 0);
+  idn2_to_unicode_44i (abc_u32, 0, q, NULL, 0);
+  outlen = 32; idn2_to_unicode_44i (abc_u32, 0, q, &outlen, 0);
+  outlen = 0; idn2_to_unicode_44i (abc_u32, 0, (uint32_t *) 123, &outlen, 0);
+  outlen = 0; idn2_to_unicode_44i (abc_u32, 3, (uint32_t *) 123, &outlen, 0);
+  outlen = 0; idn2_to_unicode_44i (abc_u32, 3, (uint32_t *) 123, NULL, 0);
 
   idn2_to_unicode_8z8z (NULL, NULL, 0);
   idn2_to_unicode_8z8z (NULL, (char **) &utf8, 0);
