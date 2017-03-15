@@ -29,7 +29,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <errno.h>
 #include <ctype.h>
 
 #include "tr46map.h"
@@ -101,7 +100,7 @@ _scan_file (const char *fname, int (*scan) (char *))
 
   if (!fp)
     {
-      fprintf (stderr, "Failed to open %s (%d)\n", fname, errno);
+      fprintf (stderr, "Failed to open %s\n", fname);
       return -1;
     }
 
