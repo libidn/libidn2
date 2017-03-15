@@ -32,10 +32,6 @@
 #include <errno.h>
 #include <ctype.h>
 
-#ifdef HAVE_LIBUNISTRING
-#include <unistr.h>
-#endif
-
 #include "tr46map.h"
 
 static size_t
