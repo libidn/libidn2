@@ -37,7 +37,7 @@
 
 #include "repro-common.h"
 
-int main(int argc, char **argv)
+int main(void)
 {
 	int ret;
 	DIR *dirp = NULL;
