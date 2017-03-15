@@ -883,7 +883,7 @@ test_homebrewed(void)
 
   for (i = 0; i < sizeof (idna) / sizeof (idna[0]); i++)
     {
-      rc = idn2_lookup_u8 (idna[i].in, &out, idna[i].flags);
+      rc = idn2_lookup_u8 ((uint8_t *) idna[i].in, &out, idna[i].flags);
       printf ("%3d  %-25s %-40s %s\n", (int) i, idn2_strerror_name (rc),
 	      rc == IDN2_OK ? idna[i].out : "", idna[i].in);
 
@@ -892,7 +892,7 @@ test_homebrewed(void)
       } else if (rc != idna[i].rc && idna[i].rc != -1) {
 	failed++;
 	printf("expected rc %d got rc %d\n", idna[i].rc, rc);
-      } else if (rc == IDN2_OK && strcmp (out, idna[i].out) != 0) {
+      } else if (rc == IDN2_OK && strcmp ((char *) out, idna[i].out) != 0) {
 	failed++;
 	printf("expected: %s\ngot: %s\n", idna[i].out, out);
       } else
@@ -1032,7 +1032,7 @@ _decodeIdnaTest(uint8_t *src_u8)
     return NULL;
   }
 
-  return src_u8;
+  return (char *) src_u8;
 }
 
 static void
@@ -1041,7 +1041,7 @@ _check_toASCII(char *source, char *expected, int transitional, int expected_toAS
   int rc;
   char *ace = NULL;
 
-  rc = idn2_lookup_u8 (source, (uint8_t **) &ace, transitional ? IDN2_TRANSITIONAL : IDN2_NONTRANSITIONAL);
+  rc = idn2_lookup_u8 ((uint8_t *) source, (uint8_t **) &ace, transitional ? IDN2_TRANSITIONAL : IDN2_NONTRANSITIONAL);
 
   // printf("n=%d expected=%s t=%d got=%s, expected_failure=%d\n", n, expected, transitional, ace ? ace : "", expected_toASCII_failure);
   if (rc && expected_toASCII_failure) {
@@ -1079,7 +1079,7 @@ test_IdnaTest(char *linep)
 
   // sigh, these Unicode people really mix UTF-8 and UCS-2/4
   // quick and dirty translation of '\uXXXX' found in IdnaTest.txt including surrogate handling
-  source = _decodeIdnaTest(source);
+  source = _decodeIdnaTest((uint8_t *) source);
   if (!source)
     return 0; // some Unicode sequences can't be encoded into UTF-8, skip them
 
