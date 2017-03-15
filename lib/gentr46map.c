@@ -283,7 +283,7 @@ read_IdnaMappings (char *linep)
 
   if (mapping && *mapping)
     {
-      uint32_t cp, tmp[20] = { 0 }, tmp2[20];
+      uint32_t cp, tmp[20] = { 0 }, tmp2[20] = { 0 };
       int pos;
 
       while ((n = sscanf (mapping, " %X%n", &cp, &pos)) == 1)
@@ -480,6 +480,9 @@ _compact_idna_map (void)
 
   uint8_t *data = calloc (sizeof (uint8_t), mapdata_pos), *p;
   size_t ndata = 0, slen;
+
+  if (data == NULL)
+    abort();
 
   for (it = 0; it < map_pos; it++)
     {
