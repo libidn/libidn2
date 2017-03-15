@@ -53,8 +53,7 @@ UBSAN build:
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
   - ./bootstrap
-  - CFLAGS="-fsanitize=undefined -fno-sanitize-recover -g -O2" ./configure --enable-code-coverage --enable-gcc-warnings && make -j$(nproc) check
-  - make local-code-coverage-output
+  - CFLAGS="-fsanitize=undefined -fno-sanitize-recover -g -O2" ./configure --enable-gcc-warnings && make -j$(nproc) check
   tags:
   - shared
   artifacts:
@@ -80,6 +79,36 @@ clang-analyzer/Fedora:
     when: on_failure
     paths:
       - scan-build-lib/*
+
+TestCoverage:
+  image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
+  script:
+  - ./bootstrap
+  - CFLAGS="-g -O2" ./configure --enable-code-coverage --disable-gcc-warnings && make -j$(nproc) check
+  - make local-code-coverage-output
+  - mv libidn2-*-coverage coverage
+  tags:
+  - shared
+  artifacts:
+    when: on_success
+    paths:
+      - coverage
+
+pages:
+  stage: deploy
+  dependencies:
+  - TestCoverage
+  script:
+  - mkdir -p public
+  - rm -rf public/coverage
+  - mv coverage public/
+  tags:
+  - shared
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
 
 MinGW64:
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$FEDORA_BUILD

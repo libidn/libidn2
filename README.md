@@ -1,5 +1,5 @@
 ![build status](https://gitlab.com/libidn/libidn2/badges/master/build.svg)
-![coverage report](https://gitlab.com/libidn/libidn2/badges/master/coverage.svg)
+[![coverage status](https://gitlab.com/libidn/libidn2/badges/master/coverage.svg)](https://libidn.gitlab.io/libidn2/coverage)
 
 # Libidn2 README -- Introduction information
 Copyright (C) 2011-2017 Simon Josefsson
