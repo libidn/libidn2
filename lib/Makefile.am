@@ -68,7 +68,6 @@ data.c: $(srcdir)/gen-tables-from-iana.pl $(IDNA_TABLE)
 
 if !cross_compiling
 noinst_PROGRAMS = gentr46map
-gentr46map_LDADD = ../gl/libgnu.la
 tr46map_data.c: gentr46map.c gentr46map$(EXEEXT) $(TR46MAP) $(NFCQC)
 	$(builddir)/gentr46map$(EXEEXT) > $@.new
 	mv $@.new $@
