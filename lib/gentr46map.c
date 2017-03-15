@@ -481,6 +481,9 @@ _compact_idna_map (void)
   uint8_t *data = calloc (sizeof (uint8_t), mapdata_pos), *p;
   size_t ndata = 0, slen;
 
+  if (data == NULL)
+    abort();
+
   for (it = 0; it < map_pos; it++)
     {
       IDNAMap_gen *map = idna_map + it;
