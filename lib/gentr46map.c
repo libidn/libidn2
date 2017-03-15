@@ -283,7 +283,7 @@ read_IdnaMappings (char *linep)
 
   if (mapping && *mapping)
     {
-      uint32_t cp, tmp[20] = { 0 }, tmp2[20];
+      uint32_t cp, tmp[20] = { 0 }, tmp2[20] = { 0 };
       int pos;
 
       while ((n = sscanf (mapping, " %X%n", &cp, &pos)) == 1)
