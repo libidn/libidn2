@@ -223,7 +223,6 @@ _tr46 (const uint8_t * domain_u8, uint8_t ** out, int transitional)
 
   /* split into labels and check */
   uint32_t *e, *s;
-  e = s = domain_u32;
   for (e = s = domain_u32; *e; s = e)
     {
       while (*e && *e != '.')
