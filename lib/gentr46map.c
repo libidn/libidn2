@@ -29,12 +29,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <errno.h>
 #include <ctype.h>
-
-#ifdef HAVE_LIBUNISTRING
-#include <unistr.h>
-#endif
 
 #include "tr46map.h"
 
@@ -98,27 +93,27 @@ static int
 _scan_file (const char *fname, int (*scan) (char *))
 {
   FILE *fp = fopen (fname, "r");
-  char *buf = NULL, *linep;
-  size_t bufsize = 0;
+  char buf[1024], *linep;
   ssize_t buflen;
   int ret = 0;
 
   if (!fp)
     {
-      fprintf (stderr, "Failed to open %s (%d)\n", fname, errno);
+      fprintf (stderr, "Failed to open %s\n", fname);
       return -1;
     }
 
-  while ((buflen = getline (&buf, &bufsize, fp)) >= 0)
+  while (fgets(buf, sizeof(buf), fp))
     {
       linep = buf;
-
-      while (isspace (*linep))
-	linep++;		// ignore leading whitespace
+      buflen = strlen(buf);
 
       // strip off \r\n
       while (buflen > 0 && (buf[buflen] == '\n' || buf[buflen] == '\r'))
 	buf[--buflen] = 0;
+
+      while (isspace (*linep))
+	linep++;		// ignore leading whitespace
 
       if (!*linep || *linep == '#')
 	continue;		// skip empty lines and comments
@@ -127,7 +122,6 @@ _scan_file (const char *fname, int (*scan) (char *))
 	break;
     }
 
-  free (buf);
   fclose (fp);
 
   return ret;
