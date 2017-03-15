@@ -28,7 +28,6 @@
 #include <stdio.h>
 #include <limits.h>
 #include <dirent.h>
-#include <assert.h>
 
 
 /* This program will load files from REPRO_DIR and try to convert
