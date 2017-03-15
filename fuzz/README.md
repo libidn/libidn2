@@ -27,4 +27,3 @@ sufficient:
 |idn2_to_unicode_8z8z_fuzzer     | tests/ascii-8z-interesting     |
 |idn2_to_ascii_8z_fuzzer         | tests/unicode-8z8z-interesting |
 |--------------------------------|--------------------------------|
-

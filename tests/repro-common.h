@@ -85,4 +85,3 @@ static int getnextfile(DIR ** dirp, char **output)
 	closedir(*dirp);
 	return -1;		/* finished */
 }
-
