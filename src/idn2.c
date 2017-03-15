@@ -30,6 +30,7 @@
 #include <unitypes.h>
 #include <uniconv.h>
 #include <unistr.h>
+#include <unistring/localcharset.h>
 
 /* Gnulib headers. */
 #include "error.h"
@@ -37,7 +38,6 @@
 #define _(String) dgettext (PACKAGE, String)
 #include "progname.h"
 #include "version-etc.h"
-#include "localcharset.h"
 
 #include "idn2_cmd.h"
 
