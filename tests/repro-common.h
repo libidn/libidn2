@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <assert.h>
+
 static int load_file(const char *filename, char **output)
 {
 	FILE *fp = fopen(filename, "rb");
@@ -85,4 +87,3 @@ static int getnextfile(DIR ** dirp, char **output)
 	closedir(*dirp);
 	return -1;		/* finished */
 }
-
