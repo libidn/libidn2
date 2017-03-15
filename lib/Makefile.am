@@ -59,6 +59,7 @@ NFCQC_URL = http://www.unicode.org/Public/6.3.0/ucd/DerivedNormalizationProps.tx
 
 BUILT_SOURCES = data.c tr46map_data.c
 DISTCLEANFILES =  tr46map_data.c
+CLEANFILES = gentr46map$(BUILD_EXEEXT)
 MAINTAINERCLEANFILES = $(IDNA_TABLE) $(TR46MAP) $(NFCQC)
 EXTRA_DIST = gen-tables-from-iana.pl $(IDNA_TABLE) $(TR46MAP) $(NFCQC) tr46map_data.c data.c
 
@@ -66,18 +67,15 @@ data.c: $(srcdir)/gen-tables-from-iana.pl $(IDNA_TABLE)
 	cat $(IDNA_TABLE) | $(srcdir)/gen-tables-from-iana.pl > $@.new
 	mv $@.new $@
 
-if !cross_compiling
-noinst_PROGRAMS = gentr46map
-tr46map_data.c: gentr46map.c gentr46map$(EXEEXT) $(TR46MAP) $(NFCQC)
-	$(builddir)/gentr46map$(EXEEXT) > $@.new
-	mv $@.new $@
-else
+# Note: We do not want to list gentr46map as a dep of tr46map_data.c because
+# it will cause it to be regenerated for every build.  We only need that when
+# the real source text files are updated.
 gentr46map$(BUILD_EXEEXT): gentr46map.c
 	$(CC_FOR_BUILD) $(AM_CPPFLAGS) $(CFLAGS_FOR_BUILD) $< -o $@
-tr46map_data.c: gentr46map.c gentr46map$(BUILD_EXEEXT) $(TR46MAP) $(NFCQC)
+tr46map_data.c: $(srcdir)/gentr46map.c $(TR46MAP) $(NFCQC)
+	$(MAKE) gentr46map$(BUILD_EXEEXT)
 	$(builddir)/gentr46map$(BUILD_EXEEXT) > $@.new
 	mv $@.new $@
-endif
 
 $(IDNA_TABLE):
 	if ! echo "4ebaf0c72061474d20078897d254768d894507de $(IDNA_TABLE)" | sha1sum -c -; then \
