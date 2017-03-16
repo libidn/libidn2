@@ -80,31 +80,19 @@ clang-analyzer/Fedora:
     paths:
       - scan-build-lib/*
 
-TestCoverage:
+pages:
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
   - ./bootstrap
-  - CFLAGS="-g -O2" ./configure --enable-code-coverage --disable-gcc-warnings && make -j$(nproc) check
+  - CFLAGS="-g -O0" ./configure --enable-code-coverage --disable-gcc-warnings && make -j$(nproc) check
   - make local-code-coverage-output
-  - mv libidn2-*-coverage coverage
+  - mkdir -p public
+  - rm -rf public/coverage
+  - mv libidn2-*-coverage public/coverage
   tags:
   - shared
   artifacts:
     when: on_success
-    paths:
-      - coverage
-
-pages:
-  stage: deploy
-  dependencies:
-  - TestCoverage
-  script:
-  - mkdir -p public
-  - rm -rf public/coverage
-  - mv coverage public/
-  tags:
-  - shared
-  artifacts:
     paths:
       - public
   only:
