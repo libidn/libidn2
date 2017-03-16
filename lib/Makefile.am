@@ -61,7 +61,7 @@ BUILT_SOURCES = data.c tr46map_data.c
 DISTCLEANFILES =  tr46map_data.c
 CLEANFILES = gentr46map$(BUILD_EXEEXT)
 MAINTAINERCLEANFILES = $(IDNA_TABLE) $(TR46MAP) $(NFCQC)
-EXTRA_DIST = gen-tables-from-iana.pl $(IDNA_TABLE) $(TR46MAP) $(NFCQC) tr46map_data.c data.c
+EXTRA_DIST = gen-tables-from-iana.pl $(IDNA_TABLE) $(TR46MAP) $(NFCQC) tr46map_data.c data.c gentr46map.c
 
 data.c: $(srcdir)/gen-tables-from-iana.pl $(IDNA_TABLE)
 	cat $(IDNA_TABLE) | $(srcdir)/gen-tables-from-iana.pl > $@.new
