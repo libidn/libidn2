@@ -46,4 +46,4 @@ $(IDNA_TXT):
 	echo "d3690c2bb64ea003ac481bbd50c3330eaf1cf691 IdnaTest.txt" | sha1sum -c -
 
 $(IDNA_INC): $(IDNA_TXT) $(srcdir)/gen-utc-test.pl
-	$(srcdir)/gen-utc-test.pl < $(IDNA_TXT) > $(IDNA_INC)
+	$(srcdir)/gen-utc-test.pl < $< > $@
