@@ -57,6 +57,8 @@
  *   %IDN2_TOO_BIG_LABEL: A label is would have been too long.
  *   %IDN2_ENCODING_ERROR: Character conversion failed.
  *   %IDN2_MALLOC: Memory allocation failed.
+ *
+ * Since: 2.0
  **/
 int
 idn2_to_unicode_8z4z (const char * input, uint32_t ** output, int flags _GL_UNUSED)
@@ -172,6 +174,8 @@ idn2_to_unicode_8z4z (const char * input, uint32_t ** output, int flags _GL_UNUS
  *   %IDN2_TOO_BIG_LABEL: A label is would have been too long.
  *   %IDN2_ENCODING_ERROR: Character conversion failed.
  *   %IDN2_MALLOC: Memory allocation failed.
+ *
+ * Since: 2.0
  **/
 int
 idn2_to_unicode_4z4z (const uint32_t * input, uint32_t ** output, int flags)
@@ -233,6 +237,8 @@ idn2_to_unicode_4z4z (const uint32_t * input, uint32_t ** output, int flags)
  *   %IDN2_TOO_BIG_LABEL: A label is would have been too long.
  *   %IDN2_ENCODING_ERROR: Character conversion failed.
  *   %IDN2_MALLOC: Memory allocation failed.
+ *
+ * Since: 2.0
  **/
 int
 idn2_to_unicode_44i (const uint32_t * in, size_t inlen, uint32_t * out, size_t * outlen, int flags)
@@ -290,6 +296,8 @@ idn2_to_unicode_44i (const uint32_t * in, size_t inlen, uint32_t * out, size_t *
  *   %IDN2_TOO_BIG_LABEL: A label is would have been too long.
  *   %IDN2_ENCODING_ERROR: Character conversion failed.
  *   %IDN2_MALLOC: Memory allocation failed.
+ *
+ * Since: 2.0
  **/
 int
 idn2_to_unicode_8z8z (const char * input, char ** output, int flags)
@@ -340,6 +348,8 @@ idn2_to_unicode_8z8z (const char * input, char ** output, int flags)
  *   %IDN2_TOO_BIG_LABEL: A label is would have been too long.
  *   %IDN2_ENCODING_ERROR: Character conversion failed.
  *   %IDN2_MALLOC: Memory allocation failed.
+ *
+ * Since: 2.0
  **/
 int
 idn2_to_unicode_8zlz (const char * input, char ** output, int flags)
@@ -381,6 +391,8 @@ idn2_to_unicode_8zlz (const char * input, char ** output, int flags)
  *   %IDN2_TOO_BIG_LABEL: A label is would have been too long.
  *   %IDN2_ENCODING_ERROR: Character conversion failed.
  *   %IDN2_MALLOC: Memory allocation failed.
+ *
+ * Since: 2.0
  **/
 int
 idn2_to_unicode_lzlz (const char * input, char ** output, int flags)
