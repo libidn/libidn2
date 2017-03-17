@@ -6,15 +6,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <idna.h>		/* idn2_to_unicode_8z8z() */
+#include <idn2.h>		/* idn2_to_unicode_8z8z() */
 
 /*
  * Compiling using pkg-config is recommended:
  *
- * $ cc -o example-to-unicode example-to-unicode.c `pkg-config --cflags --libs libidn2`
+ * $ cc -o example-to-unicode example-to-unicode.c $(pkg-config --cflags --libs libidn2)
  * $ ./example-tounicode
  * Input domain (ACE) encoded as `UTF-8': xn--nxasmm1c.com
- * Output string (length 15): ce b2 cf 8c ce bb ce bf cf 82 2e 63 6f 6d 0a
+ *
+ * Read string (length 16): 78 6e 2d 2d 6e 78 61 73 6d 6d 31 63 2e 63 6f 6d
+ * ACE label (length 14): 'βόλος.com'
  *
  */
 
@@ -43,9 +45,6 @@ main (void)
     }
 
   printf ("ACE label (length %ld): '%s'\n", (long int) strlen (p), p);
-  for (i = 0; i < strlen (p); i++)
-    printf ("%02x ", (unsigned) p[i] & 0xFF);
-  printf ("\n");
 
   free (p); /* or idn2_free() */
 

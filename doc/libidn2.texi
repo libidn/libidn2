@@ -99,6 +99,9 @@ the file @file{idn2.h} like this:
 When you have the data encoded in UTF-8 form the direct interfaces to
 the library are as follows.
 
+@include texi/idn2_to_ascii_8z.texi
+@include texi/idn2_to_unicode_8z8z.texi
+
 @include texi/idn2_lookup_u8.texi
 @include texi/idn2_register_u8.texi
 
@@ -108,6 +111,10 @@ As a convenience, the following functions are provided that will
 convert the input from the locale encoding format to UTF-8 and
 normalize the string using NFC, and then apply the core functions
 described earlier.
+
+@include texi/idn2_to_ascii_lz.texi
+@include texi/idn2_to_unicode_8zlz.texi
+@include texi/idn2_to_unicode_lzlz.texi
 
 @include texi/idn2_lookup_ul.texi
 @include texi/idn2_register_ul.texi
@@ -288,9 +295,27 @@ This chapter contains example code which illustrate how Libidn2 is
 used when you write your own application.
 
 @menu
+* ToASCII::		Example using IDNA ToASCII.
+* ToUnicode::		Example using IDNA ToUnicode.
 * Lookup::		Example IDNA2008 Lookup domain name operation.
 * Register::		Example IDNA2008 Register label operation.
 @end menu
+
+@node ToASCII
+@section ToASCII example
+
+This example demonstrates how the library is used to convert
+internationalized domain names into ASCII compatible names (ACE).
+
+@verbatiminclude example-toascii.c
+
+@node ToUnicode
+@section ToUnicode example
+
+This example demonstrates how the library is used to convert ASCII
+compatible names (ACE) to internationalized domain names.
+
+@verbatiminclude example-tounicode.c
 
 @node Lookup
 @section Lookup

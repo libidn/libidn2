@@ -44,9 +44,6 @@ main (void)
     }
 
   printf ("ACE label (length %ld): '%s'\n", (long int) strlen (p), p);
-  for (i = 0; i < strlen (p); i++)
-    printf ("%02x ", (unsigned) p[i] & 0xFF);
-  printf ("\n");
 
   free (p); /* or idn2_free() */
 
