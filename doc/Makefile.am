@@ -15,8 +15,8 @@
 
 SUBDIRS = reference
 
-EXTRA_DIST = gdoc libidn2.html libidn2.pdf texinfo.css
-
+EXTRA_DIST = gdoc libidn2.html libidn2.pdf texinfo.css idn2.md
+BUILT_SOURCES = idn2.1
 info_TEXINFOS = libidn2.texi
 libidn2_TEXINFOS = libidn2.texi decode.c lookup.c register.c $(gdoc_TEXINFOS)
 
@@ -36,21 +36,12 @@ register.c: $(top_srcdir)/examples/register.c
 	mv $@.tmp $@
 
 dist_man_MANS = $(gdoc_MANS)
-if !cross_compiling
 dist_man_MANS += idn2.1
-endif
+
+idn2.1: idn2.md
+	$(RONN) -r $^ >$@
 
 CLEANFILES = $(dist_man_MANS) decode.c lookup.c register.c stamp-vti version.texi $(srcdir)/libidn2.info
-
-# help2man makes problems when cross-compiling.
-# TODO: Stop using help2man and write proper documentation.
-if !cross_compiling
-idn2.1: $(top_srcdir)/src/idn2.c $(top_srcdir)/src/idn2.ggo $(top_srcdir)/configure.ac
-	$(HELP2MAN) \
-		--name="Libidn2 Internationalized Domain Names (IDNA2008/TR46) conversion" \
-		--output=$@ \
-		$(top_builddir)/src/idn2$(EXEEXT)
-endif
 
 # GDOC
 

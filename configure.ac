@@ -40,7 +40,8 @@ LT_INIT([win32-dll])
 gl_INIT
 unistring_INIT
 GTK_DOC_CHECK(1.1)
-AM_MISSING_PROG(HELP2MAN, help2man, $missing_dir)
+
+AC_CHECK_PROG([RONN], [ronn], [ronn], [:])
 AM_GNU_GETTEXT(external)
 AM_GNU_GETTEXT_VERSION(0.19.3)
 
