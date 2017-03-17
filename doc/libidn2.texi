@@ -343,9 +343,15 @@ To process a string that starts with @code{-}, for example
 
   -V, --version            Print version and exit
 
+  -d, --decode             Decode (punycode) domain name
+
   -l, --lookup             Lookup domain name (default)
 
   -r, --register           Register label
+
+  -T, --tr46t              Enable TR46 transitional processing
+
+  -N, --tr46nt             Enable TR46 non-transitional processing
 
       --debug              Print debugging information
 
