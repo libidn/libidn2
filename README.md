@@ -4,16 +4,30 @@
 
 
 # Libidn2 README -- Introduction information
-Copyright (C) 2011-2017 Simon Josefsson
-See the end for copying conditions.
 
-Libidn2 is a free software implementation of IDNA2008 and TR46.
+Libidn2 is a free software implementation of IDNA2008, Punycode and TR46.
+Its purpose is to encode and decode internationalized domain names.
 
  * [RFC 5890](https://tools.ietf.org/html/rfc5890)
  * [RFC 5891](https://tools.ietf.org/html/rfc5891)
  * [RFC 5892](https://tools.ietf.org/html/rfc5892)
  * [RFC 5893](https://tools.ietf.org/html/rfc5893)
  * [TR46](http://www.unicode.org/reports/tr46/)
+
+The library contains functionality to convert internationalized domain names
+to and from ASCII Compatible Encoding (ACE), following the IDNA2008 and TR46
+standards.
+
+The API consists of two main functions, ```idn2_to_ascii_8z``` for converting data
+from UTF-8 to ASCII Compatible Encoding (ACE), and ```idna_to_unicode_8z8z``` to convert
+ACE names into UTF-8 format. There are several variations of these main
+functions, which accept UTF-32, or input in the local system encoding. All
+functions assume zero-terminated strings.
+
+This library is backwards (API) compatible with the [libidn library](https://www.gnu.org/software/libidn/).
+Replacing the ```idna.h``` header with ```idn2.h``` into a program is
+sufficient to switch the application from IDNA2003 to IDNA2008 as supported
+by this library.
 
 Libidn2 is believed to be a complete IDNA2008 and TR46 implementation,
 but has yet to be as extensively used as the IDNA2003 Libidn library.
@@ -59,23 +73,12 @@ $ make && make check && make code-coverage-capture
 
 The current coverage report can be found [here](https://libidn.gitlab.io/libidn2/coverage/).
 
+# Contributing
+
+See [the contributing document](CONTRIBUTING.md).
+
 # License
 
 The installed C library libidn2 is dual-licensed under LGPLv3+|GPLv2+,
 while the rest of the package is GPLv3+.  See the file [COPYING](COPYING)
 for detailed information.
-
-
-----------------------------------------------------------------------
-This file is free software: you can redistribute it and/or modify it
-under the terms of the GNU General Public License as published by the
-Free Software Foundation, either version 3 of the License, or (at your
-option) any later version.
-
-This file is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this file.  If not, see <https://www.gnu.org/licenses/>.
