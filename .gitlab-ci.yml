@@ -8,10 +8,18 @@ variables:
 Debian GNU/Linux build:
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
-  - ./bootstrap && ./configure --enable-gtk-doc --enable-gtk-doc-pdf --enable-gcc-warnings --enable-valgrind-tests && make -j$(nproc) check
+  - ./bootstrap
+  - ./configure --enable-gtk-doc --enable-gtk-doc-pdf --enable-gcc-warnings --enable-valgrind-tests
+  - make -j$(nproc) check
   - make syntax-check
   - make abi-check
   - make distcheck
+  - CFLAGS="-fsanitize=address -g -O2" ./configure --enable-gcc-warnings
+  - make clean
+  - make -j$(nproc) check
+  - CFLAGS="-fsanitize=undefined -fno-sanitize-recover -g -O2" ./configure --enable-gcc-warnings
+  - make clean
+  - make -j$(nproc) check
   tags:
   - shared
   artifacts:
@@ -26,34 +34,6 @@ Centos7 build:
   script:
   - sed -i 's/AM_GNU_GETTEXT_VERSION(0.19.3)/AM_GNU_GETTEXT_VERSION(0.18.2)/g' configure.ac
   - ./bootstrap && ./configure --enable-gcc-warnings --disable-doc && make -j$(nproc) check
-  tags:
-  - shared
-  artifacts:
-    expire_in: 2 weeks
-    when: on_failure
-    paths:
-      - tests/*.log
-      - compat_reports/
-
-ASAN build:
-  image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
-  script:
-  - ./bootstrap
-  - CFLAGS="-fsanitize=address -g -O2" ./configure --enable-gcc-warnings && make -j$(nproc) check
-  tags:
-  - shared
-  artifacts:
-    expire_in: 2 weeks
-    when: on_failure
-    paths:
-      - tests/*.log
-      - compat_reports/
-
-UBSAN build:
-  image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
-  script:
-  - ./bootstrap
-  - CFLAGS="-fsanitize=undefined -fno-sanitize-recover -g -O2" ./configure --enable-gcc-warnings && make -j$(nproc) check
   tags:
   - shared
   artifacts:
@@ -84,7 +64,8 @@ pages:
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
   - ./bootstrap
-  - CFLAGS="-g -O0" ./configure --enable-code-coverage --disable-gcc-warnings && make -j$(nproc) check
+  - CFLAGS="-g -O0" ./configure --enable-code-coverage --disable-gcc-warnings
+  - make -j$(nproc) check
   - make local-code-coverage-output
   - mkdir -p public
   - rm -rf public/coverage
