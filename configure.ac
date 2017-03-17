@@ -14,7 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 AC_INIT([libidn2], [2.0], [simon@josefsson.org],,
-  [http://www.gnu.org/software/libidn/#libidn2])
+  [https://www.gnu.org/software/libidn/#libidn2])
 
 # Library code modified:                              REVISION++
 # Interfaces changed/added/removed:   CURRENT++       REVISION=0

@@ -128,7 +128,7 @@ Apparently IANA does not provide persistant URLs to their registries.
 
 ** idn2: Fix build warnings.
 Reported by Didier Raboud <odyx@debian.org> in
-<http://bugs.debian.org/643427>.
+<https://bugs.debian.org/643427>.
 
 ** Update gnulib files.
 

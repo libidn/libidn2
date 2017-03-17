@@ -63,7 +63,7 @@ functions involving locale to UTF conversions.
 # Estimating code coverage
 
 Dependencies:
- * [lcov](http://linux-test-project.github.io/) (for code coverage)
+ * [lcov](https://linux-test-project.github.io/) (for code coverage)
 
 To test the code coverage of the test suite use the following:
 ```

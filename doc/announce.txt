@@ -20,15 +20,15 @@ Download release:
   ftp://alpha.gnu.org/gnu/libidn/libidn2-0.12.tar.gz.sig  (OpenPGP signature)
 
 Webpage:
-  http://www.gnu.org/software/libidn/#libidn2
+  https://www.gnu.org/software/libidn/#libidn2
 
 Manuals:
-  http://www.gnu.org/software/libidn/libidn2/manual/libidn2.html
-  http://www.gnu.org/software/libidn/libidn2/manual/libidn2.pdf
-  http://www.gnu.org/software/libidn/libidn2/reference/libidn2-idn2.html
+  https://www.gnu.org/software/libidn/libidn2/manual/libidn2.html
+  https://www.gnu.org/software/libidn/libidn2/manual/libidn2.pdf
+  https://www.gnu.org/software/libidn/libidn2/reference/libidn2-idn2.html
 
 Example code for domain name lookup and label register:
-  http://www.gnu.org/software/libidn/libidn2/manual/libidn2.html#Lookup
-  http://www.gnu.org/software/libidn/libidn2/manual/libidn2.html#Register
+  https://www.gnu.org/software/libidn/libidn2/manual/libidn2.html#Lookup
+  https://www.gnu.org/software/libidn/libidn2/manual/libidn2.html#Register
 
 /Simon
