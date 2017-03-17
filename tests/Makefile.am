@@ -38,7 +38,7 @@ test_lookup_SOURCES = test-lookup.c
 
 BUILT_SOURCES = $(IDNA_TXT) $(IDNA_INC)
 MAINTAINERCLEANFILES = $(BUILT_SOURCES)
-EXTRA_DIST = gen-utc-test.pl repro-common.h $(IDNA_TXT) $(IDNA_INC)
+EXTRA_DIST = gen-utc-test.pl repro-common.h $(IDNA_TXT) $(IDNA_INC) suppressions.valgrind
 
 $(IDNA_TXT):
 	rm -f $(IDNA_TXT)
