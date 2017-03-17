@@ -13,16 +13,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-AC_INIT([libidn2], [0.17], [simon@josefsson.org],,
+AC_INIT([libidn2], [2.0], [simon@josefsson.org],,
   [http://www.gnu.org/software/libidn/#libidn2])
 
 # Library code modified:                              REVISION++
 # Interfaces changed/added/removed:   CURRENT++       REVISION=0
 # Interfaces added:                             AGE++
 # Interfaces removed:                           AGE=0
-AC_SUBST(LT_CURRENT, 1)
-AC_SUBST(LT_REVISION, 5)
-AC_SUBST(LT_AGE, 1)
+AC_SUBST(LT_CURRENT, 2)
+AC_SUBST(LT_REVISION, 0)
+AC_SUBST(LT_AGE, 2)
 
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_HEADERS([config.h])

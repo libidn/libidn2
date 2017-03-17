@@ -2,7 +2,7 @@ Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
 Copyright (C) 2011-2017 Simon Josefsson
 See the end for copying conditions.
 
-* Version 0.17 (unreleased) [alpha]
+* Version 2.0 (unreleased) [alpha]
 
 ** Added to ASCII conversion functions corresponding to libidn1 functions:
     - idn2_to_ascii_4i
