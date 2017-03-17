@@ -18,7 +18,7 @@ SUBDIRS = reference
 EXTRA_DIST = gdoc libidn2.html libidn2.pdf texinfo.css idn2.md
 BUILT_SOURCES = idn2.1
 info_TEXINFOS = libidn2.texi
-libidn2_TEXINFOS = libidn2.texi decode.c lookup.c register.c $(gdoc_TEXINFOS)
+libidn2_TEXINFOS = libidn2.texi example-tounicode.c example-toascii.c decode.c lookup.c register.c $(gdoc_TEXINFOS)
 
 AM_MAKEINFOHTMLFLAGS = $(AM_MAKEINFOFLAGS) \
 	--no-split --number-sections --css-include=texinfo.css
@@ -35,13 +35,20 @@ register.c: $(top_srcdir)/examples/register.c
 	tail -n +18 $< > $@.tmp
 	mv $@.tmp $@
 
+example-tounicode.c: $(top_srcdir)/examples/example-tounicode.c
+	cp $< $@
+
+example-toascii.c: $(top_srcdir)/examples/example-toascii.c
+	cp $< $@
+
 dist_man_MANS = $(gdoc_MANS)
 dist_man_MANS += idn2.1
 
 idn2.1: idn2.md
 	$(RONN) -r $^ >$@
 
-CLEANFILES = $(dist_man_MANS) decode.c lookup.c register.c stamp-vti version.texi $(srcdir)/libidn2.info
+CLEANFILES = $(dist_man_MANS) decode.c example-tounicode.c example-toascii.c lookup.c \
+	register.c stamp-vti version.texi $(srcdir)/libidn2.info
 
 # GDOC
 

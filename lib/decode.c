@@ -45,7 +45,9 @@
  * @output: Newly allocated UTF-32/UCS-4 output string.
  * @flags: Currently unused.
  *
- * Perform punycode decoding on domain name @input.
+ * Converts a possibly ACE encoded domain name in UTF-8 format into a
+ * UTF-32 string (punycode decoding). The output buffer will be zero-terminated
+ * and must be deallocated by the caller.
  *
  * @output may be NULL to test lookup of @input without allocating memory.
  *
@@ -55,6 +57,8 @@
  *   %IDN2_TOO_BIG_LABEL: A label is would have been too long.
  *   %IDN2_ENCODING_ERROR: Character conversion failed.
  *   %IDN2_MALLOC: Memory allocation failed.
+ *
+ * Since: 2.0
  **/
 int
 idn2_to_unicode_8z4z (const char * input, uint32_t ** output, int flags _GL_UNUSED)
@@ -152,6 +156,27 @@ idn2_to_unicode_8z4z (const char * input, uint32_t ** output, int flags _GL_UNUS
   return IDN2_OK;
 }
 
+/**
+ * idn2_to_unicode_4z4z:
+ * @input: Input zero-terminated UTF-32 string.
+ * @output: Newly allocated UTF-32 output string.
+ * @flags: Currently unused.
+ *
+ * Converts a possibly ACE encoded domain name in UTF-32 format into a
+ * UTF-32 string (punycode decoding). The output buffer will be zero-terminated
+ * and must be deallocated by the caller.
+ *
+ * @output may be NULL to test lookup of @input without allocating memory.
+ *
+ * Returns:
+ *   %IDN2_OK: The conversion was successful.
+ *   %IDN2_TOO_BIG_DOMAIN: The domain is too long.
+ *   %IDN2_TOO_BIG_LABEL: A label is would have been too long.
+ *   %IDN2_ENCODING_ERROR: Character conversion failed.
+ *   %IDN2_MALLOC: Memory allocation failed.
+ *
+ * Since: 2.0
+ **/
 int
 idn2_to_unicode_4z4z (const uint32_t * input, uint32_t ** output, int flags)
 {
@@ -189,6 +214,32 @@ idn2_to_unicode_4z4z (const uint32_t * input, uint32_t ** output, int flags)
   return rc;
 }
 
+/**
+ * idn2_to_unicode_44i:
+ * @in: Input array with UTF-32 code points.
+ * @inlen: number of code points of input array
+ * @out: output array with UTF-32 code points.
+ * @outlen: on input, maximum size of output array with UTF-32 code points,
+ *          on exit, actual size of output array with UTF-32 code points.
+ * @flags: Currently unused.
+ *
+ * The ToUnicode operation takes a sequence of UTF-32 code points
+ * that make up one domain label and returns a sequence of UTF-32
+ * code points. If the input sequence is a label in ACE form, then the
+ * result is an equivalent internationalized label that is not in ACE
+ * form, otherwise the original sequence is returned unaltered.
+ *
+ * @output may be NULL to test lookup of @input without allocating memory.
+ *
+ * Returns:
+ *   %IDN2_OK: The conversion was successful.
+ *   %IDN2_TOO_BIG_DOMAIN: The domain is too long.
+ *   %IDN2_TOO_BIG_LABEL: A label is would have been too long.
+ *   %IDN2_ENCODING_ERROR: Character conversion failed.
+ *   %IDN2_MALLOC: Memory allocation failed.
+ *
+ * Since: 2.0
+ **/
 int
 idn2_to_unicode_44i (const uint32_t * in, size_t inlen, uint32_t * out, size_t * outlen, int flags)
 {
@@ -227,6 +278,27 @@ idn2_to_unicode_44i (const uint32_t * in, size_t inlen, uint32_t * out, size_t *
   return IDN2_OK;
 }
 
+/**
+ * idn2_to_unicode_8z8z:
+ * @input: Input zero-terminated UTF-8 string.
+ * @output: Newly allocated UTF-8 output string.
+ * @flags: Currently unused.
+ *
+ * Converts a possibly ACE encoded domain name in UTF-8 format into a
+ * UTF-8 string (punycode decoding). The output buffer will be zero-terminated
+ * and must be deallocated by the caller.
+ *
+ * @output may be NULL to test lookup of @input without allocating memory.
+ *
+ * Returns:
+ *   %IDN2_OK: The conversion was successful.
+ *   %IDN2_TOO_BIG_DOMAIN: The domain is too long.
+ *   %IDN2_TOO_BIG_LABEL: A label is would have been too long.
+ *   %IDN2_ENCODING_ERROR: Character conversion failed.
+ *   %IDN2_MALLOC: Memory allocation failed.
+ *
+ * Since: 2.0
+ **/
 int
 idn2_to_unicode_8z8z (const char * input, char ** output, int flags)
 {
@@ -257,6 +329,28 @@ idn2_to_unicode_8z8z (const char * input, char ** output, int flags)
   return IDN2_OK;
 }
 
+/**
+ * idn2_to_unicode_8zlz:
+ * @input: Input zero-terminated UTF-8 string.
+ * @output: Newly allocated output string in current locale's character set.
+ * @flags: Currently unused.
+ *
+ * Converts a possibly ACE encoded domain name in UTF-8 format into a
+ * string encoded in the current locale's character set (punycode
+ * decoding). The output buffer will be zero-terminated and must be
+ * deallocated by the caller.
+ *
+ * @output may be NULL to test lookup of @input without allocating memory.
+ *
+ * Returns:
+ *   %IDN2_OK: The conversion was successful.
+ *   %IDN2_TOO_BIG_DOMAIN: The domain is too long.
+ *   %IDN2_TOO_BIG_LABEL: A label is would have been too long.
+ *   %IDN2_ENCODING_ERROR: Character conversion failed.
+ *   %IDN2_MALLOC: Memory allocation failed.
+ *
+ * Since: 2.0
+ **/
 int
 idn2_to_unicode_8zlz (const char * input, char ** output, int flags)
 {
@@ -278,6 +372,28 @@ idn2_to_unicode_8zlz (const char * input, char ** output, int flags)
   return IDN2_OK;
 }
 
+/**
+ * idn2_to_unicode_lzlz:
+ * @input: Input zero-terminated string encoded in the current locale's character set.
+ * @output: Newly allocated output string in current locale's character set.
+ * @flags: Currently unused.
+ *
+ * Converts a possibly ACE encoded domain name in the locale's character
+ * set into a string encoded in the current locale's character set (punycode
+ * decoding). The output buffer will be zero-terminated and must be
+ * deallocated by the caller.
+ *
+ * @output may be NULL to test lookup of @input without allocating memory.
+ *
+ * Returns:
+ *   %IDN2_OK: The conversion was successful.
+ *   %IDN2_TOO_BIG_DOMAIN: The domain is too long.
+ *   %IDN2_TOO_BIG_LABEL: A label is would have been too long.
+ *   %IDN2_ENCODING_ERROR: Character conversion failed.
+ *   %IDN2_MALLOC: Memory allocation failed.
+ *
+ * Since: 2.0
+ **/
 int
 idn2_to_unicode_lzlz (const char * input, char ** output, int flags)
 {

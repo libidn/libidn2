@@ -320,6 +320,8 @@ _tr46 (const uint8_t * domain_u8, uint8_t ** out, int transitional)
  *   output domain or any label would have been too long
  *   %IDN2_TOO_BIG_DOMAIN or %IDN2_TOO_BIG_LABEL is returned, or
  *   another error code is returned.
+ *
+ * Since: 0.1
  **/
 int
 idn2_lookup_u8 (const uint8_t * src, uint8_t ** lookupname, int flags)
@@ -442,6 +444,8 @@ idn2_lookup_u8 (const uint8_t * src, uint8_t ** lookupname, int flags)
  *   returned, if the output domain or any label would have been too
  *   long %IDN2_TOO_BIG_DOMAIN or %IDN2_TOO_BIG_LABEL is returned, or
  *   another error code is returned.
+ *
+ * Since: 0.1
  **/
 int
 idn2_lookup_ul (const char * src, char ** lookupname, int flags)
@@ -496,6 +500,8 @@ idn2_lookup_ul (const char * src, char ** lookupname, int flags)
  * %IDN2_NONTRANSITIONAL and %IDN2_NFC_INPUT.
  *
  * Return value: Returns %IDN2_OK on success, or error code.
+ *
+ * Since: 2.0
  **/
 int
 idn2_to_ascii_4i (const uint32_t * input, size_t inlen, char * output, int flags)
@@ -559,6 +565,8 @@ idn2_to_ascii_4i (const uint32_t * input, size_t inlen, char * output, int flags
  * %IDN2_NONTRANSITIONAL and %IDN2_NFC_INPUT.
  *
  * Return value: Returns %IDN2_OK on success, or error code.
+ *
+ * Since: 2.0
  **/
 int
 idn2_to_ascii_4z (const uint32_t * input, char ** output, int flags)
@@ -602,6 +610,8 @@ idn2_to_ascii_4z (const uint32_t * input, char ** output, int flags)
  * and %IDN2_NFC_INPUT flags.
  *
  * Return value: Returns %IDN2_OK on success, or error code.
+ *
+ * Since: 2.0
  **/
 int
 idn2_to_ascii_8z (const char * input, char ** output, int flags)
@@ -623,6 +633,8 @@ idn2_to_ascii_8z (const char * input, char ** output, int flags)
  * and %IDN2_NFC_INPUT flags.
  *
  * Return value: Returns %IDN2_OK on success, or error code.
+ *
+ * Since: 2.0
  **/
 int
 idn2_to_ascii_lz (const char * input, char ** output, int flags)
