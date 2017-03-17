@@ -66,6 +66,10 @@ New functionality should be accompanied by a test case which verifies
 the correctness of the new functionality as well as under failure.
 The libidn2 test suite is run on "make check".
 
+When submitting patches it is recommended to open a new merge request
+[on the gitlab site](https://gitlab.com/libidn/libidn2), to force the
+changes to pass the automated test suite.
+
 ## Release process
 
 The release process consists of:
