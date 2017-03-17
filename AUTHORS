@@ -1,5 +1,7 @@
-Author and maintainer:
-Simon Josefsson <simon@josefsson.org>
-
-Implemented TR46 and more:
-Tim Rühsen <tim.ruehsen@gmx.de>
+Original author:
+ Simon Josefsson <simon@josefsson.org>
+ 
+Maintainers (aplhabetical order):
+ Nikos Mavrogiannopoulos <nmav@gnutls.org>
+ Simon Josefsson <simon@josefsson.org>
+ Tim Rühsen <tim.ruehsen@gmx.de>
