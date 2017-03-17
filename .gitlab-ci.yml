@@ -68,9 +68,13 @@ pages:
   - make -j$(nproc) check
   - make local-code-coverage-output
   - mkdir -p public
-  - rm -rf public/coverage public/docs
+  - rm -rf public/coverage
   - mv libidn2-*-coverage public/coverage
-  - mv doc/reference/html public/docs
+  - rm -rf public/reference
+  - mv doc/reference/html public/reference
+  - make -C doc manual
+  - rm -rf public/manual
+  - mv doc/manual public/manual
   tags:
   - shared
   artifacts:

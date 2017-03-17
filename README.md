@@ -18,9 +18,11 @@ Libidn2 is a free software implementation of IDNA2008 and TR46.
 Libidn2 is believed to be a complete IDNA2008 and TR46 implementation,
 but has yet to be as extensively used as the IDNA2003 Libidn library.
 
-# API docs
+# Online docs
 
-There is a current [API online documentation](https://libidn.gitlab.io/libidn2/docs/api-index-full.html).
+[API reference](https://libidn.gitlab.io/libidn2/reference/api-index-full.html)
+
+[Manual](https://libidn.gitlab.io/libidn2/manual/libidn2.html)
 
 # Obtaining the source
 

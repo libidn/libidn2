@@ -63,4 +63,7 @@ GDOC_MAN_EXTRA_ARGS = -module $(PACKAGE) -sourceversion $(VERSION) \
 include $(srcdir)/Makefile.gdoci
 
 clean-local:
-	rm -rf man texi
+	rm -rf man texi manual
+
+manual:
+	../build-aux/gendocs.sh --html --css-include=texinfo.css -o manual $(PACKAGE) "$(PACKAGE_NAME)"
