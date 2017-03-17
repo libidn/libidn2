@@ -265,7 +265,7 @@ const test_t test[] = {
     IDN2_ENCODING_ERROR
   },
 
-  /* Test vectors from http://bugs.debian.org/610617 */
+  /* Test vectors from https://bugs.debian.org/610617 */
   {
     "Debian test #1",
     "XN----7SBAABF4DLDYSIEHP4NTB.XN--P1AI",
