@@ -171,6 +171,11 @@ _tr46 (const uint8_t * domain_u8, uint8_t ** out, int transitional)
     }
 
   uint32_t *tmp = malloc ((len2 + 1) * sizeof (uint32_t));
+  if (!tmp)
+    {
+      free (domain_u32);
+      return IDN2_MALLOC;
+    }
 
   len2 = 0;
   for (it = 0; it < len - 1; it++)
