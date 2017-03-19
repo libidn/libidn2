@@ -32,8 +32,8 @@ some hints.
 
 gNewSense/Debian/Ubuntu:
 ```
-apt-get install git autoconf automake libtool texinfo gperf
-apt-get install libunistring-dev help2man gtk-doc-tools valgrind gengetopt
+apt-get install git autoconf automake libtool texinfo gperf git2cl
+apt-get install libunistring-dev ronn gtk-doc-tools valgrind gengetopt
 ```
 
 Download the version controlled sources:
