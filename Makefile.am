@@ -70,5 +70,7 @@ abi-dump: lib/idn2.h lib/libidn2.la
 	@rm -rf $(TMPDIR)
 
 dist-hook: abi-check
+	rm -f ChangeLog
+	make ChangeLog
 
 .PHONY: abi-dump abi-check
