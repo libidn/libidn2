@@ -5,20 +5,29 @@ variables:
   CENTOS7_BUILD: buildenv-centos7
   GET_SOURCES_ATTEMPTS: "3"
 
+# In this build we combine
+#  * syntax-check
+#  * abi-check
+#  * build/valgrind-check
+#  * build/asan-check
+#  * build w/Werror and ubsan-check
 Debian GNU/Linux build:
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
   - ./bootstrap
   - ./configure --enable-gtk-doc --enable-gtk-doc-pdf --enable-gcc-warnings --enable-valgrind-tests
-  - make -j$(nproc) check
   - make syntax-check
+  - make -j$(nproc) check
   - make abi-check
   - make distcheck
   - CFLAGS="-fsanitize=address -g -O2" ./configure --enable-gcc-warnings
   - make clean
   - make -j$(nproc) check
-  - CFLAGS="-fsanitize=undefined -fno-sanitize-recover -g -O2" ./configure --enable-gcc-warnings
   - make clean
+  - CFLAGS="-fsanitize=undefined -fno-sanitize-recover -g -O2 -Wall -Wextra" ./configure --disable-gcc-warnings
+  - make -C unistring && make -C gl
+  - make -C lib CFLAGS="-fsanitize=undefined -fno-sanitize-recover -g -O2 -Wall -Wextra -Werror"
+  - make -C examples CFLAGS="-fsanitize=undefined -fno-sanitize-recover -g -O2 -Wall -Wextra -Werror -Wno-unused-parameter"
   - make -j$(nproc) check
   tags:
   - shared
