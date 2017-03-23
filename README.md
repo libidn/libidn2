@@ -32,11 +32,13 @@ by this library.
 Libidn2 is believed to be a complete IDNA2008 and TR46 implementation,
 but has yet to be as extensively used as the IDNA2003 Libidn library.
 
+
 # Online docs
 
 [API reference](https://libidn.gitlab.io/libidn2/reference/api-index-full.html)
 
 [Manual](https://libidn.gitlab.io/libidn2/manual/libidn2.html)
+
 
 # Obtaining the source
 
@@ -47,6 +49,7 @@ https://alpha.gnu.org/gnu/libidn/ and ftp://alpha.gnu.org/gnu/libidn/
 
 Development of libidn2 is organized [through GitLab website](https://gitlab.com/libidn/libidn2),
 and there is [an issue tracker for reporting bugs](https://gitlab.com/libidn/libidn2/issues).
+
 
 # Dependencies
 
@@ -59,6 +62,7 @@ information on these packages:
 
 Note that the iconv dependency is optional, and required only for the
 functions involving locale to UTF conversions.
+
 
 # Estimating code coverage
 
@@ -73,9 +77,25 @@ $ make && make check && make code-coverage-capture
 
 The current coverage report can be found [here](https://libidn.gitlab.io/libidn2/coverage/).
 
+
+# Cross-compiling
+
+It is possible to cross-compile libidn2. It is expected your cross compiler
+toolchain to have a specific prefix to the target host. For example
+compiling for Windows with mingw64 (with prefix ```i686-w64-mingw32```)
+can be done the following way:
+
+```
+./configure --host=i686-w64-mingw32 && make
+```
+
+See also [INSTALL](INSTALL) for generic instructions.
+
+
 # Contributing
 
 See [the contributing document](CONTRIBUTING.md).
+
 
 # License
 
