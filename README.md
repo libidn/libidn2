@@ -89,7 +89,8 @@ can be done the following way:
 ./configure --host=i686-w64-mingw32 && make
 ```
 
-See also [INSTALL](INSTALL) for generic instructions.
+After `./bootstrap`ing you find the `INSTALL` file in the main
+project directory including generic instructions about cross-compilation.
 
 
 # Contributing
