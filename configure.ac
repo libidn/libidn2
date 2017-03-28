@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-AC_INIT([libidn2], [2.0], [simon@josefsson.org],,
+AC_INIT([libidn2], [2.0.0], [simon@josefsson.org],,
   [https://www.gnu.org/software/libidn/#libidn2])
 
 # Library code modified:                              REVISION++
@@ -23,6 +23,14 @@ AC_INIT([libidn2], [2.0], [simon@josefsson.org],,
 AC_SUBST(LT_CURRENT, 2)
 AC_SUBST(LT_REVISION, 0)
 AC_SUBST(LT_AGE, 2)
+
+#
+# Generate version defines for the include file
+#
+AC_SUBST([IDN2_VERSION_MAJOR], [`echo $PACKAGE_VERSION|cut -d'.' -f1`])
+AC_SUBST([IDN2_VERSION_MINOR], [`echo $PACKAGE_VERSION|cut -d'.' -f2`])
+AC_SUBST([IDN2_VERSION_PATCH], [`echo $PACKAGE_VERSION|cut -d'.' -f3`])
+AC_SUBST([IDN2_VERSION_NUMBER], [`printf '0x%02x%02x%04x' $IDN2_VERSION_MAJOR $IDN2_VERSION_MINOR $IDN2_VERSION_PATCH`])
 
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_HEADERS([config.h])
