@@ -47,10 +47,11 @@ Copyright @copyright{} 2011-2017 Simon Josefsson
 @end ifnottex
 
 @menu
-* Introduction::	What is Libidn2?
-* Library Functions::	Library functions.
-* Examples::		Demonstrate how to use the library.
-* Invoking idn2::	Command line interface to the library.
+* Introduction::		What is Libidn2?
+* Library Functions::		Library functions.
+* Converting from libidn::	Demonstrate how to convert from libidn.
+* Examples::			Demonstrate how to use the library.
+* Invoking idn2::		Command line interface to the library.
 
 * Interface Index::
 * Concept Index::
@@ -77,11 +78,9 @@ processing and GNU libiconv
 (@uref{https://www.gnu.org/software/libiconv/}) for character set
 conversion.
 
-This library is backwards (API) compatible with the libidn library
-(@uref{https://www.gnu.org/software/libidn/}).
-Replacing the @code{idna.h} header with @code{idn2.h} into a program is
-sufficient to switch the application from IDNA2003 to IDNA2008 as supported
-by this library.
+This library is backwards (API) compatible with the legacy libidn library
+(@uref{https://www.gnu.org/software/libidn/}). See @ref{Converting from
+libidn} for more information.
 
 Libidn2 is believed to be a complete IDNA2008 and TR46 implementation,
 but has yet to be as extensively used as the IDNA2003 Libidn library.
@@ -296,6 +295,28 @@ following first in your @code{main}:
       exit(EXIT_FAILURE);
     @}
 @end example
+
+@node Converting from libidn
+@chapter Converting from libidn
+@cindex libidn
+
+This library is backwards (API) compatible with the libidn library
+(@uref{https://www.gnu.org/software/libidn/}).
+
+Although it is recommended for new software to use the native libidn2
+functions (i.e., the ones prefixed with @code{idn2}), old software doesn't
+isn't always feasible to modify.
+
+As such, libidn2, provides compatibility macros which switch all libidn
+functions, to libidn2 functions in a backwards compatible way. To take
+advantage of these compatibility functions, it is sufficient to replace
+the @code{idna.h} header in legacy code, with @code{idn2.h}. That
+would transform the software from using libidn (i.e., IDNA2003),
+to using libidn2 (i.e., IDNA2008 non-transitional).
+
+In the special case where you have software that needs to support both
+libraries (e.g., both IDNA2003 and IDNA2008), you must define
+@code{IDN2_SKIP_LIBIDN_COMPAT} prior to including @code{idn2.h}.
 
 @node Examples
 @chapter Examples
