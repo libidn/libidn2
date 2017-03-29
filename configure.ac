@@ -20,9 +20,9 @@ AC_INIT([libidn2], [2.0.0], [help-libidn@gnu.org],,
 # Interfaces changed/added/removed:   CURRENT++       REVISION=0
 # Interfaces added:                             AGE++
 # Interfaces removed:                           AGE=0
-AC_SUBST(LT_CURRENT, 2)
+AC_SUBST(LT_CURRENT, 3)
 AC_SUBST(LT_REVISION, 0)
-AC_SUBST(LT_AGE, 2)
+AC_SUBST(LT_AGE, 3)
 
 #
 # Generate version defines for the include file

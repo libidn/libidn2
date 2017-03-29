@@ -26,7 +26,7 @@ echo "* Bootstrap"
 ./bootstrap >/dev/null
 
 echo "* Configure"
-./configure -q
+./configure -q --enable-gtk-doc
 
 echo "* Make"
 make -s clean
@@ -94,17 +94,18 @@ for ext in $extensions; do
   echo -e "version: 1.2\nfilename: ${app_tarball}\ndirectory: ${app_name}\n" >${app_tarball}.directive
   gpg --default-key $signing_key --yes --clearsign ${app_tarball}.directive
 
-ftp -v -n -i -p ftp-upload.gnu.org <<EOF
-user anonymous
-cd $directory
-put ${app_tarball}
-put ${app_tarball}.sig
-put ${app_tarball}.directive.asc
-EOF
+#ftp -v -n -i -p ftp-upload.gnu.org <<EOF
+#user anonymous
+#cd $directory
+#put ${app_tarball}
+#put ${app_tarball}.sig
+#put ${app_tarball}.directive.asc
+#EOF
 
 done
 
 prev_tag=`git for-each-ref --sort=taggerdate --format '%(refname)' refs/tags|tail -1`
+echo
 echo "Don't forget to mention the following contributors in the announcement:"
 (
   git log ${prev_tag}.. --format="%aN" --reverse
