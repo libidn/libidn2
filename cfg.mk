@@ -97,7 +97,7 @@ clang-upload:
 		cvs commit -m "Update." clang-analyzer
 
 ChangeLog:
-	git2cl > ChangeLog
+	git log --no-merges --date=short --pretty='format:%ad %an <%ae>%w(0,0,5)%+B' >ChangeLog
 
 tarball:
 	! git tag -l $(PACKAGE)-$(VERSION) | grep $(PACKAGE) > /dev/null
