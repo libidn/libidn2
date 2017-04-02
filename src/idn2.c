@@ -162,8 +162,8 @@ process_input (char *readbuf, int flags)
     }
   else
     {
-      rc = idn2_lookup_ul (readbuf, &output, flags);
-      tag = "lookup";
+      rc = idn2_to_ascii_lz (readbuf, &output, flags);
+      tag = "toAscii";
     }
 
   if (rc == IDN2_OK)
