@@ -17,6 +17,7 @@ option "decode" d "Decode (punycode) domain name" no
 option "lookup" l "Lookup domain name (default)" no
 option "register" r "Register label" no
 option "tr46t" T "Enable TR46 transitional processing" flag off
-option "tr46nt" N "Eable TR46 non-transitional processing" flag off
+option "tr46nt" N "Enable TR46 non-transitional processing" flag off
+option "no-tr46" - "Disable TR46 processing" flag off
 option "debug" - "Print debugging information" flag off
 option "quiet" - "Silent operation" flag off
