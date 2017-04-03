@@ -37,7 +37,10 @@ Mandatory arguments to long options are mandatory for short options too.
     Enable TR#46 transitional processing.
 
   * ```-N, --tr46nt```:
-    Enable TR#46 non-transitional processing.
+    Enable TR#46 non-transitional processing (default).
+
+  * ```--no-tr46```:
+    Disable TR#46 processing.
 
   * ```--debug```:
     Prints debugging information.

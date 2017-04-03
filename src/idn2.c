@@ -86,6 +86,7 @@ Mandatory arguments to long options are mandatory for short options too.\n\
       fputs (_("\
   -T, --tr46t              Enable TR46 transitional processing\n\
   -N, --tr46nt             Enable TR46 non-transitional processing\n\
+      --no-tr46            Disable TR46 processing\n\
 "), stdout);
       fputs (_("\
       --debug              Print debugging information\n\
@@ -162,8 +163,8 @@ process_input (char *readbuf, int flags)
     }
   else
     {
-      rc = idn2_lookup_ul (readbuf, &output, flags);
-      tag = "lookup";
+      rc = idn2_to_ascii_lz (readbuf, &output, flags);
+      tag = "toAscii";
     }
 
   if (rc == IDN2_OK)
@@ -182,7 +183,7 @@ int
 main (int argc, char *argv[])
 {
   unsigned cmdn;
-  int flags = 0;
+  int flags = IDN2_NONTRANSITIONAL;
 
   setlocale (LC_ALL, "");
   set_program_name (argv[0]);
@@ -218,6 +219,8 @@ main (int argc, char *argv[])
     flags = IDN2_TRANSITIONAL;
   else if (args_info.tr46nt_given)
     flags = IDN2_NONTRANSITIONAL;
+  else if (args_info.no_tr46_given)
+    flags = 0;
 
   for (cmdn = 0; cmdn < args_info.inputs_num; cmdn++)
     process_input (args_info.inputs[cmdn], flags | IDN2_NFC_INPUT);
