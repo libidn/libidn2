@@ -91,7 +91,7 @@ for ext in $extensions; do
   app_tarball="${app_name}-${app_ver}.tar.$ext"
   gpg --default-key $signing_key --yes -b $app_tarball
 
-  echo -e "version: 1.2\nfilename: ${app_tarball}\ndirectory: ${app_name}\n" >${app_tarball}.directive
+  echo -e "version: 1.2\nfilename: ${app_tarball}\ndirectory: libidn\n" >${app_tarball}.directive
   gpg --default-key $signing_key --yes --clearsign ${app_tarball}.directive
 
 #ftp -v -n -i -p ftp-upload.gnu.org <<EOF
