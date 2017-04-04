@@ -501,12 +501,12 @@ idn2_lookup_ul (const char * src, char ** lookupname, int flags)
  * range to begin with (although it could fail). Applying the ToASCII operation multiple
  * effect as applying it just once.
  *
- * The flags to underlying IDN2 functions are assumed to be
- * %IDN2_NONTRANSITIONAL and %IDN2_NFC_INPUT.
+ * When unsure, it is recommended to call this function with the
+ * %IDN2_NONTRANSITIONAL and %IDN2_NFC_INPUT flags.
  *
  * Return value: Returns %IDN2_OK on success, or error code.
  *
- * Since: 2.0
+ * Since: 2.0.0
  **/
 int
 idn2_to_ascii_4i (const uint32_t * input, size_t inlen, char * output, int flags)
@@ -566,12 +566,12 @@ idn2_to_ascii_4i (const uint32_t * input, size_t inlen, char * output, int flags
  * rules.  The domain name may contain several labels, separated by dots.
  * The output buffer must be deallocated by the caller.
  *
- * The flags to underlying IDN2 functions are assumed to be
- * %IDN2_NONTRANSITIONAL and %IDN2_NFC_INPUT.
+ * When unsure, it is recommended to call this function with the
+ * %IDN2_NONTRANSITIONAL and %IDN2_NFC_INPUT flags.
  *
  * Return value: Returns %IDN2_OK on success, or error code.
  *
- * Since: 2.0
+ * Since: 2.0.0
  **/
 int
 idn2_to_ascii_4z (const uint32_t * input, char ** output, int flags)
@@ -611,12 +611,12 @@ idn2_to_ascii_4z (const uint32_t * input, char ** output, int flags)
  * rules.  The domain name may contain several labels, separated by dots.
  * The output buffer must be deallocated by the caller.
  *
- * This is equivalent to idn2_lookup_u8() with %IDN2_NONTRANSITIONAL
- * and %IDN2_NFC_INPUT flags.
+ * When unsure, it is recommended to call this function with the
+ * %IDN2_NONTRANSITIONAL and %IDN2_NFC_INPUT flags.
  *
  * Return value: Returns %IDN2_OK on success, or error code.
  *
- * Since: 2.0
+ * Since: 2.0.0
  **/
 int
 idn2_to_ascii_8z (const char * input, char ** output, int flags)
@@ -634,12 +634,10 @@ idn2_to_ascii_8z (const char * input, char ** output, int flags)
  * rules.  The domain name may contain several labels, separated by dots.
  * The output buffer must be deallocated by the caller.
  *
- * This is equivalent to idn2_lookup_ul() with %IDN2_NONTRANSITIONAL
- * and %IDN2_NFC_INPUT flags.
+ * When unsure, it is recommended to call this function with the
+ * %IDN2_NONTRANSITIONAL and %IDN2_NFC_INPUT flags.
  *
- * Return value: Returns %IDN2_OK on success, or error code.
- *
- * Since: 2.0
+ * Since: 2.0.0
  **/
 int
 idn2_to_ascii_lz (const char * input, char ** output, int flags)
