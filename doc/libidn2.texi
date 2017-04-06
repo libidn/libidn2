@@ -318,6 +318,33 @@ In the special case where you have software that needs to support both
 libraries (e.g., both IDNA2003 and IDNA2008), you must define
 @code{IDN2_SKIP_LIBIDN_COMPAT} prior to including @code{idn2.h}.
 
+However, it is recommended to switch applications to the IDN2 native APIs.
+The following table provides a mapping of the libidn functions to the newer
+libidn2 variant, for switching to IDNA2008.
+
+@multitable @columnfractions .40 .40
+@headitem libidn @tab libidn2
+
+@item
+@code{idna_to_ascii_8z (buf, &p, 0 /* any flags */);}
+
+@tab
+@code{idn2_to_ascii_8z (buf, &p, IDN2_NFC_INPUT|IDN2_NONTRANSITIONAL);}
+
+@item
+@code{idna_to_unicode_8z8z (buf, &p, 0 /* any flags */);}
+
+@tab
+@code{idn2_to_unicode_8z8z (buf, &p, 0);}
+
+@end multitable
+
+Note that, although the table only lists the UTF-8 functions, the mapping
+is identical for every other one on the family of toUnicode and toAscii.
+As the IDNA2003 details differ signicantly to IDNA2008, no flags used in
+the libidn functions map to any specific flags; it is safe to use
+the suggested libidn2 flags.
+
 @node Examples
 @chapter Examples
 @cindex Examples
