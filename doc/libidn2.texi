@@ -319,23 +319,35 @@ libraries (e.g., both IDNA2003 and IDNA2008), you must define
 @code{IDN2_SKIP_LIBIDN_COMPAT} prior to including @code{idn2.h}.
 
 However, it is recommended to switch applications to the IDN2 native APIs.
-The following table provides a mapping of the libidn functions to the newer
-libidn2 variant, for switching to IDNA2008.
+The following table provides a mapping of libidn code snippets to
+libidn2, for switching to IDNA2008.
 
 @multitable @columnfractions .40 .40
 @headitem libidn @tab libidn2
 
 @item
-@code{idna_to_ascii_8z (buf, &p, 0 /* any flags */);}
+@verbatim
+idna_to_ascii_8z (buf, &p, 0 /* any flags */);
+if (rc != IDNA_SUCCESS)
+@end verbatim
 
 @tab
-@code{idn2_to_ascii_8z (buf, &p, IDN2_NFC_INPUT|IDN2_NONTRANSITIONAL);}
+@verbatim
+idn2_to_ascii_8z (buf, &p, IDN2_NFC_INPUT|IDN2_NONTRANSITIONAL);
+if (rc != IDN2_OK)
+@end verbatim
 
 @item
-@code{idna_to_unicode_8z8z (buf, &p, 0 /* any flags */);}
+@verbatim
+idna_to_unicode_8z8z (buf, &p, 0 /* any flags */);
+if (rc != IDNA_SUCCESS)
+@end verbatim
 
 @tab
-@code{idn2_to_unicode_8z8z (buf, &p, 0);}
+@verbatim
+idn2_to_unicode_8z8z (buf, &p, 0);
+if (rc != IDN2_OK)
+@end verbatim
 
 @end multitable
 
