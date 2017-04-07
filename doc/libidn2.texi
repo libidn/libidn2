@@ -327,25 +327,25 @@ libidn2, for switching to IDNA2008.
 
 @item
 @verbatim
-idna_to_ascii_8z (buf, &p, 0 /* any flags */);
+rc = idna_to_ascii_8z (buf, &p, 0 /* any flags */);
 if (rc != IDNA_SUCCESS)
 @end verbatim
 
 @tab
 @verbatim
-idn2_to_ascii_8z (buf, &p, IDN2_NFC_INPUT|IDN2_NONTRANSITIONAL);
+rc = idn2_to_ascii_8z (buf, &p, IDN2_NFC_INPUT|IDN2_NONTRANSITIONAL);
 if (rc != IDN2_OK)
 @end verbatim
 
 @item
 @verbatim
-idna_to_unicode_8z8z (buf, &p, 0 /* any flags */);
+rc = idna_to_unicode_8z8z (buf, &p, 0 /* any flags */);
 if (rc != IDNA_SUCCESS)
 @end verbatim
 
 @tab
 @verbatim
-idn2_to_unicode_8z8z (buf, &p, 0);
+rc = idn2_to_unicode_8z8z (buf, &p, 0);
 if (rc != IDN2_OK)
 @end verbatim
 
