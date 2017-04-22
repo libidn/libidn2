@@ -333,7 +333,7 @@ if (rc != IDNA_SUCCESS)
 
 @tab
 @verbatim
-rc = idn2_to_ascii_8z (buf, &p, IDN2_NFC_INPUT|IDN2_NONTRANSITIONAL);
+rc = idn2_to_ascii_8z (buf, &p, IDN2_NONTRANSITIONAL);
 if (rc != IDN2_OK)
 @end verbatim
 

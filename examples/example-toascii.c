@@ -37,7 +37,7 @@ main (void)
   printf ("\n");
 
   /* Use non-transitional IDNA2008 */
-  rc = idn2_to_ascii_8z (buf, &p, IDN2_NFC_INPUT|IDN2_NONTRANSITIONAL);
+  rc = idn2_to_ascii_8z (buf, &p, IDN2_NONTRANSITIONAL);
   if (rc != IDNA_SUCCESS)
     {
       printf ("ToASCII() failed (%d): %s\n", rc, idn2_strerror (rc));
