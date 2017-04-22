@@ -1,0 +1,73 @@
+Hi,
+
+we are happy to announce the release 2.0.1 of libidn2.
+
+We already changed the versioning layout to not get in conflict
+with libidn which is at 1.x.
+
+The project now switched to Gitlab which btw is a great collaboration tool.
+Savannah's libidn git repository is kept in sync with Gitlab.
+
+The upload to alpha.gnu.org currently doesn't work out for us, so we offer
+the tarballs + signature also at Gitlab.
+
+
+* Version 2.0.1 (released 2017-04-22)
+
+** idn2 utility now using IDNA2008 + TR46 by default
+
+** Several doc fixes
+
+
+* Version 2.0.0 (released 2017-03-29) [alpha]
+
+** Version numbering scheme changed
+
+** Added to ASCII conversion functions corresponding to libidn1 functions:
+    - idn2_to_ascii_4i
+    - idn2_to_ascii_4z
+    - idn2_to_ascii_8z
+    - idn2_to_ascii_lz
+
+** Added to unicode conversion functions corresponding to libidn1 functions:
+    - idn2_to_unicode_8z4z
+    - idn2_to_unicode_4z4z
+    - idn2_to_unicode_44i
+    - idn2_to_unicode_8z8z
+    - idn2_to_unicode_8zlz
+    - idn2_to_unicode_lzlz
+
+** The idn2 manual page is generated from markdown text instead of utilizing
+   help2man on the generated tool.
+
+** Including idn2.h will provide libidn1 compatibility functions
+   unless IDN2_SKIP_LIBIDN_COMPAT is defined. That allows converting
+   applications from libidn1 (which offers IDNA2003) to libidn2 (which
+   offers IDNA2008) by replacing idna.h to idn2.h in the applications'
+   source.
+
+** API and ABI is backwards compatible with the previous version.
+
+
+Download
+  https://ftp.gnu.org/pub/gnu/libidn/libidn2-2.0.1.tar.gz
+  https://ftp.gnu.org/pub/gnu/libidn/libidn2-2.0.1.tar.xz
+
+Signatures
+  https://ftp.gnu.org/pub/gnu/libidn/libidn2-2.0.1.tar.gz.sig
+  https://ftp.gnu.org/pub/gnu/libidn/libidn2-2.0.1.tar.xz.sig
+
+Project Website
+  https://www.gnu.org/software/libidn/#libidn2
+
+Online Documentation
+  https://libidn.gitlab.io/libidn2/manual/libidn2.html
+
+Getting the Source Code
+  git clone https://gitlab.com/libidn/libidn2
+
+Source Code Test Coverage
+  https://libidn.gitlab.io/libidn2/coverage/
+
+
+With Best Regards, Tim
