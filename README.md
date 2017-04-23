@@ -45,7 +45,7 @@ but has yet to be as extensively used as the IDNA2003 Libidn library.
 The homepage of libidn2: https://www.gnu.org/software/libidn/#libidn2
 
 Software releases of libidn2 can be downloaded from
-https://alpha.gnu.org/gnu/libidn/ and ftp://alpha.gnu.org/gnu/libidn/
+https://ftp.gnu.org/gnu/libidn/ and ftp://ftp.gnu.org/gnu/libidn/
 
 Development of libidn2 is organized [through GitLab website](https://gitlab.com/libidn/libidn2),
 and there is [an issue tracker for reporting bugs](https://gitlab.com/libidn/libidn2/issues).
