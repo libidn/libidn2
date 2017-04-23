@@ -311,12 +311,8 @@ As such, libidn2, provides compatibility macros which switch all libidn
 functions, to libidn2 functions in a backwards compatible way. To take
 advantage of these compatibility functions, it is sufficient to replace
 the @code{idna.h} header in legacy code, with @code{idn2.h}. That
-would transform the software from using libidn (i.e., IDNA2003),
-to using libidn2 (i.e., IDNA2008 non-transitional).
-
-In the special case where you have software that needs to support both
-libraries (e.g., both IDNA2003 and IDNA2008), you must define
-@code{IDN2_SKIP_LIBIDN_COMPAT} prior to including @code{idn2.h}.
+would transform the software from using libidn, i.e., IDNA2003,
+to using libidn2 with IDNA2008 non-transitional encoding.
 
 However, it is recommended to switch applications to the IDN2 native APIs.
 The following table provides a mapping of libidn code snippets to
@@ -356,6 +352,11 @@ is identical for every other one on the family of toUnicode and toAscii.
 As the IDNA2003 details differ signicantly to IDNA2008, no flags used in
 the libidn functions map to any specific flags; it is safe to use
 the suggested libidn2 flags.
+
+In the special case of software that needs to support both
+libraries (e.g., both IDNA2003 and IDNA2008), you must define
+@code{IDN2_SKIP_LIBIDN_COMPAT} prior to including @code{idn2.h}
+in order to be able to use both libraries' functions.
 
 @node Examples
 @chapter Examples
