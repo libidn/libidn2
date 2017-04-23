@@ -44,9 +44,9 @@ LLVMFuzzerTestOneInput (const uint8_t *data, size_t size)
   if (ret != 0)
     goto cleanup;
 
-  free (in);
   free (out);
 
 cleanup:
+  free (in);
   return 0;
 }
