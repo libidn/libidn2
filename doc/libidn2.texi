@@ -304,7 +304,7 @@ This library is backwards (API) compatible with the libidn library
 (@uref{https://www.gnu.org/software/libidn/}).
 
 Although it is recommended for new software to use the native libidn2
-functions (i.e., the ones prefixed with @code{idn2}), old software doesn't
+functions (i.e., the ones prefixed with @code{idn2}), old software
 isn't always feasible to modify.
 
 As such, libidn2, provides compatibility macros which switch all libidn
