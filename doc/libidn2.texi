@@ -377,6 +377,7 @@ used when you write your own application.
 
 This example demonstrates how the library is used to convert
 internationalized domain names into ASCII compatible names (ACE).
+It expects input to be in UTF-8 form.
 
 @verbatiminclude example-toascii.c
 
@@ -385,6 +386,7 @@ internationalized domain names into ASCII compatible names (ACE).
 
 This example demonstrates how the library is used to convert ASCII
 compatible names (ACE) to internationalized domain names.
+Both input and output are in UTF-8 form.
 
 @verbatiminclude example-tounicode.c
 
@@ -392,7 +394,7 @@ compatible names (ACE) to internationalized domain names.
 @section Lookup
 
 This example demonstrates how a domain name is processed before it is
-lookup in the DNS.
+lookup in the DNS. The input expected is in the locale encoding.
 
 @verbatiminclude lookup.c
 
@@ -400,7 +402,7 @@ lookup in the DNS.
 @section Register
 
 This example demonstrates how a domain label is processed before it is
-registered in the DNS.
+registered in the DNS. The input expected is in the locale encoding.
 
 @verbatiminclude register.c
 
