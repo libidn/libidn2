@@ -128,13 +128,12 @@ bool
 _idn2_ascii_p (const uint8_t * src, size_t srclen)
 {
   size_t i;
-  bool ascii = true;
 
   for (i = 0; i < srclen; i++)
     if (src[i] >= 0x80)
-      ascii = false;
+      return false;
 
-  return ascii;
+  return true;
 }
 
 int
