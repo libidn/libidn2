@@ -80,17 +80,22 @@ label (const uint8_t * src, size_t srclen, uint8_t * dst, size_t * dstlen,
   if (rc != IDN2_OK)
     return rc;
 
-  rc = _idn2_label_test (TEST_NFC |
-			 TEST_2HYPHEN |
-			 TEST_LEADING_COMBINING |
-			 TEST_DISALLOWED |
-			 TEST_CONTEXTJ_RULE |
-			 TEST_CONTEXTO_WITH_RULE |
-			 TEST_UNASSIGNED | TEST_BIDI, p, plen);
-  if (rc != IDN2_OK)
+  if (!(flags & IDN2_TRANSITIONAL))
     {
-      free (p);
-      return rc;
+      rc = _idn2_label_test(
+	TEST_NFC |
+	TEST_2HYPHEN |
+	TEST_LEADING_COMBINING |
+	TEST_DISALLOWED |
+	TEST_CONTEXTJ_RULE |
+	TEST_CONTEXTO_WITH_RULE |
+	TEST_UNASSIGNED | TEST_BIDI, p, plen);
+
+      if (rc != IDN2_OK)
+	{
+	  free(p);
+	  return rc;
+	}
     }
 
   dst[0] = 'x';

@@ -812,6 +812,8 @@ static const struct idna idna[] = {
     "\x7e\x64\x61\x72\x10\x2f\x2f\xf9\x2b\x71\x60\x79\x7b\x2e\x63\x75\x2b\x61\x65\x72\x75\x65\x56\x66\x7f\x62\xc5\x76\xe5\x00",
     "", IDN2_ENCODING_ERROR, IDN2_NONTRANSITIONAL,
   },
+  /* √.com */
+  {"\xe2\x88\x9a.com", "xn--19g.com", IDN2_OK, IDN2_TRANSITIONAL},
 };
 
 static int ok = 0, failed = 0;
