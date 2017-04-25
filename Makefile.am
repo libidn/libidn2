@@ -46,28 +46,28 @@ pkgconfig_DATA = libidn2.pc
 local-code-coverage-output: code-coverage-capture
 	@cat libidn2-$(VERSION)-coverage/index.html|grep headerCovTableEntryHi|head -1|sed 's/^.*>\([0-9]\+\.[0-9]\+\s*%\)<.*$$/ coverage lines: \1/' || true
 
-TMPDIR="headers.abi.tmp"
-TMPFILE="abi-temp.xml"
+ABI_TMPDIR="headers.abi.tmp"
+ABI_TMPFILE="abi-temp.xml"
 abi-check: lib/idn2.h lib/libidn2.la
-	@rm -f $(TMPFILE)
+	@rm -f $(ABI_TMPFILE)
 	@echo "Checking libidn2 ABI"
-	@echo "<version>$(VERSION)</version>" >$(TMPFILE)
-	@echo "<headers>$(srcdir)/lib/idn2.h" >>$(TMPFILE)
-	@echo "$(builddir)/lib/idn2.h</headers>" >>$(TMPFILE)
-	@echo "<libs>$(builddir)/lib/.libs</libs>" >>$(TMPFILE)
+	@echo "<version>$(VERSION)</version>" >$(ABI_TMPFILE)
+	@echo "<headers>$(srcdir)/lib/idn2.h" >>$(ABI_TMPFILE)
+	@echo "$(builddir)/lib/idn2.h</headers>" >>$(ABI_TMPFILE)
+	@echo "<libs>$(builddir)/lib/.libs</libs>" >>$(ABI_TMPFILE)
 	for i in 0.16;do \
 	test ! -f "$(srcdir)/devel/ABI-$$i-$$(uname -m).dump" || \
-		abi-compliance-checker -abi -lib libidn2 -old "$(srcdir)/devel/ABI-$$i-$$(uname -m).dump" -new $(TMPFILE); \
+		abi-compliance-checker -abi -lib libidn2 -old "$(srcdir)/devel/ABI-$$i-$$(uname -m).dump" -new $(ABI_TMPFILE); \
 	done
-	@rm -f $(TMPFILE)
+	@rm -f $(ABI_TMPFILE)
 
 abi-dump: lib/idn2.h lib/libidn2.la
-	@rm -rf $(TMPDIR)
-	@mkdir -p $(TMPDIR)
+	@rm -rf $(ABI_TMPDIR)
+	@mkdir -p $(ABI_TMPDIR)
 	@mkdir -p devel
-	@cp lib/idn2.h $(TMPDIR)
-	@abi-dumper lib/.libs/libidn2.so -o "./devel/ABI-$(VERSION)-$$(uname -m).dump" -public-headers $(TMPDIR)
-	@rm -rf $(TMPDIR)
+	@cp lib/idn2.h $(ABI_TMPDIR)
+	@abi-dumper lib/.libs/libidn2.so -o "./devel/ABI-$(VERSION)-$$(uname -m).dump" -public-headers $(ABI_TMPDIR)
+	@rm -rf $(ABI_TMPDIR)
 
 dist-hook: abi-check
 	rm -f ChangeLog
