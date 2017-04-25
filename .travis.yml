@@ -1,0 +1,41 @@
+sudo: required
+dist: trusty
+
+language: c
+
+os:
+#  - linux
+  - osx
+
+compiler:
+  - gcc
+  - clang
+
+git:
+    depth: 3
+
+matrix:
+    exclude:
+        - os: osx
+          compiler: gcc
+
+cache: ccache
+
+addons:
+    apt:
+        packages:
+            - autoconf
+            - automake
+            - autopoint
+            - libtool
+            - gettext
+            - libunistring0
+            - libc6
+            - valgrind
+            - lcov
+
+before_install:
+  - echo $TRAVIS_OS_NAME
+  - ./.travis_setup.sh
+
+script: ./.travis.sh
