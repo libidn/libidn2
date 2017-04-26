@@ -53,11 +53,12 @@ abi-check: lib/idn2.h lib/libidn2.la
 	@echo "Checking libidn2 ABI"
 	@echo "<version>$(VERSION)</version>" >$(ABI_TMPFILE)
 	@echo "<headers>$(srcdir)/lib/idn2.h" >>$(ABI_TMPFILE)
+	@echo "$(srcdir)/config.h" >>$(ABI_TMPFILE)
 	@echo "$(builddir)/lib/idn2.h</headers>" >>$(ABI_TMPFILE)
 	@echo "<libs>$(builddir)/lib/.libs</libs>" >>$(ABI_TMPFILE)
-	for i in 0.16;do \
-	test ! -f "$(srcdir)/devel/ABI-$$i-$$(uname -m).dump" || \
-		abi-compliance-checker -abi -lib libidn2 -old "$(srcdir)/devel/ABI-$$i-$$(uname -m).dump" -new $(ABI_TMPFILE); \
+	for i in 2.0.2; do \
+	  test ! -f "$(srcdir)/devel/ABI-$$i-$$(uname -m).dump" || \
+	  abi-compliance-checker --v1=2.0.2 -abi -lib libidn2 -old "$(srcdir)/devel/ABI-$$i-$$(uname -m).dump" -new $(ABI_TMPFILE); \
 	done
 	@rm -f $(ABI_TMPFILE)
 
