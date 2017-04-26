@@ -642,6 +642,9 @@ idn2_to_ascii_8z (const char * input, char ** output, int flags)
  * When unsure, it is recommended to call this function with the
  * %IDN2_NONTRANSITIONAL and %IDN2_NFC_INPUT flags.
  *
+ * Returns: %IDN2_OK on success, or error code.
+ * Same as described in idn2_lookup_ul() documentation.
+ *
  * Since: 2.0.0
  **/
 int

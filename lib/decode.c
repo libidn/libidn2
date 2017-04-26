@@ -61,7 +61,7 @@
  * Since: 2.0.0
  **/
 int
-idn2_to_unicode_8z4z (const char * input, uint32_t ** output, int flags _GL_UNUSED)
+idn2_to_unicode_8z4z (const char * input, uint32_t ** output, G_GNUC_UNUSED int flags)
 {
   uint32_t *domain_u32;
   int rc;
