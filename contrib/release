@@ -2,10 +2,21 @@
 #
 # Written 2017 by Tim Ruehsen
 
-extensions="gz xz"
+export CFLAGS="-g -O2 -Wall"
+
+echo
+echo "* Bootstrap"
+./bootstrap >/dev/null
+
+echo
+echo "* Configure"
+./configure -q --enable-gtk-doc
+
+extensions="gz lz"
 app_name=$(grep "^PACKAGE_NAME='" configure|cut -d "'" -f2)
 app_ver=$(grep "^PACKAGE_VERSION='" configure|cut -d "'" -f2)
 
+echo
 echo "Current version of $app_name is $app_ver"
 echo
 echo -n "Enter Y if that is OK, else enter N and edit configure.ac: "
@@ -14,33 +25,13 @@ read x
 
 echo
 grep -i "^\* Version" NEWS|head -1
-echo -n "Did you edit the NEWS file ? [y/N] "
+echo -n "Did you edit the NEWS file ? "
 read x
 [ "$x" != "y" -a "$x" != "Y" ] && exit 0
 
 echo
-
-export CFLAGS="-g -O2 -Wall"
-
-echo "* Bootstrap"
-./bootstrap >/dev/null
-
-echo "* Configure"
-./configure -q --enable-gtk-doc
-
-echo "* Make"
-make -s clean
-make -s
-
-echo "* Make distcheck"
-make -s distcheck >/dev/null
-
-echo "* Make dist"
-make -s dist >/dev/null
-make -s dist-xz >/dev/null
-
 while true; do
-  echo "Alpha or Regular release ? [r/A] "
+  echo -n "Alpha or Regular release ? [A/R] "
   read x
   if test "$x" = "r" || test "$x" = "R"; then
     directory="/incoming/ftp"
@@ -51,13 +42,31 @@ while true; do
   fi
 done
 
+echo
+echo "* Make"
+make -s clean
+make -s
+
+echo
+echo "* Make distcheck"
+make -s distcheck >/dev/null
+
+echo
+echo "* Make dist"
+for ext in $extensions; do
+  [[ $ext = 'gz' ]] && ext="gzip"
+  [[ $ext = 'lz' ]] && ext="lzip"
+  make -s dist-$ext >/dev/null
+done
+
+echo
 x=$(gpg --list-secret-keys 2>/dev/null|grep ^sec|awk '{ print $2 }')
-echo $x
 if [ "$x" = "" ]; then
   echo No signing key found - please check with 'gpg --list-secret-keys'
   exit 1
 fi
 
+echo "Please select the GPG key for signing"
 # arrays just work in Bash
 keys=($x)
 if [ ${#keys[@]} -eq 1 ]; then
@@ -82,11 +91,13 @@ else
   done
 fi
 unset IFS
-echo $signing_key
 
-# fetch app_version again, just in case
-app_ver=$(grep "^PACKAGE_VERSION='" configure|cut -d "'" -f2)
+echo
+echo -n "Really upload to ftp-upload.gnu.org/$directory ? "
+read x
+[ "$x" != "y" -a "$x" != "Y" ] && exit 0
 
+echo
 for ext in $extensions; do
   app_tarball="${app_name}-${app_ver}.tar.$ext"
   gpg --default-key $signing_key --yes -b $app_tarball
