@@ -8,23 +8,43 @@ variables:
 # In this build we combine
 #  * syntax-check
 #  * abi-check
+#  * fuzz/ building
+#  * distcheck
 #  * build/valgrind-check
-#  * build/asan-check
-#  * build w/Werror and ubsan-check
-Debian GNU/Linux build:
+Debian GNU/Linux:
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
   - ./bootstrap
-  - ./configure --enable-gtk-doc --enable-gtk-doc-pdf --enable-gcc-warnings --enable-valgrind-tests
+  - ./configure -C --disable-doc --enable-gcc-warnings --enable-valgrind-tests
   - make syntax-check
+  - echo "nproc="$(nproc)" "$nproc
   - make -j$(nproc) check
   - make abi-check
-  - make distcheck
-  - CFLAGS="-fsanitize=address -g -O2" ./configure --enable-gcc-warnings
+  - make -C fuzz
   - make clean
+  - ./configure -C --enable-gtk-doc --enable-gtk-doc-pdf --disable-gcc-warnings --disable-valgrind-tests
+  - make
+  - make distcheck
+  tags:
+  - shared
+  artifacts:
+    expire_in: 2 weeks
+    when: on_failure
+    paths:
+      - tests/*.log
+      - compat_reports/
+
+# In this build we combine
+#  * build/asan-check
+#  * build w/Werror and ubsan-check
+Debian ASAN/UBSAN:
+  image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
+  script:
+  - ./bootstrap
+  - CFLAGS="-fsanitize=address -g -O2" ./configure --disable-doc --disable-gcc-warnings
   - make -j$(nproc) check
   - make clean
-  - CFLAGS="-fsanitize=undefined -fno-sanitize-recover -g -O2 -Wall -Wextra" ./configure --disable-gcc-warnings
+  - CFLAGS="-fsanitize=undefined -fno-sanitize-recover -g -O2 -Wall -Wextra" ./configure --disable-doc --disable-gcc-warnings
   - make -C unistring && make -C gl
   - make -C lib CFLAGS="-fsanitize=undefined -fno-sanitize-recover -g -O2 -Wall -Wextra -Werror"
   - make -C examples CFLAGS="-fsanitize=undefined -fno-sanitize-recover -g -O2 -Wall -Wextra -Werror -Wno-unused-parameter"
@@ -36,9 +56,8 @@ Debian GNU/Linux build:
     when: on_failure
     paths:
       - tests/*.log
-      - compat_reports/
 
-Centos7 build:
+Centos7:
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$CENTOS7_BUILD
   script:
   - sed -i 's/AM_GNU_GETTEXT_VERSION(0.19.3)/AM_GNU_GETTEXT_VERSION(0.18.2)/g' configure.ac
