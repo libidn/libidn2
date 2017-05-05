@@ -363,7 +363,7 @@ IDNA2003 conversion. The following example demonstrates that approach.
 
 @verbatim
 rc = idn2_to_ascii_8z (buf, &p, IDN2_NONTRANSITIONAL); /* IDNA2008 */
-if (rc != IDN2_OK)
+if (rc == IDN2_DISALLOWED)
   rc = idn2_to_ascii_8z (buf, &p, IDN2_TRANSITIONAL); /* IDNA2003 - compatible */
 @end verbatim
 
