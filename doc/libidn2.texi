@@ -74,7 +74,7 @@ For technical reference on IDNA protocols, see
 @item RFC 5890 (@uref{https://tools.ietf.org/html/rfc5890}),
 @item RFC 5891 (@uref{https://tools.ietf.org/html/rfc5891}),
 @item RFC 5892 (@uref{https://tools.ietf.org/html/rfc5892}),
-@item RFC 5893 (@uref{https://tools.ietf.org/html/rfc5893}), 
+@item RFC 5893 (@uref{https://tools.ietf.org/html/rfc5893}),
 @item TR46 (@uref{http://www.unicode.org/reports/tr46/}).
 @end itemize
 
