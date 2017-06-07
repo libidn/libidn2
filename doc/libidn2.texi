@@ -60,30 +60,29 @@ Copyright @copyright{} 2011-2017 Simon Josefsson
 @node Introduction
 @chapter Introduction
 
-Libidn2 is a free software implementation of IDNA2008, Punycode and TR46.
-It contains functionality to convert internationalized domain names
+Libidn2 is a free software implementation of IDNA2008, Punycode and TR46
+in the form a library. It contains functionality to convert internationalized domain names
 to and from ASCII Compatible Encoding (ACE), following the IDNA2008 and TR46
-standards.
+standards. It is available at @uref{https://gitlab.com/libidn/libidn2}.
 
-For technical reference, see RFC 5890
-(@uref{https://tools.ietf.org/html/rfc5890}), RFC 5891
-(@uref{https://tools.ietf.org/html/rfc5891}), RFC 5892
-(@uref{https://tools.ietf.org/html/rfc5892}), RFC 5893
-(@uref{https://tools.ietf.org/html/rfc5893}), and TR46
-(@uref{http://www.unicode.org/reports/tr46/}).
+The library is a rewrite of the popular but legacy libidn library, and
+is backwards (API) compatible with it. See @ref{Converting from
+libidn} for more information.
+
+For technical reference on IDNA protocols, see
+@itemize
+@item RFC 5890 (@uref{https://tools.ietf.org/html/rfc5890}),
+@item RFC 5891 (@uref{https://tools.ietf.org/html/rfc5891}),
+@item RFC 5892 (@uref{https://tools.ietf.org/html/rfc5892}),
+@item RFC 5893 (@uref{https://tools.ietf.org/html/rfc5893}), 
+@item TR46 (@uref{http://www.unicode.org/reports/tr46/}).
+@end itemize
 
 Libidn2 uses GNU libunistring
 (@uref{https://www.gnu.org/software/libunistring/}) for Unicode
-processing and GNU libiconv
+processing and optionally GNU libiconv
 (@uref{https://www.gnu.org/software/libiconv/}) for character set
 conversion.
-
-This library is backwards (API) compatible with the legacy libidn library
-(@uref{https://www.gnu.org/software/libidn/}). See @ref{Converting from
-libidn} for more information.
-
-Libidn2 is believed to be a complete IDNA2008 and TR46 implementation,
-but has yet to be as extensively used as the IDNA2003 Libidn library.
 
 The library is dual-licensed under LGPLv3 or GPLv2, see the file COPYING for
 detailed information.
