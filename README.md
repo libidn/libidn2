@@ -30,7 +30,8 @@ sufficient to switch the application from IDNA2003 to IDNA2008 as supported
 by this library.
 
 Libidn2 is believed to be a complete IDNA2008 and TR46 implementation,
-but has yet to be as extensively used as the IDNA2003 Libidn library.
+it contains an extensive test-suite, and is included in the continuous
+fuzzing project [OSS-Fuzz](https://bugs.chromium.org/p/oss-fuzz/issues/list?q=libidn2).
 
 
 # Online docs
