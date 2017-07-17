@@ -23,6 +23,7 @@ several tools installed, including:
  * [Perl](http://www.cpan.org/) (HTTPS: www.cpan.org uses an invalid security certificate)
  * [Valgrind](http://valgrind.org/) (optional) (No HTTPS at all)
  * [libunistring](https://www.gnu.org/software/libunistring/)
+ * [abi-compliance-checker]
 
 ## Obtaining sources
 
@@ -34,6 +35,7 @@ gNewSense/Debian/Ubuntu:
 ```
 apt-get install git autoconf automake libtool texinfo gperf git2cl
 apt-get install libunistring-dev ronn gtk-doc-tools valgrind gengetopt
+apt-get install abi-compliance-checker
 ```
 
 Download the version controlled sources:
