@@ -47,7 +47,7 @@ m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
 LT_INIT([win32-dll])
 gl_INIT
 unistring_INIT
-GTK_DOC_CHECK(1.1)
+GTK_DOC_CHECK([1.14],[--flavour no-tmpl])
 
 AC_CHECK_PROG([RONN], [ronn], [ronn], [:])
 AM_GNU_GETTEXT(external)
