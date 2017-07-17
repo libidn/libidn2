@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-AC_INIT([libidn2], [2.0.2], [help-libidn@gnu.org],,
+AC_INIT([libidn2], [2.0.3], [help-libidn@gnu.org],,
   [https://www.gnu.org/software/libidn/#libidn2])
 
 # Library code modified:                              REVISION++
