@@ -2,7 +2,11 @@ Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
 Copyright (C) 2011-2017 Simon Josefsson
 See the end for copying conditions.
 
-* Version 2.0.2 (released 2017-04-27)
+* Version 2.0.3 (unreleased) [beta]
+
+** Modernize gtk-doc build infrastructure.
+
+* Version 2.0.2 (released 2017-04-27) [beta]
 
 ** Fix TR46 transitional mode
 
@@ -10,43 +14,40 @@ See the end for copying conditions.
 
 ** Fix several documentation issues
 
-
-* Version 2.0.1 (released 2017-04-22)
+* Version 2.0.1 (released 2017-04-22) [beta]
 
 ** idn2 utility now using IDNA2008 + TR46 by default
 
 ** Several doc fixes
 
-
-* Version 2.0.0 (released 2017-03-29) [alpha]
+* Version 2.0.0 (released 2017-03-29) [beta]
 
 ** Version numbering scheme changed
 
 ** Added to ASCII conversion functions corresponding to libidn1 functions:
-    - idn2_to_ascii_4i
-    - idn2_to_ascii_4z
-    - idn2_to_ascii_8z
-    - idn2_to_ascii_lz
+- idn2_to_ascii_4i
+- idn2_to_ascii_4z
+- idn2_to_ascii_8z
+- idn2_to_ascii_lz
 
 ** Added to unicode conversion functions corresponding to libidn1 functions:
-    - idn2_to_unicode_8z4z
-    - idn2_to_unicode_4z4z
-    - idn2_to_unicode_44i
-    - idn2_to_unicode_8z8z
-    - idn2_to_unicode_8zlz
-    - idn2_to_unicode_lzlz
+- idn2_to_unicode_8z4z
+- idn2_to_unicode_4z4z
+- idn2_to_unicode_44i
+- idn2_to_unicode_8z8z
+- idn2_to_unicode_8zlz
+- idn2_to_unicode_lzlz
 
 ** The idn2 manual page is generated from markdown text instead of utilizing
-   help2man on the generated tool.
+** help2man on the generated tool.
 
 ** Including idn2.h will provide libidn1 compatibility functions
-   unless IDN2_SKIP_LIBIDN_COMPAT is defined. That allows converting
-   applications from libidn1 (which offers IDNA2003) to libidn2 (which
-   offers IDNA2008) by replacing idna.h to idn2.h in the applications'
-   source.
+** unless IDN2_SKIP_LIBIDN_COMPAT is defined. That allows converting
+** applications from libidn1 (which offers IDNA2003) to libidn2 (which
+** offers IDNA2008) by replacing idna.h to idn2.h in the applications'
+** source.
 
 ** API and ABI is backwards compatible with the previous version.
-
 
 * Version 0.16 (released 2017-01-16) [alpha]
 
