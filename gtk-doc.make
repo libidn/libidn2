@@ -30,7 +30,7 @@ SETUP_FILES = \
 	$(DOC_MODULE)-sections.txt	\
 	$(DOC_MODULE)-overrides.txt
 
-EXTRA_DIST = 				\
+EXTRA_DIST =				\
 	$(HTML_IMAGES)			\
 	$(SETUP_FILES)
 
@@ -38,8 +38,8 @@ DOC_STAMPS=setup-build.stamp scan-build.stamp tmpl-build.stamp sgml-build.stamp 
 	html-build.stamp pdf-build.stamp \
 	tmpl.stamp sgml.stamp html.stamp pdf.stamp
 
-SCANOBJ_FILES = 		 \
-	$(DOC_MODULE).args 	 \
+SCANOBJ_FILES =			 \
+	$(DOC_MODULE).args	 \
 	$(DOC_MODULE).hierarchy  \
 	$(DOC_MODULE).interfaces \
 	$(DOC_MODULE).prerequisites \
