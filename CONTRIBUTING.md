@@ -19,11 +19,12 @@ several tools installed, including:
  * [Gzip](https://www.gnu.org/software/gzip/)
  * [Texlive & epsf](https://www.tug.org/texlive/) (for PDF manual)
  * [GTK-DOC](https://www.gtk.org/gtk-doc/) (for API manual)
- * [Git](http://git.or.cz/) (HTTPS: Unknown certificate issuer)
- * [Perl](http://www.cpan.org/) (HTTPS: www.cpan.org uses an invalid security certificate)
+ * [Git](https://git-scm.com/)
+ * [Perl](https://www.cpan.org/) (HTTPS: www.cpan.org uses an invalid security certificate)
  * [Valgrind](http://valgrind.org/) (optional) (No HTTPS at all)
  * [libunistring](https://www.gnu.org/software/libunistring/)
  * [abi-compliance-checker]
+ * [ronn](https://rtomayko.github.io/ronn/)
 
 ## Obtaining sources
 
@@ -34,8 +35,8 @@ some hints.
 gNewSense/Debian/Ubuntu:
 ```
 apt-get install git autoconf automake libtool texinfo gperf git2cl
-apt-get install libunistring-dev ronn gtk-doc-tools valgrind gengetopt
-apt-get install abi-compliance-checker
+apt-get install libunistring-dev gtk-doc-tools valgrind gengetopt
+apt-get install abi-compliance-checker ruby-ronn
 ```
 
 Download the version controlled sources:

@@ -49,7 +49,8 @@ gl_INIT
 unistring_INIT
 GTK_DOC_CHECK([1.14],[--flavour no-tmpl])
 
-AC_CHECK_PROG([RONN], [ronn], [ronn], [:])
+AC_CHECK_PROGS([GENGETOPT], [gengetopt], AC_MSG_ERROR([Failed to find build prerequisite 'gengetopt']))
+
 AM_GNU_GETTEXT(external)
 AM_GNU_GETTEXT_VERSION(0.19.3)
 
@@ -95,6 +96,13 @@ AC_ARG_ENABLE(doc,
   AS_HELP_STRING([--disable-doc], [don't generate any documentation]),
     enable_doc=$enableval, enable_doc=yes)
 AM_CONDITIONAL(ENABLE_DOC, test "$enable_doc" != "no")
+
+if test "$enable_doc" = "yes"; then
+  AC_CHECK_PROG([RONN], [ronn], [ronn], [:])
+  if test "$ac_cv_prog_RONN" = ":"; then
+    AC_MSG_ERROR([You need the 'ronn' tool to generate the idn2.1 man page])
+  fi
+fi
 
 if test "$ac_cv_libunistring" = "yes";then
 	AC_SEARCH_LIBS(uc_joining_type, unistring, [], [ac_cv_libunistring=no])
