@@ -49,6 +49,8 @@ gl_INIT
 unistring_INIT
 GTK_DOC_CHECK(1.1)
 
+AC_CHECK_PROGS([GENGETOPT], [gengetopt], AC_MSG_ERROR([Failed to find build prerequisite 'gengetopt']))
+
 AM_GNU_GETTEXT(external)
 AM_GNU_GETTEXT_VERSION(0.19.3)
 
