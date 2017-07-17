@@ -23,6 +23,7 @@ several tools installed, including:
  * [Perl](http://www.cpan.org/) (HTTPS: www.cpan.org uses an invalid security certificate)
  * [Valgrind](http://valgrind.org/) (optional) (No HTTPS at all)
  * [libunistring](https://www.gnu.org/software/libunistring/)
+ * [ronn](https://rtomayko.github.io/ronn/)
 
 ## Obtaining sources
 
