@@ -89,6 +89,7 @@ Mandatory arguments to long options are mandatory for short options too.\n\
       --no-tr46            Disable TR46 processing\n\
 "), stdout);
       fputs (_("\
+      --nostd3asciirules   Disable STD3 ASCII rules\n\
       --debug              Print debugging information\n\
       --quiet              Silent operation\n\
 "), stdout);
@@ -221,6 +222,9 @@ main (int argc, char *argv[])
     flags = IDN2_NONTRANSITIONAL;
   else if (args_info.no_tr46_given)
     flags = 0;
+
+  if (flags && args_info.usestd3asciirules_given)
+    flags |= IDN2_USE_STD3_ASCII_RULES;
 
   for (cmdn = 0; cmdn < args_info.inputs_num; cmdn++)
     process_input (args_info.inputs[cmdn], flags | IDN2_NFC_INPUT);

@@ -42,6 +42,9 @@ Mandatory arguments to long options are mandatory for short options too.
   * ```--no-tr46```:
     Disable TR#46 processing.
 
+  * ```--usestd3asciirules```:
+    Enable STD3 ASCII rules.
+
   * ```--debug```:
     Prints debugging information.
 

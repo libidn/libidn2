@@ -273,6 +273,11 @@ _idn2_label_test (int what, const uint32_t * label, size_t llen)
 	      (!transitional && map_is (&map, TR46_FLG_DEVIATION)))
 	    continue;
 
+	  if (what & TEST_ALLOW_STD3_DISALLOWED &&
+	      (map_is (&map, TR46_FLG_DISALLOWED_STD3_VALID) ||
+	       map_is (&map, TR46_FLG_DISALLOWED_STD3_MAPPED)))
+	    continue;
+
 	  return transitional ? IDN2_INVALID_TRANSITIONAL :
 	    IDN2_INVALID_NONTRANSITIONAL;
 	}

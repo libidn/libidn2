@@ -120,15 +120,19 @@ label (const uint8_t * src, size_t srclen, uint8_t * dst, size_t * dstlen,
   (TEST_NFC | TEST_2HYPHEN | TEST_HYPHEN_STARTEND | TEST_LEADING_COMBINING | TEST_NONTRANSITIONAL)
 
 static int
-_tr46 (const uint8_t * domain_u8, uint8_t ** out, int transitional)
+_tr46 (const uint8_t * domain_u8, uint8_t ** out, int flags)
 {
   size_t len, it;
   uint32_t *domain_u32;
   int err = IDN2_OK, rc;
+  int transitional = 0;
+  int test_flags;
+
+  if (flags & IDN2_TRANSITIONAL)
+    transitional = 1;
 
   /* convert UTF-8 to UTF-32 */
-  if (!
-      (domain_u32 =
+  if (!(domain_u32 =
        u8_to_u32 (domain_u8, u8_strlen (domain_u8) + 1, NULL, &len)))
     {
       if (errno == ENOMEM)
@@ -173,6 +177,19 @@ _tr46 (const uint8_t * domain_u8, uint8_t ** out, int transitional)
 	  else
 	    len2++;
 	}
+      else if (!(flags & IDN2_USE_STD3_ASCII_RULES))
+        {
+	  if (map_is (&map, TR46_FLG_DISALLOWED_STD3_VALID))
+	    {
+	      /* valid because UseSTD3ASCIIRules=false, see #TR46 5 */
+	      len2++;
+	    }
+	  else if (map_is (&map, TR46_FLG_DISALLOWED_STD3_MAPPED))
+	    {
+	      /* mapped because UseSTD3ASCIIRules=false, see #TR46 5 */
+	      len2 += map.nmappings;
+	    }
+        }
     }
 
   uint32_t *tmp = malloc ((len2 + 1) * sizeof (uint32_t));
@@ -215,6 +232,17 @@ _tr46 (const uint8_t * domain_u8, uint8_t ** out, int transitional)
 	  else
 	    tmp[len2++] = c;
 	}
+      else if (!(flags & IDN2_USE_STD3_ASCII_RULES))
+        {
+	  if (map_is (&map, TR46_FLG_DISALLOWED_STD3_VALID))
+	    {
+	      tmp[len2++] = c;
+	    }
+	  else if (map_is (&map, TR46_FLG_DISALLOWED_STD3_MAPPED))
+	    {
+	      len2 += get_map_data (tmp + len2, &map);
+	    }
+        }
     }
   free (domain_u32);
 
@@ -267,16 +295,25 @@ _tr46 (const uint8_t * domain_u8, uint8_t ** out, int transitional)
 	      return rc;
 	    }
 
+	  test_flags = TR46_NONTRANSITIONAL_CHECK;
+
+	  if (!(flags & IDN2_USE_STD3_ASCII_RULES))
+	    test_flags |= TEST_ALLOW_STD3_DISALLOWED;
+
 	  if ((rc =
-	       _idn2_label_test (TR46_NONTRANSITIONAL_CHECK, name_u32,
+	       _idn2_label_test (test_flags, name_u32,
 				 name_len)))
 	    err = rc;
 	}
       else
 	{
+	  test_flags = transitional ? TR46_TRANSITIONAL_CHECK : TR46_NONTRANSITIONAL_CHECK;
+
+	  if (!(flags & IDN2_USE_STD3_ASCII_RULES))
+	    test_flags |= TEST_ALLOW_STD3_DISALLOWED;
+
 	  if ((rc =
-	       _idn2_label_test (transitional ? TR46_TRANSITIONAL_CHECK :
-				 TR46_NONTRANSITIONAL_CHECK, s, e - s)))
+	       _idn2_label_test (test_flags, s, e - s)))
 	    err = rc;
 	}
 
@@ -362,7 +399,7 @@ idn2_lookup_u8 (const uint8_t * src, uint8_t ** lookupname, int flags)
       uint8_t *out;
       size_t outlen;
 
-      rc = _tr46 (src, &out, tr46_mode == IDN2_TRANSITIONAL);
+      rc = _tr46 (src, &out, flags);
       if (rc != IDN2_OK)
 	return rc;
 

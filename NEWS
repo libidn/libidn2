@@ -4,6 +4,14 @@ See the end for copying conditions.
 
 * Version 2.0.3 (unreleased) [beta]
 
+** Activated flag IDN2_USE_STD3_ASCII_RULES. Previously
+we were eliminating non-STD3 characters from domain strings
+such as _443._tcp.example.com, or IPs 1.2.3.4/24 provided to
+libidn2 functions. That was an unexpected regression for
+applications switching from libidn and thus it is no longer
+applied by default. Use the flag IDN2_USE_STD3_ASCII_RULES
+to enable that behavior again.
+
 ** Modernize gtk-doc build infrastructure.
 
 * Version 2.0.2 (released 2017-04-27) [beta]

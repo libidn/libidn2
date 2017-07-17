@@ -154,7 +154,9 @@ extern "C"
  * @IDN2_TRANSITIONAL: Perform Unicode TR46 transitional processing.
  * @IDN2_NONTRANSITIONAL: Perform Unicode TR46 non-transitional processing.
  * @IDN2_ALLOW_UNASSIGNED: Libidn compatibility flag, unused.
- * @IDN2_USE_STD3_ASCII_RULES: Libidn compatibility flag, unused.
+ * @IDN2_USE_STD3_ASCII_RULES: Use STD3 ASCII rules.
+ * This is a #TR46 only flag, and will be ignored when set without either
+ * @IDN2_TRANSITIONAL or @IDN2_NONTRANSITIONAL.
  *
  * Flags to IDNA2008 functions, to be binary or:ed together.  Specify
  * only 0 if you want the default behaviour.
@@ -166,7 +168,7 @@ extern "C"
     IDN2_TRANSITIONAL = 4,
     IDN2_NONTRANSITIONAL = 8,
     IDN2_ALLOW_UNASSIGNED = 16,
-    IDN2_USE_STD3_ASCII_RULES = 32
+    IDN2_USE_STD3_ASCII_RULES = 32,
   } idn2_flags;
 
 /* IDNA2008 with UTF-8 encoded inputs. */

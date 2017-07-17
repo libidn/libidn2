@@ -50,6 +50,7 @@ enum
   TEST_BIDI = 0x0800,
   TEST_TRANSITIONAL = 0x1000,
   TEST_NONTRANSITIONAL = 0x2000,
+  TEST_ALLOW_STD3_DISALLOWED = 0x4000,
 };
 
 extern int _idn2_u8_to_u32_nfc (const uint8_t * src, size_t srclen,
