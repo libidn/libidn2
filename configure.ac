@@ -100,6 +100,10 @@ if test "$enable_doc" = "yes"; then
   if test "$ac_cv_prog_RONN" = ":"; then
     AC_MSG_ERROR([You need the 'ronn' tool to generate the idn2.1 man page])
   fi
+  AC_CHECK_PROG([MAKEINFO], [makeinfo], [makeinfo], [:])
+  if test "$ac_cv_prog_MAKEINFO" = ":"; then
+    AC_MSG_ERROR([You need the 'makeinfo' tool to generate the info pages])
+  fi
 fi
 
 if test "$ac_cv_libunistring" = "yes";then
