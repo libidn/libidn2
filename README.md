@@ -45,8 +45,6 @@ while the rest of the package is GPLv3+.  See the file
 
 # Online docs
 
-[API reference](https://libidn.gitlab.io/libidn2/reference/api-index-full.html)
-
 [Manual](https://libidn.gitlab.io/libidn2/manual/libidn2.html)
 
 

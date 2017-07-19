@@ -115,8 +115,6 @@ AM_CONDITIONAL(HAVE_LIBUNISTRING, test "$ac_cv_libunistring" = "yes")
 AC_CONFIG_FILES([
   Makefile
   doc/Makefile
-  doc/reference/Makefile
-  doc/reference/version.xml
   examples/Makefile
   lib/idn2.h
   lib/Makefile

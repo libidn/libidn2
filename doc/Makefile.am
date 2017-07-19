@@ -13,8 +13,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-SUBDIRS = reference
-
 EXTRA_DIST = gdoc libidn2.html libidn2.pdf texinfo.css idn2.md
 BUILT_SOURCES = idn2.1
 info_TEXINFOS = libidn2.texi
