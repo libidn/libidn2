@@ -22,7 +22,7 @@ Debian GNU/Linux:
   - make abi-check
   - make -C fuzz
   - make clean
-  - ./configure -C --enable-gtk-doc --enable-gtk-doc-pdf --disable-gcc-warnings --disable-valgrind-tests
+  - ./configure -C --disable-gcc-warnings --disable-valgrind-tests
   - make
   - make distcheck
   tags:
@@ -92,14 +92,12 @@ pages:
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
   - ./bootstrap
-  - CFLAGS="-g -O0" ./configure --enable-gtk-doc --enable-code-coverage --disable-gcc-warnings
+  - CFLAGS="-g -O0" ./configure --enable-code-coverage --disable-gcc-warnings
   - make -j$(nproc) check
   - make local-code-coverage-output
   - mkdir -p public
   - rm -rf public/coverage
   - mv libidn2-*-coverage public/coverage
-  - rm -rf public/reference
-  - mv doc/reference/html public/reference
   - make -C doc manual
   - rm -rf public/manual
   - mv doc/manual public/manual
