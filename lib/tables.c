@@ -55,9 +55,10 @@ property (uint32_t cp)
 
   key.start = cp;
 
-  result = bsearch (&key, idna_table, idna_table_size,
-		    sizeof (struct idna_table),
-		    (int (*)(const void *, const void *)) _compare);
+  result = (struct idna_table *)
+	bsearch (&key, idna_table, idna_table_size,
+		 sizeof (struct idna_table),
+		 (int (*)(const void *, const void *)) _compare);
 
   return result ? result->state : UNASSIGNED;
 }

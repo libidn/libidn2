@@ -255,7 +255,7 @@ idn2_to_unicode_44i (const uint32_t * in, size_t inlen, uint32_t * out, size_t *
       return IDN2_OK;
     }
 
-  input_u32 = malloc ((inlen + 1) * sizeof(uint32_t));
+  input_u32 = (uint32_t *) malloc ((inlen + 1) * sizeof(uint32_t));
   if (!input_u32)
     return IDN2_MALLOC;
 

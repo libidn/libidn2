@@ -107,15 +107,15 @@ get_idna_map (uint32_t c, IDNAMap * map)
 
   if (c <= 0xFF)
     p =
-      bsearch (&c, idna_map_8, sizeof (idna_map_8) / 5, 5,
+      (uint8_t *)bsearch (&c, idna_map_8, sizeof (idna_map_8) / 5, 5,
 	       (int (*)(const void *, const void *)) _compare_idna_map);
   else if (c <= 0xFFFF)
     p =
-      bsearch (&c, idna_map_16, sizeof (idna_map_16) / 7, 7,
+      (uint8_t *)bsearch (&c, idna_map_16, sizeof (idna_map_16) / 7, 7,
 	       (int (*)(const void *, const void *)) _compare_idna_map);
   else if (c <= 0xFFFFFF)
     p =
-      bsearch (&c, idna_map_24, sizeof (idna_map_24) / 8, 8,
+      (uint8_t *)bsearch (&c, idna_map_24, sizeof (idna_map_24) / 8, 8,
 	       (int (*)(const void *, const void *)) _compare_idna_map);
   else
     p = NULL;
@@ -149,7 +149,7 @@ _compare_nfcqc_map (uint32_t * c, NFCQCMap * m2)
 NFCQCMap *
 get_nfcqc_map (uint32_t c)
 {
-  return bsearch (&c, nfcqc_map, countof (nfcqc_map), sizeof (NFCQCMap),
+  return (NFCQCMap *)bsearch (&c, nfcqc_map, countof (nfcqc_map), sizeof (NFCQCMap),
 		  (int (*)(const void *, const void *)) _compare_nfcqc_map);
 }
 

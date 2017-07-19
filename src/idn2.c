@@ -43,6 +43,9 @@
 
 #include "blurbs.h"
 
+#ifdef __cplusplus
+extern // define a global const variable in C++, C doesn't need it.
+#endif
 const char version_etc_copyright[] =
   /* Do *not* mark this string for translation.  %s is a copyright
      symbol suitable for this locale, and %d is the copyright

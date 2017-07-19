@@ -32,6 +32,8 @@ endif
 TESTS = test-punycode test-lookup test-register test-strerror test-tounicode repro-to-unicode-8z8z repro-to-ascii-8z
 check_PROGRAMS = $(TESTS)
 
+test_punycode_LDADD = ../lib/punycode.o $(LDADD)
+
 IDNA_TXT = IdnaTest.txt
 IDNA_INC = IdnaTest.inc
 test_lookup_SOURCES = test-lookup.c

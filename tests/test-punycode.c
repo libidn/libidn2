@@ -25,6 +25,7 @@
 #include <string.h>
 
 #include <idn2.h>
+#include "punycode.h"
 
 struct punycode
 {
@@ -215,11 +216,11 @@ main (void)
   if (idn2_check_version ("100.100"))
     fail ("idn2_check_version(\"100.100\") failed\n");
 
-  p = malloc (sizeof (*p) * BUFSIZ);
+  p = (char *) malloc (sizeof (*p) * BUFSIZ);
   if (p == NULL)
     fail ("malloc() returned NULL\n");
 
-  q = malloc (sizeof (*q) * BUFSIZ);
+  q = (uint32_t *) malloc (sizeof (*q) * BUFSIZ);
   if (q == NULL)
     fail ("malloc() returned NULL\n");
 
