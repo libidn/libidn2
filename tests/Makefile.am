@@ -16,7 +16,7 @@
 AM_CPPFLAGS = -I$(top_srcdir) -I$(top_srcdir)/lib -I$(top_builddir)/lib -I$(srcdir) -I$(top_builddir)
 AM_CPPFLAGS += -I$(top_builddir)/gl -I$(top_srcdir)/gl
 AM_CPPFLAGS += -DSRCDIR=\"$(srcdir)\"
-AM_CFLAGS = $(WARN_CFLAGS) $(CODE_COVERAGE_CFLAGS) -Wno-missing-field-initializers
+AM_CFLAGS = $(WARN_CFLAGS) -Wno-missing-field-initializers
 AM_LDFLAGS = -no-install
 
 if !HAVE_LIBUNISTRING
@@ -32,7 +32,7 @@ endif
 TESTS = test-punycode test-lookup test-register test-strerror test-tounicode repro-to-unicode-8z8z repro-to-ascii-8z
 check_PROGRAMS = $(TESTS)
 
-test_punycode_LDADD = ../lib/punycode.o $(LDADD)
+test_punycode_LDADD = ../lib/punycode.o $(LDADD) $(CODE_COVERAGE_LIBS)
 
 IDNA_TXT = IdnaTest.txt
 IDNA_INC = IdnaTest.inc
