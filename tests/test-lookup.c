@@ -921,7 +921,7 @@ test_homebrewed(void)
   } else
     ok++;
 
-  out = (void *) 0x123;
+  out = (uint8_t *) 0x123;
   if ((rc = idn2_lookup_u8 (NULL, &out, 0)) != IDN2_OK) {
     failed++;
     printf("special #2 failed with %d\n", rc);
@@ -937,7 +937,7 @@ test_homebrewed(void)
   } else
     ok++;
 
-  out = (void *) 0x123;
+  out = (uint8_t *) 0x123;
   if ((rc = idn2_lookup_ul (NULL, (char **) &out, 0)) != IDN2_OK) {
     failed++;
     printf("special #4 failed with %d\n", rc);

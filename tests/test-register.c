@@ -124,7 +124,7 @@ main (void)
 	"-------------------------------------");
   for (i = 0; i < sizeof (idna) / sizeof (idna[0]); i++)
     {
-      out = (void *) 0x1234;
+      out = (uint8_t *) 0x1234;
       rc = idn2_register_u8 ((uint8_t*)idna[i].ulabel, (uint8_t*)idna[i].alabel,
 			     &out, idna[i].flags);
       printf ("%3u  %-25s %-25s %-25s %s\n", i, idn2_strerror_name (rc),
@@ -165,7 +165,7 @@ main (void)
   if ((rc = idn2_register_u8 (NULL, NULL, NULL, 0)) != IDN2_OK)
     fail ("special #1 failed with %d\n", rc);
 
-  out = (void *) 0x123;
+  out = (uint8_t *) 0x123;
   if ((rc = idn2_register_u8 (NULL, NULL, &out, 0)) != IDN2_OK)
     fail ("special #2 failed with %d\n", rc);
   if (out)

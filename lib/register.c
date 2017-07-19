@@ -131,7 +131,7 @@ idn2_register_u8 (const uint8_t * ulabel, const uint8_t * alabel,
 
       if (insertname)
 	{
-	  uint8_t *m = (void*)strdup ((char*)alabel);
+	  uint8_t *m = (uint8_t *)strdup ((char*)alabel);
 	  if (!m)
 	    return IDN2_MALLOC;
 
@@ -153,7 +153,7 @@ idn2_register_u8 (const uint8_t * ulabel, const uint8_t * alabel,
 	{
 	  if (insertname)
 	    {
-	      uint8_t *m = (void*)strdup ((char*)ulabel);
+	      uint8_t *m = (uint8_t *)strdup ((char*)ulabel);
 	      if (!m)
 		return IDN2_MALLOC;
 	      *insertname = m;
@@ -195,7 +195,7 @@ idn2_register_u8 (const uint8_t * ulabel, const uint8_t * alabel,
 
       if (insertname)
 	{
-	  uint8_t *m = (void*)strdup ((char*)tmp);
+	  uint8_t *m = (uint8_t *)strdup ((char*)tmp);
 	  if (!m)
 	    return IDN2_MALLOC;
 	  *insertname = m;

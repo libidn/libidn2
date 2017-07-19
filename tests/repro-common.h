@@ -34,7 +34,7 @@ static int load_file(const char *filename, char **output)
 	fseek(fp, 0, SEEK_SET);
 	assert(size>0);
 
-	*output = malloc(size+1);
+	*output = (char *) malloc(size+1);
 	assert(*output != NULL);
 
 	assert(fread(*output, size, 1, fp) != size);

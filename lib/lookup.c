@@ -192,7 +192,7 @@ _tr46 (const uint8_t * domain_u8, uint8_t ** out, int flags)
         }
     }
 
-  uint32_t *tmp = malloc ((len2 + 1) * sizeof (uint32_t));
+  uint32_t *tmp = (uint32_t *) malloc ((len2 + 1) * sizeof (uint32_t));
   if (!tmp)
     {
       free (domain_u32);
@@ -451,7 +451,7 @@ idn2_lookup_u8 (const uint8_t * src, uint8_t ** lookupname, int flags)
 
   if (lookupname)
     {
-      uint8_t *tmp = malloc (lookupnamelen + 1);
+      uint8_t *tmp = (uint8_t *) malloc (lookupnamelen + 1);
 
       if (tmp == NULL)
 	return IDN2_MALLOC;
@@ -565,7 +565,7 @@ idn2_to_ascii_4i (const uint32_t * input, size_t inlen, char * output, int flags
       return IDN2_OK;
     }
 
-  input_u32 = malloc ((inlen + 1) * sizeof(uint32_t));
+  input_u32 = (uint32_t *) malloc ((inlen + 1) * sizeof(uint32_t));
   if (!input_u32)
     return IDN2_MALLOC;
 
