@@ -24,7 +24,7 @@ Debian GNU/Linux:
   - make clean
   - ./configure -C --enable-gtk-doc --enable-gtk-doc-pdf --disable-gcc-warnings --disable-valgrind-tests
   - make
-  - make distcheck
+  - DISTCHECK_CONFIGURE_FLAGS=--disable-gtk-doc make distcheck
   tags:
   - shared
   artifacts:

@@ -28,4 +28,4 @@ for OPTS in "${CONFIGURE_OPTIONS[@]}"; do
 	make clean check -j3 || (cat tests/test-suite.log && exit 1)
 done
 
-make distcheck -j3
+DISTCHECK_CONFIGURE_FLAGS=--disable-gtk-doc make distcheck -j3
