@@ -64,7 +64,7 @@ label (const uint8_t * src, size_t srclen, uint8_t * dst, size_t * dstlen,
 	   entirely in lowercase (converting it to lowercase if
 	   necessary), and apply the tests of Section 5.4 and the
 	   conversion of Section 5.5 to that form. */
-	return -1;
+	return IDN2_INVALID_FLAGS;
 
       if (srclen > IDN2_LABEL_MAX_LENGTH)
 	return IDN2_TOO_BIG_LABEL;
@@ -352,13 +352,22 @@ _tr46 (const uint8_t * domain_u8, uint8_t ** out, int flags)
  * must be encoded in UTF-8 and be in Unicode NFC form.
  *
  * Pass %IDN2_NFC_INPUT in @flags to convert input to NFC form before
- * further processing.  Pass %IDN2_ALABEL_ROUNDTRIP in @flags to
+ * further processing.  %IDN2_TRANSITIONAL and %IDN2_NONTRANSITIONAL
+ * do already imply %IDN2_NFC_INPUT.
+ * Pass %IDN2_ALABEL_ROUNDTRIP in @flags to
  * convert any input A-labels to U-labels and perform additional
- * testing.  Pass %IDN2_TRANSITIONAL to enable Unicode TR46
+ * testing (not implemented yet).
+ * Pass %IDN2_TRANSITIONAL to enable Unicode TR46
  * transitional processing, and %IDN2_NONTRANSITIONAL to enable
  * Unicode TR46 non-transitional processing.  Multiple flags may be
- * specified by binary or:ing them together, for example
- * %IDN2_NFC_INPUT | %IDN2_NONTRANSITIONAL.
+ * specified by binary or:ing them together.
+ *
+ * After version 2.0.3: %IDN2_USE_STD3_ASCII_RULES disabled by default.
+ * Previously we were eliminating non-STD3 characters from domain strings
+ * such as _443._tcp.example.com, or IPs 1.2.3.4/24 provided to libidn2
+ * functions. That was an unexpected regression for applications switching
+ * from libidn and thus it is no longer applied by default.
+ * Use %IDN2_USE_STD3_ASCII_RULES to enable that behavior again.
  *
  * After version 0.11: @lookupname may be NULL to test lookup of @src
  * without allocating memory.
