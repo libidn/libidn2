@@ -21,7 +21,7 @@ if !HAVE_LIBUNISTRING
 SUBDIRS += unistring
 endif
 
-SUBDIRS += gl lib src examples tests po
+SUBDIRS += gl lib src examples tests fuzz po
 ACLOCAL_AMFLAGS = -I m4 -I unistring/m4
 EXTRA_DIST = m4/gnulib-cache.m4
 
@@ -74,3 +74,16 @@ dist-hook: abi-check
 	make ChangeLog
 
 .PHONY: abi-dump abi-check
+
+LCOV_INFO=libidn2.info
+fuzz-coverage: clean
+	$(MAKE) -C gl CFLAGS="$(CFLAGS) --coverage" LDFLAGS="$(LDFLAGS) --coverage"
+	$(MAKE) -C unistring CFLAGS="$(CFLAGS) --coverage" LDFLAGS="$(LDFLAGS) --coverage"
+	$(MAKE) -C lib CFLAGS="$(CFLAGS) --coverage" LDFLAGS="$(LDFLAGS) --coverage"
+	$(MAKE) -C fuzz check CFLAGS="$(CFLAGS) --coverage" LDFLAGS="$(LDFLAGS) --coverage"
+	lcov --capture --initial --directory lib --directory fuzz --output-file $(LCOV_INFO)
+	lcov --capture --directory lib --directory fuzz --output-file $(LCOV_INFO)
+#	lcov --remove $(LCOV_INFO) '*/test_linking.c' '*/css_tokenizer.lex' '*/<stdout>' -o $(LCOV_INFO)
+	genhtml --prefix . --ignore-errors source $(LCOV_INFO) --legend --title "fuzz coverage" --output-directory=lcov
+	@echo
+	@echo "You can now view the coverage report with 'xdg-open lcov/index.html'"

@@ -126,6 +126,7 @@ AC_CONFIG_FILES([
   po/Makefile.in
   src/Makefile
   tests/Makefile
+  fuzz/Makefile
 ])
 AC_OUTPUT
 

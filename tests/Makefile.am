@@ -29,7 +29,7 @@ if !HAVE_LIBUNISTRING
 LDADD += ../unistring/libunistring.la
 endif
 
-TESTS = test-punycode test-lookup test-register test-strerror test-tounicode repro-to-unicode-8z8z repro-to-ascii-8z
+TESTS = test-punycode test-lookup test-register test-strerror test-tounicode
 check_PROGRAMS = $(TESTS)
 
 test_punycode_LDADD = ../lib/punycode.o $(LDADD) $(CODE_COVERAGE_LIBS)
@@ -40,7 +40,7 @@ test_lookup_SOURCES = test-lookup.c
 
 BUILT_SOURCES = $(IDNA_TXT) $(IDNA_INC)
 MAINTAINERCLEANFILES = $(BUILT_SOURCES)
-EXTRA_DIST = gen-utc-test.pl repro-common.h $(IDNA_TXT) $(IDNA_INC) suppressions.valgrind
+EXTRA_DIST = gen-utc-test.pl $(IDNA_TXT) $(IDNA_INC) suppressions.valgrind
 
 $(IDNA_TXT):
 	rm -f $(IDNA_TXT)

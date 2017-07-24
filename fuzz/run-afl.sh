@@ -1,45 +1,66 @@
-#!/bin/sh
-# Copyright (C) 2017 Red Hat, Inc.
+#!/bin/sh -eu
 #
-# This file is part of GnuTLS.
+# Copyright(c) 2017 Tim Ruehsen
 #
-# This file is free software; you can redistribute it and/or modify it
-# under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 3 of the License, or
-# (at your option) any later version.
+# Permission is hereby granted, free of charge, to any person obtaining a
+# copy of this software and associated documentation files (the "Software"),
+# to deal in the Software without restriction, including without limitation
+# the rights to use, copy, modify, merge, publish, distribute, sublicense,
+# and/or sell copies of the Software, and to permit persons to whom the
+# Software is furnished to do so, subject to the following conditions:
 #
-# This file is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# General Public License for more details.
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
 #
-# You should have received a copy of the GNU Lesser General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+#
+# This file is part of libidn.
 
 srcdir="${srcdir:-.}"
 export LD_LIBRARY_PATH=${srcdir}/../lib/.libs/
 
-cat ${srcdir}/../config.log|grep afl-gcc >/dev/null 2>&1
-if test $? != 0;then
+cat ${srcdir}/../config.log|grep afl-clang-fast >/dev/null 2>&1
+if test $? != 0; then
 	echo "compile first library as:"
-	echo "CC=afl-gcc ./configure"
+	echo "CC=afl-clang-fast ./configure"
 	exit 1
 fi
 
-if test -z "$1";then
+if test -z "$1"; then
 	echo "Usage: $0 test-case"
-	echo "Example: $0 gnutls_x509_parser_fuzzer"
+	echo "Example: $0 libidn_toascii_fuzzer"
 	exit 1
 fi
 
 rm -f $1
-CFLAGS="-g -O2" CC=afl-gcc make $1 || exit 1
+CFLAGS="-g -O2" CC=afl-clang-fast make "$1" || exit 1
 
-TEST=$(echo $1|sed s/_fuzzer//)
+### minimize test corpora
+if test -d ${fuzzer}.in; then
+  mkdir -p ${fuzzer}.min
+  for i in `ls ${fuzzer}.in`; do
+    fin="${fuzzer}.in/$i"
+    fmin="${fuzzer}.min/$i"
+    if ! test -e $fmin || test $fin -nt $fmin; then
+      afl-tmin -i $fin -o $fmin -- ./${fuzzer}
+    fi
+  done
+fi
 
-TMPOUT=${TEST}.$$.out
+TMPOUT=${fuzzer}.$$.out
 mkdir -p ${TMPOUT}
-afl-fuzz -i ${TEST}.in -o ${TMPOUT} -- ./${TEST}_fuzzer
+
+if test -f ${fuzzer}.dict; then
+  afl-fuzz -i ${fuzzer}.min -o ${TMPOUT} -x ${fuzzer}.dict -- ./${fuzzer}
+else
+  afl-fuzz -i ${fuzzer}.min -o ${TMPOUT} -- ./${fuzzer}
+fi
 
 echo "output was stored in $TMPOUT"
 

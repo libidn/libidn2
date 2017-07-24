@@ -1,4 +1,5 @@
 !po/POTFILES.in
+*.exe
 *.gcda
 *.gcno
 *.lo
@@ -105,8 +106,8 @@ doc/version.texi
 examples/decode
 examples/lookup
 examples/register
-fuzz/idn2_to_ascii_8z_fuzzer
-fuzz/idn2_to_unicode_8z8z_fuzzer
+fuzz/*_fuzzer
+fuzz/*.log
 gentr46map
 gl/
 idn2.h

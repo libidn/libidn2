@@ -25,7 +25,9 @@ local-checks-to-skip += sc_prohibit_strcmp
 local-checks-to-skip += sc_copyright_check
 
 # Ignore gnulib files.
-VC_LIST_ALWAYS_EXCLUDE_REGEX = ^(maint.mk|build-aux/gnupload|src/gl/.*|gl/.*|m4/.*|tests/.*interesting.*)$$
+VC_LIST_ALWAYS_EXCLUDE_REGEX = \
+  ^(maint.mk|build-aux/gnupload|src/gl/.*|gl/.*|m4/.*|^fuzz/.*.in/.*|^fuzz/.*.repro/.*)$$
+
 
 # Explicit syntax-check exceptions.
 exclude_file_name_regexp--sc_program_name = ^(tests|examples)/.*\.c$$
