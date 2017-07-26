@@ -23,7 +23,7 @@ make clean
 make -j$(nproc)
 cd fuzz
 
-# build and run libpsl_fuzzer
+# build and run fuzzer
 ./run-clang.sh libidn2_to_ascii_8z_fuzzer
 ```
 

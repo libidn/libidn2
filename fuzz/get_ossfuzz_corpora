@@ -16,7 +16,7 @@
 
 if test -z "$1"; then
   echo "Usage: $0 <fuzzer target>"
-  echo "Example: $0 libpsl_fuzzer"
+  echo "Example: $0 libidn2_to_ascii_8z_fuzzer"
   exit 1
 fi
 

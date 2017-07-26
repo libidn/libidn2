@@ -47,8 +47,22 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
 	memcpy(domain, data, size);
 	domain[size] = 0;
 
-	if (idn2_to_unicode_8z8z(domain, &out, 0) == IDNA_SUCCESS)
+	// internally calls idn2_to_unicode_8zlz(), idn2_to_unicode_8z8z(), idn2_to_unicode_8z4z()
+	if (idn2_to_unicode_lzlz(domain, &out, 0) == IDNA_SUCCESS)
 		idn2_free(out);
+
+	if ((size & 3) == 0) {
+		uint32_t *u32 = (uint32_t *) malloc(size);
+		size_t u32len;
+
+		assert(u32 != NULL);
+
+		// internally calls idn2_to_unicode_4z4z(), idn2_to_unicode_8z4z()
+		u32len = size / 4;
+		idn2_to_unicode_44i((uint32_t *) data, size / 4, u32, &u32len, 0);
+
+		free(u32);
+	}
 
 	free(domain);
 	return 0;

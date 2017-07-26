@@ -19,11 +19,11 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  *
- * This file is part of libpsl.
+ * This file is part of libidn2.
  */
 
-#include <stddef.h> // size_t
-#include <stdint.h> // uint8_t
+#include <stddef.h> /* size_t */
+#include <stdint.h> /* uint8_t */
 
 #ifdef __cplusplus
 extern "C"
