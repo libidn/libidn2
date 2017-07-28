@@ -95,17 +95,6 @@ AC_ARG_ENABLE(doc,
     enable_doc=$enableval, enable_doc=yes)
 AM_CONDITIONAL(ENABLE_DOC, test "$enable_doc" != "no")
 
-if test "$enable_doc" = "yes"; then
-  AC_CHECK_PROG([RONN], [ronn], [ronn], [:])
-  if test "$ac_cv_prog_RONN" = ":"; then
-    AC_MSG_ERROR([You need the 'ronn' tool to generate the idn2.1 man page])
-  fi
-  AC_CHECK_PROG([MAKEINFO], [makeinfo], [makeinfo], [:])
-  if test "$ac_cv_prog_MAKEINFO" = ":"; then
-    AC_MSG_ERROR([You need the 'makeinfo' tool to generate the info pages])
-  fi
-fi
-
 if test "$ac_cv_libunistring" = "yes";then
 	AC_SEARCH_LIBS(uc_joining_type, unistring, [], [ac_cv_libunistring=no])
 fi
