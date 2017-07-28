@@ -43,6 +43,7 @@ clang-5.0 \
  $CFLAGS -Og -g -I../include -I.. \
  ${fuzzer}.c -o ${fuzzer} \
  -Wl,-Bstatic ../lib/.libs/libidn2.a -lFuzzer \
+ -lunistring \
  -Wl,-Bdynamic -lclang-5.0 -lstdc++
 
 if test -n "$BUILD_ONLY"; then

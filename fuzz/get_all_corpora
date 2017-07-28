@@ -1,5 +1,5 @@
 #!/bin/sh -eu
 
 for fuzzer in *_fuzzer.c; do
-  echo ./get_ossfuzz_corpora $(basename $fuzzer .c)
+  ./get_ossfuzz_corpora $(basename $fuzzer .c)
 done
