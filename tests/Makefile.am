@@ -32,7 +32,7 @@ endif
 TESTS = test-punycode test-lookup test-register test-strerror test-tounicode
 check_PROGRAMS = $(TESTS)
 
-test_punycode_LDADD = ../lib/punycode.o $(LDADD) $(CODE_COVERAGE_LIBS)
+test_punycode_LDADD = ../lib/puny_decode.o ../lib/puny_encode.o $(LDADD) $(CODE_COVERAGE_LIBS)
 
 IDNA_TXT = IdnaTest.txt
 IDNA_INC = IdnaTest.inc
