@@ -30,6 +30,7 @@
 
 #include "idn2.h"
 
+#include <sys/types.h>
 #include <stdbool.h>
 
 #include "bidi.h"
@@ -39,7 +40,7 @@
 static bool
 _isBidi (const uint32_t *label, size_t llen)
 {
-  while (llen-- > 0) {
+  for (; (ssize_t) llen > 0; llen--) {
     int bc = uc_bidi_category (*label++);
 
     if (bc == UC_BIDI_R || bc == UC_BIDI_AL || bc == UC_BIDI_AN)
