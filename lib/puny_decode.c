@@ -93,10 +93,10 @@ enum { base = 36, tmin = 1, tmax = 26, skew = 38, damp = 700,
 /* point (for use in representing integers) in the range 0 to */
 /* base-1, or base if cp does not represent a value.          */
 
-static punycode_uint decode_digit(punycode_uint cp)
+static unsigned decode_digit(int cp)
 {
-  return  cp - 48 < 10 ? cp - 22 :  cp - 65 < 26 ? cp - 65 :
-          cp - 97 < 26 ? cp - 97 :  base;
+  return (unsigned) (cp - 48 < 10 ? cp - 22 :  cp - 65 < 26 ? cp - 65 :
+         cp - 97 < 26 ? cp - 97 :  base);
 }
 
 /*** Platform-specific constants ***/
