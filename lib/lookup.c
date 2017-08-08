@@ -533,7 +533,7 @@ idn2_lookup_ul (const char * src, char ** lookupname, int flags)
  * @input: zero terminated input Unicode (UCS-4) string.
  * @inlen: number of elements in @input.
  * @output: pointer to newly allocated zero-terminated output string.
- * @flags: are ignored.
+ * @flags: optional #idn2_flags to modify behaviour.
  *
  * The ToASCII operation takes a sequence of Unicode code points that make
  * up one domain label and transforms it into a sequence of code points in
@@ -611,7 +611,7 @@ idn2_to_ascii_4i (const uint32_t * input, size_t inlen, char * output, int flags
  * idn2_to_ascii_4z:
  * @input: zero terminated input Unicode (UCS-4) string.
  * @output: pointer to newly allocated zero-terminated output string.
- * @flags: are ignored
+ * @flags: optional #idn2_flags to modify behaviour.
  *
  * Convert UCS-4 domain name to ASCII string using the IDNA2008
  * rules.  The domain name may contain several labels, separated by dots.
@@ -656,7 +656,7 @@ idn2_to_ascii_4z (const uint32_t * input, char ** output, int flags)
  * idn2_to_ascii_8z:
  * @input: zero terminated input UTF-8 string.
  * @output: pointer to newly allocated output string.
- * @flags: are ignored
+ * @flags: optional #idn2_flags to modify behaviour.
  *
  * Convert UTF-8 domain name to ASCII string using the IDNA2008
  * rules.  The domain name may contain several labels, separated by dots.
@@ -679,7 +679,7 @@ idn2_to_ascii_8z (const char * input, char ** output, int flags)
  * idn2_to_ascii_lz:
  * @input: zero terminated input UTF-8 string.
  * @output: pointer to newly allocated output string.
- * @flags: are ignored
+ * @flags: optional #idn2_flags to modify behaviour.
  *
  * Convert a domain name in locale's encoding to ASCII string using the IDNA2008
  * rules.  The domain name may contain several labels, separated by dots.

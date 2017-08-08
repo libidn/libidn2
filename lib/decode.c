@@ -43,7 +43,7 @@
  * idn2_to_unicode_8z4z:
  * @input: Input zero-terminated UTF-8 string.
  * @output: Newly allocated UTF-32/UCS-4 output string.
- * @flags: Currently unused.
+ * @flags: optional #idn2_flags to modify behaviour.
  *
  * Converts a possibly ACE encoded domain name in UTF-8 format into a
  * UTF-32 string (punycode decoding). The output buffer will be zero-terminated
@@ -160,7 +160,7 @@ idn2_to_unicode_8z4z (const char * input, uint32_t ** output, G_GNUC_UNUSED int 
  * idn2_to_unicode_4z4z:
  * @input: Input zero-terminated UTF-32 string.
  * @output: Newly allocated UTF-32 output string.
- * @flags: Currently unused.
+ * @flags: optional #idn2_flags to modify behaviour.
  *
  * Converts a possibly ACE encoded domain name in UTF-32 format into a
  * UTF-32 string (punycode decoding). The output buffer will be zero-terminated
@@ -221,7 +221,7 @@ idn2_to_unicode_4z4z (const uint32_t * input, uint32_t ** output, int flags)
  * @out: output array with UTF-32 code points.
  * @outlen: on input, maximum size of output array with UTF-32 code points,
  *          on exit, actual size of output array with UTF-32 code points.
- * @flags: Currently unused.
+ * @flags: optional #idn2_flags to modify behaviour.
  *
  * The ToUnicode operation takes a sequence of UTF-32 code points
  * that make up one domain label and returns a sequence of UTF-32
@@ -282,7 +282,7 @@ idn2_to_unicode_44i (const uint32_t * in, size_t inlen, uint32_t * out, size_t *
  * idn2_to_unicode_8z8z:
  * @input: Input zero-terminated UTF-8 string.
  * @output: Newly allocated UTF-8 output string.
- * @flags: Currently unused.
+ * @flags: optional #idn2_flags to modify behaviour.
  *
  * Converts a possibly ACE encoded domain name in UTF-8 format into a
  * UTF-8 string (punycode decoding). The output buffer will be zero-terminated
@@ -333,7 +333,7 @@ idn2_to_unicode_8z8z (const char * input, char ** output, int flags)
  * idn2_to_unicode_8zlz:
  * @input: Input zero-terminated UTF-8 string.
  * @output: Newly allocated output string in current locale's character set.
- * @flags: Currently unused.
+ * @flags: optional #idn2_flags to modify behaviour.
  *
  * Converts a possibly ACE encoded domain name in UTF-8 format into a
  * string encoded in the current locale's character set (punycode
@@ -376,7 +376,7 @@ idn2_to_unicode_8zlz (const char * input, char ** output, int flags)
  * idn2_to_unicode_lzlz:
  * @input: Input zero-terminated string encoded in the current locale's character set.
  * @output: Newly allocated output string in current locale's character set.
- * @flags: Currently unused.
+ * @flags: optional #idn2_flags to modify behaviour.
  *
  * Converts a possibly ACE encoded domain name in the locale's character
  * set into a string encoded in the current locale's character set (punycode
