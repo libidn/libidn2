@@ -20,7 +20,7 @@ standards.
 
 The API consists of two main functions, ```idn2_to_ascii_8z``` for
 converting data from UTF-8 to ASCII Compatible Encoding (ACE), and
-```idna_to_unicode_8z8z``` to convert ACE names into UTF-8
+```idn2_to_unicode_8z8z``` to convert ACE names into UTF-8
 format. There are several variations of these main functions, which
 accept UTF-32, or input in the local system encoding. All functions
 assume zero-terminated strings.
