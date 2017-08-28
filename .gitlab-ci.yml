@@ -55,7 +55,7 @@ Debian ASAN/UBSAN:
     expire_in: 2 weeks
     when: on_failure
     paths:
-      - */*.log
+      - tests/*.log
       - ./*.log
 
 Centos7:
