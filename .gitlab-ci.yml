@@ -55,7 +55,8 @@ Debian ASAN/UBSAN:
     expire_in: 2 weeks
     when: on_failure
     paths:
-      - tests/*.log
+      - */*.log
+      - ./*.log
 
 Centos7:
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$CENTOS7_BUILD
