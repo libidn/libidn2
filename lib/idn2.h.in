@@ -335,7 +335,7 @@ extern "C"
   #define idna_to_unicode_lzlz  idn2_to_unicode_lzlz
 
   #define idna_strerror         idn2_strerror
-  #define idna_free             idn2_free
+  #define idn_free              idn2_free
 
 #endif /* IDNA_H */
 
