@@ -41,13 +41,16 @@ Debian ASAN/UBSAN:
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
   - ./bootstrap
-  - CFLAGS="-fsanitize=address -g -O2" ./configure --disable-doc --disable-gcc-warnings
+  - export CC=clang
+  - export CFLAGS="-fsanitize=address -g -O0"
+  - ASAN_OPTIONS=detect_leaks=0 ./configure --disable-doc --disable-gcc-warnings
   - make -j$(nproc) check
   - make clean
-  - CFLAGS="-fsanitize=undefined -fno-sanitize-recover -g -O2 -Wall -Wextra" ./configure --disable-doc --disable-gcc-warnings
+  - export CFLAGS="-fsanitize=undefined,integer -fno-sanitize-recover=undefined,integer -g -O0"
+  - ./configure --disable-doc --disable-gcc-warnings
   - make -C unistring && make -C gl
-  - make -C lib CFLAGS="-fsanitize=undefined -fno-sanitize-recover -g -O2 -Wall -Wextra -Werror"
-  - make -C examples CFLAGS="-fsanitize=undefined -fno-sanitize-recover -g -O2 -Wall -Wextra -Werror -Wno-unused-parameter"
+  - make -C lib CFLAGS="$CFLAGS -Wall -Wextra -Werror"
+  - make -C examples CFLAGS="$CFLAGS -Wall -Wextra -Werror -Wno-unused-parameter"
   - make -j$(nproc) check
   tags:
   - shared
