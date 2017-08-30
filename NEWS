@@ -2,6 +2,19 @@ Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
 Copyright (C) 2011-2017 Simon Josefsson
 See the end for copying conditions.
 
+* Version 2.0.4 (released 2017-08-30)
+
+** Fix integer overflow in bidi.c/_isBidi()
+
+** Fix integer overflow in puny_decode.c/decode_digit()
+
+** Improve docs
+
+** Fix idna_free() to idn_free()
+
+** Update fuzzer corpora
+
+
 * Version 2.0.3 (released 2017-07-24) [beta]
 
 ** %IDN2_USE_STD3_ASCII_RULES disabled by default.
