@@ -81,10 +81,10 @@ coverage-upload:
 	cvs commit -m "Update." coverage
 
 clang:
-	make clean
+	$(MAKE) clean
 	scan-build ./configure
 	rm -rf scan.tmp
-	scan-build -o scan.tmp make
+	scan-build -o scan.tmp $(MAKE)
 
 clang-copy:
 	rm -fv `find $(htmldir)/clang-analyzer -type f | grep -v CVS`
