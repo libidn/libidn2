@@ -48,7 +48,7 @@ idn2.1: idn2.md
 	ronn -r $^ >$@
 
 CLEANFILES = $(dist_man_MANS) decode.c example-tounicode.c example-toascii.c lookup.c \
-	register.c stamp-vti version.texi $(srcdir)/libidn2.info
+	register.c stamp-vti version.texi
 
 # GDOC
 
