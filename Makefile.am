@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-DISTCHECK_CONFIGURE_FLAGS ?= --enable-gtk-doc --disable-gcc-warnings
+DISTCHECK_CONFIGURE_FLAGS ?= --enable-gtk-doc --enable-gtk-doc-pdf --disable-gcc-warnings
 
 SUBDIRS =
 
@@ -71,7 +71,7 @@ abi-dump: lib/idn2.h lib/libidn2.la
 
 dist-hook: abi-check
 	rm -f ChangeLog
-	make ChangeLog
+	$(MAKE) ChangeLog
 
 .PHONY: abi-dump abi-check
 

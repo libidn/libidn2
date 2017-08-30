@@ -10,7 +10,7 @@ echo "* Bootstrap"
 
 echo
 echo "* Configure"
-./configure -q --enable-gtk-doc
+./configure -q --enable-gtk-doc --enable-gtk-doc-pdf
 
 extensions="gz lz"
 app_name=$(grep "^PACKAGE_NAME='" configure|cut -d "'" -f2)
