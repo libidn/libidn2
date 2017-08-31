@@ -35,7 +35,7 @@ AC_SUBST([IDN2_VERSION_NUMBER], [`printf '0x%02x%02x%04x' $IDN2_VERSION_MAJOR $I
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
-AM_INIT_AUTOMAKE([foreign -Wall -Werror subdir-objects])
+AM_INIT_AUTOMAKE([foreign -Wall -Wno-portability subdir-objects])
 AC_CANONICAL_HOST
 
 AC_PROG_CC
