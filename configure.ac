@@ -47,7 +47,15 @@ m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
 LT_INIT([win32-dll])
 gl_INIT
 unistring_INIT
+
+#
+# check for gtk-doc
+#
+m4_ifdef([GTK_DOC_CHECK], [
 GTK_DOC_CHECK([1.14],[--flavour no-tmpl])
+],[
+AM_CONDITIONAL([ENABLE_GTK_DOC], false)
+])
 
 AM_GNU_GETTEXT(external)
 AM_GNU_GETTEXT_VERSION(0.19.3)
