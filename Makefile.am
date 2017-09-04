@@ -48,20 +48,24 @@ local-code-coverage-output: code-coverage-capture
 
 ABI_TMPDIR="headers.abi.tmp"
 ABI_TMPFILE="abi-temp.xml"
-abi-check: lib/idn2.h lib/libidn2.la
+abi-check:
+	$(MAKE) -C gl
+	$(MAKE) -C lib
 	@rm -f $(ABI_TMPFILE)
 	@echo "Checking libidn2 ABI"
 	@echo "<version>$(VERSION)</version>" >$(ABI_TMPFILE)
 	@echo "<headers>$(srcdir)/lib/idn2.h" >>$(ABI_TMPFILE)
 	@echo "$(builddir)/lib/idn2.h</headers>" >>$(ABI_TMPFILE)
 	@echo "<libs>$(builddir)/lib/.libs</libs>" >>$(ABI_TMPFILE)
-	for i in 2.0.2; do \
+	for i in 2.0.2 2.0.3; do \
 	  test ! -f "$(srcdir)/devel/ABI-$$i-$$(uname -m).dump" || \
-	  abi-compliance-checker --v1=2.0.2 -abi -lib libidn2 -old "$(srcdir)/devel/ABI-$$i-$$(uname -m).dump" -new $(ABI_TMPFILE); \
+	  abi-compliance-checker --v1=2.0.4 -abi -lib libidn2 -old "$(srcdir)/devel/ABI-$$i-$$(uname -m).dump" -new $(ABI_TMPFILE); \
 	done
 	@rm -f $(ABI_TMPFILE)
 
-abi-dump: lib/idn2.h lib/libidn2.la
+abi-dump:
+	$(MAKE) -C gl
+	$(MAKE) -C lib
 	@rm -rf $(ABI_TMPDIR)
 	@mkdir -p $(ABI_TMPDIR)
 	@mkdir -p devel
