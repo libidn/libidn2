@@ -958,7 +958,7 @@ test_homebrewed(void)
     failed++;
     printf("special #6 failed with %d\n", rc);
   } else {
-    idn_free (out);
+    idn2_free (out);
     ok++;
   }
 
@@ -966,7 +966,7 @@ test_homebrewed(void)
     failed++;
     printf("special #7 failed with %d\n", rc);
   } else {
-    idn_free (out);
+    idn2_free (out);
     ok++;
   }
 
@@ -974,7 +974,7 @@ test_homebrewed(void)
     failed++;
     printf("special #8 failed with %d\n", rc);
   } else {
-    idn_free (out);
+    idn2_free (out);
     ok++;
   }
 
