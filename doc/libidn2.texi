@@ -350,9 +350,11 @@ if (rc != IDN2_OK)
 
 Note that, although the table only lists the UTF-8 functions, the mapping
 is identical for every other one on the family of toUnicode and toAscii.
-As the IDNA2003 details differ signicantly to IDNA2008, no flags used in
-the libidn functions map to any specific flags; it is safe to use
-the suggested libidn2 flags.
+As the IDNA2003 details differ signicantly to IDNA2008, not all flags used in
+the libidn functions map to any specific flags; it is typically safe to use
+the suggested libidn2 flags. Exceptionally the libidn flag @code{IDNA_USE_STD3_ASCII_RULES}
+is mapped to @code{IDN2_USE_STD3_ASCII_RULES}.
+
 
 @section Converting with backwards compatibility
 In several cases where IDNA2008 mappings do not exist whereas IDNA2003
