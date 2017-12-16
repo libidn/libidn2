@@ -74,7 +74,7 @@ abi-dump:
 	@abi-dumper lib/.libs/libidn2.so -o "./devel/ABI-$(VERSION)-$$(uname -m).dump" -public-headers $(ABI_TMPDIR)
 	@rm -rf $(ABI_TMPDIR)
 
-dist-hook: abi-check
+dist-hook:
 	rm -f ChangeLog
 	$(MAKE) ChangeLog
 
