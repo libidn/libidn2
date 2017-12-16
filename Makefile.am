@@ -57,7 +57,8 @@ abi-check:
 	@echo "<headers>$(srcdir)/lib/idn2.h" >>$(ABI_TMPFILE)
 	@echo "$(builddir)/lib/idn2.h</headers>" >>$(ABI_TMPFILE)
 	@echo "<libs>$(builddir)/lib/.libs</libs>" >>$(ABI_TMPFILE)
-	for i in 2.0.2 2.0.3; do \
+	set -e; export PATH="/sbin:$$PATH"; \
+        for i in 2.0.2 2.0.3; do \
 	  test ! -f "$(srcdir)/devel/ABI-$$i-$$(uname -m).dump" || \
 	  abi-compliance-checker --v1=2.0.4 -abi -lib libidn2 -old "$(srcdir)/devel/ABI-$$i-$$(uname -m).dump" -new $(ABI_TMPFILE); \
 	done
