@@ -103,17 +103,22 @@ AC_ARG_ENABLE(doc,
     enable_doc=$enableval, enable_doc=yes)
 AM_CONDITIONAL(ENABLE_DOC, test "$enable_doc" != "no")
 
+if test "$enable_doc" = "yes";then
+  AC_CONFIG_FILES([
+    doc/Makefile
+    doc/reference/Makefile
+    doc/reference/version.xml
+  ])
+fi
+
 if test "$ac_cv_libunistring" = "yes";then
-	AC_SEARCH_LIBS(uc_joining_type, unistring, [], [ac_cv_libunistring=no])
+  AC_SEARCH_LIBS(uc_joining_type, unistring, [], [ac_cv_libunistring=no])
 fi
 
 AM_CONDITIONAL(HAVE_LIBUNISTRING, test "$ac_cv_libunistring" = "yes")
 
 AC_CONFIG_FILES([
   Makefile
-  doc/Makefile
-  doc/reference/Makefile
-  doc/reference/version.xml
   examples/Makefile
   lib/idn2.h
   lib/Makefile
