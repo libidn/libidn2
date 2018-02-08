@@ -89,7 +89,10 @@ label (const uint8_t * src, size_t srclen, uint8_t * dst, size_t * dstlen,
 	TEST_DISALLOWED |
 	TEST_CONTEXTJ_RULE |
 	TEST_CONTEXTO_WITH_RULE |
-	TEST_UNASSIGNED | TEST_BIDI, p, plen);
+	TEST_UNASSIGNED | TEST_BIDI |
+	((flags & IDN2_NONTRANSITIONAL) ? TEST_NONTRANSITIONAL : 0) |
+	((flags & IDN2_USE_STD3_ASCII_RULES) ? 0 : TEST_ALLOW_STD3_DISALLOWED),
+	p, plen);
 
       if (rc != IDN2_OK)
 	{

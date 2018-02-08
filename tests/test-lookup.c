@@ -814,13 +814,20 @@ static const struct idna idna[] = {
   },
   /* âˆš.com */
   {"\xe2\x88\x9a.com", "xn--19g.com", IDN2_OK, IDN2_TRANSITIONAL},
-  /* domains with non-STD3 characters (removed by default when using TR46 transitional/non-trnasitional */
+  /* domains with non-STD3 characters (removed by default when using TR46 transitional/non-transitional */
   {"_443._tcp.example.com", "_443._tcp.example.com", IDN2_OK, 0},
   {"_443._tcp.example.com", "_443._tcp.example.com", IDN2_OK, IDN2_TRANSITIONAL},
   {"_443._tcp.example.com", "_443._tcp.example.com", IDN2_OK, IDN2_NONTRANSITIONAL},
   {"_443._tcp.example.com", "443.tcp.example.com", IDN2_OK, IDN2_USE_STD3_ASCII_RULES|IDN2_NONTRANSITIONAL},
   {"_443._tcp.example.com", "443.tcp.example.com", IDN2_OK, IDN2_USE_STD3_ASCII_RULES|IDN2_TRANSITIONAL},
   {"_443._tcp.example.com", "_443._tcp.example.com", IDN2_OK, IDN2_USE_STD3_ASCII_RULES}, /* flag is ignored when not using TR46 */
+  /* _üˆš */
+  {"_\xc3\xbc", "xn--_-eha", IDN2_DISALLOWED, 0},
+  {"_\xc3\xbc", "xn--_-eha", IDN2_OK, IDN2_TRANSITIONAL},
+  {"_\xc3\xbc", "xn--_-eha", IDN2_OK, IDN2_NONTRANSITIONAL},
+  {"_\xc3\xbc", "xn--tda", IDN2_OK, IDN2_USE_STD3_ASCII_RULES|IDN2_NONTRANSITIONAL},
+  {"_\xc3\xbc", "xn--tda", IDN2_OK, IDN2_USE_STD3_ASCII_RULES|IDN2_TRANSITIONAL},
+  {"_\xc3\xbc", "xn--_-eha", IDN2_DISALLOWED, IDN2_USE_STD3_ASCII_RULES}, /* flag is ignored when not using TR46 */
 };
 
 static int ok = 0, failed = 0;

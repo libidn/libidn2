@@ -180,7 +180,20 @@ _idn2_label_test (int what, const uint32_t * label, size_t llen)
       size_t i;
       for (i = 0; i < llen; i++)
 	if (_idn2_disallowed_p (label[i]))
-	  return IDN2_DISALLOWED;
+	  {
+	    if ((what & (TEST_TRANSITIONAL | TEST_NONTRANSITIONAL)) &&
+		(what & TEST_ALLOW_STD3_DISALLOWED))
+	    {
+	      IDNAMap map;
+	      get_idna_map (label[i], &map);
+	      if (map_is (&map, TR46_FLG_DISALLOWED_STD3_VALID) ||
+		  map_is (&map, TR46_FLG_DISALLOWED_STD3_MAPPED))
+	      continue;
+
+	    }
+
+	    return IDN2_DISALLOWED;
+	  }
     }
 
   if (what & TEST_CONTEXTJ)
