@@ -503,10 +503,16 @@ main (void)
       rc = idn2_to_unicode_8zlz (t->punycode, &utf8_lz, 0);
       if (rc == IDN2_OK)
 	{
+	  if (debug)
+	    printf("utf8_lz=%s\n", utf8_lz);
 	  utf8 = u8_strconv_from_locale (utf8_lz);
 	  free (utf8_lz);
+	  if (debug)
+	    printf("utf8=%s\n", utf8);
 	  ucs4 = u8_to_u32 (utf8, u8_strlen (utf8) + 1, NULL, &outlen);
 	  free (utf8);
+	  if (debug)
+	    printf("outlen=%zu\n", outlen);
 	}
       _check_4z (t, rc, ucs4, "idn2_to_unicode_8zlz");
 

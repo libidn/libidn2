@@ -19,7 +19,9 @@ fi
 if [[ $TRAVIS_OS_NAME = 'osx' ]]; then
 	./configure --disable-doc
 	make install -j3
-	make check -j3 || (cat tests/test-suite.log && exit 1)
+        locale
+        export LC_ALL=en_US.UTF-8
+	TESTS_ENVIRONMENT="LC_ALL=en_US.UTF-8" make check -j3 || (cat tests/test-suite.log && exit 1)
 	exit 0
 fi
 
