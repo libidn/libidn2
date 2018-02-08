@@ -352,7 +352,7 @@ const test_t test[] = {
   },
 };
 
-static int debug = 0;
+static int debug = 1;
 static int error_count = 0;
 static int break_on_error = 0;
 
