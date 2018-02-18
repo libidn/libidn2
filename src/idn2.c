@@ -92,7 +92,7 @@ Mandatory arguments to long options are mandatory for short options too.\n\
       --no-tr46            Disable TR46 processing\n\
 "), stdout);
       fputs (_("\
-      --nostd3asciirules   Disable STD3 ASCII rules\n\
+      --usestd3asciirules  Enable STD3 ASCII rules\n\
       --debug              Print debugging information\n\
       --quiet              Silent operation\n\
 "), stdout);
