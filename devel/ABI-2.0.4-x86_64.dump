@@ -1,16 +1,14 @@
 $VAR1 = {
-          'ABI_DUMPER_VERSION' => '1.1',
-          'ABI_DUMP_VERSION' => '3.5',
+          'ABI_DUMPER_VERSION' => '0.99.16',
+          'ABI_DUMP_VERSION' => '3.2',
           'Arch' => 'x86_64',
-          'GccVersion' => '7.2.1',
+          'GccVersion' => '7.2.0',
           'Headers' => {
                          'idn2.h' => 1
                        },
           'Language' => 'C',
           'LibraryName' => 'libidn2.so.0.3.3',
           'LibraryVersion' => undef,
-          'MissedOffsets' => '1',
-          'MissedRegs' => '1',
           'NameSpaces' => {},
           'Needed' => {
                         'libc.so.6' => 1,
@@ -19,58 +17,18 @@ $VAR1 = {
           'PublicABI' => '1',
           'Sources' => {
                          'decode.c' => 1,
-                         'error.c' => 1,
                          'free.c' => 1,
                          'lookup.c' => 1,
-                         'register.c' => 1,
-                         'version.c' => 1
+                         'register.c' => 1
                        },
           'SymbolInfo' => {
-                            '11265' => {
-                                         'Header' => 'idn2.h',
-                                         'Param' => {
-                                                      '0' => {
-                                                               'name' => 'req_version',
-                                                               'type' => '3598'
-                                                             }
-                                                    },
-                                         'Return' => '3598',
-                                         'ShortName' => 'idn2_check_version',
-                                         'Source' => 'version.c',
-                                         'SourceLine' => '60'
-                                       },
-                            '11664' => {
-                                         'Header' => 'idn2.h',
-                                         'Param' => {
-                                                      '0' => {
-                                                               'name' => 'rc',
-                                                               'type' => '121'
-                                                             }
-                                                    },
-                                         'Return' => '3598',
-                                         'ShortName' => 'idn2_strerror_name',
-                                         'Source' => 'error.c',
-                                         'SourceLine' => '175'
-                                       },
-                            '11723' => {
-                                         'Header' => 'idn2.h',
-                                         'Param' => {
-                                                      '0' => {
-                                                               'name' => 'rc',
-                                                               'type' => '121'
-                                                             }
-                                                    },
-                                         'Return' => '3598',
-                                         'ShortName' => 'idn2_strerror',
-                                         'Source' => 'error.c',
-                                         'SourceLine' => '47'
-                                       },
-                            '13777' => {
+                            '13743' => {
                                          'Header' => 'idn2.h',
                                          'Param' => {
                                                       '0' => {
                                                                'name' => 'ptr',
-                                                               'type' => '13735'
+                                                               'offset' => '-24',
+                                                               'type' => '13734'
                                                              }
                                                     },
                                          'Return' => '1',
@@ -78,322 +36,373 @@ $VAR1 = {
                                          'Source' => 'free.c',
                                          'SourceLine' => '46'
                                        },
-                            '4172' => {
+                            '4138' => {
                                         'Header' => 'idn2.h',
                                         'Param' => {
                                                      '0' => {
                                                               'name' => 'input',
-                                                              'type' => '3598'
+                                                              'offset' => '-24',
+                                                              'type' => '3546'
                                                             },
                                                      '1' => {
                                                               'name' => 'output',
-                                                              'type' => '4252'
+                                                              'offset' => '-32',
+                                                              'type' => '4218'
                                                             },
                                                      '2' => {
                                                               'name' => 'flags',
-                                                              'type' => '121'
+                                                              'offset' => '-36',
+                                                              'type' => '59'
                                                             }
                                                    },
-                                        'Return' => '121',
+                                        'Return' => '59',
                                         'ShortName' => 'idn2_to_ascii_lz',
                                         'Source' => 'lookup.c',
                                         'SourceLine' => '697'
                                       },
-                            '4258' => {
+                            '4224' => {
                                         'Header' => 'idn2.h',
                                         'Param' => {
                                                      '0' => {
                                                               'name' => 'input',
-                                                              'type' => '3598'
+                                                              'offset' => '-24',
+                                                              'type' => '3546'
                                                             },
                                                      '1' => {
                                                               'name' => 'output',
-                                                              'type' => '4252'
+                                                              'offset' => '-32',
+                                                              'type' => '4218'
                                                             },
                                                      '2' => {
                                                               'name' => 'flags',
-                                                              'type' => '121'
+                                                              'offset' => '-36',
+                                                              'type' => '59'
                                                             }
                                                    },
-                                        'Return' => '121',
+                                        'Return' => '59',
                                         'ShortName' => 'idn2_to_ascii_8z',
                                         'Source' => 'lookup.c',
                                         'SourceLine' => '673'
                                       },
-                            '4338' => {
+                            '4304' => {
                                         'Header' => 'idn2.h',
                                         'Param' => {
                                                      '0' => {
                                                               'name' => 'input',
-                                                              'type' => '2973'
+                                                              'offset' => '-56',
+                                                              'type' => '2939'
                                                             },
                                                      '1' => {
                                                               'name' => 'output',
-                                                              'type' => '4252'
+                                                              'offset' => '-64',
+                                                              'type' => '4218'
                                                             },
                                                      '2' => {
                                                               'name' => 'flags',
-                                                              'type' => '121'
+                                                              'offset' => '-68',
+                                                              'type' => '59'
                                                             }
                                                    },
-                                        'Return' => '121',
+                                        'Return' => '59',
                                         'ShortName' => 'idn2_to_ascii_4z',
                                         'Source' => 'lookup.c',
                                         'SourceLine' => '628'
                                       },
-                            '4475' => {
+                            '4441' => {
                                         'Header' => 'idn2.h',
                                         'Param' => {
                                                      '0' => {
                                                               'name' => 'input',
-                                                              'type' => '2973'
+                                                              'offset' => '-72',
+                                                              'type' => '2939'
                                                             },
                                                      '1' => {
                                                               'name' => 'inlen',
-                                                              'type' => '191'
+                                                              'offset' => '-80',
+                                                              'type' => '144'
                                                             },
                                                      '2' => {
                                                               'name' => 'output',
-                                                              'type' => '135'
+                                                              'offset' => '-88',
+                                                              'type' => '397'
                                                             },
                                                      '3' => {
                                                               'name' => 'flags',
-                                                              'type' => '121'
+                                                              'offset' => '-92',
+                                                              'type' => '59'
                                                             }
                                                    },
-                                        'Return' => '121',
+                                        'Return' => '59',
                                         'ShortName' => 'idn2_to_ascii_4i',
                                         'Source' => 'lookup.c',
                                         'SourceLine' => '563'
                                       },
-                            '4654' => {
+                            '4620' => {
                                         'Header' => 'idn2.h',
                                         'Param' => {
                                                      '0' => {
                                                               'name' => 'src',
-                                                              'type' => '3598'
+                                                              'offset' => '-40',
+                                                              'type' => '3546'
                                                             },
                                                      '1' => {
                                                               'name' => 'lookupname',
-                                                              'type' => '4252'
+                                                              'offset' => '-48',
+                                                              'type' => '4218'
                                                             },
                                                      '2' => {
                                                               'name' => 'flags',
-                                                              'type' => '121'
+                                                              'offset' => '-52',
+                                                              'type' => '59'
                                                             }
                                                    },
-                                        'Return' => '121',
+                                        'Return' => '59',
                                         'ShortName' => 'idn2_lookup_ul',
                                         'Source' => 'lookup.c',
                                         'SourceLine' => '507'
                                       },
-                            '4763' => {
+                            '4729' => {
                                         'Header' => 'idn2.h',
                                         'Param' => {
                                                      '0' => {
                                                               'name' => 'src',
-                                                              'type' => '3059'
+                                                              'offset' => '-664',
+                                                              'type' => '3025'
                                                             },
                                                      '1' => {
                                                               'name' => 'lookupname',
-                                                              'type' => '5098'
+                                                              'offset' => '-672',
+                                                              'type' => '5064'
                                                             },
                                                      '2' => {
                                                               'name' => 'flags',
-                                                              'type' => '121'
+                                                              'offset' => '-676',
+                                                              'type' => '59'
                                                             }
                                                    },
-                                        'Return' => '121',
+                                        'Return' => '59',
                                         'ShortName' => 'idn2_lookup_u8',
                                         'Source' => 'lookup.c',
                                         'SourceLine' => '383'
                                       },
-                            '6186' => {
+                            '6152' => {
                                         'Header' => 'idn2.h',
                                         'Param' => {
                                                      '0' => {
                                                               'name' => 'input',
-                                                              'type' => '3598'
+                                                              'offset' => '-40',
+                                                              'type' => '3546'
                                                             },
                                                      '1' => {
                                                               'name' => 'output',
-                                                              'type' => '4252'
+                                                              'offset' => '-48',
+                                                              'type' => '4218'
                                                             },
                                                      '2' => {
                                                               'name' => 'flags',
-                                                              'type' => '121'
+                                                              'offset' => '-52',
+                                                              'type' => '59'
                                                             }
                                                    },
-                                        'Return' => '121',
+                                        'Return' => '59',
                                         'ShortName' => 'idn2_to_unicode_lzlz',
                                         'Source' => 'decode.c',
                                         'SourceLine' => '398'
                                       },
-                            '6307' => {
+                            '6273' => {
                                         'Header' => 'idn2.h',
                                         'Param' => {
                                                      '0' => {
                                                               'name' => 'input',
-                                                              'type' => '3598'
+                                                              'offset' => '-56',
+                                                              'type' => '3546'
                                                             },
                                                      '1' => {
                                                               'name' => 'output',
-                                                              'type' => '4252'
+                                                              'offset' => '-64',
+                                                              'type' => '4218'
                                                             },
                                                      '2' => {
                                                               'name' => 'flags',
-                                                              'type' => '121'
+                                                              'offset' => '-68',
+                                                              'type' => '59'
                                                             }
                                                    },
-                                        'Return' => '121',
+                                        'Return' => '59',
                                         'ShortName' => 'idn2_to_unicode_8zlz',
                                         'Source' => 'decode.c',
                                         'SourceLine' => '355'
                                       },
-                            '6432' => {
+                            '6398' => {
                                         'Header' => 'idn2.h',
                                         'Param' => {
                                                      '0' => {
                                                               'name' => 'input',
-                                                              'type' => '3598'
+                                                              'offset' => '-56',
+                                                              'type' => '3546'
                                                             },
                                                      '1' => {
                                                               'name' => 'output',
-                                                              'type' => '4252'
+                                                              'offset' => '-64',
+                                                              'type' => '4218'
                                                             },
                                                      '2' => {
                                                               'name' => 'flags',
-                                                              'type' => '121'
+                                                              'offset' => '-68',
+                                                              'type' => '59'
                                                             }
                                                    },
-                                        'Return' => '121',
+                                        'Return' => '59',
                                         'ShortName' => 'idn2_to_unicode_8z8z',
                                         'Source' => 'decode.c',
                                         'SourceLine' => '303'
                                       },
-                            '6578' => {
+                            '6544' => {
                                         'Header' => 'idn2.h',
                                         'Param' => {
                                                      '0' => {
                                                               'name' => 'in',
-                                                              'type' => '2973'
+                                                              'offset' => '-56',
+                                                              'type' => '2939'
                                                             },
                                                      '1' => {
                                                               'name' => 'inlen',
-                                                              'type' => '191'
+                                                              'offset' => '-64',
+                                                              'type' => '144'
                                                             },
                                                      '2' => {
                                                               'name' => 'out',
-                                                              'type' => '2979'
+                                                              'offset' => '-72',
+                                                              'type' => '2945'
                                                             },
                                                      '3' => {
                                                               'name' => 'outlen',
-                                                              'type' => '3250'
+                                                              'offset' => '-80',
+                                                              'type' => '3216'
                                                             },
                                                      '4' => {
                                                               'name' => 'flags',
-                                                              'type' => '121'
+                                                              'offset' => '-84',
+                                                              'type' => '59'
                                                             }
                                                    },
-                                        'Return' => '121',
+                                        'Return' => '59',
                                         'ShortName' => 'idn2_to_unicode_44i',
                                         'Source' => 'decode.c',
                                         'SourceLine' => '244'
                                       },
-                            '6751' => {
+                            '6717' => {
                                         'Header' => 'idn2.h',
                                         'Param' => {
                                                      '0' => {
                                                               'name' => 'input',
-                                                              'type' => '2973'
+                                                              'offset' => '-56',
+                                                              'type' => '2939'
                                                             },
                                                      '1' => {
                                                               'name' => 'output',
-                                                              'type' => '3244'
+                                                              'offset' => '-64',
+                                                              'type' => '3210'
                                                             },
                                                      '2' => {
                                                               'name' => 'flags',
-                                                              'type' => '121'
+                                                              'offset' => '-68',
+                                                              'type' => '59'
                                                             }
                                                    },
-                                        'Return' => '121',
+                                        'Return' => '59',
                                         'ShortName' => 'idn2_to_unicode_4z4z',
                                         'Source' => 'decode.c',
                                         'SourceLine' => '181'
                                       },
-                            '6889' => {
+                            '6855' => {
                                         'Header' => 'idn2.h',
                                         'Param' => {
                                                      '0' => {
                                                               'name' => 'input',
-                                                              'type' => '3598'
+                                                              'offset' => '-1368',
+                                                              'type' => '3546'
                                                             },
                                                      '1' => {
                                                               'name' => 'output',
-                                                              'type' => '3244'
+                                                              'offset' => '-1376',
+                                                              'type' => '3210'
                                                             },
                                                      '2' => {
                                                               'name' => 'flags',
-                                                              'type' => '121'
+                                                              'offset' => '-1380',
+                                                              'type' => '59'
                                                             }
                                                    },
-                                        'Return' => '121',
+                                        'Return' => '59',
                                         'ShortName' => 'idn2_to_unicode_8z4z',
                                         'Source' => 'decode.c',
                                         'SourceLine' => '64'
                                       },
-                            '7749' => {
+                            '7715' => {
                                         'Header' => 'idn2.h',
                                         'Param' => {
                                                      '0' => {
                                                               'name' => 'ulabel',
-                                                              'type' => '3598'
+                                                              'offset' => '-40',
+                                                              'type' => '3546'
                                                             },
                                                      '1' => {
                                                               'name' => 'alabel',
-                                                              'type' => '3598'
+                                                              'offset' => '-48',
+                                                              'type' => '3546'
                                                             },
                                                      '2' => {
                                                               'name' => 'insertname',
-                                                              'type' => '4252'
+                                                              'offset' => '-56',
+                                                              'type' => '4218'
                                                             },
                                                      '3' => {
                                                               'name' => 'flags',
-                                                              'type' => '121'
+                                                              'offset' => '-60',
+                                                              'type' => '59'
                                                             }
                                                    },
-                                        'Return' => '121',
+                                        'Return' => '59',
                                         'ShortName' => 'idn2_register_ul',
                                         'Source' => 'register.c',
                                         'SourceLine' => '237'
                                       },
-                            '7878' => {
+                            '7844' => {
                                         'Header' => 'idn2.h',
                                         'Param' => {
                                                      '0' => {
                                                               'name' => 'ulabel',
-                                                              'type' => '3059'
+                                                              'offset' => '-4456',
+                                                              'type' => '3025'
                                                             },
                                                      '1' => {
                                                               'name' => 'alabel',
-                                                              'type' => '3059'
+                                                              'offset' => '-4464',
+                                                              'type' => '3025'
                                                             },
                                                      '2' => {
                                                               'name' => 'insertname',
-                                                              'type' => '5098'
+                                                              'offset' => '-4472',
+                                                              'type' => '5064'
                                                             },
                                                      '3' => {
                                                               'name' => 'flags',
-                                                              'type' => '121'
+                                                              'offset' => '-4476',
+                                                              'type' => '59'
                                                             }
                                                    },
-                                        'Return' => '121',
+                                        'Return' => '59',
                                         'ShortName' => 'idn2_register_u8',
                                         'Source' => 'register.c',
                                         'SourceLine' => '74'
                                       }
                           },
           'SymbolVersion' => {
+                               'UC_CATEGORY_M' => 'strverscmp@@GLIBC_2.2.5',
+                               '_ITM_deregisterTMCloneTable' => 'strverscmp@@GLIBC_2.2.5',
+                               '_ITM_registerTMCloneTable' => 'strverscmp@@GLIBC_2.2.5',
+                               '__gmon_start__' => 'strverscmp@@GLIBC_2.2.5',
                                '_idn2_punycode_decode' => '_idn2_punycode_decode@@IDN2_0.0.0',
                                '_idn2_punycode_encode' => '_idn2_punycode_encode@@IDN2_0.0.0',
                                'idn2_check_version' => 'idn2_check_version@@IDN2_0.0.0',
@@ -413,7 +422,22 @@ $VAR1 = {
                                'idn2_to_unicode_8z4z' => 'idn2_to_unicode_8z4z@@IDN2_0.0.0',
                                'idn2_to_unicode_8z8z' => 'idn2_to_unicode_8z8z@@IDN2_0.0.0',
                                'idn2_to_unicode_8zlz' => 'idn2_to_unicode_8zlz@@IDN2_0.0.0',
-                               'idn2_to_unicode_lzlz' => 'idn2_to_unicode_lzlz@@IDN2_0.0.0'
+                               'idn2_to_unicode_lzlz' => 'idn2_to_unicode_lzlz@@IDN2_0.0.0',
+                               'u32_cpy' => 'strverscmp@@GLIBC_2.2.5',
+                               'u32_cpy_alloc' => 'strverscmp@@GLIBC_2.2.5',
+                               'u32_normalize' => 'strverscmp@@GLIBC_2.2.5',
+                               'u32_strlen' => 'strverscmp@@GLIBC_2.2.5',
+                               'u32_to_u8' => 'strverscmp@@GLIBC_2.2.5',
+                               'u8_strconv_from_locale' => 'strverscmp@@GLIBC_2.2.5',
+                               'u8_strconv_to_locale' => 'strverscmp@@GLIBC_2.2.5',
+                               'u8_strlen' => 'strverscmp@@GLIBC_2.2.5',
+                               'u8_to_u32' => 'strverscmp@@GLIBC_2.2.5',
+                               'uc_bidi_category' => 'strverscmp@@GLIBC_2.2.5',
+                               'uc_combining_class' => 'strverscmp@@GLIBC_2.2.5',
+                               'uc_is_general_category' => 'strverscmp@@GLIBC_2.2.5',
+                               'uc_joining_type' => 'strverscmp@@GLIBC_2.2.5',
+                               'uc_script' => 'strverscmp@@GLIBC_2.2.5',
+                               'uninorm_nfc' => 'strverscmp@@GLIBC_2.2.5'
                              },
           'Symbols' => {
                          'libidn2.so.0.3.3' => {
@@ -445,140 +469,137 @@ $VAR1 = {
                                    'Name' => 'void',
                                    'Type' => 'Intrinsic'
                                  },
-                          '100' => {
+                          '114' => {
+                                     'BaseType' => '130',
+                                     'Header' => 'stdint.h',
+                                     'Line' => '51',
+                                     'Name' => 'uint32_t',
+                                     'Size' => '4',
+                                     'Type' => 'Typedef'
+                                   },
+                          '125' => {
+                                     'BaseType' => '114',
+                                     'Name' => 'uint32_t const',
+                                     'Size' => '4',
+                                     'Type' => 'Const'
+                                   },
+                          '130' => {
+                                     'Name' => 'unsigned int',
+                                     'Size' => '4',
+                                     'Type' => 'Intrinsic'
+                                   },
+                          '137' => {
                                      'Name' => 'unsigned long',
                                      'Size' => '8',
                                      'Type' => 'Intrinsic'
                                    },
-                          '121' => {
-                                     'Name' => 'int',
-                                     'Size' => '4',
-                                     'Type' => 'Intrinsic'
-                                   },
-                          '135' => {
-                                     'BaseType' => '141',
-                                     'Name' => 'char*',
-                                     'Size' => '8',
-                                     'Type' => 'Pointer'
-                                   },
-                          '13735' => {
+                          '13734' => {
                                        'BaseType' => '1',
                                        'Name' => 'void*',
                                        'Size' => '8',
                                        'Type' => 'Pointer'
                                      },
-                          '141' => {
+                          '144' => {
+                                     'BaseType' => '137',
+                                     'Header' => 'stddef.h',
+                                     'Line' => '216',
+                                     'Name' => 'size_t',
+                                     'Size' => '8',
+                                     'Type' => 'Typedef'
+                                   },
+                          '155' => {
                                      'Name' => 'char',
                                      'Size' => '1',
                                      'Type' => 'Intrinsic'
                                    },
-                          '148' => {
-                                     'BaseType' => '79',
-                                     'Header' => 'stdint.h',
-                                     'Line' => '50',
-                                     'Name' => 'uint8_t',
-                                     'PrivateABI' => 1,
-                                     'Size' => '1',
-                                     'Type' => 'Typedef'
-                                   },
-                          '159' => {
-                                     'BaseType' => '148',
-                                     'Name' => 'uint8_t const',
-                                     'Size' => '1',
-                                     'Type' => 'Const'
-                                   },
-                          '175' => {
-                                     'BaseType' => '93',
-                                     'Header' => 'stdint.h',
-                                     'Line' => '53',
-                                     'Name' => 'uint32_t',
-                                     'PrivateABI' => 1,
-                                     'Size' => '4',
-                                     'Type' => 'Typedef'
-                                   },
-                          '186' => {
-                                     'BaseType' => '175',
-                                     'Name' => 'uint32_t const',
-                                     'Size' => '4',
-                                     'Type' => 'Const'
-                                   },
-                          '191' => {
-                                     'BaseType' => '100',
-                                     'Header' => 'stddef.h',
-                                     'Line' => '216',
-                                     'Name' => 'size_t',
-                                     'PrivateABI' => 1,
-                                     'Size' => '8',
-                                     'Type' => 'Typedef'
-                                   },
-                          '2973' => {
-                                      'BaseType' => '186',
+                          '2939' => {
+                                      'BaseType' => '125',
                                       'Name' => 'uint32_t const*',
                                       'Size' => '8',
                                       'Type' => 'Pointer'
                                     },
-                          '2979' => {
-                                      'BaseType' => '175',
+                          '2945' => {
+                                      'BaseType' => '114',
                                       'Name' => 'uint32_t*',
                                       'Size' => '8',
                                       'Type' => 'Pointer'
                                     },
-                          '3059' => {
-                                      'BaseType' => '159',
+                          '3025' => {
+                                      'BaseType' => '84',
                                       'Name' => 'uint8_t const*',
                                       'Size' => '8',
                                       'Type' => 'Pointer'
                                     },
-                          '3244' => {
-                                      'BaseType' => '2979',
+                          '3210' => {
+                                      'BaseType' => '2945',
                                       'Name' => 'uint32_t**',
                                       'Size' => '8',
                                       'Type' => 'Pointer'
                                     },
-                          '3250' => {
-                                      'BaseType' => '191',
+                          '3216' => {
+                                      'BaseType' => '144',
                                       'Name' => 'size_t*',
                                       'Size' => '8',
                                       'Type' => 'Pointer'
                                     },
-                          '3539' => {
-                                      'BaseType' => '141',
-                                      'Name' => 'char const',
-                                      'Size' => '1',
-                                      'Type' => 'Const'
-                                    },
-                          '3598' => {
-                                      'BaseType' => '3539',
+                          '3546' => {
+                                      'BaseType' => '3559',
                                       'Name' => 'char const*',
                                       'Size' => '8',
                                       'Type' => 'Pointer'
                                     },
-                          '4252' => {
-                                      'BaseType' => '135',
+                          '3559' => {
+                                      'BaseType' => '155',
+                                      'Name' => 'char const',
+                                      'Size' => '1',
+                                      'Type' => 'Const'
+                                    },
+                          '397' => {
+                                     'BaseType' => '155',
+                                     'Name' => 'char*',
+                                     'Size' => '8',
+                                     'Type' => 'Pointer'
+                                   },
+                          '4218' => {
+                                      'BaseType' => '397',
                                       'Name' => 'char**',
                                       'Size' => '8',
                                       'Type' => 'Pointer'
                                     },
-                          '4469' => {
-                                      'BaseType' => '148',
+                          '4435' => {
+                                      'BaseType' => '73',
                                       'Name' => 'uint8_t*',
                                       'Size' => '8',
                                       'Type' => 'Pointer'
                                     },
-                          '5098' => {
-                                      'BaseType' => '4469',
+                          '5064' => {
+                                      'BaseType' => '4435',
                                       'Name' => 'uint8_t**',
                                       'Size' => '8',
                                       'Type' => 'Pointer'
                                     },
-                          '79' => {
-                                    'Name' => 'unsigned char',
-                                    'Size' => '1',
+                          '59' => {
+                                    'Name' => 'int',
+                                    'Size' => '4',
                                     'Type' => 'Intrinsic'
                                   },
-                          '93' => {
-                                    'Name' => 'unsigned int',
-                                    'Size' => '4',
+                          '73' => {
+                                    'BaseType' => '89',
+                                    'Header' => 'stdint.h',
+                                    'Line' => '48',
+                                    'Name' => 'uint8_t',
+                                    'Size' => '1',
+                                    'Type' => 'Typedef'
+                                  },
+                          '84' => {
+                                    'BaseType' => '73',
+                                    'Name' => 'uint8_t const',
+                                    'Size' => '1',
+                                    'Type' => 'Const'
+                                  },
+                          '89' => {
+                                    'Name' => 'unsigned char',
+                                    'Size' => '1',
                                     'Type' => 'Intrinsic'
                                   }
                         },
