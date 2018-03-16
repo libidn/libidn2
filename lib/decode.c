@@ -378,6 +378,9 @@ idn2_to_unicode_8zlz (const char * input, char ** output, int flags)
     {
       if (output)
         *output = (char *) output_l8;
+      else
+        free (output_l8);
+
       rc = IDN2_OK;
     }
 
