@@ -19,7 +19,7 @@ Debian GNU/Linux:
   - make syntax-check
   - echo "nproc="$(nproc)" "$nproc
   - make -j$(nproc) check
-#  - make abi-check
+  - make abi-check
   - make -C fuzz
   - make clean
   - ./configure -C --enable-gtk-doc --enable-gtk-doc-pdf --disable-gcc-warnings --disable-valgrind-tests
