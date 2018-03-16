@@ -6,27 +6,45 @@ variables:
   GET_SOURCES_ATTEMPTS: "3"
 
 # In this build we combine
-#  * syntax-check
-#  * abi-check
 #  * fuzz/ building
-#  * distcheck
 #  * build/valgrind-check
 Debian GNU/Linux:
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
   - ./bootstrap
   - ./configure -C --disable-doc --enable-gcc-warnings --enable-valgrind-tests
-  - make syntax-check
   - echo "nproc="$(nproc)" "$nproc
   - make -j$(nproc) check
+  - make -j$(nproc) -C fuzz
+  tags:
+  - shared
+  artifacts:
+    expire_in: 2 weeks
+    when: on_failure
+    paths:
+      - tests/*.log
+
+# In this build we combine
+#  * syntax-check
+#  * abi-check
+#  * distcheck
+# It is not run on tags
+abi/dist-check:
+  image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
+  script:
+  - ./bootstrap
+  - CFLAGS="-g -Og" ./configure -C --disable-doc
+  - make syntax-check
+  - make -j$(nproc)
   - make abi-check
-  - make -C fuzz
   - make clean
-  - ./configure -C --enable-gtk-doc --enable-gtk-doc-pdf --disable-gcc-warnings --disable-valgrind-tests
-  - make
+  - CFLAGS="-g -Og" ./configure -C --enable-gtk-doc --enable-gtk-doc-pdf --disable-gcc-warnings --disable-valgrind-tests
+  - make -j$(nproc)
   - DISTCHECK_CONFIGURE_FLAGS=--disable-gtk-doc make distcheck
   tags:
   - shared
+  except:
+  - tags
   artifacts:
     expire_in: 2 weeks
     when: on_failure
