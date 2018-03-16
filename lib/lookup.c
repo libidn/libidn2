@@ -514,8 +514,11 @@ idn2_lookup_ul (const char * src, char ** lookupname, int flags)
 
   if (src)
     {
-      utf8src = u8_strconv_from_locale (src);
-      if (utf8src == NULL)
+      const char *encoding = locale_charset ();
+
+      utf8src = u8_strconv_from_encoding (src, encoding, iconveh_error);
+
+      if (!utf8src)
 	{
 	  if (errno == ENOMEM)
 	    return IDN2_MALLOC;

@@ -231,7 +231,8 @@ idn2_register_u8 (const uint8_t * ulabel, const uint8_t * alabel,
  *   %IDN2_UALABEL_MISMATCH is returned, when either of the input
  *   labels are too long %IDN2_TOO_BIG_LABEL is returned, when @alabel
  *   does does not appear to be a proper A-label %IDN2_INVALID_ALABEL
- *   is returned, or another error code is returned.
+ *   is returned, when @ulabel locale to UTF-8 conversion failed
+ *   %IDN2_ICONV_FAIL is returned, or another error code is returned.
  **/
 int
 idn2_register_ul (const char *ulabel, const char *alabel,
@@ -242,7 +243,10 @@ idn2_register_ul (const char *ulabel, const char *alabel,
 
   if (ulabel)
     {
-      utf8ulabel = u8_strconv_from_locale (ulabel);
+      const char *encoding = locale_charset ();
+
+      utf8ulabel = u8_strconv_from_encoding (ulabel, encoding, iconveh_error);
+
       if (utf8ulabel == NULL)
 	{
 	  if (errno == ENOMEM)

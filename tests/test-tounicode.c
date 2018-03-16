@@ -262,7 +262,7 @@ const test_t test[] = {
     {
       0
     },
-    IDN2_ENCODING_ERROR
+    IDN2_ENCODING_ERROR /* or IDN2_ICONV_FAIL with idn2_to_unicode_lzlz() due to bad UTF-8 input */
   },
 
   /* Test vectors from https://bugs.debian.org/610617 */
@@ -352,7 +352,7 @@ const test_t test[] = {
   },
 };
 
-static int debug = 0;
+static int debug = 1;
 static int error_count = 0;
 static int break_on_error = 0;
 
@@ -406,10 +406,11 @@ _u32_strcmp(const uint32_t *s1, const uint32_t *s2)
 static void
 _check_4z(const test_t *t, int rc, uint32_t *ucs4, const char *funcname)
 {
-  if (rc != t->rc_expected)
+  if (rc != t->rc_expected && !(rc == IDN2_ICONV_FAIL && t->rc_expected == IDN2_ENCODING_ERROR))
     {
-      fail ("%s() entry %u failed: %s\n",
-	funcname, (unsigned) (t - test), idn2_strerror (rc));
+      fprintf (stderr, "Test[%u] '%s' failed (got %d, expected %d):\n",
+        (unsigned) (t - test), t->name, rc, t->rc_expected);
+      fail ("  %s(): %s\n", funcname, idn2_strerror (rc));
     }
   else if (rc == IDN2_OK)
     {
@@ -443,6 +444,7 @@ main (void)
   uint32_t *ucs4, *punycode_u32;
   uint8_t *utf8;
   char *utf8_lz;
+  const char *encoding;
   size_t outlen, outlen2;
   int rc, skip_lz = 0;
   unsigned i;
@@ -451,11 +453,12 @@ main (void)
    * At least on Debian with libunistring 0.9.6+really0.9.3-0.1 and LC_ALL=C valgrind
    * reports Conditional jump or move depends on uninitialised value */
   setlocale (LC_ALL, "C.UTF-8");
+  encoding = locale_charset();
 
   if (debug)
-    printf("charset=%s\n", locale_charset());
+    printf("charset=%s\n", encoding);
 
-  if (strcmp(locale_charset(), "UTF-8") != 0)
+  if (strcmp(encoding, "UTF-8") != 0)
     skip_lz = 1;
 
   for (i = 0; i < sizeof (test) / sizeof (test[0]); i++)
@@ -503,7 +506,7 @@ main (void)
       rc = idn2_to_unicode_8zlz (t->punycode, &utf8_lz, 0);
       if (rc == IDN2_OK)
 	{
-	  utf8 = u8_strconv_from_locale (utf8_lz);
+          utf8 = u8_strconv_from_encoding (utf8_lz, encoding, iconveh_error);
 	  free (utf8_lz);
 	  ucs4 = u8_to_u32 (utf8, u8_strlen (utf8) + 1, NULL, &outlen);
 	  free (utf8);
@@ -517,7 +520,7 @@ main (void)
       rc = idn2_to_unicode_lzlz (t->punycode, (char **) &utf8_lz, 0);
       if (rc == IDN2_OK)
 	{
-	  utf8 = u8_strconv_from_locale (utf8_lz);
+          utf8 = u8_strconv_from_encoding (utf8_lz, encoding, iconveh_error);
 	  free (utf8_lz);
 	  ucs4 = u8_to_u32 (utf8, u8_strlen (utf8) + 1, NULL, &outlen);
 	  free (utf8);

@@ -108,8 +108,9 @@ hexdump (const char *prefix, const char *str)
   uint32_t *u32;
   size_t u32len;
   size_t i;
+  const char *encoding = locale_charset ();
 
-  u8 = u8_strconv_from_locale (str);
+  u8 = u8_strconv_from_encoding (str, encoding, iconveh_error);
   if (u8)
     u32 = u8_to_u32 (u8, strlen ((char *) u8), NULL, &u32len);
 

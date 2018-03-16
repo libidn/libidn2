@@ -356,20 +356,34 @@ idn2_to_unicode_8zlz (const char * input, char ** output, int flags)
 {
   int rc;
   uint8_t *output_u8, *output_l8;
+  const char *encoding;
 
   rc = idn2_to_unicode_8z8z (input, (char **) &output_u8, flags);
   if (rc != IDN2_OK || !input)
     return rc;
 
-  output_l8 = (uint8_t*)u8_strconv_to_locale (output_u8);
+  encoding = locale_charset ();
+  output_l8 = (uint8_t*) u8_strconv_to_encoding (output_u8, encoding, iconveh_error);
+
+  if (!output_l8)
+    {
+      if (errno == ENOMEM)
+        rc = IDN2_MALLOC;
+      else
+        rc = IDN2_ENCODING_ERROR;
+
+      free(output_l8);
+    }
+  else
+    {
+      if (output)
+        *output = (char *) output_l8;
+      rc = IDN2_OK;
+    }
+
   free (output_u8);
 
-  if (output)
-    *output = (char *) output_l8;
-  else
-    free (output_l8);
-
-  return IDN2_OK;
+  return rc;
 }
 
 /**
@@ -389,7 +403,8 @@ idn2_to_unicode_8zlz (const char * input, char ** output, int flags)
  *   %IDN2_OK: The conversion was successful.
  *   %IDN2_TOO_BIG_DOMAIN: The domain is too long.
  *   %IDN2_TOO_BIG_LABEL: A label is would have been too long.
- *   %IDN2_ENCODING_ERROR: Character conversion failed.
+ *   %IDN2_ENCODING_ERROR: Output character conversion failed.
+ *   %IDN2_ICONV_FAIL: Input character conversion failed.
  *   %IDN2_MALLOC: Memory allocation failed.
  *
  * Since: 2.0.0
@@ -398,6 +413,7 @@ int
 idn2_to_unicode_lzlz (const char * input, char ** output, int flags)
 {
   uint8_t *input_l8;
+  const char *encoding;
   int rc;
 
   if (!input)
@@ -407,12 +423,14 @@ idn2_to_unicode_lzlz (const char * input, char ** output, int flags)
       return IDN2_OK;
     }
 
-  input_l8 = u8_strconv_from_locale (input);
+  encoding = locale_charset ();
+  input_l8 = u8_strconv_from_encoding (input, encoding, iconveh_error);
+
   if (!input_l8)
     {
       if (errno == ENOMEM)
 	return IDN2_MALLOC;
-      return IDN2_ENCODING_ERROR;
+      return IDN2_ICONV_FAIL;
     }
 
   rc = idn2_to_unicode_8zlz ((char*)input_l8, output, flags);
