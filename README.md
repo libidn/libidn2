@@ -52,8 +52,6 @@ while the rest of the package is GPLv3+.  See the file
 
 # Obtaining the source
 
-The homepage of libidn2: https://www.gnu.org/software/libidn/#libidn2
-
 Software releases of libidn2 can be downloaded from
 https://ftp.gnu.org/gnu/libidn/ and ftp://ftp.gnu.org/gnu/libidn/
 
