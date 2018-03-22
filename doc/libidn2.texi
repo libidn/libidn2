@@ -372,13 +372,14 @@ if (rc == IDN2_DISALLOWED)
 In the special case of software that needs to support both
 libraries (e.g., both IDNA2003 and IDNA2008), you must define
 @code{IDN2_SKIP_LIBIDN_COMPAT} prior to including @code{idn2.h}
-in order to be able to use both libraries' functions.
+in order to disable compatibility code which overlaps with libidn
+functionality. That would allow software to use both libraries' functions.
 
 @section Stringprep and libidn2
-The original libidn library includes functionality for the stringprep protocol in
-@code{stringprep.h}. That functionality was an integral part of an IDNA2003
-implementation, but it does not apply to IDNA2008. Furthermore stringprep
-processing has been replaced by the PRECIS framework (RFC8264).
+The original libidn library includes functionality for the stringprep
+processing in @code{stringprep.h}. That functionality was an integral part
+of an IDNA2003 implementation, but it does not apply to IDNA2008. Furthermore,
+stringprep processing has been replaced by the PRECIS framework (RFC8264).
 
 For the reasons above, libidn2 does not implement stringprep or
 any other string processing protocols unrelated to IDNA2008. Applications
