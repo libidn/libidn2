@@ -477,7 +477,11 @@ To process a string that starts with @code{-}, for example
 
   -T, --tr46t              Enable TR46 transitional processing
 
-  -N, --tr46nt             Enable TR46 non-transitional processing
+  -N, --tr46nt             Enable TR46 non-transitional processing (default)
+
+      --no-tr46            Disable TR46 processing
+
+      --usestd3asciirules  Enable STD3 ASCII rules
 
       --debug              Print debugging information
 
