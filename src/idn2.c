@@ -105,7 +105,7 @@ static void
 hexdump (const char *prefix, const char *str)
 {
   uint8_t *u8;
-  uint32_t *u32;
+  uint32_t *u32 = NULL;
   size_t u32len;
   size_t i;
   const char *encoding = locale_charset ();
