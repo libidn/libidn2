@@ -23,7 +23,7 @@ if !HAVE_LIBUNISTRING
 AM_CPPFLAGS += -I$(top_srcdir)/unistring/ -I$(top_builddir)/unistring/
 endif
 
-LDADD = ../lib/libidn2.la ../gl/libgnu.la
+LDADD = ../lib/libidn2.la ../gl/libgnu.la $(LTLIBUNISTRING)
 
 if !HAVE_LIBUNISTRING
 LDADD += ../unistring/libunistring.la

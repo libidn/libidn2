@@ -2,7 +2,7 @@ AM_CFLAGS = $(WERROR_CFLAGS) $(WARN_CFLAGS) -Wno-vla
 AM_CPPFLAGS = -I$(top_srcdir)/lib -I../lib -I$(top_srcdir)/gl -I../gl -DSRCDIR=\"$(abs_srcdir)\" -DTEST_RUN
 AM_LDFLAGS = -no-install
 
-LDADD = ../lib/libidn2.la ../gl/libgnu.la
+LDADD = ../lib/libidn2.la ../gl/libgnu.la $(LTLIBUNISTRING)
 
 IDN_TESTS = \
  libidn2_to_ascii_8z_fuzzer$(EXEEXT) \
