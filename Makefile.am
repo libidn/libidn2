@@ -33,7 +33,7 @@ EXTRA_DIST += cfg.mk maint.mk CONTRIBUTING.md README.md COPYING COPYING.LESSERv3
 	COPYING.unicode COPYINGv2 AUTHORS NEWS ChangeLog INSTALL
 
 check-valgrind:
-	TESTS_ENVIRONMENT="valgrind --error-exitcode=301 --leak-check=yes --show-reachable=yes --track-origins=yes" $(MAKE) check
+	$(MAKE) check LOG_COMPILER="valgrind --error-exitcode=301 --leak-check=yes --show-reachable=yes --track-origins=yes --suppressions=suppressions.valgrind"
 
 clean-local:
 	rm -rf */*.gc?? */*/*.gc??
