@@ -43,6 +43,20 @@
 #include "idna.h"		/* _idn2_label_test */
 #include "tr46map.h"		/* defintion for tr46map.c */
 
+static int set_default_flags(int *flags)
+{
+  if (((*flags) & IDN2_TRANSITIONAL) && ((*flags) & IDN2_NONTRANSITIONAL))
+    return IDN2_INVALID_FLAGS;
+
+  if (((*flags) & (IDN2_TRANSITIONAL|IDN2_NONTRANSITIONAL)) && ((*flags) & IDN2_NO_TR46))
+    return IDN2_INVALID_FLAGS;
+
+  if (!((*flags) & (IDN2_TRANSITIONAL|IDN2_NONTRANSITIONAL)))
+    *flags |= IDN2_NO_TR46;
+
+  return IDN2_OK;
+}
+
 static int
 label (const uint8_t * src, size_t srclen, uint8_t * dst, size_t * dstlen,
        int flags)
@@ -388,7 +402,7 @@ idn2_lookup_u8 (const uint8_t * src, uint8_t ** lookupname, int flags)
   size_t lookupnamelen = 0;
   uint8_t _lookupname[IDN2_DOMAIN_MAX_LENGTH + 1];
   uint8_t _mapped[IDN2_DOMAIN_MAX_LENGTH + 1];
-  int rc, tr46_mode = 0;
+  int rc;
 
   if (src == NULL)
     {
@@ -397,16 +411,11 @@ idn2_lookup_u8 (const uint8_t * src, uint8_t ** lookupname, int flags)
       return IDN2_OK;
     }
 
-  if ((flags & (IDN2_TRANSITIONAL | IDN2_NONTRANSITIONAL)) ==
-      (IDN2_TRANSITIONAL | IDN2_NONTRANSITIONAL))
-    return IDN2_INVALID_FLAGS;
+  rc = set_default_flags(&flags);
+  if (rc != IDN2_OK)
+    return rc;
 
-  if (flags & IDN2_TRANSITIONAL)
-    tr46_mode = IDN2_TRANSITIONAL;
-  else if (flags & IDN2_NONTRANSITIONAL)
-    tr46_mode = IDN2_NONTRANSITIONAL;
-
-  if (tr46_mode)
+  if (!(flags & IDN2_NO_TR46))
     {
       uint8_t *out;
       size_t outlen;

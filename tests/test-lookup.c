@@ -828,6 +828,11 @@ static const struct idna idna[] = {
   {"_\xc3\xbc", "xn--tda", IDN2_OK, IDN2_USE_STD3_ASCII_RULES|IDN2_NONTRANSITIONAL},
   {"_\xc3\xbc", "xn--tda", IDN2_OK, IDN2_USE_STD3_ASCII_RULES|IDN2_TRANSITIONAL},
   {"_\xc3\xbc", "xn--_-eha", IDN2_DISALLOWED, IDN2_USE_STD3_ASCII_RULES}, /* flag is ignored when not using TR46 */
+  /* test invalid flags */
+  {"_443._tcp.example.com", "_443._tcp.example.com", IDN2_INVALID_FLAGS, IDN2_NONTRANSITIONAL|IDN2_TRANSITIONAL},
+  {"_443._tcp.example.com", "_443._tcp.example.com", IDN2_INVALID_FLAGS, IDN2_NONTRANSITIONAL|IDN2_NO_TR46},
+  {"_443._tcp.example.com", "_443._tcp.example.com", IDN2_INVALID_FLAGS, IDN2_TRANSITIONAL|IDN2_NO_TR46},
+  {"_443._tcp.example.com", "_443._tcp.example.com", IDN2_INVALID_FLAGS, IDN2_TRANSITIONAL|IDN2_NONTRANSITIONAL|IDN2_NO_TR46},
 };
 
 static int ok = 0, failed = 0;
@@ -916,6 +921,27 @@ test_homebrewed(void)
 
       if (rc == IDN2_OK)
 	idn2_free (out);
+
+      /* Try the IDN2_NO_TR46 flag behavior */
+      if (!(idna[i].flags & (IDN2_NONTRANSITIONAL|IDN2_TRANSITIONAL))) {
+	rc = idn2_lookup_u8 ((uint8_t *) idna[i].in, &out, idna[i].flags|IDN2_NO_TR46);
+	printf ("%3d  %-25s %-40s %s\n", (int) i, idn2_strerror_name (rc),
+	        rc == IDN2_OK ? idna[i].out : "", idna[i].in);
+
+        if (rc != idna[i].rc && rc == IDN2_ENCODING_ERROR) {
+	  printf("utc bug\n");
+	} else if (rc != idna[i].rc && idna[i].rc != -1) {
+	  failed++;
+	  printf("expected rc %d got rc %d\n", idna[i].rc, rc);
+        } else if (rc == IDN2_OK && strcmp ((char *) out, idna[i].out) != 0) {
+	  failed++;
+	  printf("expected: %s\ngot: %s\n", idna[i].out, out);
+        } else
+	  ok++;
+
+        if (rc == IDN2_OK)
+	  idn2_free (out);
+      }
 
       if (failed && break_on_error)
 	exit (EXIT_FAILURE);
@@ -1174,6 +1200,10 @@ test_unicode_range (void)
       idn2_free (out);
 
     rc = idn2_lookup_u8 (utf8, &out, IDN2_NONTRANSITIONAL);
+    if (rc == IDN2_OK)
+      idn2_free (out);
+
+    rc = idn2_lookup_u8 (utf8, &out, IDN2_NO_TR46);
     if (rc == IDN2_OK)
       idn2_free (out);
 
