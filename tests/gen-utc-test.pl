@@ -28,7 +28,7 @@ while (<>) {
     $lineno++;
     next unless /^[BN]/;
 
-    m,^.*;	(.*);	(.*);	(.*);	(NV8)?,;
+    next unless m,^.*;\t(.*);\t(.*);\t(.*);\s(NV8).*,;
 
     my $line = $_;
 
