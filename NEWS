@@ -4,6 +4,13 @@ See the end for copying conditions.
 
 * Version 2.0.5 (unreleased)
 
+** Switched the default library behavior to IDNA2008 as amended
+   by TR#46 (non-transitional). That default behavior is enabled when
+   no flags are specified to function calls. Applications can utilize the
+   %IDN2_NO_TR46 flag to switch to the unamended IDNA2008. This is done in
+   the interest of interoperability based on the fact that this is what application
+   writers care about rather than strict compliance with a particular protocol.
+
 ** Fixed memleak in idn2_to_unicode_8zlz()
 
 ** Return error (IDN2_ICOV_FAIL) on charset conversion errors

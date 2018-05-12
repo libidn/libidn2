@@ -105,9 +105,9 @@ static const struct idna idna[] = {
   {"\xe0\xa4\xaa\xe0\xa4\xb0\xe0\xa5\x80\xe0\xa4\x95\xe0\xa5\x8d\xe0\xa4\xb7\xe0\xa4\xbe", "xn--11b5bs3a9aj6g" },
   {"\xed\x95\x9c\xea\xb5\xad", "xn--3e0b707e" },
   {"\xe0\xa6\xad\xe0\xa6\xbe\xe0\xa6\xb0\xe0\xa6\xa4", "xn--45brj9c" },
-  {"\xd0\x98\xd0\xa1\xd0\x9f\xd0\xab\xd0\xa2\xd0\x90\xd0\x9d\xd0\x98\xd0\x95", "xn--80akhbyknj4f", IDN2_DISALLOWED }, /* iana bug */
+  {"\xd0\x98\xd0\xa1\xd0\x9f\xd0\xab\xd0\xa2\xd0\x90\xd0\x9d\xd0\x98\xd0\x95", "xn--80akhbyknj4f", IDN2_DISALLOWED, IDN2_NO_TR46}, /* iana bug */
   {"испытание", "xn--80akhbyknj4f" }, /* corrected */
-  {"\xd0\xa1\xd0\xa0\xd0\x91", "xn--90a3ac", IDN2_DISALLOWED }, /* iana bug */
+  {"\xd0\xa1\xd0\xa0\xd0\x91", "xn--90a3ac", IDN2_DISALLOWED, IDN2_NO_TR46}, /* iana bug */
   {"срб", "xn--90a3ac" }, /* corrected */
   {"\xed\x85\x8c\xec\x8a\xa4\xed\x8a\xb8", "xn--9t4b11yi5a" },
   {"\xe0\xae\x9a\xe0\xae\xbf\xe0\xae\x99\xe0\xaf\x8d\xe0\xae\x95\xe0\xae\xaa\xe0\xaf\x8d\xe0\xae\xaa\xe0\xaf\x82\xe0\xae\xb0\xe0\xaf\x8d", "xn--clchc0ea0b2g2a9gcd" },
@@ -122,7 +122,7 @@ static const struct idna idna[] = {
   {"\xd8\xa2\xd8\xb2\xd9\x85\xd8\xa7\xdb\x8c\xd8\xb4\xdb\x8c", "xn--hgbk6aj7f53bba" },
   {"\xe0\xae\xaa\xe0\xae\xb0\xe0\xae\xbf\xe0\xae\x9f\xe0\xaf\x8d\xe0\xae\x9a\xe0\xaf\x88", "xn--hlcj6aya9esc7a" },
   {"\xe9\xa6\x99\xe6\xb8\xaf", "xn--j6w193g" },
-  {"\xce\x94\xce\x9f\xce\x9a\xce\x99\xce\x9c\xce\x89", "xn--jxalpdlp", IDN2_DISALLOWED }, /* iana bug */
+  {"\xce\x94\xce\x9f\xce\x9a\xce\x99\xce\x9c\xce\x89", "xn--jxalpdlp", IDN2_DISALLOWED, IDN2_NO_TR46}, /* iana bug */
   {"δοκιμή", "xn--jxalpdlp" },
   {"\xd8\xa5\xd8\xae\xd8\xaa\xd8\xa8\xd8\xa7\xd8\xb1", "xn--kgbechtv" },
   {"\xe5\x8f\xb0\xe6\xb9\xbe", "xn--kprw13d" },
@@ -138,7 +138,7 @@ static const struct idna idna[] = {
   {"\xe1\x83\x92\xe1\x83\x94", "xn--node" },
   {"\xe0\xb9\x84\xe0\xb8\x97\xe0\xb8\xa2", "xn--o3cw4h" },
   {"\xd8\xb3\xd9\x88\xd8\xb1\xd9\x8a\xd8\xa9", "xn--ogbpf8fl" },
-  {"\xd0\xa0\xd0\xa4", "xn--p1ai", IDN2_DISALLOWED }, /* iana bug */
+  {"\xd0\xa0\xd0\xa4", "xn--p1ai", IDN2_DISALLOWED, IDN2_NO_TR46}, /* iana bug */
   {"рф", "xn--p1ai" }, /* corrected */
   {"\xd8\xaa\xd9\x88\xd9\x86\xd8\xb3", "xn--pgbs0dh" },
   {"\xe0\xa8\xad\xe0\xa8\xbe\xe0\xa8\xb0\xe0\xa8\xa4", "xn--s9brj9c" },
@@ -189,7 +189,7 @@ static const struct idna idna[] = {
   },
   {"\x65\x78\x61\x6d\x70\x6c\x65\x2e\xe1\x84\x80\xe1\x85\xa1\xe1\x86\xa8",
    "example.xn--p39a",
-   IDN2_NOT_NFC
+   IDN2_NOT_NFC, IDN2_NO_TR46
    /* 1-3-4 Hangul Jamo TLD */
    /* Don't resolve as example.xn--ypd8qrh */
   },
@@ -311,60 +311,60 @@ static const struct idna idna[] = {
    /* 1-7-2 Latin (non-ASCII) and non-Latin TLD */
   },
   {"\xc3\xad\x21\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65", "",
-   IDN2_DISALLOWED
+   IDN2_DISALLOWED, IDN2_NO_TR46
    /* 2-3-1-1 Includes ! before Nameprep */
    /* Don't resolve as xn--!dn-qma.example */
   },
   {"\xc3\xad\x24\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65", "",
-   IDN2_DISALLOWED
+   IDN2_DISALLOWED, IDN2_NO_TR46
    /* 2-3-1-2 Includes $ before Nameprep */
    /* Don't resolve as xn--$dn-qma.example */
   },
   {"\xc3\xad\x2b\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65", "",
-   IDN2_DISALLOWED
+   IDN2_DISALLOWED, IDN2_NO_TR46
    /* 2-3-1-3 Includes + before Nameprep */
    /* Don't resolve as xn--+dn-qma.example */
   },
   {"\x2d\xc3\xad\x31\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn---1dn-vpa.example"
+   "xn---1dn-vpa.example", IDN2_OK, IDN2_NO_TR46
    /* 2-3-2-1 Leading hyphen before Nameprep */
    /* Don't resolve as xn---1dn-vpa.example */
    /* Valid according to IDNA2008-lookup! */
   },
   {"\xc3\xad\x31\x64\x6e\x2d\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--1dn--upa.example"
+   "xn--1dn--upa.example", IDN2_OK, IDN2_NO_TR46
    /* 2-3-2-2 Trailing hyphen before Nameprep */
    /* Don't resolve as xn--1dn--upa.example */
    /* Valid according to IDNA2008-lookup! */
   },
   {"\xc3\xad\xef\xbc\x8b\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65", "",
-   IDN2_DISALLOWED
+   IDN2_DISALLOWED, IDN2_NO_TR46
    /* 2-3-3-1 Gets a + after Nameprep */
    /* Don't resolve as xn--dn-mja0331x.example */
   },
   {"\xc3\xad\xe2\x81\xbc\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65", "",
-   IDN2_DISALLOWED
+   IDN2_DISALLOWED, IDN2_NO_TR46
    /* 2-3-3-2 Gets a = after Nameprep */
    /* Don't resolve as xn--dn-mja0343a.example */
   },
   {"\xef\xb9\xa3\xc3\xad\x32\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65", "",
-   IDN2_DISALLOWED
+   IDN2_DISALLOWED, IDN2_NO_TR46
    /* 2-3-4-1 Leading hyphen after Nameprep */
    /* Don't resolve as xn--2dn-qma32863a.example */
    /* Don't resolve as xn---2dn-vpa.example */
   },
   {"\xc3\xad\x32\x64\x6e\xef\xbc\x8d\x2e\x65\x78\x61\x6d\x70\x6c\x65", "",
-   IDN2_DISALLOWED
+   IDN2_DISALLOWED, IDN2_NO_TR46
    /* 2-3-4-2 Trailing hyphen after Nameprep */
    /* Don't resolve as xn--2dn-qma79363a.example */
    /* Don't resolve as xn--2dn--upa.example */
   },
   {"\xc2\xb9\x31\x2e\x65\x78\x61\x6d\x70\x6c\x65", "11.example",
-   IDN2_DISALLOWED
+   IDN2_DISALLOWED, IDN2_NO_TR46
    /* 2-4-1 All-ASCII check, Latin */
   },
   {"\xe2\x85\xa5\x76\x69\x2e\x65\x78\x61\x6d\x70\x6c\x65", "vivi.example",
-   IDN2_DISALLOWED
+   IDN2_DISALLOWED, IDN2_NO_TR46
    /* 2-4-2 All-ASCII check, symbol */
   },
   {"\xc3\x9f\x73\x73\x2e\x65\x78\x61\x6d\x70\x6c\x65", "xn--ss-fia.example"
@@ -372,13 +372,13 @@ static const struct idna idna[] = {
    /* Different output in IDNA2008-lookup compared to IDNA2003! */
   },
   {"\x78\x6e\x2d\x2d\xc3\xaf\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65", "",
-   IDN2_2HYPHEN
+   IDN2_2HYPHEN, IDN2_NO_TR46
    /* 2-5-1 ACE prefix before Nameprep, body */
    /* Don't resolve as xn--xn--dn-sja.example */
    /* Don't resolve as xn--dn-sja.example */
   },
   {"\xe2\x85\xb9\x6e\x2d\x2d\xc3\xa4\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "", IDN2_2HYPHEN
+   "", IDN2_2HYPHEN, IDN2_NO_TR46
    /* 2-5-2 ACE prefix before Nameprep, prefix */
    /* Don't resolve as xn--xn--dn-uia.example */
    /* Don't resolve as xn--dn-uia.example */
@@ -390,27 +390,27 @@ static const struct idna idna[] = {
   },
   {"\x33\x30\x30\x32\x2d\x74\x65\x73\x74\xe3\x80\x82\xc3\xad\x64\x6e",
    "3002-test.xn--dn-mja",
-   IDN2_DISALLOWED
+   IDN2_DISALLOWED, IDN2_NO_TR46
    /* 2-9-1 U+3002 acts as a label separator */
    /* Don't resolve as xn--3002-testdn-wcb2087m.example */
    /* Not valid in IDNA2008! */
   },
   {"\x66\x66\x30\x65\x2d\x74\x65\x73\x74\xef\xbc\x8e\xc3\xad\x64\x6e",
    "ff0e-test.xn--dn-mja",
-   IDN2_DISALLOWED
+   IDN2_DISALLOWED, IDN2_NO_TR46
    /* 2-9-2 U+FF0E acts as a label separator */
    /* Don't resolve as xn--ff0e-testdn-wcb45865f.example */
    /* Not valid in IDNA2008! */
   },
   {"\x66\x66\x36\x31\x2d\x74\x65\x73\x74\xef\xbd\xa1\xc3\xad\x64\x6e",
    "ff61-test.xn--dn-mja",
-   IDN2_DISALLOWED
+   IDN2_DISALLOWED, IDN2_NO_TR46
    /* 2-9-3 U+FF61 acts as a label separator */
    /* Don't resolve as xn--ff61-testdn-wcb33975f.example */
    /* Not valid in IDNA2008! */
   },
   {"\x30\x30\x61\x64\x6f\x75\x74\xc2\xad\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--00adoutdn-m5a.example", IDN2_DISALLOWED
+   "xn--00adoutdn-m5a.example", IDN2_DISALLOWED, IDN2_NO_TR46
    /* 4-1-1-1 00adout<00AD><00ED>dn.example -> 00adout<00ED>dn.example */
    /* Don't resolve as xn--00adoutdn-cna81e.example */
    /* Not valid in IDNA2008! */
@@ -439,18 +439,18 @@ static const struct idna idna[] = {
    /* foo U+1bAA (Mc) U+200D ee => OK due to Virama + U+200D. */
   },
   {"\x73\x69\x6d\x70\x6c\x65\x63\x61\x70\x44\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--simplecapddn-1fb.example", IDN2_DISALLOWED
+   "xn--simplecapddn-1fb.example", IDN2_DISALLOWED, IDN2_NO_TR46
    /* 4-1-2-1 simplecap<0044><00ED>dn.example -> simplecap<0064><00ED>dn.example */
    /* Uppercase not valid in IDNA2008! */
   },
   {"\x6c\x61\x74\x69\x6e\x74\x6f\x67\x72\x65\x65\x6b\xc2\xb5\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--latintogreekdn-cmb716i.example", IDN2_DISALLOWED
+   "xn--latintogreekdn-cmb716i.example", IDN2_DISALLOWED, IDN2_NO_TR46
    /* 4-1-2-2 latintogreek<00B5><00ED>dn.example -> latintogreek<03BC><00ED>dn.example */
    /* Don't resolve as xn--latintogreekdn-cxa01g.example */
    /* B5 not valid in IDNA2008! */
   },
   {"\x6c\x61\x74\x69\x6e\x65\x78\x74\xc3\x87\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--latinextdn-v6a6e.example", IDN2_DISALLOWED
+   "xn--latinextdn-v6a6e.example", IDN2_DISALLOWED, IDN2_NO_TR46
    /* 4-1-2-3 latinext<00C7><00ED>dn.example -> latinext<00E7><00ED>dn.example */
    /* Don't resolve as xn--latinextdn-twa07b.example */
    /* C7 not valid in IDNA2008! */
@@ -462,19 +462,19 @@ static const struct idna idna[] = {
    /* Changed in IDNA2008! */
   },
   {"\x74\x75\x72\x6b\x69\x73\x68\x69\xc4\xb0\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--turkishiidn-wcb701e.example", IDN2_DISALLOWED
+   "xn--turkishiidn-wcb701e.example", IDN2_DISALLOWED, IDN2_NO_TR46
    /* 4-1-2-5 turkishi<0130><00ED>dn.example -> turkishi<0069><0307><00ED>dn.example */
    /* Don't resolve as xn--turkishidn-r8a71f.example */
    /* U+0130 not valid in IDNA2008! */
   },
   {"\x65\x78\x70\x74\x77\x6f\xc5\x89\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--exptwondn-m5a502c.example", IDN2_DISALLOWED
+   "xn--exptwondn-m5a502c.example", IDN2_DISALLOWED, IDN2_NO_TR46
    /* 4-1-2-6 exptwo<0149><00ED>dn.example -> exptwo<02BC><006E><00ED>dn.example */
    /* Don't resolve as xn--exptwodn-h2a33g.example */
    /* U+0149 not valid in IDNA2008 */
   },
   {"\x61\x64\x64\x66\x6f\x6c\x64\xcf\x92\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--addfolddn-m5a121f.example", IDN2_DISALLOWED
+   "xn--addfolddn-m5a121f.example", IDN2_DISALLOWED, IDN2_NO_TR46
    /* 4-1-2-7 addfold<03D2><00ED>dn.example -> addfold<03C5><00ED>dn.example */
    /* Don't resolve as xn--addfolddn-m5a462f.example */
    /* U+03D2 not valid in IDNA2008 */
@@ -484,19 +484,19 @@ static const struct idna idna[] = {
    /* 4-1-2-8 expthree<1F52><00ED>dn.example -> expthree<03C5><0313><0300><00ED>dn.example */
   },
   {"\x6e\x6f\x6e\x62\x6d\x70\xf0\x90\x90\x80\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--nonbmpdn-h2a34747d.example", IDN2_DISALLOWED
+   "xn--nonbmpdn-h2a34747d.example", IDN2_DISALLOWED, IDN2_NO_TR46
    /* 4-1-2-9 nonbmp<10400><00ED>dn.example -> nonbmp<10428><00ED>dn.example */
    /* Don't resolve as xn--nonbmpdn-h2a37046d.example */
    /* U+10400 not valid under IDNA2008 */
   },
   {"\x6e\x6f\x6e\x62\x6d\x70\x74\x6f\x61\x73\x63\x69\x69\xf0\x9d\x90\x80\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--nonbmptoasciiadn-msb.example", IDN2_DISALLOWED
+   "xn--nonbmptoasciiadn-msb.example", IDN2_DISALLOWED, IDN2_NO_TR46
    /* 4-1-2-10 nonbmptoascii<1D400><00ED>dn.example -> nonbmptoasciia<00ED>dn.example */
    /* Don't resolve as xn--nonbmptoasciidn-hpb54112i.example */
    /* U+1d400 not valid IDNA2008 */
   },
   {"\x72\x65\x67\x63\x6f\x6d\x62\x65\xcc\x81\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--regcombdn-h4a8b.example", IDN2_NOT_NFC
+   "xn--regcombdn-h4a8b.example", IDN2_NOT_NFC, IDN2_NO_TR46
    /* 4-2-1-1 regcomb<0065><0301><00ED>dn.example -> regcomb<00E9><00ED>dn.example */
    /* Don't resolve as xn--regcombedn-r8a794d.example */
    /* Input not NFC */
@@ -505,12 +505,12 @@ static const struct idna idna[] = {
    /* NFKC of previous */
   },
   {"\x63\x6f\x6d\x62\x61\x6e\x64\x63\x61\x73\x65\x45\xcc\x81\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--combandcasedn-lhb4d.example", IDN2_NOT_NFC
+   "xn--combandcasedn-lhb4d.example", IDN2_NOT_NFC, IDN2_NO_TR46
    /* 4-2-1-2 combandcase<0045><0301><00ED>dn.example -> combandcase<00E9><00ED>dn.example */
    /* Don't resolve as xn--combandcaseedn-cmb526f.example */
   },
   {"combandcaseÉídn.example",
-   "xn--combandcasedn-lhb4d.example", IDN2_DISALLOWED
+   "xn--combandcasedn-lhb4d.example", IDN2_DISALLOWED, IDN2_NO_TR46
    /* NFKC of previous, uppercase not IDNA2008-valid */
   },
   {"combandcaseéídn.example",
@@ -518,13 +518,13 @@ static const struct idna idna[] = {
    /* Lower case of previous */
   },
   {"\x61\x64\x6a\x63\x6f\x6d\x62\xc2\xba\xcc\x81\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--adjcombdn-m5a9d.example", IDN2_DISALLOWED
+   "xn--adjcombdn-m5a9d.example", IDN2_DISALLOWED, IDN2_NO_TR46
    /* 4-2-1-3 adjcomb<00BA><0301><00ED>dn.example -> adjcomb<00F3><00ED>dn.example */
    /* Don't resolve as xn--adjcombdn-1qa57cp3r.example */
    /* U+00BA not IDNA2008-valid */
   },
   {"\x65\x78\x74\x63\x6f\x6d\x62\x6f\x63\xcc\x81\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--extcombodn-r8a52a.example", IDN2_NOT_NFC
+   "xn--extcombodn-r8a52a.example", IDN2_NOT_NFC, IDN2_NO_TR46
    /* 4-2-1-4 extcombo<0063><0301><00ED>dn.example -> extcombo<0107><00ED>dn.example */
    /* Don't resolve as xn--extcombocdn-wcb920e.example */
   },
@@ -533,7 +533,7 @@ static const struct idna idna[] = {
    /* NFKC of previous */
   },
   {"\x64\x6f\x75\x62\x6c\x65\x64\x69\x61\x63\x31\x75\xcc\x88\xcc\x81\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--doublediac1dn-6ib836a.example", IDN2_NOT_NFC
+   "xn--doublediac1dn-6ib836a.example", IDN2_NOT_NFC, IDN2_NO_TR46
    /* 4-2-1-5 doublediac1<0075><0308><0301><00ED>dn.example -> doublediac2<01D8><00ED>dn.example */
    /* Don't resolve as xn--doublediac1udn-cmb526fnd.example */
   },
@@ -542,7 +542,7 @@ static const struct idna idna[] = {
    /* NFKC of previous */
   },
   {"\x64\x6f\x75\x62\x6c\x65\x64\x69\x61\x63\x32\x75\xcc\x81\xcc\x88\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--doublediac2dn-6ib8qs73a.example", IDN2_NOT_NFC
+   "xn--doublediac2dn-6ib8qs73a.example", IDN2_NOT_NFC, IDN2_NO_TR46
    /* 4-2-1-6 doublediac2<0075><0301><0308><00ED>dn.example -> doublediac2<01D8><00ED>dn.example */
    /* Don't resolve as xn--doublediac2udn-cmb526fod.example */
   },
@@ -552,18 +552,18 @@ static const struct idna idna[] = {
    /* Don't resolve as xn--doublediac2udn-cmb526fod.example */
   },
   {"\x6e\x65\x77\x6e\x6f\x72\x6d\xf0\xaf\xa1\xb4\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--newnormdn-m5a7856x.example", IDN2_NOT_NFC
+   "xn--newnormdn-m5a7856x.example", IDN2_NOT_NFC, IDN2_NO_TR46
    /* 4-2-2-1 newnorm<2F874><00ED>dn.example -> newnorm<5F33><00ED>dn.example should not become <5F53> */
    /* Don't resolve as xn--newnormdn-m5a9396x.example */
    /* Don't resolve as xn--newnormdn-m5a9968x.example */
    /* U+2f876 not IDNA2008-valid */
   },
   {"\xe2\x80\x80\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "", IDN2_NOT_NFC
+   "", IDN2_NOT_NFC, IDN2_NO_TR46
    /* 4-3-1 Spacing */
    /* Don't resolve as xn--dn-mja3392a.example */
   },
-  {" ídn.example", "", IDN2_DISALLOWED
+  {" ídn.example", "", IDN2_DISALLOWED, IDN2_NO_TR46
    /* NFKC of previous.  U+0020 */
   },
   {"\xdb\x9d\xc3\xad\x64\x6e\x2d\x32\x2e\x65\x78\x61\x6d\x70\x6c\x65",
@@ -656,7 +656,7 @@ static const struct idna idna[] = {
    /* 5-1-1 Unassigned in BMP; zone editors should reject */
   },
   {"\xf0\x90\x88\x85\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
-   "xn--dn-mja7734x.example", IDN2_UNASSIGNED
+   "xn--dn-mja7734x.example", IDN2_UNASSIGNED, IDN2_NO_TR46
    /* 5-1-2 Unassinged outside BMP; zone editors should reject */
    /* Don't resolve as xn--dn-mja7922x.example */
   },
@@ -707,7 +707,7 @@ static const struct idna idna[] = {
     "\xd0\x94\xd0\xb0\xc1\x80", "", IDN2_ENCODING_ERROR
   },
   {
-    "\xe2\x84\xa6", "", IDN2_NOT_NFC
+    "\xe2\x84\xa6", "", IDN2_NOT_NFC, IDN2_NO_TR46
   },
 #if 0 /* reject or not? */
   {
@@ -715,10 +715,10 @@ static const struct idna idna[] = {
   },
 #endif
   {
-    "--", "--", IDN2_OK
+    "--", "--", IDN2_OK, IDN2_NO_TR46
   },
   {
-    "\xcd\x8f", "", IDN2_LEADING_COMBINING
+    "\xcd\x8f", "", IDN2_LEADING_COMBINING, IDN2_NO_TR46
     /* CCC=0 GC=M */
   },
   {
@@ -737,7 +737,7 @@ static const struct idna idna[] = {
     "", "", IDN2_OK
   },
   {
-    "\xc2\xb8", "", IDN2_DISALLOWED
+    "\xc2\xb8", "", IDN2_DISALLOWED, IDN2_NO_TR46
   },
   {
     "\xf4\x8f\xbf\xbf", "", IDN2_DISALLOWED
@@ -746,10 +746,10 @@ static const struct idna idna[] = {
     "\xe2\x80\x8d", "", IDN2_CONTEXTJ
   },
   {
-    "\xcd\xb8", "", IDN2_UNASSIGNED
+    "\xcd\xb8", "", IDN2_UNASSIGNED, IDN2_NO_TR46
   },
   {
-    "\xcd\xb9", "", IDN2_UNASSIGNED
+    "\xcd\xb9", "", IDN2_UNASSIGNED, IDN2_NO_TR46
   },
   {
     "\x72\xc3\xa4\x6b\x73\x6d\xc3\xb6\x72\x67\xc3\xa5\x73",
@@ -764,32 +764,32 @@ static const struct idna idna[] = {
     /* check that ltr string cannot contain R character */
   },
   {
-    "-", "-", IDN2_OK
+    "-", "-", IDN2_OK, IDN2_NO_TR46
   },
   {
-    "-a", "-a", IDN2_OK
+    "-a", "-a", IDN2_OK, IDN2_NO_TR46
   },
   {
-    "a-", "a-", IDN2_OK
+    "a-", "a-", IDN2_OK, IDN2_NO_TR46
   },
   {
-    "-a", "-a", IDN2_OK
+    "-a", "-a", IDN2_OK, IDN2_NO_TR46
   },
   {
-    "-a-", "-a-", IDN2_OK
+    "-a-", "-a-", IDN2_OK, IDN2_NO_TR46
   },
   {
     "foo", "foo", IDN2_OK
   },
-  {"\xe2\x84\xab", "", IDN2_NOT_NFC},
-  {"\xe2\x84\xa6", "", IDN2_NOT_NFC},
+  {"\xe2\x84\xab", "", IDN2_NOT_NFC, IDN2_NO_TR46},
+  {"\xe2\x84\xa6", "", IDN2_NOT_NFC, IDN2_NO_TR46},
   {
     /* blåbærgrød.no composed */
     "\x62\x6c\xc3\xa5\x62\xc3\xa6\x72\x67\x72\xc3\xb8\x64\x2e\x6e\x6f", "xn--blbrgrd-fxak7p.no", IDN2_OK
   },
   {
     /* blåbærgrød.no partially decomposed */
-    "\x62\x6c\x61\xcc\x8a\x62\xc3\xa6\x72\x67\x72\xc3\xb8\x64\x2e\x6e\x6f", "", IDN2_NOT_NFC
+    "\x62\x6c\x61\xcc\x8a\x62\xc3\xa6\x72\x67\x72\xc3\xb8\x64\x2e\x6e\x6f", "", IDN2_NOT_NFC, IDN2_NO_TR46
   },
   {
     /* blåbærgrød.no partially decomposed */
@@ -815,19 +815,20 @@ static const struct idna idna[] = {
   /* √.com */
   {"\xe2\x88\x9a.com", "xn--19g.com", IDN2_OK, IDN2_TRANSITIONAL},
   /* domains with non-STD3 characters (removed by default when using TR46 transitional/non-transitional */
-  {"_443._tcp.example.com", "_443._tcp.example.com", IDN2_OK, 0},
+  {"_443._tcp.example.com", "_443._tcp.example.com", IDN2_OK, IDN2_NO_TR46},
   {"_443._tcp.example.com", "_443._tcp.example.com", IDN2_OK, IDN2_TRANSITIONAL},
   {"_443._tcp.example.com", "_443._tcp.example.com", IDN2_OK, IDN2_NONTRANSITIONAL},
+  {"_443._tcp.example.com", "_443._tcp.example.com", IDN2_OK, 0},
   {"_443._tcp.example.com", "443.tcp.example.com", IDN2_OK, IDN2_USE_STD3_ASCII_RULES|IDN2_NONTRANSITIONAL},
   {"_443._tcp.example.com", "443.tcp.example.com", IDN2_OK, IDN2_USE_STD3_ASCII_RULES|IDN2_TRANSITIONAL},
-  {"_443._tcp.example.com", "_443._tcp.example.com", IDN2_OK, IDN2_USE_STD3_ASCII_RULES}, /* flag is ignored when not using TR46 */
+  {"_443._tcp.example.com", "_443._tcp.example.com", IDN2_OK, IDN2_USE_STD3_ASCII_RULES|IDN2_NO_TR46}, /* flag is ignored when not using TR46 */
   /* _��� */
-  {"_\xc3\xbc", "xn--_-eha", IDN2_DISALLOWED, 0},
+  {"_\xc3\xbc", "xn--_-eha", IDN2_DISALLOWED, IDN2_NO_TR46},
   {"_\xc3\xbc", "xn--_-eha", IDN2_OK, IDN2_TRANSITIONAL},
   {"_\xc3\xbc", "xn--_-eha", IDN2_OK, IDN2_NONTRANSITIONAL},
   {"_\xc3\xbc", "xn--tda", IDN2_OK, IDN2_USE_STD3_ASCII_RULES|IDN2_NONTRANSITIONAL},
   {"_\xc3\xbc", "xn--tda", IDN2_OK, IDN2_USE_STD3_ASCII_RULES|IDN2_TRANSITIONAL},
-  {"_\xc3\xbc", "xn--_-eha", IDN2_DISALLOWED, IDN2_USE_STD3_ASCII_RULES}, /* flag is ignored when not using TR46 */
+  {"_\xc3\xbc", "xn--_-eha", IDN2_DISALLOWED, IDN2_USE_STD3_ASCII_RULES|IDN2_NO_TR46}, /* flag is ignored when not using TR46 */
   /* test invalid flags */
   {"_443._tcp.example.com", "_443._tcp.example.com", IDN2_INVALID_FLAGS, IDN2_NONTRANSITIONAL|IDN2_TRANSITIONAL},
   {"_443._tcp.example.com", "_443._tcp.example.com", IDN2_INVALID_FLAGS, IDN2_NONTRANSITIONAL|IDN2_NO_TR46},
@@ -925,6 +926,27 @@ test_homebrewed(void)
       /* Try the IDN2_NO_TR46 flag behavior */
       if (!(idna[i].flags & (IDN2_NONTRANSITIONAL|IDN2_TRANSITIONAL))) {
 	rc = idn2_lookup_u8 ((uint8_t *) idna[i].in, &out, idna[i].flags|IDN2_NO_TR46);
+	printf ("%3d  %-25s %-40s %s\n", (int) i, idn2_strerror_name (rc),
+	        rc == IDN2_OK ? idna[i].out : "", idna[i].in);
+
+        if (rc != idna[i].rc && rc == IDN2_ENCODING_ERROR) {
+	  printf("utc bug\n");
+	} else if (rc != idna[i].rc && idna[i].rc != -1) {
+	  failed++;
+	  printf("expected rc %d got rc %d\n", idna[i].rc, rc);
+        } else if (rc == IDN2_OK && strcmp ((char *) out, idna[i].out) != 0) {
+	  failed++;
+	  printf("expected: %s\ngot: %s\n", idna[i].out, out);
+        } else
+	  ok++;
+
+        if (rc == IDN2_OK)
+	  idn2_free (out);
+      }
+
+      /* Try whether the default flags behave as NONTRANSITIONAL */
+      if (!(idna[i].flags & (IDN2_NO_TR46|IDN2_TRANSITIONAL))) {
+	rc = idn2_lookup_u8 ((uint8_t *) idna[i].in, &out, idna[i].flags|IDN2_NONTRANSITIONAL);
 	printf ("%3d  %-25s %-40s %s\n", (int) i, idn2_strerror_name (rc),
 	        rc == IDN2_OK ? idna[i].out : "", idna[i].in);
 
