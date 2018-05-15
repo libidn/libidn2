@@ -145,7 +145,15 @@ Perform Unicode TR46 transitional processing.
 @end deftypevr
 
 @deftypevr {Global flag} {idn2_flags} IDN2_NONTRANSITIONAL
-Perform Unicode TR46 non-transitional processing.
+Perform Unicode TR46 non-transitional processing (default).
+@end deftypevr
+
+@deftypevr {Global flag} {idn2_flags} IDN2_NO_TR46
+Disable any TR#46 transitional or non-transitional processing.
+@end deftypevr
+
+@deftypevr {Global flag} {idn2_flags} IDN2_USE_STD3_ASCII_RULES
+Use STD3 ASCII rules. This is a TR#46 flag and is a no-op when IDN2_NO_TR46 is specified.
 @end deftypevr
 
 @section Error Handling
@@ -330,6 +338,9 @@ if (rc != IDNA_SUCCESS)
 
 @tab
 @verbatim
+/* The flag IDN2_NONTRANSITIONAL is the default under
+ * libidn2 2.0.5 or later; we specify it explicitly
+ * for earlier versions. */
 rc = idn2_to_ascii_8z (buf, &p, IDN2_NONTRANSITIONAL);
 if (rc != IDN2_OK)
 @end verbatim
