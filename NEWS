@@ -11,14 +11,14 @@ See the end for copying conditions.
    the interest of interoperability based on the fact that this is what application
    writers care about rather than strict compliance with a particular protocol.
 
-** Fixed memleak in idn2_to_unicode_8zlz()
+** Fixed memleak in idn2_to_unicode_8zlz().
 
-** Return error (IDN2_ICOV_FAIL) on charset conversion errors
+** Return error (IDN2_ICONV_FAIL) on charset conversion errors.
 
 ** Fixed issue with STD3 rules applying in non-transitional
    TR46 mode.
 
-** idn2: added option --usestd3asciirules
+** idn2: added option --usestd3asciirules.
 
 
 * Version 2.0.4 (released 2017-08-30)
