@@ -92,6 +92,7 @@ if test "$gl_gcc_warnings" = yes; then
   nw="$nw -Wtraditional-conversion" # Too many complaints for now.
   nw="$nw -Wunreachable-code"     # gcc bug 40412
   nw="$nw -Wswitch-default"       # Nothing wrong with default-less switch?
+  nw="$nw -Wmissing-field-initializers" # Avoid spamming in tests/ directory
 
   gl_MANYWARN_COMPLEMENT([warnings], [$warnings], [$nw])
   for w in $warnings; do
@@ -99,7 +100,8 @@ if test "$gl_gcc_warnings" = yes; then
   done
 
   gl_WARN_ADD([-fdiagnostics-show-option])
-  gl_WARN_ADD([-fdiagnostics-color=always]) # colors even when using ccache
+  gl_WARN_ADD([-fdiagnostics-color=always])      # colors even when using ccache
+  gl_WARN_ADD([-Wno-missing-field-initializers]) # # Avoid spamming in tests/ directory
 fi
 
 AC_ARG_ENABLE(doc,

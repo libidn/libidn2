@@ -16,7 +16,7 @@
 AM_CPPFLAGS = -I$(top_srcdir) -I$(top_srcdir)/lib -I$(top_builddir)/lib -I$(srcdir) -I$(top_builddir)
 AM_CPPFLAGS += -I$(top_builddir)/gl -I$(top_srcdir)/gl
 AM_CPPFLAGS += -DSRCDIR=\"$(srcdir)\"
-AM_CFLAGS = $(WARN_CFLAGS) -Wno-missing-field-initializers
+AM_CFLAGS = $(WARN_CFLAGS)
 AM_LDFLAGS = -no-install
 
 if !HAVE_LIBUNISTRING
