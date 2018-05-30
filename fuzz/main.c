@@ -70,7 +70,7 @@ static void test_all_from(const char *dirname)
 				printf("testing %llu bytes from '%s'\n", (unsigned long long) st.st_size, fname);
 				LLVMFuzzerTestOneInput(data, st.st_size);
 			} else
-				fprintf(stderr, "Failed to read %llu bytes from %s (%d), got %zd\n", (unsigned long long) st.st_size, fname, errno, n);
+				fprintf(stderr, "Failed to read %llu bytes from %s (%d), got %d\n", (unsigned long long) st.st_size, fname, errno, (int) n);
 
 			free(data);
 			close(fd);

@@ -298,7 +298,7 @@ read_IdnaMappings (char *linep)
 	    {
 	      map->offset = mapdata_pos;
 	      if (map->offset != mapdata_pos)
-		printf ("offset overflow (%zu)\n", mapdata_pos);
+		printf ("offset overflow (%u)\n", (unsigned) mapdata_pos);
 	    }
 
 	  tmp[map->nmappings] = cp;
@@ -665,14 +665,14 @@ main (void)
   _print_tr46_map (0x10000, 0xFFFFFF, 1);
   printf ("};\n\n");
 
-  printf ("static const uint8_t mapdata[%zu] = {\n", mapdata_pos);
+  printf ("static const uint8_t mapdata[%u] = {\n", (unsigned) mapdata_pos);
   for (it = 0; it < mapdata_pos; it++)
     {
       printf ("0x%02X,%s", genmapdata[it], it % 16 == 15 ? "\n" : "");
     }
   printf ("};\n\n");
 
-  printf ("static const NFCQCMap nfcqc_map[%zu] = {\n", nfcqc_pos);
+  printf ("static const NFCQCMap nfcqc_map[%u] = {\n", (unsigned) nfcqc_pos);
   for (it = 0; it < nfcqc_pos; it++)
     {
       NFCQCMap *map = nfcqc_map + it;

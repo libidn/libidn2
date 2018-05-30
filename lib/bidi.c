@@ -87,7 +87,7 @@ _idn2_bidi (const uint32_t * label, size_t llen)
       for (size_t it = 1; it < llen; it++) {
 	bc = uc_bidi_category(label[it]);
 
-	/* printf("Label[%zu]=%04X: %s\n", it, label[it], uc_bidi_category_name(bc)); */
+	/* printf("Label[%d]=%04X: %s\n", (int) it, label[it], uc_bidi_category_name(bc)); */
 	if (bc == UC_BIDI_R || bc == UC_BIDI_AL || bc == UC_BIDI_EN || bc == UC_BIDI_AN || bc == UC_BIDI_NSM) {
 	  endok = 1;
 	} else {
