@@ -50,8 +50,8 @@ ABI_TMPDIR="headers.abi.tmp"
 ABI_TMPCLONEDIR="libidn2-prev-abi.tmp"
 ABI_TMPFILE1="abi-temp-cur.xml"
 ABI_TMPFILE2="abi-temp-prev.xml"
-ABIREF := $(shell git for-each-ref --sort=taggerdate --format '%(refname)' refs/tags|tail -1)
-ABIVER := $(shell git for-each-ref --sort=taggerdate --format '%(refname)' refs/tags|tail -1|cut -d '/' -f 3|sed -e 's/libidn2-//' -e 's/_/./g')
+ABIREF := $(shell if test -d .git; then git for-each-ref --sort=taggerdate --format '%(refname)' refs/tags|tail -1; fi)
+ABIVER := $(shell if test -d .git; then git for-each-ref --sort=taggerdate --format '%(refname)' refs/tags|tail -1|cut -d '/' -f 3|sed -e 's/libidn2-//' -e 's/_/./g'; fi)
 prev-tag-abi.stamp:
 	@rm -rf $(ABI_TMPCLONEDIR)
 	@git clone -l . $(ABI_TMPCLONEDIR)
