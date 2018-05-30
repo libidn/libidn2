@@ -33,9 +33,8 @@ Debian GNU/Linux:
 # In this build we combine
 #  * syntax-check
 #  * abi-check
-#  * distcheck
 # It is not run on tags
-abi/dist-check:
+abi-check:
   stage: stage1-testing
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
@@ -44,12 +43,6 @@ abi/dist-check:
   - make syntax-check
   - make -j$(nproc)
   - make abi-check
-  - make clean
-  - CFLAGS="-g -Og" ./configure -C --enable-gtk-doc --enable-gtk-doc-pdf --disable-gcc-warnings --disable-valgrind-tests
-  - make -j$(nproc)
-  - DISTCHECK_CONFIGURE_FLAGS=--disable-gtk-doc make distcheck
-  - mv libidn2-*.gz tarball.tgz
-  - sum tarball.tgz
   tags:
   - shared
   except:
@@ -60,11 +53,31 @@ abi/dist-check:
     paths:
       - tests/*.log
       - compat_reports/
-  cache:
-    key: "$CI_COMMIT_SHA"
-    paths:
-      - tarball.tgz
 
+# In this build we do
+#  * distcheck
+dist-check:
+  stage: stage1-testing
+  image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
+  script:
+  - ./bootstrap
+  - ./configure -C --enable-gtk-doc --enable-gtk-doc-pdf --disable-gcc-warnings --disable-valgrind-tests
+  - make -j$(nproc)
+  - DISTCHECK_CONFIGURE_FLAGS=--disable-gtk-doc make distcheck
+  tags:
+  - shared
+  except:
+  - tags
+  artifacts:
+    expire_in: 2 weeks
+    when: on_failure
+    paths:
+      - libidn2-*
+  artifacts:
+    expire_in: 2 weeks
+    when: on_success
+    paths:
+      - libidn2-*.gz
 
 # In this build we combine
 #  * build/asan-check
@@ -195,14 +208,15 @@ MinGW64:
 Tarball:
   stage: stage2-tarball-testing
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$BASE_BUILD
+  variables:
+    GIT_STRATEGY: none
   script:
     # remove all files from git repo
-    - sum tarball.tgz
-    - mv tarball.tgz /tmp
+    - mv libidn2-*.gz /tmp
     - rm -rf * .git* .travis*
-    - mv /tmp/tarball.tgz .
+    - mv /tmp/libidn2-*.gz .
     # unpack and build from tarball
-    - tar xvf tarball.tgz
+    - tar xvf libidn2-*.gz
     - cd libidn2-*
     - ./configure
     - make
@@ -212,14 +226,11 @@ Tarball:
     - make
   tags:
     - shared
+  dependencies:
+    - dist-check
   artifacts:
     expire_in: 2 weeks
     when: on_failure
     paths:
       - libidn2-*/*.log
       - libidn2-*/*/*.log
-  cache:
-    key: "$CI_COMMIT_SHA"
-    paths:
-      - tarball.tgz
-    policy: pull
