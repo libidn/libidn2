@@ -47,7 +47,7 @@ dist_man_MANS += idn2.1
 idn2.1: idn2.md
 	ronn -r $^ >$@
 
-CLEANFILES = $(dist_man_MANS) decode.c example-tounicode.c example-toascii.c lookup.c \
+MAINTAINERCLEANFILES = $(dist_man_MANS) decode.c example-tounicode.c example-toascii.c lookup.c \
 	register.c stamp-vti version.texi
 
 # GDOC
@@ -60,7 +60,7 @@ GDOC_MAN_EXTRA_ARGS = -module $(PACKAGE) -sourceversion $(VERSION) \
 	-includefuncprefix -seeinfo $(PACKAGE)
 include $(srcdir)/Makefile.gdoci
 
-clean-local:
+maintainer-clean-local:
 	rm -rf man texi manual
 
 manual:
