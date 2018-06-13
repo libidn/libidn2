@@ -1126,14 +1126,15 @@ _check_toASCII(char *source, char *expected, int transitional, int expected_toAS
     idn2_free(ace);
 }
 
+#if HAVE_LIBUNISTRING
+  extern int _libunistring_version;
+#endif
+
 static int
 test_IdnaTest(char *linep)
 {
   char *type, *source, *toUnicode, *toASCII, *NV8, *org_source;
   int expected_toASCII_failure;
-#if HAVE_LIBUNISTRING
-  extern int _libunistring_version;
-#endif
 
   type = _nextField(&linep);
   org_source = source = _nextField(&linep);
