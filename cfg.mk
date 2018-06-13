@@ -26,7 +26,7 @@ local-checks-to-skip += sc_copyright_check
 
 # Ignore gnulib files.
 VC_LIST_ALWAYS_EXCLUDE_REGEX = \
-  ^(maint.mk|build-aux/gnupload|src/gl/.*|gl/.*|m4/.*|^fuzz/.*.in/.*|^fuzz/.*.repro/.*)$$
+  ^(bootstrap|maint.mk|build-aux/gnupload|src/gl/.*|gl/.*|m4/.*|^fuzz/.*.in/.*|^fuzz/.*.repro/.*)$$
 
 
 # Explicit syntax-check exceptions.
@@ -40,7 +40,7 @@ exclude_file_name_regexp--sc_GPL_version = ^COPYINGv2|[^/]*.[ch](.in)?$$
 exclude_file_name_regexp--sc_prohibit_atoi_atof = ^lib/gentr46map\.c$$
 exclude_file_name_regexp--sc_makefile_at_at_check = ^Makefile.am|src/Makefile\.am|tests/Makefile.am$$
 exclude_file_name_regexp--sc_prohibit_empty_lines_at_EOF = ^lib/IdnaMappingTable.txt|doc/reference/version.xml.in$$
-exclude_file_name_regexp--sc_prohibit_undesirable_word_seq = ^bootstrap|^lib/idna-tables-6.3.0.txt$$
+exclude_file_name_regexp--sc_prohibit_undesirable_word_seq = ^lib/idna-tables-6.3.0.txt$$
 
 update-copyright-env = \
 	UPDATE_COPYRIGHT_USE_INTERVALS=2 \
