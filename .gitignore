@@ -1,4 +1,3 @@
-!po/POTFILES.in
 *.exe
 *.gcda
 *.gcno
@@ -10,14 +9,15 @@
 .deps/
 .libs/
 /ABOUT-NLS
+/ChangeLog
+/GNUmakefile
+/INSTALL
 /build-aux
-ChangeLog
-DerivedNormalizationProps.txt
-GNUmakefile
-INSTALL
+/gtk-doc.m4
+/gtk-doc.make
+/maint.mk
 Makefile
 Makefile.in
-TAGS
 aclocal.m4
 autom4te.cache/
 build-aux/
@@ -27,7 +27,6 @@ config.h
 config.h.in
 config.status
 configure
-data.c
 doc/.gitignore
 doc/Makefile
 doc/Makefile.gdoc
@@ -112,11 +111,11 @@ examples/lookup
 examples/register
 fuzz/*_fuzzer
 fuzz/*_fuzzer.new/
-gentr46map
 gl/
-gtk-doc.make
-idn2.h
-lib/*
+lib/data.c
+lib/gentr46map
+lib/idn2.h
+lib/tr46map_data.c
 libidn2-*.tar.*
 libidn2-*.tar.*.sig
 libidn2-*/
@@ -124,8 +123,8 @@ libidn2.la
 libidn2.pc
 libtool
 m4/*
-maint.mk
 po/*
+!po/POTFILES.in
 scan.tmp/
 src/Makefile
 src/Makefile.in
@@ -135,6 +134,8 @@ src/idn2_cmd.h
 src/idn2_noinstall
 src/libidn2_cmd.la
 stamp-h1
+tests/.gitignore
+tests/IdnaTest.inc
 tests/Makefile
 tests/Makefile.in
 tests/repro-to-ascii-8z
@@ -144,5 +145,4 @@ tests/test-punycode
 tests/test-register
 tests/test-strerror
 tests/test-tounicode
-tr46map_data.c
 unistring/
