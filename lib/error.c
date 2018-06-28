@@ -230,11 +230,15 @@ idn2_strerror_name (int rc)
       p = ERR2STR (IDN2_UALABEL_MISMATCH);
       break;
 
+    case IDN2_INVALID_FLAGS:
+      p = ERR2STR (IDN2_INVALID_FLAGS);
+      break;
+
     case IDN2_NOT_NFC:
       p = ERR2STR (IDN2_NOT_NFC);
       break;
 
-    case IDN2_2HYPHEN:
+  case IDN2_2HYPHEN:
       p = ERR2STR (IDN2_2HYPHEN);
       break;
 
@@ -272,6 +276,18 @@ idn2_strerror_name (int rc)
 
     case IDN2_BIDI:
       p = ERR2STR (IDN2_BIDI);
+      break;
+
+    case IDN2_DOT_IN_LABEL:
+      p = ERR2STR (IDN2_DOT_IN_LABEL);
+      break;
+
+    case IDN2_INVALID_TRANSITIONAL:
+      p = ERR2STR (IDN2_INVALID_TRANSITIONAL);
+      break;
+
+    case IDN2_INVALID_NONTRANSITIONAL:
+      p = ERR2STR (IDN2_INVALID_NONTRANSITIONAL);
       break;
 
     default:
