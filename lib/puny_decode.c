@@ -190,6 +190,7 @@ int punycode_decode(
 
     if (i / (out + 1) > maxint - n) return punycode_overflow;
     n += i / (out + 1);
+    if (n > 0x10FFFF) return punycode_bad_input;
     i %= (out + 1);
 
     /* Insert n at position i of the output: */
