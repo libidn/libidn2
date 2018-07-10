@@ -84,7 +84,7 @@ enum { base = 36, tmin = 1, tmax = 26, skew = 38, damp = 700,
        initial_bias = 72, initial_n = 0x80, delimiter = 0x2D };
 
 /* basic(cp) tests whether cp is a basic code point: */
-#define basic(cp) ((punycode_uint)(cp) < 0x80)
+#define basic(cp) ((cp >= 'a' && cp <= 'z') || (cp >= '0' && cp <='9') || (cp >= 'A' && cp <='Z') || cp == 0x2D)
 
 /* delim(cp) tests whether cp is a delimiter: */
 #define delim(cp) ((cp) == delimiter)
@@ -95,8 +95,14 @@ enum { base = 36, tmin = 1, tmax = 26, skew = 38, damp = 700,
 
 static unsigned decode_digit(int cp)
 {
-  return (unsigned) (cp - 48 < 10 ? cp - 22 :  cp - 65 < 26 ? cp - 65 :
-         cp - 97 < 26 ? cp - 97 :  base);
+  if (cp >= 'a' && cp <= 'z')
+    return cp - 'a';
+  if (cp >= '0' && cp <= '9')
+    return cp - '0' + 26;
+  if (cp >= 'A' && cp <= 'Z')
+    return cp - 'A';
+
+  return 0;
 }
 
 /*** Platform-specific constants ***/
@@ -156,6 +162,8 @@ int punycode_decode(
     if (!basic(input[j])) return punycode_bad_input;
     output[out++] = input[j];
   }
+  for (j = b + (b > 0);  j < input_length;  ++j)
+    if (!basic(input[j])) return punycode_bad_input;
 
   /* Main decoding loop:  Start just after the last delimiter if any  */
   /* basic code points were copied; start at the beginning otherwise. */
@@ -190,7 +198,7 @@ int punycode_decode(
 
     if (i / (out + 1) > maxint - n) return punycode_overflow;
     n += i / (out + 1);
-    if (n > 0x10FFFF) return punycode_bad_input;
+    if (n > 0x10FFFF || (n >= 0xD800 && n <= 0xDBFF)) return punycode_bad_input;
     i %= (out + 1);
 
     /* Insert n at position i of the output: */

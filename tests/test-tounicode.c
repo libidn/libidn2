@@ -220,7 +220,7 @@ const test_t test[] = {
     {
       0x002D, 0x003E, 0x0020, 0x0024, 0x0031, 0
     },
-    IDN2_OK
+    IDN2_PUNYCODE_BAD_INPUT
   },
   {
     "(T) -> $1",
