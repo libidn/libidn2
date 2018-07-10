@@ -569,7 +569,7 @@ idn2_lookup_ul (const char * src, char ** lookupname, int flags)
  *
  * The default behavior of this function (when flags are zero) is to apply
  * the IDNA2008 rules without the TR46 amendments. As the TR46
- * non-transitional processing is nowdays ubiquitous, when unsure, it is
+ * non-transitional processing is nowadays ubiquitous, when unsure, it is
  * recommended to call this function with the %IDN2_NONTRANSITIONAL
  * and the %IDN2_NFC_INPUT flags for compatibility with other software.
  *
@@ -637,7 +637,7 @@ idn2_to_ascii_4i (const uint32_t * input, size_t inlen, char * output, int flags
  *
  * The default behavior of this function (when flags are zero) is to apply
  * the IDNA2008 rules without the TR46 amendments. As the TR46
- * non-transitional processing is nowdays ubiquitous, when unsure, it is
+ * non-transitional processing is nowadays ubiquitous, when unsure, it is
  * recommended to call this function with the %IDN2_NONTRANSITIONAL
  * and the %IDN2_NFC_INPUT flags for compatibility with other software.
  *
@@ -685,7 +685,7 @@ idn2_to_ascii_4z (const uint32_t * input, char ** output, int flags)
  *
  * The default behavior of this function (when flags are zero) is to apply
  * the IDNA2008 rules without the TR46 amendments. As the TR46
- * non-transitional processing is nowdays ubiquitous, when unsure, it is
+ * non-transitional processing is nowadays ubiquitous, when unsure, it is
  * recommended to call this function with the %IDN2_NONTRANSITIONAL
  * and the %IDN2_NFC_INPUT flags for compatibility with other software.
  *
@@ -711,7 +711,7 @@ idn2_to_ascii_8z (const char * input, char ** output, int flags)
  *
  * The default behavior of this function (when flags are zero) is to apply
  * the IDNA2008 rules without the TR46 amendments. As the TR46
- * non-transitional processing is nowdays ubiquitous, when unsure, it is
+ * non-transitional processing is nowadays ubiquitous, when unsure, it is
  * recommended to call this function with the %IDN2_NONTRANSITIONAL
  * and the %IDN2_NFC_INPUT flags for compatibility with other software.
  *
