@@ -16,15 +16,16 @@ The ./configure runs below are for libidn2.
 
 Use the following commands on top dir:
 ```
-export CC=clang-5.0
-export CFLAGS="-O1 -fno-omit-frame-pointer -gline-tables-only -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION -fsanitize=undefined,integer,nullability -fsanitize=address -fsanitize-address-use-after-scope -fsanitize-coverage=trace-pc-guard,trace-cmp"
+export CC=clang-6.0
+export CFLAGS="-O1 -g -fno-omit-frame-pointer -gline-tables-only -DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION -fsanitize=undefined,integer,nullability -fsanitize=address -fsanitize-address-use-after-scope -fsanitize-coverage=trace-pc-guard,trace-cmp"
 ASAN_OPTIONS=detect_leaks=0 ./configure --enable-static --disable-doc --disable-gcc-warnings
 make clean
 make -j$(nproc)
 cd fuzz
 
-# build and run fuzzer
-./run-clang.sh libidn2_to_ascii_8z_fuzzer
+# run libwget_xml_parse_buffer_fuzzer
+UBSAN_OPTIONS=print_stacktrace=1 ASAN_SYMBOLIZER_PATH=/usr/lib/llvm-6.0/bin/llvm-symbolizer \
+  ./run-clang.sh libidn2_to_ascii_8z_fuzzer
 ```
 
 

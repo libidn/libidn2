@@ -39,12 +39,12 @@ fuzzer=$1
 workers=$(($(nproc) - 1))
 jobs=$workers
 
-clang-5.0 \
+clang-6.0 \
  $CFLAGS -Og -g -I../include -I.. \
  ${fuzzer}.c -o ${fuzzer} \
  -Wl,-Bstatic ../lib/.libs/libidn2.a -lFuzzer \
  -lunistring \
- -Wl,-Bdynamic -lclang-5.0 -lstdc++
+ -Wl,-Bdynamic -lclang-6.0 -lstdc++
 
 if test -n "$BUILD_ONLY"; then
   exit 0
