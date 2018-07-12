@@ -26,14 +26,15 @@
    not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <stddef.h>
 #include <stdint.h>
 
-extern _IDN2_API int
+int
 _idn2_punycode_encode (size_t input_length,
 		       const uint32_t input[],
 		       size_t * output_length, char output[]);
 
-extern _IDN2_API int
+int
 _idn2_punycode_decode (size_t input_length,
 		       const char input[],
 		       size_t * output_length,
