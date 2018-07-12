@@ -41,7 +41,7 @@
 #include <unistr.h>		/* u8_to_u32 */
 
 #include "idna.h"		/* _idn2_label_test */
-#include "tr46map.h"		/* defintion for tr46map.c */
+#include "tr46map.h"		/* definition for tr46map.c */
 
 static int set_default_flags(int *flags)
 {
