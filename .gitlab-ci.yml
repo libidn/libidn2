@@ -1,14 +1,20 @@
+stages:
+  - stage1-testing
+  - stage2-tarball-testing
+
 variables:
   BUILD_IMAGES_PROJECT: libidn/build-images
   DEBIAN_BUILD: buildenv-debian-stretch
   FEDORA_BUILD: buildenv-f27
   CENTOS7_BUILD: buildenv-centos7
+  BASE_BUILD: buildenv-basic
   GET_SOURCES_ATTEMPTS: "3"
 
 # In this build we combine
 #  * fuzz/ building
 #  * build/valgrind-check
 Debian GNU/Linux:
+  stage: stage1-testing
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
   - ./bootstrap
@@ -30,6 +36,7 @@ Debian GNU/Linux:
 #  * distcheck
 # It is not run on tags
 abi/dist-check:
+  stage: stage1-testing
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
   - ./bootstrap
@@ -41,6 +48,8 @@ abi/dist-check:
   - CFLAGS="-g -Og" ./configure -C --enable-gtk-doc --enable-gtk-doc-pdf --disable-gcc-warnings --disable-valgrind-tests
   - make -j$(nproc)
   - DISTCHECK_CONFIGURE_FLAGS=--disable-gtk-doc make distcheck
+  - mv libidn2-*.gz tarball.tgz
+  - sum tarball.tgz
   tags:
   - shared
   except:
@@ -51,11 +60,17 @@ abi/dist-check:
     paths:
       - tests/*.log
       - compat_reports/
+  cache:
+    key: "$CI_COMMIT_SHA"
+    paths:
+      - tarball.tgz
+
 
 # In this build we combine
 #  * build/asan-check
 #  * build w/Werror and ubsan-check
 Debian ASAN/UBSAN:
+  stage: stage1-testing
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
   - ./bootstrap
@@ -80,6 +95,7 @@ Debian ASAN/UBSAN:
       - ./*.log
 
 Centos7:
+  stage: stage1-testing
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$CENTOS7_BUILD
   script:
   - sed -i 's/AM_GNU_GETTEXT_VERSION(0.19.3)/AM_GNU_GETTEXT_VERSION(0.18.2)/g' configure.ac
@@ -94,6 +110,7 @@ Centos7:
       - compat_reports/
 
 clang-analyzer/Fedora:
+  stage: stage1-testing
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$FEDORA_BUILD
   script:
   - ./bootstrap
@@ -111,6 +128,7 @@ clang-analyzer/Fedora:
       - scan-build-lib/*
 
 pages:
+  stage: stage1-testing
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
   - ./bootstrap
@@ -137,6 +155,7 @@ pages:
 # Target to run code coverage on non-master branches. That is intended
 # to ensure that compilation in master will not break the pages rule.
 pages-test:
+  stage: stage1-testing
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
   - ./bootstrap
@@ -149,6 +168,7 @@ pages-test:
     - master
 
 MinGW64:
+  stage: stage1-testing
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$FEDORA_BUILD
   before_script:
   - mount -t binfmt_misc binfmt_misc /proc/sys/fs/binfmt_misc &&
@@ -169,3 +189,37 @@ MinGW64:
     paths:
       - ./*.log
       - tests/*.log
+
+# After having issues with building from tarball (make distcheck was ok),
+# outside a git repo, we test the tarball stand-alone.
+Tarball:
+  stage: stage2-tarball-testing
+  image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$BASE_BUILD
+  script:
+    # remove all files from git repo
+    - sum tarball.tgz
+    - mv tarball.tgz /tmp
+    - rm -rf * .git* .travis*
+    - mv /tmp/tarball.tgz .
+    # unpack and build from tarball
+    - tar xvf tarball.tgz
+    - cd libidn2-*
+    - ./configure
+    - make
+    - make check
+    # check if essential files are accidentally cleaned
+    - make clean
+    - make
+  tags:
+    - shared
+  artifacts:
+    expire_in: 2 weeks
+    when: on_failure
+    paths:
+      - libidn2-*/*.log
+      - libidn2-*/*/*.log
+  cache:
+    key: "$CI_COMMIT_SHA"
+    paths:
+      - tarball.tgz
+    policy: pull
