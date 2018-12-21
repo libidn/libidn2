@@ -90,6 +90,16 @@ static const struct idna idna[] = {
    "xn--foobarbaz-ql3hk3g", IDN2_OK},
   {NULL, "foo・bar㐀baz", /* U+3400 CJK UNIFIED IDEOGRAPH-3400 */
    "xn--foobarbaz-dl5hq7z", IDN2_OK},
+  {NULL, "foo・bar㐀baz", /* U+3400 CJK UNIFIED IDEOGRAPH-3400 */
+   "xn--foobarbaz-dl5hq7z", IDN2_OK},
+  { /* A-Label with 63 chars */
+   "xn--dominiomuylargoconmuchas-olcaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+   "dominiomuylargoconmuchas\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1",
+   "xn--dominiomuylargoconmuchas-olcaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", IDN2_OK},
+  { /* A-Label with 64 chars */
+   "xn--dominiomuylargoconmuchas-olcaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+   "dominiomuylargoconmuchas\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1\xc3\xb1",
+   "xn--dominiomuylargoconmuchas-olcaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", IDN2_TOO_BIG_LABEL},
 };
 
 static int error_count = 0;
