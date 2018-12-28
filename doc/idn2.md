@@ -6,7 +6,7 @@
 
 ## DESCRIPTION
 
-idn2 tool converts DNS domains from UTF-8 to ASCII compatibile encoding
+idn2 tool converts DNS domains from UTF-8 to ASCII compatible encoding
 (ACE) form, as used in the DNS protocol. The encoding format is the
 Internationalized Domain Name (IDNA2008/TR46) format.
 

@@ -163,7 +163,7 @@ Use STD3 ASCII rules. This is a TR#46 flag and is a no-op when IDN2_NO_TR46 is s
 
 @section Return Codes
 
-The functions normally return 0 on sucess or a negative error code.
+The functions normally return 0 on success or a negative error code.
 
 @deftypevr {Return code} {idn2_rc} IDN2_OK
 Successful return.

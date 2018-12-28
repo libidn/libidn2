@@ -179,7 +179,7 @@ Reported by Dagobert Michelsen <dam@opencsw.org>.
 * Version 0.9 (released 2013-07-23) [alpha]
 
 ** Fix broken IANA link.
-Apparently IANA does not provide persistant URLs to their registries.
+Apparently IANA does not provide persistent URLs to their registries.
 
 ** Fix automake bootstrap issue.
 
