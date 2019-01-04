@@ -2,6 +2,29 @@ Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
 Copyright (C) 2011-2017 Simon Josefsson
 See the end for copying conditions.
 
+* Version 2.1.0 (released 2019-01-04)
+
+** Two exposed functions are no longer exposed:
+   _idn2_punycode_encode() and _idn2_punycode_decode() which were
+   meant to be used internally only. The output needs additional
+   checks to be used safely.
+   This is the reason to for the SONAME bump, just in case.
+
+** Fix label length check for idn2_register_u8()
+
+** Remove compiler warnings
+
+** Use gnulib-python tool for bootstrapping if possible
+
+** Improve build system (several small issues)
+
+** Add missing error messages to idn2_strerror_name()
+
+** Improve docs and remove typos
+
+** Update gnulib
+
+
 * Version 2.0.5 (released 2018-05-18)
 
 ** Switched the default library behavior to IDNA2008 as amended
