@@ -2,6 +2,11 @@ Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
 Copyright (C) 2011-2017 Simon Josefsson
 See the end for copying conditions.
 
+* Version 2.1.1 (unreleased)
+
+** Fix crash in idn2_register_u8() and idn2_register_ul()
+
+
 * Version 2.1.0 (released 2019-01-04)
 
 ** Two exposed functions are no longer exposed:
