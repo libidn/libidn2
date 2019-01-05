@@ -4,7 +4,11 @@ See the end for copying conditions.
 
 * Version 2.1.1 (unreleased)
 
-** Fix crash in idn2_register_u8() and idn2_register_ul()
+** Fix NULL dereference in idn2_register_u8() and idn2_register_ul()
+
+** Fix free of random value in idn2_to_ascii_4i()
+
+** Improved fuzzer (which found the above issues)
 
 
 * Version 2.1.0 (released 2019-01-04)
