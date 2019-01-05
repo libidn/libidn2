@@ -6,12 +6,14 @@ LDADD = ../lib/libidn2.la ../gl/libgnu.la $(LTLIBUNISTRING)
 
 IDN_TESTS = \
  libidn2_to_ascii_8z_fuzzer$(EXEEXT) \
- libidn2_to_unicode_8z8z_fuzzer$(EXEEXT)
+ libidn2_to_unicode_8z8z_fuzzer$(EXEEXT) \
+ libidn2_register_fuzzer$(EXEEXT)
 
 check_PROGRAMS = $(IDN_TESTS)
 
 libidn2_to_ascii_8z_fuzzer_SOURCES = libidn2_to_ascii_8z_fuzzer.c main.c fuzzer.h
 libidn2_to_unicode_8z8z_fuzzer_SOURCES = libidn2_to_unicode_8z8z_fuzzer.c main.c fuzzer.h
+libidn2_register_fuzzer_SOURCES = libidn2_register_fuzzer.c main.c fuzzer.h
 
 dist-hook:
 	find . -name '*.options' -exec cp -v '{}' $(distdir) ';'

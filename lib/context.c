@@ -29,11 +29,8 @@
 #include <config.h>
 
 #include "idn2.h"
-
 #include "tables.h"
-
 #include <unictype.h>		/* uc_combining_class, UC_CCC_VR */
-
 #include "context.h"
 
 int
@@ -115,6 +112,17 @@ _idn2_contextj_rule (const uint32_t * label, size_t llen, size_t pos)
   return IDN2_CONTEXTJ_NO_RULE;
 }
 
+static inline const char *
+_uc_script_name (ucs4_t uc)
+{
+  const uc_script_t *ucs = uc_script(uc);
+
+  if (!ucs)
+    return "";
+
+  return ucs->name;
+}
+
 int
 _idn2_contexto_rule (const uint32_t * label, size_t llen, size_t pos)
 {
@@ -140,7 +148,7 @@ _idn2_contexto_rule (const uint32_t * label, size_t llen, size_t pos)
       /* GREEK LOWER NUMERAL SIGN (KERAIA) */
       if (pos == llen - 1)
 	return IDN2_CONTEXTO;
-      if (strcmp (uc_script (label[pos + 1])->name, "Greek") == 0)
+      if (strcmp (_uc_script_name (label[pos + 1]), "Greek") == 0)
 	return IDN2_OK;
       return IDN2_CONTEXTO;
       break;
@@ -151,7 +159,7 @@ _idn2_contexto_rule (const uint32_t * label, size_t llen, size_t pos)
       /* HEBREW PUNCTUATION GERSHAYIM */
       if (pos == 0)
 	return IDN2_CONTEXTO;
-      if (strcmp (uc_script (label[pos - 1])->name, "Hebrew") == 0)
+      if (strcmp (_uc_script_name (label[pos - 1]), "Hebrew") == 0)
 	return IDN2_OK;
       return IDN2_CONTEXTO;
       break;
@@ -202,9 +210,9 @@ _idn2_contexto_rule (const uint32_t * label, size_t llen, size_t pos)
 	bool script_ok = false;
 
 	for (i = 0; !script_ok && i < llen; i++)
-	  if (strcmp (uc_script (label[i])->name, "Hiragana") == 0
-	      || strcmp (uc_script (label[i])->name, "Katakana") == 0
-	      || strcmp (uc_script (label[i])->name, "Han") == 0)
+	  if (strcmp (_uc_script_name (label[i]), "Hiragana") == 0
+	      || strcmp (_uc_script_name (label[i]), "Katakana") == 0
+	      || strcmp (_uc_script_name (label[i]), "Han") == 0)
 	    script_ok = true;
 
 	if (script_ok)
