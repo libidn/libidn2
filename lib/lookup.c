@@ -619,9 +619,10 @@ idn2_to_ascii_4i (const uint32_t * input, size_t inlen, char * output, int flags
        */
       if (output)
 	strcpy (output, (const char *) output_u8);
+
+      free(output_u8);
     }
 
-  free(output_u8);
   return rc;
 }
 
