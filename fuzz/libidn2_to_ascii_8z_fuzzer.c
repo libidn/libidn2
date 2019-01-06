@@ -64,7 +64,7 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
 
 	if ((size & 3) == 0) {
 		uint32_t *u32 = (uint32_t *) malloc(size + 4);
-		char *out2 = malloc(64);
+		char *out2 = (char *) malloc(64);
 
 		assert(u32 != NULL);
 		assert(out2 != NULL);
