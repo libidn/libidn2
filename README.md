@@ -35,6 +35,9 @@ Libidn2 is believed to be a complete IDNA2008 and TR46 implementation,
 it contains an extensive test-suite, and is included in the continuous
 fuzzing project [OSS-Fuzz](https://bugs.chromium.org/p/oss-fuzz/issues/list?q=libidn2).
 
+You can check the current test code coverage [here](https://libidn.gitlab.io/libidn2/coverage/index.html)
+and the current fuzzing code coverage [here](https://libidn.gitlab.io/libidn2/fuzz-coverage/index.html).
+
 
 # License
 

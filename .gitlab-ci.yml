@@ -156,6 +156,10 @@ pages:
   - make -C doc manual
   - rm -rf public/manual
   - mv doc/manual public/manual
+  - make clean
+  - make clean && make && make -C fuzz check && make code-coverage-capture
+  - rm -rf public/fuzz-coverage
+  - mv libidn2-*-coverage public/fuzz-coverage
   tags:
   - shared
   artifacts:
