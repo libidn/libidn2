@@ -617,10 +617,18 @@ idn2_to_ascii_4i (const uint32_t * input, size_t inlen, char * output, int flags
        * char * out  output zero terminated string that must have room for at
        * least 63 characters plus the terminating zero.
        */
-      if (output)
-	strcpy (output, (const char *) output_u8);
+      size_t len = strlen ((char *) output_u8);
 
-      free(output_u8);
+      if (len > 63)
+        {
+	  free (output_u8);
+	  return IDN2_TOO_BIG_DOMAIN;
+        }
+
+      if (output)
+	strcpy (output, (char *) output_u8);
+
+      free (output_u8);
     }
 
   return rc;
