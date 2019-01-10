@@ -30,7 +30,7 @@
 #define LIBIDN2_TR46MAP_H
 
 #include <stdint.h>
-#include <idn2.h>
+#include "idn2.h"
 
 #define TR46_FLG_VALID                   1
 #define TR46_FLG_MAPPED                  2
