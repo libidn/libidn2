@@ -1,5 +1,5 @@
 /* tr46map.c - header file for IDNA2008 TR46
-   Copyright (C) 2016-2017 Tim Rühsen
+   Copyright (C) 2016-2017 Tim Ruehsen
 
    Libidn2 is free software: you can redistribute it and/or modify it
    under the terms of either:
@@ -26,7 +26,11 @@
    not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifndef LIBIDN2_TR46MAP_H
+#define LIBIDN2_TR46MAP_H
+
 #include <stdint.h>
+#include <idn2.h>
 
 #define TR46_FLG_VALID                   1
 #define TR46_FLG_MAPPED                  2
@@ -51,8 +55,14 @@ typedef struct
   char check;			/* 0=NO 2=MAYBE (YES if codepoint has no table entry) */
 } NFCQCMap;
 
-int get_idna_map (uint32_t c, IDNAMap * map);
-int get_map_data (uint32_t * dst, const IDNAMap * map);
-int map_is (const IDNAMap * map, unsigned flags);
+int
+	get_idna_map (uint32_t c, IDNAMap * map);
+int
+	get_map_data (uint32_t * dst, const IDNAMap * map);
+int G_GNUC_IDN2_ATTRIBUTE_PURE
+	map_is (const IDNAMap * map, unsigned flags);
 
-NFCQCMap *get_nfcqc_map (uint32_t c);
+G_GNUC_IDN2_ATTRIBUTE_PURE NFCQCMap
+	*get_nfcqc_map (uint32_t c);
+
+#endif /* LIBIDN2_TR46MAP_H */

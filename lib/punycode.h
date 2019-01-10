@@ -26,6 +26,9 @@
    not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifndef LIBIDN2_PUNYCODE_H
+#define LIBIDN2_PUNYCODE_H
+
 #include <stddef.h>
 #include <stdint.h>
 
@@ -39,3 +42,5 @@ _idn2_punycode_decode (size_t input_length,
 		       const char input[],
 		       size_t * output_length,
 		       uint32_t output[]);
+
+#endif /* LIBIDN2_PUNYCODE_H */

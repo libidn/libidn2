@@ -32,6 +32,7 @@
 #include <stdlib.h>		/* bsearch */
 #include <string.h>		/* memset */
 
+#include "tr46map.h"
 #include "tr46map_data.c"
 
 #define countof(a) (sizeof(a)/sizeof(*(a)))
@@ -136,7 +137,7 @@ map_is (const IDNAMap * map, unsigned flags)
   return (idna_flags[map->flag_index] & flags) == flags;
 }
 
-static int
+static int G_GNUC_IDN2_ATTRIBUTE_PURE
 _compare_nfcqc_map (uint32_t * c, NFCQCMap * m2)
 {
   if (*c < m2->cp1)

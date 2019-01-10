@@ -26,6 +26,13 @@
    not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <stdint.h>
+#ifndef LIBIDN2_BIDI_H
+#define LIBIDN2_BIDI_H
 
-int _idn2_bidi (const uint32_t * label, size_t llen) _GL_ATTRIBUTE_PURE;
+#include <stdint.h>
+#include "idn2.h"
+
+int G_GNUC_IDN2_ATTRIBUTE_PURE
+	_idn2_bidi (const uint32_t * label, size_t llen);
+
+#endif /* LIBIDN2_BIDI_H */

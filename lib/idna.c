@@ -28,11 +28,10 @@
 
 #include <config.h>
 
-#include "idn2.h"
-
 #include <stdlib.h>		/* free */
 #include <errno.h>		/* errno */
 
+#include "idn2.h"
 #include "bidi.h"
 #include "tables.h"
 #include "context.h"
@@ -45,9 +44,6 @@
 
 #include "idna.h"
 
-static int
-_isNFC (uint32_t * label, size_t len) _GL_ATTRIBUTE_PURE;
-
 /*
  * NFC Quick Check from
  * http://unicode.org/reports/tr15/#Detecting_Normalization_Forms
@@ -55,7 +51,7 @@ _isNFC (uint32_t * label, size_t len) _GL_ATTRIBUTE_PURE;
  * They say, this is much faster than 'brute force' normalization.
  * Strings are very likely already in NFC form.
  */
-static int
+G_GNUC_IDN2_ATTRIBUTE_PURE static int
 _isNFC (uint32_t * label, size_t len)
 {
   int lastCanonicalClass = 0;

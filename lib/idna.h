@@ -26,8 +26,12 @@
    not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifndef LIBIDN2_IDNA_H
+#define LIBIDN2_IDNA_H
+
 #include <stdint.h>
 #include <stdbool.h>
+#include "idn2.h"
 
 enum
 {
@@ -53,9 +57,14 @@ enum
   TEST_ALLOW_STD3_DISALLOWED = 0x4000,
 };
 
-extern int _idn2_u8_to_u32_nfc (const uint8_t * src, size_t srclen,
-				uint32_t ** out, size_t * outlen, int nfc);
+extern int
+	_idn2_u8_to_u32_nfc (const uint8_t * src, size_t srclen,
+		uint32_t ** out, size_t * outlen, int nfc);
 
-extern bool _idn2_ascii_p (const uint8_t * src, size_t srclen) _GL_ATTRIBUTE_PURE;
+extern G_GNUC_IDN2_ATTRIBUTE_PURE bool
+	_idn2_ascii_p (const uint8_t * src, size_t srclen);
 
-extern int _idn2_label_test (int what, const uint32_t * label, size_t llen);
+extern int
+	_idn2_label_test (int what, const uint32_t * label, size_t llen);
+
+#endif /* LIBIDN2_IDNA_H */

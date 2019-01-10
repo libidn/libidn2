@@ -26,6 +26,9 @@
    not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifndef LIBIDN2_DATA_H
+#define LIBIDN2_DATA_H
+
 #include <stdint.h>
 #include <sys/types.h>
 
@@ -43,3 +46,5 @@ struct idna_table
 
 extern const struct idna_table idna_table[];
 extern const size_t idna_table_size;
+
+#endif /* LIBIDN2_DATA_H */

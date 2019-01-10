@@ -26,11 +26,20 @@
    not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifndef LIBIDN2_CONTEXT_H
+#define LIBIDN2_CONTEXT_H
+
 #include <stdint.h>
 #include <stdbool.h>
+#include "idn2.h"
 
-int _idn2_contextj_rule (const uint32_t * label, size_t llen, size_t pos) _GL_ATTRIBUTE_PURE;
+int G_GNUC_IDN2_ATTRIBUTE_PURE
+	_idn2_contextj_rule (const uint32_t * label, size_t llen, size_t pos);
 
-int _idn2_contexto_rule (const uint32_t * label, size_t llen, size_t pos) _GL_ATTRIBUTE_PURE;
+int G_GNUC_IDN2_ATTRIBUTE_PURE
+	_idn2_contexto_rule (const uint32_t * label, size_t llen, size_t pos);
 
-bool _idn2_contexto_with_rule (uint32_t cp) _GL_ATTRIBUTE_CONST;
+bool G_GNUC_IDN2_ATTRIBUTE_CONST
+	_idn2_contexto_with_rule (uint32_t cp);
+
+#endif /* LIBIDN2_CONTEXT_H */

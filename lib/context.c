@@ -112,7 +112,7 @@ _idn2_contextj_rule (const uint32_t * label, size_t llen, size_t pos)
   return IDN2_CONTEXTJ_NO_RULE;
 }
 
-static inline const char *
+static const char *
 _uc_script_name (ucs4_t uc)
 {
   const uc_script_t *ucs = uc_script(uc);
