@@ -547,8 +547,10 @@ idn2_lookup_ul (const char * src, char ** lookupname, int flags)
  * idn2_to_ascii_4i:
  * @input: zero terminated input Unicode (UCS-4) string.
  * @inlen: number of elements in @input.
- * @output: pointer to newly allocated zero-terminated output string.
+ * @output: output zero terminated string that must have room for at least 63 characters plus the terminating zero.
  * @flags: optional #idn2_flags to modify behaviour.
+ *
+ * THIS FUNCTION HAS BEEN DEPRECATED DUE TO A DESIGN FLAW. USE idn2_to_ascii_4i2() INSTEAD !
  *
  * The ToASCII operation takes a sequence of Unicode code points that make
  * up one domain label and transforms it into a sequence of code points in
@@ -580,6 +582,69 @@ idn2_lookup_ul (const char * src, char ** lookupname, int flags)
 int
 idn2_to_ascii_4i (const uint32_t * input, size_t inlen, char * output, int flags)
 {
+  char *out;
+  int rc;
+
+  if (!input)
+    {
+      if (output)
+	*output = 0;
+      return IDN2_OK;
+    }
+
+  rc = idn2_to_ascii_4i2 (input, inlen, &out, flags);
+  if (rc == IDN2_OK)
+  {
+	  size_t len = strlen(out);
+
+	  if (len > 63)
+		  rc = IDN2_TOO_BIG_DOMAIN;
+	  else if (output)
+		  memcpy (output, out, len);
+
+	  free (out);
+  }
+
+  return rc;
+}
+
+/**
+ * idn2_to_ascii_4i:
+ * @input: zero terminated input Unicode (UCS-4) string.
+ * @inlen: number of elements in @input.
+ * @output: pointer to newly allocated zero-terminated output string.
+ * @flags: optional #idn2_flags to modify behaviour.
+ *
+ * The ToASCII operation takes a sequence of Unicode code points that make
+ * up one domain label and transforms it into a sequence of code points in
+ * the ASCII range (0..7F). If ToASCII succeeds, the original sequence and
+ * the resulting sequence are equivalent labels.
+ *
+ * It is important to note that the ToASCII operation can fail.
+ * ToASCII fails if any step of it fails. If any step of the
+ * ToASCII operation fails on any label in a domain name, that domain
+ * name MUST NOT be used as an internationalized domain name.
+ * The method for dealing with this failure is application-specific.
+ *
+ * The inputs to ToASCII are a sequence of code points.
+ *
+ * ToASCII never alters a sequence of code points that are all in the ASCII
+ * range to begin with (although it could fail). Applying the ToASCII operation multiple
+ * effect as applying it just once.
+ *
+ * The default behavior of this function (when flags are zero) is to apply
+ * the IDNA2008 rules without the TR46 amendments. As the TR46
+ * non-transitional processing is nowadays ubiquitous, when unsure, it is
+ * recommended to call this function with the %IDN2_NONTRANSITIONAL
+ * and the %IDN2_NFC_INPUT flags for compatibility with other software.
+ *
+ * Return value: Returns %IDN2_OK on success, or error code.
+ *
+ * Since: 2.1.1
+ **/
+int
+idn2_to_ascii_4i2 (const uint32_t * input, size_t inlen, char ** output, int flags)
+{
   uint32_t *input_u32;
   uint8_t *input_u8, *output_u8;
   size_t length;
@@ -588,7 +653,7 @@ idn2_to_ascii_4i (const uint32_t * input, size_t inlen, char * output, int flags
   if (!input)
     {
       if (output)
-	*output = 0;
+	*output = NULL;
       return IDN2_OK;
     }
 
@@ -613,22 +678,10 @@ idn2_to_ascii_4i (const uint32_t * input, size_t inlen, char * output, int flags
 
   if (rc == IDN2_OK)
     {
-      /* wow, this is ugly, but libidn manpage states:
-       * char * out  output zero terminated string that must have room for at
-       * least 63 characters plus the terminating zero.
-       */
-      size_t len = strlen ((char *) output_u8);
-
-      if (len > 63)
-        {
-	  free (output_u8);
-	  return IDN2_TOO_BIG_DOMAIN;
-        }
-
       if (output)
-	strcpy (output, (char *) output_u8);
-
-      free (output_u8);
+	*output = (char *) output_u8;
+		else
+	free (output_u8);
     }
 
   return rc;

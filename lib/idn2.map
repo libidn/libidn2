@@ -27,10 +27,10 @@ IDN2_0.0.0 {
     idn2_decode_ul;
     idn2_register_ul;
 
-	 idn2_to_ascii_4i;
-	 idn2_to_ascii_4z;
-	 idn2_to_ascii_8z;
-	 idn2_to_ascii_lz;
+    idn2_to_ascii_4i;
+    idn2_to_ascii_4z;
+    idn2_to_ascii_8z;
+    idn2_to_ascii_lz;
 
     idn2_to_unicode_8z4z;
     idn2_to_unicode_4z4z;
@@ -42,10 +42,11 @@ IDN2_0.0.0 {
     idn2_strerror;
     idn2_strerror_name;
 
-    # Internal self-test use only.
-    _idn2_punycode_encode;
-    _idn2_punycode_decode;
-
   local:
     *;
 };
+
+IDN2_2.1.0 {
+  global:
+    idn2_to_ascii_4i2;
+} IDN2_0.0.0;

@@ -899,7 +899,6 @@ test_homebrewed(void)
 {
   uint32_t dummy_u32[4] = { 'a', 'b', 'c', 0 };
   uint8_t *out;
-  char outbuf[4];
   size_t i;
   int rc;
 
@@ -1033,10 +1032,11 @@ test_homebrewed(void)
     ok++;
   }
 
-  if ((rc = idna_to_ascii_4i (dummy_u32, 4, outbuf, 0)) != IDN2_OK) {
+  if ((rc = idn2_to_ascii_4i2 (dummy_u32, 4, (char **) &out, 0)) != IDN2_OK) {
     failed++;
     printf("special #9 failed with %d\n", rc);
   } else {
+    idn2_free (out);
     ok++;
   }
 }

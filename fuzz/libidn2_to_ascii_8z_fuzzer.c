@@ -69,8 +69,11 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
 		assert(u32 != NULL);
 		assert(out2 != NULL);
 
+		idn2_to_ascii_4i((uint32_t *) data, size / 4, out2, 0);
+
 		for (unsigned it = 0; it < sizeof(flags)/sizeof(flags[0]); it++)
-			idn2_to_ascii_4i((uint32_t *) data, size / 4, out2, flags[it]);
+			if (idn2_to_ascii_4i2((uint32_t *) data, size / 4, &out, flags[it]) == IDN2_OK)
+				idn2_free(out);
 
 		memcpy(u32, data, size);
 		u32[size / 4] = 0;

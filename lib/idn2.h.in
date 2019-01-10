@@ -30,6 +30,7 @@
 #define _IDN2_H
 
 /* *INDENT-OFF* */
+/* see https://www.gnu.org/software/gnulib/manual/html_node/Exported-Symbols-of-Shared-Libraries.html */
 #ifndef _IDN2_API
 # if defined IDN2_BUILDING && defined HAVE_VISIBILITY && HAVE_VISIBILITY
 #  define _IDN2_API __attribute__((__visibility__("default")))
@@ -64,6 +65,12 @@ extern "C"
  */
 
 /**
+ * G_GNUC_DEPRECATED
+ *
+ * Function attribute: Function is deprecated.
+ */
+
+/**
  * G_GNUC_UNUSED
  *
  * Parameter attribute: Parameter is not used.
@@ -71,17 +78,20 @@ extern "C"
 
 /* the following G_GNUC_ prefix is for gtk-doc to recognize the attributes */
 #if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
-# define _IDN2_ATTRIBUTE_PURE __attribute__ ((__pure__))
-# define _IDN2_ATTRIBUTE_CONST __attribute__ ((__const__))
 # define G_GNUC_IDN2_ATTRIBUTE_PURE __attribute__ ((__pure__))
 # define G_GNUC_IDN2_ATTRIBUTE_CONST __attribute__ ((__const__))
+# define G_GNUC_DEPRECATED __attribute__((deprecated))
 # define G_GNUC_UNUSED __attribute__ ((__unused__))
 #else
-# define _IDN2_ATTRIBUTE_PURE /* empty */
-# define _IDN2_ATTRIBUTE_CONST /* empty */
 # define G_GNUC_IDN2_ATTRIBUTE_PURE /* empty */
 # define G_GNUC_IDN2_ATTRIBUTE_CONST /* empty */
+# define G_GNUC_DEPRECATED /* empty */
 # define G_GNUC_UNUSED /* empty */
+#endif
+
+#if defined(_MSC_VER)
+# undef G_GNUC_DEPRECATED
+# define G_GNUC_DEPRECATED __declspec(deprecated)
 #endif
 
 /**
@@ -263,8 +273,10 @@ extern "C"
 
 /* Auxiliary functions. */
 
-  extern _IDN2_API int
+  extern _IDN2_API G_GNUC_DEPRECATED int
     idn2_to_ascii_4i (const uint32_t * input, size_t inlen, char * output, int flags);
+  extern _IDN2_API int
+    idn2_to_ascii_4i2 (const uint32_t * input, size_t inlen, char ** output, int flags);
   extern _IDN2_API int
     idn2_to_ascii_4z (const uint32_t * input, char ** output, int flags);
   extern _IDN2_API int
