@@ -383,7 +383,7 @@ ucs4print (const uint32_t * str, size_t len)
     printf ("\n");
 }
 
-static size_t
+static size_t G_GNUC_IDN2_ATTRIBUTE_PURE
 _u32_strlen(const uint32_t *s)
 {
   const uint32_t *e;
@@ -394,7 +394,7 @@ _u32_strlen(const uint32_t *s)
   return e - s;
 }
 
-static size_t
+static size_t G_GNUC_IDN2_ATTRIBUTE_PURE
 _u32_strcmp(const uint32_t *s1, const uint32_t *s2)
 {
   while (*s1 && *s2 && *s1 == *s2)

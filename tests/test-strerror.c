@@ -19,7 +19,7 @@
 
 #include <idn2.h>
 
-int
+int G_GNUC_IDN2_ATTRIBUTE_CONST
 main (void)
 {
   int i, failed = 0;
