@@ -40,7 +40,7 @@ workers=$(($(nproc) - 1))
 jobs=$workers
 
 clang-6.0 \
- $CFLAGS -Og -g -I../include -I.. \
+ $CFLAGS -Og -g -I../lib -I.. \
  ${fuzzer}.c -o ${fuzzer} \
  -Wl,-Bstatic ../lib/.libs/libidn2.a -lFuzzer \
  -lunistring \
