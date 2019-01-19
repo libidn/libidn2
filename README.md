@@ -134,6 +134,15 @@ $ make && make check && make code-coverage-capture
 The current coverage report can be found [here](https://libidn.gitlab.io/libidn2/coverage/).
 
 
+# Fuzzing
+
+Libidn2 is being continuously fuzzed by [OSS-Fuzz](https://github.com/google/oss-fuzz).
+
+Of course you can do local fuzzing on your own, see `fuzz/README.md` for instructions.
+
+The code coverage of our fuzzers can be found [here](https://libidn.gitlab.io/libidn2/fuzz-coverage/).
+
+
 # Cross-compiling
 
 It is possible to cross-compile libidn2.  It is expected your cross
