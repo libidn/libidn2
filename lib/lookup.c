@@ -209,6 +209,14 @@ _tr46 (const uint8_t * domain_u8, uint8_t ** out, int flags)
         }
     }
 
+  /* Exit early if result is too long.
+   * This avoids excessive CPU usage in punycode encoding, which is O(N^2). */
+  if (len2 >= IDN2_DOMAIN_MAX_LENGTH)
+    {
+      free (domain_u32);
+      return IDN2_TOO_BIG_DOMAIN;
+    }
+
   uint32_t *tmp = (uint32_t *) malloc ((len2 + 1) * sizeof (uint32_t));
   if (!tmp)
     {
