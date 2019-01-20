@@ -822,7 +822,7 @@ static const struct idna idna[] = {
   {"_443._tcp.example.com", "443.tcp.example.com", IDN2_OK, IDN2_USE_STD3_ASCII_RULES|IDN2_NONTRANSITIONAL},
   {"_443._tcp.example.com", "443.tcp.example.com", IDN2_OK, IDN2_USE_STD3_ASCII_RULES|IDN2_TRANSITIONAL},
   {"_443._tcp.example.com", "_443._tcp.example.com", IDN2_OK, IDN2_USE_STD3_ASCII_RULES|IDN2_NO_TR46}, /* flag is ignored when not using TR46 */
-  /* _üˆš */
+  /* _??? */
   {"_\xc3\xbc", "xn--_-eha", IDN2_DISALLOWED, IDN2_NO_TR46},
   {"_\xc3\xbc", "xn--_-eha", IDN2_OK, IDN2_TRANSITIONAL},
   {"_\xc3\xbc", "xn--_-eha", IDN2_OK, IDN2_NONTRANSITIONAL},
