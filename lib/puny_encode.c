@@ -68,6 +68,7 @@
 #define punycode_success IDN2_OK
 #define punycode_overflow IDN2_PUNYCODE_OVERFLOW
 #define punycode_big_output IDN2_PUNYCODE_BIG_OUTPUT
+#define punycode_bad_input IDN2_PUNYCODE_BAD_INPUT
 #define punycode_encode _idn2_punycode_encode
 
 /**********************************************************/
@@ -158,8 +159,8 @@ int punycode_encode(
       if (max_out - out < 2) return punycode_big_output;
       output[out++] = (char) input[j];
     }
-    /* else if (input[j] < n) return punycode_bad_input; */
-    /* (not needed for Punycode with unsigned code points) */
+    else if (input[j] > 0x10FFFF || (input[j] >= 0xD800 && input[j] <= 0xDBFF))
+      return punycode_bad_input;
   }
 
   h = b = (punycode_uint) out;
