@@ -844,7 +844,7 @@ static char *_nextField(char **line)
   char *s = *line, *e;
 
   if (!*s)
-    return NULL;
+    return "";
 
   if (!(e = strpbrk(s, ";#"))) {
     e = *line += strlen(s);
