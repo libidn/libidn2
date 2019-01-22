@@ -1,4 +1,4 @@
-AM_CFLAGS = $(WERROR_CFLAGS) $(WARN_CFLAGS) -Wno-vla
+AM_CFLAGS = $(WERROR_CFLAGS) $(WARN_CFLAGS)
 AM_CPPFLAGS = -I$(top_srcdir)/lib -I../lib -I$(top_srcdir)/gl -I../gl -DSRCDIR=\"$(abs_srcdir)\" -DTEST_RUN
 AM_LDFLAGS = -no-install
 

@@ -43,13 +43,18 @@ static void test_all_from(const char *dirname)
 {
 	DIR *dirp;
 	struct dirent *dp;
+	char fname[1024];
+	int len;
 
 	if ((dirp = opendir(dirname))) {
 		while ((dp = readdir(dirp))) {
 			if (*dp->d_name == '.') continue;
 
-			char fname[strlen(dirname) + strlen(dp->d_name) + 2];
-			snprintf(fname, sizeof(fname), "%s/%s", dirname, dp->d_name);
+			len = snprintf(fname, sizeof(fname), "%s/%s", dirname, dp->d_name);
+			if (len < 0 || len >= (int) sizeof(fname)) {
+				fprintf(stderr, "File name truncation: %s/%s\n", dirname, dp->d_name);
+				continue;
+			}
 
 			int fd;
 			if ((fd = open(fname, O_RDONLY)) == -1) {
@@ -81,15 +86,19 @@ static void test_all_from(const char *dirname)
 
 int main(int argc, char **argv)
 {
+	int len;
+
 	/* if VALGRIND testing is enabled, we have to call ourselves with valgrind checking */
 	if (argc == 1) {
 		const char *valgrind = getenv("TESTS_VALGRIND");
 
 		if (valgrind && *valgrind) {
-			size_t cmdsize = strlen(valgrind) + strlen(argv[0]) + 32;
-			char *cmd = alloca(cmdsize);
+			char cmd[1024]; /* avoid alloca / VLA / heap allocation */
 
-			snprintf(cmd, cmdsize, "TESTS_VALGRIND="" %s %s", valgrind, argv[0]);
+			len = snprintf(cmd, sizeof(cmd), "TESTS_VALGRIND="" %s %s", valgrind, argv[0]);
+			if (len < 0 || len >= (int) sizeof(cmd))
+				return 1; /* failure on command truncation */
+
 			return system(cmd) != 0;
 		}
 	}
@@ -97,8 +106,11 @@ int main(int argc, char **argv)
 	const char *target = strrchr(argv[0], '/');
 	target = target ? target + 1 : argv[0];
 
-	char corporadir[sizeof(SRCDIR) + 1 + strlen(target) + 8];
-	snprintf(corporadir, sizeof(corporadir), SRCDIR "/%s.in", target);
+	char corporadir[1024]; /* avoid alloca / VLA / heap allocation */
+
+	len = snprintf(corporadir, sizeof(corporadir), SRCDIR "/%s.in", target);
+	if (len < 0 || len >= (int) sizeof(corporadir))
+		return 1; /* failure on file name truncation */
 
 	test_all_from(corporadir);
 
