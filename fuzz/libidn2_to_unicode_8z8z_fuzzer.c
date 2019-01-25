@@ -32,11 +32,13 @@
 #include "idn2.h"
 #include "fuzzer.h"
 
+#pragma GCC optimize ("O0")
+
 int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
 {
 	char *domain;
 	char *out;
-	const char *x, *y, *z; // dummies to avoid optimizing out function calls when fuzzing
+	const char *x = "";
 
 	if (size > 1024)
 		return 0;
@@ -50,18 +52,21 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
 
 	if (size == 0) {
 		x = idn2_check_version(NULL);
-		y = NULL;
-	}
-	else if (size == 2) {
-		int err = domain[0] * domain[1];
-		x = idn2_strerror_name(err);
-		y = idn2_strerror(err);
+
+		for (int err = -500; err <= 0; err++) {
+			if (idn2_strerror_name(err))
+				x = NULL;
+			if (idn2_strerror(err))
+				x = NULL;
+		}
 	}
 
 	// let's fuzz gnulib's strverscmp()
-	z = idn2_check_version(domain);
-	if (x && y && z && x != y)
-		free(malloc(1));
+	if (idn2_check_version(domain))
+		x = NULL;
+
+	if (x)
+		free(malloc(1)); // prevent compiler from optimizing out idn2_check_version()
 
 	// internally calls idn2_to_unicode_8zlz(), idn2_to_unicode_8z8z(), idn2_to_unicode_8z4z()
 	if (idn2_to_unicode_lzlz(domain, &out, 0) == IDNA_SUCCESS)
