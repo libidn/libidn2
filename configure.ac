@@ -13,16 +13,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-AC_INIT([libidn2], [2.1.0], [help-libidn@gnu.org],,
+AC_INIT([libidn2], [2.1.1], [help-libidn@gnu.org],,
   [https://www.gnu.org/software/libidn/#libidn2])
 
 # Library code modified:                              REVISION++
 # Interfaces changed/added/removed:   CURRENT++       REVISION=0
 # Interfaces added:                             AGE++
 # Interfaces removed:                           AGE=0
-AC_SUBST(LT_CURRENT, 4)
-AC_SUBST(LT_REVISION, 0)
-AC_SUBST(LT_AGE, 0)
+AC_SUBST(LT_CURRENT, 3)
+AC_SUBST(LT_REVISION, 5)
+AC_SUBST(LT_AGE, 3)
 
 #
 # Generate version defines for the include file
