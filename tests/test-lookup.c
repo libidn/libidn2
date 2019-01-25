@@ -839,7 +839,7 @@ static const struct idna idna[] = {
 static int ok = 0, failed = 0;
 static int break_on_error = 0;
 
-static char *_nextField(char **line)
+static const char *_nextField(char **line)
 {
   char *s = *line, *e;
 
@@ -1042,8 +1042,8 @@ test_homebrewed(void)
 }
 
 // decode embedded UTF-16/32 sequences
-static char *
-_decodeIdnaTest(uint8_t *src_u8)
+static uint8_t *
+_decodeIdnaTest(const uint8_t *src_u8)
 {
   size_t it2 = 0, len;
   uint32_t *src;
@@ -1088,19 +1088,16 @@ _decodeIdnaTest(uint8_t *src_u8)
   }
 
   // convert UTF-32 to UTF-8
-  uint8_t *tmp=src_u8;
-  src_u8 = u32_to_u8(src, it2, NULL, &len);
-  free(src);
-  if (!src_u8) {
-    printf("u32_to_u8(%s) failed (%d)\n", tmp, errno);
-    return NULL;
-  }
+  uint8_t *dst_u8 = u32_to_u8(src, it2, NULL, &len);
+  if (!dst_u8)
+    printf("u32_to_u8(%s) failed (%d)\n", src_u8, errno);
 
-  return (char *) src_u8;
+  free(src);
+  return dst_u8;
 }
 
 static void
-_check_toASCII(char *source, char *expected, int transitional, int expected_toASCII_failure)
+_check_toASCII(const char *source, const char *expected, int transitional, int expected_toASCII_failure)
 {
   int rc;
   char *ace = NULL;
@@ -1133,18 +1130,19 @@ _check_toASCII(char *source, char *expected, int transitional, int expected_toAS
 static int
 test_IdnaTest(char *linep)
 {
-  char *type, *source, *toUnicode, *toASCII, *NV8, *org_source;
+  char *source;
+  const char *type, *toUnicode, *toASCII, *NV8, *org_source;
   int expected_toASCII_failure;
 
   type = _nextField(&linep);
-  org_source = source = _nextField(&linep);
+  org_source = _nextField(&linep);
   toUnicode = _nextField(&linep);
   toASCII = _nextField(&linep);
   NV8 = _nextField(&linep); // if set, the input should be disallowed for IDNA2008
 
   // sigh, these Unicode people really mix UTF-8 and UCS-2/4
   // quick and dirty translation of '\uXXXX' found in IdnaTest.txt including surrogate handling
-  source = _decodeIdnaTest((uint8_t *) source);
+  source = (char *) _decodeIdnaTest((uint8_t *) org_source);
   if (!source)
     return 0; // some Unicode sequences can't be encoded into UTF-8, skip them
 
