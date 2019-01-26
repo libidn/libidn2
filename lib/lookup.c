@@ -593,13 +593,6 @@ idn2_to_ascii_4i (const uint32_t * input, size_t inlen, char * output, int flags
   char *out;
   int rc;
 
-  if (!input)
-    {
-      if (output)
-	*output = 0;
-      return IDN2_OK;
-    }
-
   rc = idn2_to_ascii_4i2 (input, inlen, &out, flags);
   if (rc == IDN2_OK)
   {
