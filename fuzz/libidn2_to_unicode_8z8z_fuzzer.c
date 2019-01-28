@@ -60,7 +60,7 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
 				x = NULL;
 		}
 
-		/*** test NULL input(output combinations ***/
+		/*** test NULL input/output combinations ***/
 
 		if (idn2_to_unicode_lzlz(NULL, &out, 0) == IDN2_OK)
 			idn2_free(out);

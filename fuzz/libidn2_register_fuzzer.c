@@ -46,7 +46,15 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
 	memcpy(ulabel, data, size);
 	ulabel[size] = 0;
 
-	if (idn2_register_ul(ulabel, NULL, &out, 0) == IDNA_SUCCESS)
+	if (size == 0) {
+		/*** test NULL input/output combinations ***/
+
+		if (idn2_register_ul(NULL, NULL, &out, 0) == IDN2_OK)
+			idn2_free(out);
+		idn2_register_ul(ulabel, NULL, NULL, 0);
+	}
+
+	if (idn2_register_ul(ulabel, NULL, &out, 0) == IDN2_OK)
 		idn2_free(out);
 
 	free(ulabel);
@@ -59,8 +67,12 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
 	memcpy(alabel + 4, data, size);
 	alabel[size] = 0;
 
-	if (idn2_register_ul(NULL, alabel, &out, 0) == IDNA_SUCCESS)
+	if (idn2_register_ul(NULL, alabel, &out, 0) == IDN2_OK)
 		idn2_free(out);
+
+	/*** test NULL input/output combinations ***/
+	if (size == 0)
+		idn2_register_ul(NULL, alabel, NULL, 0);
 
 	free(alabel);
 

@@ -56,7 +56,7 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
 	domain[size] = 0;
 
 	if (size == 0) {
-		/*** test NULL input(output combinations ***/
+		/*** test NULL input/output combinations ***/
 
 		if (idn2_to_ascii_8z(NULL, &out, 0) == IDN2_OK)
 			idn2_free(out);
