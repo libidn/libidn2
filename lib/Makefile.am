@@ -101,5 +101,5 @@ $(NFCQC):
 if HAVE_LD_VERSION_SCRIPT
 libidn2_la_LDFLAGS += -Wl,--version-script=$(srcdir)/idn2.map
 else
-libidn2_la_LDFLAGS += -export-symbols-regex '^idn2_.*|_idn2_punycode_..code'
+libidn2_la_LDFLAGS += -export-symbols-regex '^idn2_.*'
 endif
