@@ -59,6 +59,41 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
 			if (idn2_strerror(err))
 				x = NULL;
 		}
+
+		/*** test NULL input(output combinations ***/
+
+		if (idn2_to_unicode_lzlz(NULL, &out, 0) == IDN2_OK)
+			idn2_free(out);
+		idn2_to_unicode_lzlz(NULL, NULL, 0);
+		idn2_to_unicode_lzlz(domain, NULL, 0);
+
+		{
+			uint32_t *in32 = (uint32_t *) malloc(4);
+			uint32_t *out32;
+			in32[0] = 0;
+			if (idn2_to_unicode_4z4z(NULL, &out32, 0) == IDN2_OK)
+				idn2_free(out32);
+			idn2_to_unicode_4z4z(NULL, NULL, 0);
+			idn2_to_unicode_4z4z(in32, NULL, 0);
+			free(in32);
+		}
+
+		{
+			uint32_t *out32;
+			if (idn2_to_unicode_8z4z(NULL, &out32, 0) == IDN2_OK)
+				idn2_free(out32);
+			idn2_to_unicode_8z4z(NULL, NULL, 0);
+			idn2_to_unicode_8z4z(domain, NULL, 0);
+		}
+
+		{
+			uint32_t *u32 = (uint32_t *) malloc(0);
+			size_t u32len = 0;
+			idn2_to_unicode_44i(NULL, 1, u32, &u32len, 0);
+			u32len = 0;
+			idn2_to_unicode_44i(NULL, 0, NULL, &u32len, 0);
+			free(u32);
+		}
 	}
 
 	// let's fuzz gnulib's strverscmp()
@@ -69,7 +104,7 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
 		free(malloc(1)); // prevent compiler from optimizing out idn2_check_version()
 
 	// internally calls idn2_to_unicode_8zlz(), idn2_to_unicode_8z8z(), idn2_to_unicode_8z4z()
-	if (idn2_to_unicode_lzlz(domain, &out, 0) == IDNA_SUCCESS)
+	if (idn2_to_unicode_lzlz(domain, &out, 0) == IDN2_OK)
 		idn2_free(out);
 
 	if ((size & 3) == 0) {
