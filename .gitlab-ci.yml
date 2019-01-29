@@ -168,8 +168,8 @@ pages:
     when: on_success
     paths:
       - public
-#  only:
-#    - master
+  only:
+    - master
 
 # Target to run code coverage on non-master branches. That is intended
 # to ensure that compilation in master will not break the pages rule.
