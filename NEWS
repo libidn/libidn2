@@ -1,14 +1,28 @@
 Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
 Copyright (C) 2011-2017 Simon Josefsson
+Copyright (C) 2018-2019 Tim Ruehsen
 See the end for copying conditions.
 
-* Version 2.1.1 (unreleased)
+* Version 2.1.1 (released 2019-02-08)
+
+** Revert SONAME bump from release 2.1.0
 
 ** Fix NULL dereference in idn2_register_u8() and idn2_register_ul()
 
 ** Fix free of random value in idn2_to_ascii_4i()
 
 ** Improved fuzzer (which found the above issues)
+
+** Fix printf() crash in test-lookup.c on Solaris
+
+** Check for valid unicode input in punycode encoder
+
+** Avoid excessive CPU usage in punycode encoding with
+   large inputs
+
+** Deprecate idn2_to_ascii_4i() in favor of idn2_to_ascii_4i2()
+
+** Restrict output length of idn2_to_ascii_4i() to 63 bytes
 
 
 * Version 2.1.0 (released 2019-01-04)
