@@ -225,7 +225,7 @@ main (int argc, char *argv[])
   else if (args_info.tr46nt_given)
     flags = IDN2_NONTRANSITIONAL;
   else if (args_info.no_tr46_given)
-    flags = 0;
+    flags = IDN2_NO_TR46;
 
   if (flags && args_info.usestd3asciirules_given)
     flags |= IDN2_USE_STD3_ASCII_RULES;
