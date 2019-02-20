@@ -834,6 +834,8 @@ static const struct idna idna[] = {
   {"_443._tcp.example.com", "_443._tcp.example.com", IDN2_INVALID_FLAGS, IDN2_NONTRANSITIONAL|IDN2_NO_TR46},
   {"_443._tcp.example.com", "_443._tcp.example.com", IDN2_INVALID_FLAGS, IDN2_TRANSITIONAL|IDN2_NO_TR46},
   {"_443._tcp.example.com", "_443._tcp.example.com", IDN2_INVALID_FLAGS, IDN2_TRANSITIONAL|IDN2_NONTRANSITIONAL|IDN2_NO_TR46},
+  /* underscore and non-ASCII */
+  {"\xc3\xa4_x", "xn--_x-uia", IDN2_OK, IDN2_TRANSITIONAL},
 };
 
 static int ok = 0, failed = 0;

@@ -84,7 +84,7 @@ enum { base = 36, tmin = 1, tmax = 26, skew = 38, damp = 700,
        initial_bias = 72, initial_n = 0x80, delimiter = 0x2D };
 
 /* basic(cp) tests whether cp is a basic code point: */
-#define basic(cp) ((cp >= 'a' && cp <= 'z') || (cp >= '0' && cp <='9') || (cp >= 'A' && cp <='Z') || cp == 0x2D)
+#define basic(cp) ((cp >= 'a' && cp <= 'z') || (cp >= '0' && cp <='9') || (cp >= 'A' && cp <='Z') || cp == '-' || cp == '_')
 
 /* delim(cp) tests whether cp is a delimiter: */
 #define delim(cp) ((cp) == delimiter)
