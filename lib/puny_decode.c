@@ -144,7 +144,6 @@ int punycode_decode(
   size_t b, j, in;
 
   /* Initialize the state: */
-
   n = initial_n;
   out = i = 0;
   max_out = *output_length > maxint ? maxint
@@ -156,19 +155,21 @@ int punycode_decode(
   /* copy the first b code points to the output.                      */
 
   for (b = j = 0;  j < input_length;  ++j)  if (delim(input[j])) b = j;
-  if (b > max_out) return punycode_big_output;
+  if (b >= max_out) return punycode_big_output;
 
   for (j = 0;  j < b;  ++j) {
     if (!basic(input[j])) return punycode_bad_input;
     output[out++] = input[j];
   }
-  for (j = b + (b > 0);  j < input_length;  ++j)
+  b += delim(input[b]);
+
+  for (j = b;  j < input_length;  ++j)
     if (!basic(input[j])) return punycode_bad_input;
 
   /* Main decoding loop:  Start just after the last delimiter if any  */
   /* basic code points were copied; start at the beginning otherwise. */
 
-  for (in = b > 0 ? b + 1 : 0;  in < input_length;  ++out) {
+  for (in = b;  in < input_length;  ++out) {
 
     /* in is the index of the next ASCII code point to be consumed, */
     /* and out is the number of code points in the output array.    */

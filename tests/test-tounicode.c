@@ -350,6 +350,14 @@ const test_t test[] = {
     },
     IDN2_OK
   },
+  {
+    "Empty label",
+    "xn---.de",
+    {
+      0x2e, 0x64, 0x65, 0
+    },
+    IDN2_OK
+  },
 };
 
 static int debug = 1;
