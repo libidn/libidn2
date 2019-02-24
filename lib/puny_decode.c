@@ -161,7 +161,9 @@ int punycode_decode(
     if (!basic(input[j])) return punycode_bad_input;
     output[out++] = input[j];
   }
-  b += delim(input[b]);
+
+  if (input_length)
+    b += delim(input[b]);
 
   for (j = b;  j < input_length;  ++j)
     if (!basic(input[j])) return punycode_bad_input;
