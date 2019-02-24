@@ -74,6 +74,7 @@
 /**********************************************************/
 /* Implementation (would normally go in its own .c file): */
 
+#include <stdio.h>
 #include <string.h>
 
 #include "punycode.h"
@@ -85,9 +86,6 @@ enum { base = 36, tmin = 1, tmax = 26, skew = 38, damp = 700,
 
 /* basic(cp) tests whether cp is a basic code point: */
 #define basic(cp) ((cp >= 'a' && cp <= 'z') || (cp >= '0' && cp <='9') || (cp >= 'A' && cp <='Z') || cp == '-' || cp == '_')
-
-/* delim(cp) tests whether cp is a delimiter: */
-#define delim(cp) ((cp) == delimiter)
 
 /* decode_digit(cp) returns the numeric value of a basic code */
 /* point (for use in representing integers) in the range 0 to */
@@ -140,37 +138,44 @@ int punycode_decode(
   size_t *output_length,
   punycode_uint output[])
 {
-  punycode_uint n, out, i, max_out, bias, oldi, w, k, digit, t;
-  size_t b, j, in;
+  punycode_uint n, out = 0, i, max_out, bias, oldi, w, k, digit, t;
+  size_t b = 0, j, in;
+
+  if (!input_length)
+    return punycode_bad_input;
+
+  /* Check that all chars are basic */
+  for (j = 0;  j < input_length;  ++j) {
+    if (!basic(input[j])) return punycode_bad_input;
+    if (input[j] == delimiter) b = j;
+  }
+
+  max_out = *output_length > maxint ? maxint : (punycode_uint) *output_length;
+
+  if (input[b] == delimiter) {
+    /* do not accept leading or trailing delimiter
+     *   - leading delim must be omitted if there is no ASCII char in u-label
+     *   - trailing delim means there where no non-ASCII chars in u-label
+     */
+    if (!b || b == input_length - 1) return punycode_bad_input;
+
+    if (b >= max_out) return punycode_big_output;
+
+    /* Check that all chars before last delimiter are basic chars */
+    /* and copy the first b code points to the output. */
+    for (j = 0; j < b; j++)
+      output[out++] = input[j];
+
+    b += 1; /* advance to non-basic char encoding */
+  }
 
   /* Initialize the state: */
   n = initial_n;
-  out = i = 0;
-  max_out = *output_length > maxint ? maxint
-            : (punycode_uint) *output_length;
+  i = 0;
   bias = initial_bias;
-
-  /* Handle the basic code points:  Let b be the number of input code */
-  /* points before the last delimiter, or 0 if there is none, then    */
-  /* copy the first b code points to the output.                      */
-
-  for (b = j = 0;  j < input_length;  ++j)  if (delim(input[j])) b = j;
-  if (b >= max_out) return punycode_big_output;
-
-  for (j = 0;  j < b;  ++j) {
-    if (!basic(input[j])) return punycode_bad_input;
-    output[out++] = input[j];
-  }
-
-  if (input_length)
-    b += delim(input[b]);
-
-  for (j = b;  j < input_length;  ++j)
-    if (!basic(input[j])) return punycode_bad_input;
 
   /* Main decoding loop:  Start just after the last delimiter if any  */
   /* basic code points were copied; start at the beginning otherwise. */
-
   for (in = b;  in < input_length;  ++out) {
 
     /* in is the index of the next ASCII code point to be consumed, */
@@ -180,7 +185,6 @@ int punycode_decode(
     /* which gets added to i.  The overflow checking is easier   */
     /* if we increase i as we go, then subtract off its starting */
     /* value at the end to obtain delta.                         */
-
     for (oldi = i, w = 1, k = base;  ;  k += base) {
       if (in >= input_length) return punycode_bad_input;
       digit = decode_digit(input[in++]);
@@ -198,7 +202,6 @@ int punycode_decode(
 
     /* i was supposed to wrap around from out+1 to 0,   */
     /* incrementing n each time, so we'll fix that now: */
-
     if (i / (out + 1) > maxint - n) return punycode_overflow;
     n += i / (out + 1);
     if (n > 0x10FFFF || (n >= 0xD800 && n <= 0xDBFF)) return punycode_bad_input;
