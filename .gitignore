@@ -145,4 +145,5 @@ tests/test-punycode
 tests/test-register
 tests/test-strerror
 tests/test-tounicode
+tests/test-glibc
 unistring/
