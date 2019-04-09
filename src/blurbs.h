@@ -1,5 +1,5 @@
 /* blurbs.h - warranty and conditions blurbs
-   Copyright (C) 2011-2017 Simon Josefsson
+   Copyright (C) 2011-2019 Simon Josefsson, Tim Ruehsen
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
 */
 
 #define GREETING							\
-  "Copyright (C) 2011-2017  Simon Josefsson\n"				\
+  "Copyright (C) 2011-2019  Simon Josefsson, Tim Ruehsen\n"				\
   "This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.\n" \
   "This is free software, and you are welcome to redistribute it\n"	\
   "under certain conditions; type `show c' for details.\n\n"

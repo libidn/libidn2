@@ -1,5 +1,5 @@
 /* idn2.c - command line interface to libidn2
-   Copyright (C) 2011-2017 Simon Josefsson
+   Copyright (C) 2011-2019 Simon Josefsson, Tim Ruehsen
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -50,7 +50,7 @@ const char version_etc_copyright[] =
   /* Do *not* mark this string for translation.  %s is a copyright
      symbol suitable for this locale, and %d is the copyright
      year.  */
-  "Copyright %s %d Simon Josefsson.";
+  "Copyright 2011-%s %d Simon Josefsson, Tim Ruehsen.";
 
 static void
 usage (int status)
@@ -78,23 +78,24 @@ to signal the end of parameters, as in `idn2 --quiet -- -foo'.\n\
 Mandatory arguments to long options are mandatory for short options too.\n\
 "), stdout);
       fputs (_("\
-  -h, --help               Print help and exit\n\
-  -V, --version            Print version and exit\n\
+  -h, --help                Print help and exit\n\
+  -V, --version             Print version and exit\n\
 "), stdout);
       fputs (_("\
-  -d, --decode             Decode (punycode) domain name\n\
-  -l, --lookup             Lookup domain name (default)\n\
-  -r, --register           Register label\n\
+  -d, --decode              Decode (punycode) domain name\n\
+  -l, --lookup              Lookup domain name (default)\n\
+  -r, --register            Register label\n\
 "), stdout);
       fputs (_("\
-  -T, --tr46t              Enable TR46 transitional processing\n\
-  -N, --tr46nt             Enable TR46 non-transitional processing\n\
-      --no-tr46            Disable TR46 processing\n\
+  -T, --tr46t               Enable TR46 transitional processing\n\
+  -N, --tr46nt              Enable TR46 non-transitional processing\n\
+      --no-tr46             Disable TR46 processing\n\
 "), stdout);
       fputs (_("\
-      --usestd3asciirules  Enable STD3 ASCII rules\n\
-      --debug              Print debugging information\n\
-      --quiet              Silent operation\n\
+      --usestd3asciirules   Enable STD3 ASCII rules\n\
+      --no-alabelroundtrip  Disable ALabel rountrip for lookups\n\
+      --debug               Print debugging information\n\
+      --quiet               Silent operation\n\
 "), stdout);
       emit_bug_reporting_address ();
     }
@@ -201,7 +202,7 @@ main (int argc, char *argv[])
   if (args_info.version_given)
     {
       version_etc (stdout, "idn2", PACKAGE_NAME, VERSION,
-		   "Simon Josefsson", (char *) NULL);
+		   "Simon Josefsson, Tim Ruehsen", (char *) NULL);
       return EXIT_SUCCESS;
     }
 
@@ -229,6 +230,9 @@ main (int argc, char *argv[])
 
   if (flags && args_info.usestd3asciirules_given)
     flags |= IDN2_USE_STD3_ASCII_RULES;
+
+  if (flags && args_info.no_alabelroundtrip_given)
+    flags |= IDN2_NO_ALABEL_ROUNDTRIP;
 
   for (cmdn = 0; cmdn < args_info.inputs_num; cmdn++)
     process_input (args_info.inputs[cmdn], flags | IDN2_NFC_INPUT);

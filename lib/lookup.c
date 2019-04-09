@@ -51,6 +51,9 @@ static int set_default_flags(int *flags)
   if (((*flags) & (IDN2_TRANSITIONAL|IDN2_NONTRANSITIONAL)) && ((*flags) & IDN2_NO_TR46))
     return IDN2_INVALID_FLAGS;
 
+  if (((*flags) & IDN2_ALABEL_ROUNDTRIP) && ((*flags) & IDN2_NO_ALABEL_ROUNDTRIP))
+    return IDN2_INVALID_FLAGS;
+
   if (!((*flags) & (IDN2_NO_TR46|IDN2_TRANSITIONAL)))
     *flags |= IDN2_NONTRANSITIONAL;
 
@@ -63,23 +66,39 @@ label (const uint8_t * src, size_t srclen, uint8_t * dst, size_t * dstlen,
 {
   size_t plen;
   uint32_t *p;
-  int rc;
-  size_t tmpl;
+  const uint8_t *src_org = NULL;
+  uint8_t *src_allocated = NULL;
+  int rc, check_roundtrip = 0;
+  size_t tmpl, srclen_org = 0;
+  uint32_t label_u32[IDN2_LABEL_MAX_LENGTH];
+  size_t label32_len = IDN2_LABEL_MAX_LENGTH;
 
-  if (_idn2_ascii_p (src, srclen))
-    {
-      if (flags & IDN2_ALABEL_ROUNDTRIP)
-	/* FIXME implement this MAY:
+  if (_idn2_ascii_p (src, srclen)) {
+    if (!(flags & IDN2_NO_ALABEL_ROUNDTRIP) && srclen >= 4 && memcmp (src, "xn--", 4) == 0) {
+      /*
+	 If the input to this procedure appears to be an A-label
+	 (i.e., it starts in "xn--", interpreted
+	 case-insensitively), the lookup application MAY attempt to
+	 convert it to a U-label, first ensuring that the A-label is
+	 entirely in lowercase (converting it to lowercase if
+	 necessary), and apply the tests of Section 5.4 and the
+	 conversion of Section 5.5 to that form. */
+      rc = _idn2_punycode_decode (srclen - 4, (char *) src + 4, &label32_len, label_u32);
+      if (rc)
+	return rc;
 
-	   If the input to this procedure appears to be an A-label
-	   (i.e., it starts in "xn--", interpreted
-	   case-insensitively), the lookup application MAY attempt to
-	   convert it to a U-label, first ensuring that the A-label is
-	   entirely in lowercase (converting it to lowercase if
-	   necessary), and apply the tests of Section 5.4 and the
-	   conversion of Section 5.5 to that form. */
-	return IDN2_INVALID_FLAGS;
+      check_roundtrip = 1;
+      src_org = src;
+      srclen_org = srclen;
 
+      srclen = IDN2_LABEL_MAX_LENGTH;
+      src = src_allocated = u32_to_u8 (label_u32, label32_len, NULL, &srclen);
+      if (!src) {
+	if (errno == ENOMEM)
+	  return IDN2_MALLOC;
+	return IDN2_ENCODING_ERROR;
+      }
+    } else {
       if (srclen > IDN2_LABEL_MAX_LENGTH)
 	return IDN2_TOO_BIG_LABEL;
       if (srclen > *dstlen)
@@ -89,10 +108,11 @@ label (const uint8_t * src, size_t srclen, uint8_t * dst, size_t * dstlen,
       *dstlen = srclen;
       return IDN2_OK;
     }
+  }
 
   rc = _idn2_u8_to_u32_nfc (src, srclen, &p, &plen, flags & IDN2_NFC_INPUT);
   if (rc != IDN2_OK)
-    return rc;
+    goto out;
 
   if (!(flags & IDN2_TRANSITIONAL))
     {
@@ -110,8 +130,8 @@ label (const uint8_t * src, size_t srclen, uint8_t * dst, size_t * dstlen,
 
       if (rc != IDN2_OK)
 	{
-	  free(p);
-	  return rc;
+	  free (p);
+	  goto out;
 	}
     }
 
@@ -124,11 +144,25 @@ label (const uint8_t * src, size_t srclen, uint8_t * dst, size_t * dstlen,
   rc = _idn2_punycode_encode (plen, p, &tmpl, (char *) dst + 4);
   free (p);
   if (rc != IDN2_OK)
-    return rc;
+    goto out;
+
 
   *dstlen = 4 + tmpl;
 
-  return IDN2_OK;
+  if (check_roundtrip)
+    {
+      if (srclen_org != *dstlen || memcmp (src_org, dst, srclen_org))
+      {
+        rc = IDN2_ALABEL_ROUNDTRIP_FAILED;
+	goto out;
+      }
+    }
+
+  rc = IDN2_OK;
+
+out:
+  free (src_allocated);
+  return rc;
 }
 
 #define TR46_TRANSITIONAL_CHECK \
@@ -379,13 +413,17 @@ _tr46 (const uint8_t * domain_u8, uint8_t ** out, int flags)
  * Pass %IDN2_NFC_INPUT in @flags to convert input to NFC form before
  * further processing.  %IDN2_TRANSITIONAL and %IDN2_NONTRANSITIONAL
  * do already imply %IDN2_NFC_INPUT.
+ *
  * Pass %IDN2_ALABEL_ROUNDTRIP in @flags to
  * convert any input A-labels to U-labels and perform additional
- * testing (not implemented yet).
+ * testing. This is default since version 2.2.
+ * To switch this behavior off, pass IDN2_NO_ALABEL_ROUNDTRIP
+ *
  * Pass %IDN2_TRANSITIONAL to enable Unicode TR46
  * transitional processing, and %IDN2_NONTRANSITIONAL to enable
- * Unicode TR46 non-transitional processing.  Multiple flags may be
- * specified by binary or:ing them together.
+ * Unicode TR46 non-transitional processing.
+ *
+ * Multiple flags may be specified by binary or:ing them together.
  *
  * After version 2.0.3: %IDN2_USE_STD3_ASCII_RULES disabled by default.
  * Previously we were eliminating non-STD3 characters from domain strings
@@ -503,14 +541,19 @@ idn2_lookup_u8 (const uint8_t * src, uint8_t ** lookupname, int flags)
  * to be encoded in the locale's default coding system, and will be
  * transcoded to UTF-8 and NFC normalized by this function.
  *
- * Pass %IDN2_ALABEL_ROUNDTRIP in @flags to convert any input A-labels
- * to U-labels and perform additional testing.  Pass
- * %IDN2_TRANSITIONAL to enable Unicode TR46 transitional processing,
+ * Pass %IDN2_ALABEL_ROUNDTRIP in @flags to
+ * convert any input A-labels to U-labels and perform additional
+ * testing. This is default since version 2.2.
+ * To switch this behavior off, pass IDN2_NO_ALABEL_ROUNDTRIP
+ *
+ * Pass %IDN2_TRANSITIONAL to enable Unicode TR46 transitional processing,
  * and %IDN2_NONTRANSITIONAL to enable Unicode TR46 non-transitional
- * processing.  Multiple flags may be specified by binary or:ing them
- * together, for example %IDN2_ALABEL_ROUNDTRIP |
- * %IDN2_NONTRANSITIONAL.  The %IDN2_NFC_INPUT in @flags is always
- * enabled in this function.
+ * processing.
+ *
+ * Multiple flags may be specified by binary or:ing them together, for
+ * example %IDN2_ALABEL_ROUNDTRIP | %IDN2_NONTRANSITIONAL.
+ *
+ * The %IDN2_NFC_INPUT in @flags is always enabled in this function.
  *
  * After version 0.11: @lookupname may be NULL to test lookup of @src
  * without allocating memory.

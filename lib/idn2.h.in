@@ -178,10 +178,11 @@ extern "C"
 /**
  * idn2_flags:
  * @IDN2_NFC_INPUT: Normalize input string using normalization form C.
- * @IDN2_ALABEL_ROUNDTRIP: Perform optional IDNA2008 lookup roundtrip check (not implemented yet).
- * @IDN2_NO_TR46: Disable Unicode TR46 processing (default).
+ * @IDN2_ALABEL_ROUNDTRIP: Perform optional IDNA2008 lookup roundtrip check (default).
+ * @IDN2_NO_ALABEL_ROUNDTRIP: Disable ALabel lookup roundtrip check.
+ * @IDN2_NO_TR46: Disable Unicode TR46 processing.
  * @IDN2_TRANSITIONAL: Perform Unicode TR46 transitional processing.
- * @IDN2_NONTRANSITIONAL: Perform Unicode TR46 non-transitional processing.
+ * @IDN2_NONTRANSITIONAL: Perform Unicode TR46 non-transitional processing (default).
  * @IDN2_ALLOW_UNASSIGNED: Libidn compatibility flag, unused.
  * @IDN2_USE_STD3_ASCII_RULES: Use STD3 ASCII rules.
  * This is a #TR46 only flag, and will be ignored when set without either
@@ -198,7 +199,8 @@ extern "C"
     IDN2_NONTRANSITIONAL = 8,
     IDN2_ALLOW_UNASSIGNED = 16,
     IDN2_USE_STD3_ASCII_RULES = 32,
-    IDN2_NO_TR46 = 64
+    IDN2_NO_TR46 = 64,
+    IDN2_NO_ALABEL_ROUNDTRIP = 128
   } idn2_flags;
 
 /* IDNA2008 with UTF-8 encoded inputs. */
@@ -249,6 +251,7 @@ extern "C"
  * @IDN2_DOT_IN_LABEL: Label has forbidden dot (TR46).
  * @IDN2_INVALID_TRANSITIONAL: Label has character forbidden in transitional mode (TR46).
  * @IDN2_INVALID_NONTRANSITIONAL: Label has character forbidden in non-transitional mode (TR46).
+ * @IDN2_ALABEL_ROUNDTRIP_FAILED: ALabel -> Ulabel -> ALabel result differs from input.
  *
  * Return codes for IDN2 functions.  All return codes are negative
  * except for the successful code IDN2_OK which are guaranteed to be
@@ -287,6 +290,7 @@ extern "C"
     IDN2_DOT_IN_LABEL = -311,
     IDN2_INVALID_TRANSITIONAL = -312,
     IDN2_INVALID_NONTRANSITIONAL = -313,
+    IDN2_ALABEL_ROUNDTRIP_FAILED = -314,
   } idn2_rc;
 
 /* Auxiliary functions. */
