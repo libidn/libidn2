@@ -27,7 +27,7 @@
 
 #include <idn2.h>
 
-#include "unistr.h"		/* u32_to_u8, u8_to_u32 */
+#include "unistr.h"  /* u32_to_u8, u8_to_u32 */
 
 struct idna
 {
@@ -836,6 +836,8 @@ static const struct idna idna[] = {
   {"_443._tcp.example.com", "_443._tcp.example.com", IDN2_INVALID_FLAGS, IDN2_TRANSITIONAL|IDN2_NONTRANSITIONAL|IDN2_NO_TR46},
   /* underscore and non-ASCII */
   {"\xc3\xa4_x", "xn--_x-uia", IDN2_OK, IDN2_TRANSITIONAL},
+  /* failing lookup round-trip */
+  {"xn--te_", "", IDN2_ALABEL_ROUNDTRIP_FAILED},
 };
 
 static int ok = 0, failed = 0;
