@@ -1,0 +1,375 @@
+<abi-corpus architecture='elf-amd-x86_64' soname='libidn2.so.0'>
+  <elf-needed>
+    <dependency name='libunistring.so.2'/>
+    <dependency name='libc.so.6'/>
+  </elf-needed>
+  <elf-function-symbols>
+    <elf-symbol name='idn2_check_version' version='IDN2_0.0.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='idn2_free' version='IDN2_0.0.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='idn2_lookup_u8' version='IDN2_0.0.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='idn2_lookup_ul' version='IDN2_0.0.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='idn2_register_u8' version='IDN2_0.0.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='idn2_register_ul' version='IDN2_0.0.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='idn2_strerror' version='IDN2_0.0.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='idn2_strerror_name' version='IDN2_0.0.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='idn2_to_ascii_4i2' version='IDN2_2.1.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='idn2_to_ascii_4i' version='IDN2_0.0.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='idn2_to_ascii_4z' version='IDN2_0.0.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='idn2_to_ascii_8z' version='IDN2_0.0.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='idn2_to_ascii_lz' version='IDN2_0.0.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='idn2_to_unicode_44i' version='IDN2_0.0.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='idn2_to_unicode_4z4z' version='IDN2_0.0.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='idn2_to_unicode_8z4z' version='IDN2_0.0.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='idn2_to_unicode_8z8z' version='IDN2_0.0.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='idn2_to_unicode_8zlz' version='IDN2_0.0.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='idn2_to_unicode_lzlz' version='IDN2_0.0.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+  </elf-function-symbols>
+  <abi-instr version='1.0' address-size='64' path='idna.c' comp-dir-path='/home/nmav/cvs/libidn2/lib' language='LANG_C99'>
+    <type-decl name='void' id='type-id-1'/>
+    <function-decl name='u32_normalize' mangled-name='u32_normalize' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='free' mangled-name='free' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='__builtin_memcmp' mangled-name='memcmp' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='__errno_location' mangled-name='__errno_location' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='get_idna_map' mangled-name='get_idna_map' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='map_is' mangled-name='map_is' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='_idn2_disallowed_p' mangled-name='_idn2_disallowed_p' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='_idn2_contextj_p' mangled-name='_idn2_contextj_p' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='_idn2_contextj_rule' mangled-name='_idn2_contextj_rule' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='_idn2_contexto_p' mangled-name='_idn2_contexto_p' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='_idn2_contexto_with_rule' mangled-name='_idn2_contexto_with_rule' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='_idn2_contexto_rule' mangled-name='_idn2_contexto_rule' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='_idn2_unassigned_p' mangled-name='_idn2_unassigned_p' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='_idn2_bidi' mangled-name='_idn2_bidi' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='uc_is_general_category' mangled-name='uc_is_general_category' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='get_nfcqc_map' mangled-name='get_nfcqc_map' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='uc_combining_class' mangled-name='uc_combining_class' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='u8_to_u32' mangled-name='u8_to_u32' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+  </abi-instr>
+  <abi-instr version='1.0' address-size='64' path='lookup.c' comp-dir-path='/home/nmav/cvs/libidn2/lib' language='LANG_C99'>
+    <type-decl name='int' size-in-bits='32' id='type-id-2'/>
+    <type-decl name='char' size-in-bits='8' id='type-id-3'/>
+    <qualified-type-def type-id='type-id-3' const='yes' id='type-id-4'/>
+    <pointer-type-def type-id='type-id-4' size-in-bits='64' id='type-id-5'/>
+    <pointer-type-def type-id='type-id-3' size-in-bits='64' id='type-id-6'/>
+    <pointer-type-def type-id='type-id-6' size-in-bits='64' id='type-id-7'/>
+    <function-decl name='idn2_to_ascii_lz' mangled-name='idn2_to_ascii_lz' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='idn2_to_ascii_lz@@IDN2_0.0.0'>
+      <parameter type-id='type-id-5' name='input'/>
+      <parameter type-id='type-id-7' name='output'/>
+      <parameter type-id='type-id-2' name='flags'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='idn2_to_ascii_8z' mangled-name='idn2_to_ascii_8z' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='idn2_to_ascii_8z@@IDN2_0.0.0'>
+      <parameter type-id='type-id-5' name='input'/>
+      <parameter type-id='type-id-7' name='output'/>
+      <parameter type-id='type-id-2' name='flags'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <type-decl name='unsigned int' size-in-bits='32' id='type-id-8'/>
+    <typedef-decl name='__uint32_t' type-id='type-id-8' id='type-id-9'/>
+    <typedef-decl name='uint32_t' type-id='type-id-9' id='type-id-10'/>
+    <qualified-type-def type-id='type-id-10' const='yes' id='type-id-11'/>
+    <pointer-type-def type-id='type-id-11' size-in-bits='64' id='type-id-12'/>
+    <function-decl name='idn2_to_ascii_4z' mangled-name='idn2_to_ascii_4z' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='idn2_to_ascii_4z@@IDN2_0.0.0'>
+      <parameter type-id='type-id-12' name='input'/>
+      <parameter type-id='type-id-7' name='output'/>
+      <parameter type-id='type-id-2' name='flags'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <type-decl name='unsigned long int' size-in-bits='64' id='type-id-13'/>
+    <typedef-decl name='size_t' type-id='type-id-13' id='type-id-14'/>
+    <function-decl name='idn2_to_ascii_4i' mangled-name='idn2_to_ascii_4i' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='idn2_to_ascii_4i@@IDN2_0.0.0'>
+      <parameter type-id='type-id-12' name='input'/>
+      <parameter type-id='type-id-14' name='inlen'/>
+      <parameter type-id='type-id-6' name='output'/>
+      <parameter type-id='type-id-2' name='flags'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <type-decl name='unsigned char' size-in-bits='8' id='type-id-15'/>
+    <typedef-decl name='__uint8_t' type-id='type-id-15' id='type-id-16'/>
+    <typedef-decl name='uint8_t' type-id='type-id-16' id='type-id-17'/>
+    <qualified-type-def type-id='type-id-17' const='yes' id='type-id-18'/>
+    <pointer-type-def type-id='type-id-18' size-in-bits='64' id='type-id-19'/>
+    <pointer-type-def type-id='type-id-17' size-in-bits='64' id='type-id-20'/>
+    <pointer-type-def type-id='type-id-20' size-in-bits='64' id='type-id-21'/>
+    <function-decl name='idn2_lookup_u8' mangled-name='idn2_lookup_u8' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='idn2_lookup_u8@@IDN2_0.0.0'>
+      <parameter type-id='type-id-19' name='src'/>
+      <parameter type-id='type-id-21' name='lookupname'/>
+      <parameter type-id='type-id-2' name='flags'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='idn2_lookup_ul' mangled-name='idn2_lookup_ul' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='idn2_lookup_ul@@IDN2_0.0.0'>
+      <parameter type-id='type-id-5' name='src'/>
+      <parameter type-id='type-id-7' name='lookupname'/>
+      <parameter type-id='type-id-2' name='flags'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='idn2_to_ascii_4i2' mangled-name='idn2_to_ascii_4i2' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='idn2_to_ascii_4i2@@IDN2_2.1.0'>
+      <parameter type-id='type-id-12' name='input'/>
+      <parameter type-id='type-id-14' name='inlen'/>
+      <parameter type-id='type-id-7' name='output'/>
+      <parameter type-id='type-id-2' name='flags'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='u32_strlen' mangled-name='u32_strlen' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='u32_to_u8' mangled-name='u32_to_u8' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='strlen' mangled-name='strlen' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='__builtin_memcpy' mangled-name='memcpy' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='get_map_data' mangled-name='get_map_data' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='_idn2_punycode_decode' mangled-name='_idn2_punycode_decode' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='_idn2_label_test' mangled-name='_idn2_label_test' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='u8_strlen' mangled-name='u8_strlen' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='malloc' mangled-name='malloc' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='_idn2_ascii_p' mangled-name='_idn2_ascii_p' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='_idn2_u8_to_u32_nfc' mangled-name='_idn2_u8_to_u32_nfc' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='_idn2_punycode_encode' mangled-name='_idn2_punycode_encode' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='c_strncasecmp' mangled-name='c_strncasecmp' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='strchrnul' mangled-name='strchrnul' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='locale_charset' mangled-name='locale_charset' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='u8_strconv_from_encoding' mangled-name='u8_strconv_from_encoding' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='u32_cpy' mangled-name='u32_cpy' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+  </abi-instr>
+  <abi-instr version='1.0' address-size='64' path='decode.c' comp-dir-path='/home/nmav/cvs/libidn2/lib' language='LANG_C99'>
+    <function-decl name='idn2_to_unicode_lzlz' mangled-name='idn2_to_unicode_lzlz' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='idn2_to_unicode_lzlz@@IDN2_0.0.0'>
+      <parameter type-id='type-id-5' name='input'/>
+      <parameter type-id='type-id-7' name='output'/>
+      <parameter type-id='type-id-2' name='flags'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='idn2_to_unicode_8zlz' mangled-name='idn2_to_unicode_8zlz' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='idn2_to_unicode_8zlz@@IDN2_0.0.0'>
+      <parameter type-id='type-id-5' name='input'/>
+      <parameter type-id='type-id-7' name='output'/>
+      <parameter type-id='type-id-2' name='flags'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <pointer-type-def type-id='type-id-10' size-in-bits='64' id='type-id-22'/>
+    <pointer-type-def type-id='type-id-14' size-in-bits='64' id='type-id-23'/>
+    <function-decl name='idn2_to_unicode_44i' mangled-name='idn2_to_unicode_44i' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='idn2_to_unicode_44i@@IDN2_0.0.0'>
+      <parameter type-id='type-id-12' name='in'/>
+      <parameter type-id='type-id-14' name='inlen'/>
+      <parameter type-id='type-id-22' name='out'/>
+      <parameter type-id='type-id-23' name='outlen'/>
+      <parameter type-id='type-id-2' name='flags'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <pointer-type-def type-id='type-id-22' size-in-bits='64' id='type-id-24'/>
+    <function-decl name='idn2_to_unicode_8z4z' mangled-name='idn2_to_unicode_8z4z' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='idn2_to_unicode_8z4z@@IDN2_0.0.0'>
+      <parameter type-id='type-id-5' name='input'/>
+      <parameter type-id='type-id-24' name='output'/>
+      <parameter type-id='type-id-2' name='flags'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='idn2_to_unicode_4z4z' mangled-name='idn2_to_unicode_4z4z' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='idn2_to_unicode_4z4z@@IDN2_0.0.0'>
+      <parameter type-id='type-id-12' name='input'/>
+      <parameter type-id='type-id-24' name='output'/>
+      <parameter type-id='type-id-2' name='flags'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='idn2_to_unicode_8z8z' mangled-name='idn2_to_unicode_8z8z' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='idn2_to_unicode_8z8z@@IDN2_0.0.0'>
+      <parameter type-id='type-id-5' name='input'/>
+      <parameter type-id='type-id-7' name='output'/>
+      <parameter type-id='type-id-2' name='flags'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='u8_strconv_to_encoding' mangled-name='u8_strconv_to_encoding' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='u32_cpy_alloc' mangled-name='u32_cpy_alloc' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+  </abi-instr>
+  <abi-instr version='1.0' address-size='64' path='register.c' comp-dir-path='/home/nmav/cvs/libidn2/lib' language='LANG_C99'>
+    <function-decl name='idn2_register_ul' mangled-name='idn2_register_ul' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='idn2_register_ul@@IDN2_0.0.0'>
+      <parameter type-id='type-id-5' name='ulabel'/>
+      <parameter type-id='type-id-5' name='alabel'/>
+      <parameter type-id='type-id-7' name='insertname'/>
+      <parameter type-id='type-id-2' name='flags'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='idn2_register_u8' mangled-name='idn2_register_u8' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='idn2_register_u8@@IDN2_0.0.0'>
+      <parameter type-id='type-id-19' name='ulabel'/>
+      <parameter type-id='type-id-19' name='alabel'/>
+      <parameter type-id='type-id-21' name='insertname'/>
+      <parameter type-id='type-id-2' name='flags'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='strcmp' mangled-name='strcmp' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='strdup' mangled-name='strdup' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+  </abi-instr>
+  <abi-instr version='1.0' address-size='64' path='bidi.c' comp-dir-path='/home/nmav/cvs/libidn2/lib' language='LANG_C99'>
+    <function-decl name='uc_bidi_category' mangled-name='uc_bidi_category' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+  </abi-instr>
+  <abi-instr version='1.0' address-size='64' path='version.c' comp-dir-path='/home/nmav/cvs/libidn2/lib' language='LANG_C99'>
+    <function-decl name='idn2_check_version' mangled-name='idn2_check_version' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='idn2_check_version@@IDN2_0.0.0'>
+      <parameter type-id='type-id-5' name='req_version'/>
+      <return type-id='type-id-5'/>
+    </function-decl>
+    <function-decl name='strverscmp' mangled-name='strverscmp' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+  </abi-instr>
+  <abi-instr version='1.0' address-size='64' path='error.c' comp-dir-path='/home/nmav/cvs/libidn2/lib' language='LANG_C99'>
+    <function-decl name='idn2_strerror_name' mangled-name='idn2_strerror_name' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='idn2_strerror_name@@IDN2_0.0.0'>
+      <parameter type-id='type-id-2' name='rc'/>
+      <return type-id='type-id-5'/>
+    </function-decl>
+    <function-decl name='idn2_strerror' mangled-name='idn2_strerror' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='idn2_strerror@@IDN2_0.0.0'>
+      <parameter type-id='type-id-2' name='rc'/>
+      <return type-id='type-id-5'/>
+    </function-decl>
+  </abi-instr>
+  <abi-instr version='1.0' address-size='64' path='puny_decode.c' comp-dir-path='/home/nmav/cvs/libidn2/lib' language='LANG_C99'>
+    <function-decl name='memmove' mangled-name='memmove' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+  </abi-instr>
+  <abi-instr version='1.0' address-size='64' path='free.c' comp-dir-path='/home/nmav/cvs/libidn2/lib' language='LANG_C99'>
+    <pointer-type-def type-id='type-id-1' size-in-bits='64' id='type-id-25'/>
+    <function-decl name='idn2_free' mangled-name='idn2_free' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='idn2_free@@IDN2_0.0.0'>
+      <parameter type-id='type-id-25' name='ptr'/>
+      <return type-id='type-id-1'/>
+    </function-decl>
+  </abi-instr>
+  <abi-instr version='1.0' address-size='64' path='data.c' comp-dir-path='/home/nmav/cvs/libidn2/lib' language='LANG_C99'>
+    <class-decl name='idna_table' size-in-bits='96' is-struct='yes' visibility='default' id='type-id-26'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='start' type-id='type-id-10' visibility='default'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='32'>
+        <var-decl name='end' type-id='type-id-10' visibility='default'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='state' type-id='type-id-2' visibility='default'/>
+      </data-member>
+    </class-decl>
+    <qualified-type-def type-id='type-id-26' const='yes' id='type-id-27'/>
+
+    <array-type-def dimensions='1' type-id='type-id-27' size-in-bits='infinite' id='type-id-28'>
+      <subrange length='infinite' id='type-id-29'/>
+
+    </array-type-def>
+    <qualified-type-def type-id='type-id-28' const='yes' id='type-id-30'/>
+    <var-decl name='idna_table' type-id='type-id-30' visibility='default'/>
+    <qualified-type-def type-id='type-id-14' const='yes' id='type-id-31'/>
+    <var-decl name='idna_table_size' type-id='type-id-31' visibility='default'/>
+  </abi-instr>
+  <abi-instr version='1.0' address-size='64' path='context.c' comp-dir-path='/home/nmav/cvs/libidn2/lib' language='LANG_C99'>
+    <function-decl name='uc_script' mangled-name='uc_script' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='uc_joining_type' mangled-name='uc_joining_type' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+  </abi-instr>
+  <abi-instr version='1.0' address-size='64' path='dirname-lgpl.c' comp-dir-path='/home/nmav/cvs/libidn2/gl' language='LANG_C99'>
+    <function-decl name='last_component' mangled-name='last_component' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+  </abi-instr>
+  <abi-instr version='1.0' address-size='64' path='stripslash.c' comp-dir-path='/home/nmav/cvs/libidn2/gl' language='LANG_C99'>
+    <function-decl name='base_len' mangled-name='base_len' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+  </abi-instr>
+  <abi-instr version='1.0' address-size='64' path='progname.c' comp-dir-path='/home/nmav/cvs/libidn2/gl' language='LANG_C99'>
+    <var-decl name='program_name' type-id='type-id-5' visibility='default'/>
+    <function-decl name='strrchr' mangled-name='strrchr' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='__builtin_fwrite' mangled-name='fwrite' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='abort' mangled-name='abort' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+  </abi-instr>
+  <abi-instr version='1.0' address-size='64' path='version-etc.c' comp-dir-path='/home/nmav/cvs/libidn2/gl' language='LANG_C99'>
+    <function-decl name='dcgettext' mangled-name='dcgettext' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='printf' mangled-name='printf' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='fputs' mangled-name='fputs' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='fprintf' mangled-name='fprintf' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+  </abi-instr>
+</abi-corpus>

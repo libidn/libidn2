@@ -46,49 +46,56 @@ pkgconfig_DATA = libidn2.pc
 local-code-coverage-output: code-coverage-capture
 	@cat libidn2-$(VERSION)-coverage/index.html|grep headerCovTableEntryHi|head -1|sed 's/^.*>\([0-9]\+\.[0-9]\+\s*%\)<.*$$/ coverage lines: \1/' || true
 
-ABI_TMPDIR="headers.abi.tmp"
-ABI_TMPCLONEDIR="libidn2-prev-abi.tmp"
-ABI_TMPFILE1="abi-temp-cur.xml"
-ABI_TMPFILE2="abi-temp-prev.xml"
-ABIREF := $(shell if test -d .git; then git for-each-ref --sort=taggerdate --format '%(refname)' refs/tags|tail -1; fi)
-ABIVER := $(shell if test -d .git; then git for-each-ref --sort=taggerdate --format '%(refname)' refs/tags|tail -1|cut -d '/' -f 3|sed -e 's/libidn2-//' -e 's/_/./g'; fi)
-prev-tag-abi.stamp:
-	@rm -rf $(ABI_TMPCLONEDIR)
-	@git clone -l . $(ABI_TMPCLONEDIR)
-	@echo "Creating ABI for $(ABIVER)"
-	cd $(ABI_TMPCLONEDIR) && \
-	  git checkout $(ABIREF) && git submodule update --init && \
-	  sh bootstrap && CFLAGS="-g -Og" ./configure --disable-doc && \
-	  $(MAKE) -j$$(nproc) -C unistring && $(MAKE) -j$$(nproc) -C gl && $(MAKE) -j$$(nproc) -C lib
-	touch $@
+ABIDW_COMMON = --no-show-locs --no-corpus-path
+LIBIDN2_ABI_LAST_FILE = "$(top_srcdir)/contrib/libidn2-latest-$$(uname -m).abi"
+ABIGNORE_FILE = "$(top_srcdir)/contrib/libidn2.abignore"
+abi-dump-versioned: lib/libidn2.la
+	@echo "*************************************************"
+	@echo "Generating versioned ABI files of current libidn2"
+	@echo "*************************************************"
+	@abidw lib/.libs/libidn2.so $(ABIDW_COMMON) --suppressions $(ABIGNORE_FILE) --out-file "$(srcdir)/contrib/libidn2-$(VERSION)-$$(uname -m).abi"
+
+abi-dump-latest: lib/libidn2.la
+	@echo "***************************************"
+	@echo "Generating ABI files of current libidn2"
+	@echo "***************************************"
+	@abidw lib/.libs/libidn2.so $(ABIDW_COMMON) --suppressions $(ABIGNORE_FILE) --out-file $(LIBIDN2_ABI_LAST_FILE)
+	@rm -f "./contrib/libidn2-latest-$$(uname -m).tmp"
+
+abi-check-latest: lib/libidn2.la
+	@echo "Checking whether the latest ABI dump matches"
+	@abidiff --suppressions $(ABIGNORE_FILE) lib/.libs/libidn2.so $(LIBIDN2_ABI_LAST_FILE); if test $$? != 0;then \
+		echo "*****************************************************"; \
+		echo "libidn2 ABI has changed; use 'make abi-dump-latest'  "; \
+		echo "and use 'git diff' to check correctness before commit"; \
+		echo "*****************************************************"; \
+		exit 1; \
+	fi
+	@echo "********************************"
+	@echo "Current release matches ABI dump"
+	@echo "********************************"
 
 # Checks the ABI stability between current git version and the previous tagged release.
-abi-check: prev-tag-abi.stamp
-	@rm -f $(ABI_TMPFILE1) $(ABI_TMPFILE2)
-	@echo "Checking libidn2 ABI"
-	@echo "<version>$(VERSION)</version>" >$(ABI_TMPFILE1)
-	@echo "<headers>$(srcdir)/lib/idn2.h" >>$(ABI_TMPFILE1)
-	@echo "$(builddir)/lib/idn2.h</headers>" >>$(ABI_TMPFILE1)
-	@echo "<libs>$(builddir)/lib/.libs</libs>" >>$(ABI_TMPFILE1)
-	@echo "<version>$(ABIVER)</version>" >$(ABI_TMPFILE2)
-	@echo "<headers>$(builddir)/$(ABI_TMPCLONEDIR)/lib/idn2.h" >>$(ABI_TMPFILE2)
-	@echo "$(builddir)/$(ABI_TMPCLONEDIR)/lib/idn2.h</headers>" >>$(ABI_TMPFILE2)
-	@echo "<libs>$(builddir)/$(ABI_TMPCLONEDIR)/lib/.libs</libs>" >>$(ABI_TMPFILE2)
-	PATH="/sbin$(PATH_SEPARATOR)$$PATH" \
-	  abi-compliance-checker -abi -lib libidn2 -old $(ABI_TMPFILE2) -new $(ABI_TMPFILE1)
-	@rm -f $(ABI_TMPFILE1) $(ABI_TMPFILE2)
-
-# Dumps the current library ABI using abi-dump in the current directory
-abi-dump:
-	$(MAKE) -C gl
-	$(MAKE) -C lib
-	@rm -rf $(ABI_TMPDIR)
-	@mkdir -p $(ABI_TMPDIR)
-	@cp lib/idn2.h $(ABI_TMPDIR)
-	@abi-dumper lib/.libs/libidn2.so -o "./ABI-$(VERSION)-$$(uname -m).dump" -public-headers $(ABI_TMPDIR)
-	@rm -rf $(ABI_TMPDIR)
+ABICHECK_COMMON = --no-added-syms
+abi-check: lib/libidn2.la
+	@for file in $$(eval echo $(srcdir)/contrib/libidn2-*-$$(uname -m).abi);do \
+		echo "Comparing libidn2 with $$file"; \
+		abidiff $${file} lib/.libs/libidn2.so --suppressions $(ABIGNORE_FILE) $(ABICHECK_COMMON) --hd2 "$(srcdir)/lib/idn2.h"; \
+		if test $$? != 0;then \
+			echo "****************************************************************************"; \
+			echo "ABI check failed; If intentional add suppression in contrib/libidn2.abignore"; \
+			echo "****************************************************************************"; \
+			exit 1; \
+		fi; \
+	done
+	@echo "********************"
+	@echo "ABI checks completed"
+	@echo "********************"
 
 dist-hook:
+	if test -d "$(top_srcdir)/contrib";then \
+		$(MAKE) -C $(top_srcdir) abi-check-latest; \
+	fi
 	rm -f ChangeLog
 	$(MAKE) ChangeLog
 
