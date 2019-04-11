@@ -39,10 +39,67 @@
 #include <uniconv.h>    /* u8_strconv_from_locale */
 #include <uninorm.h>    /* u32_normalize */
 #include <unistr.h>     /* u8_to_u32 */
-#include "c-strcase.h"  /* c_strncasecmp */
 
 #include "idna.h"       /* _idn2_label_test */
 #include "tr46map.h"    /* definition for tr46map.c */
+
+#ifdef HAVE_LIBUNISTRING
+/* copied from gnulib */
+#include <limits.h>
+#define _C_CTYPE_LOWER_N(N) \
+   case 'a' + (N): case 'b' + (N): case 'c' + (N): case 'd' + (N): \
+   case 'e' + (N): case 'f' + (N): \
+   case 'g' + (N): case 'h' + (N): case 'i' + (N): case 'j' + (N): \
+   case 'k' + (N): case 'l' + (N): case 'm' + (N): case 'n' + (N): \
+   case 'o' + (N): case 'p' + (N): case 'q' + (N): case 'r' + (N): \
+   case 's' + (N): case 't' + (N): case 'u' + (N): case 'v' + (N): \
+   case 'w' + (N): case 'x' + (N): case 'y' + (N): case 'z' + (N)
+#define _C_CTYPE_UPPER _C_CTYPE_LOWER_N ('A' - 'a')
+static inline int
+c_tolower (int c)
+{
+  switch (c)
+    {
+    _C_CTYPE_UPPER:
+      return c - 'A' + 'a';
+    default:
+      return c;
+    }
+}
+static int
+c_strncasecmp (const char *s1, const char *s2, size_t n)
+{
+  register const unsigned char *p1 = (const unsigned char *) s1;
+  register const unsigned char *p2 = (const unsigned char *) s2;
+  unsigned char c1, c2;
+
+  if (p1 == p2 || n == 0)
+    return 0;
+
+  do
+    {
+      c1 = c_tolower (*p1);
+      c2 = c_tolower (*p2);
+
+      if (--n == 0 || c1 == '\0')
+        break;
+
+      ++p1;
+      ++p2;
+    }
+  while (c1 == c2);
+
+  if (UCHAR_MAX <= INT_MAX)
+    return c1 - c2;
+  else
+    /* On machines where 'char' and 'int' are types of the same size, the
+       difference of two 'unsigned char' values - including the sign bit -
+       doesn't fit in an 'int'.  */
+    return (c1 > c2 ? 1 : c1 < c2 ? -1 : 0);
+}
+#else
+#include <c-strcase.h>
+#endif
 
 static int set_default_flags(int *flags)
 {
