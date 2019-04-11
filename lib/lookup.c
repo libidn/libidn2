@@ -30,18 +30,19 @@
 
 #include "idn2.h"
 
-#include <errno.h>		/* errno */
-#include <stdlib.h>		/* malloc, free */
+#include <errno.h>      /* errno */
+#include <stdlib.h>     /* malloc, free */
 
 #include "punycode.h"
 
 #include <unitypes.h>
-#include <uniconv.h>		/* u8_strconv_from_locale */
-#include <uninorm.h>		/* u32_normalize */
-#include <unistr.h>		/* u8_to_u32 */
+#include <uniconv.h>    /* u8_strconv_from_locale */
+#include <uninorm.h>    /* u32_normalize */
+#include <unistr.h>     /* u8_to_u32 */
+#include "c-strcase.h"  /* c_strncasecmp */
 
-#include "idna.h"		/* _idn2_label_test */
-#include "tr46map.h"		/* definition for tr46map.c */
+#include "idna.h"       /* _idn2_label_test */
+#include "tr46map.h"    /* definition for tr46map.c */
 
 static int set_default_flags(int *flags)
 {
@@ -151,7 +152,7 @@ label (const uint8_t * src, size_t srclen, uint8_t * dst, size_t * dstlen,
 
   if (check_roundtrip)
     {
-      if (srclen_org != *dstlen || memcmp (src_org, dst, srclen_org))
+      if (srclen_org != *dstlen || c_strncasecmp ((char *) src_org, (char *) dst, srclen_org))
       {
         rc = IDN2_ALABEL_ROUNDTRIP_FAILED;
 	goto out;
