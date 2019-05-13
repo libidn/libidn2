@@ -739,7 +739,7 @@ sub output_man {
 	print "should give you access to the complete manual.\n";
 	print "As an alternative you may obtain the manual from:\n";
 	print ".IP\n";
-	print ".B http://www.gnu.org/software/" . $args{'module'} . "/manual/\n";
+	print ".B http://www.gnu.org/software/libidn/" . $args{'module'} . "/manual/\n";
 	print ".PP\n";
     }
 }
