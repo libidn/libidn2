@@ -45,7 +45,7 @@ dist_man_MANS = $(gdoc_MANS)
 dist_man_MANS += idn2.1
 
 idn2.1: idn2.md
-	ronn -r $^ >$@ || false
+	ronn <$^ >$@ || false
 
 MAINTAINERCLEANFILES = $(dist_man_MANS) decode.c example-tounicode.c example-toascii.c lookup.c \
 	register.c stamp-vti version.texi
