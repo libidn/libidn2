@@ -3,6 +3,23 @@ Copyright (C) 2011-2017 Simon Josefsson
 Copyright (C) 2018-2019 Tim Ruehsen
 See the end for copying conditions.
 
+* Version 2.2.0 (released 2019-05-23)
+
+** Perform A-Label roundtrip for lookup functions by default
+
+** Stricter check of input to punycode decoder
+
+** Fix punycode decoding with no ASCII chars but given delimiter
+
+** Fix 'idn2 --no-tr64' (was a no-op)
+
+** Allow _ as a basic code point in domain labels
+
+** Fail building documentatino if 'ronn' isn't installed
+
+** git tag changed to reflect https://semver.org/
+
+
 * Version 2.1.1 (released 2019-02-08)
 
 ** Revert SONAME bump from release 2.1.0
