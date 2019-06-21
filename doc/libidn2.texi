@@ -332,16 +332,27 @@ libidn2, for switching to IDNA2008.
 
 @item
 @verbatim
-rc = idna_to_ascii_8z (buf, &p, 0 /* any flags */);
+rc = idna_to_ascii_8z (buf, &p, IDNA_USE_STD3_ASCII_RULES);
 if (rc != IDNA_SUCCESS)
 @end verbatim
 
 @tab
 @verbatim
-/* The flag IDN2_NONTRANSITIONAL is the default under
- * libidn2 2.0.5 or later; we specify it explicitly
- * for earlier versions. */
-rc = idn2_to_ascii_8z (buf, &p, IDN2_NONTRANSITIONAL);
+rc = idn2_to_ascii_8z (buf, &p, IDN2_USE_STD3_ASCII_RULES);
+if (rc != IDN2_OK)
+@end verbatim
+
+@item
+@verbatim
+rc = idna_to_ascii_8z (buf, &p, 0 /* any other flags */);
+if (rc != IDNA_SUCCESS)
+@end verbatim
+
+@tab
+@verbatim
+/* we recommend to use the default flags (0), so that
+ * the default behavior of libidn2 applies. */
+rc = idn2_to_ascii_8z (buf, &p, 0);
 if (rc != IDN2_OK)
 @end verbatim
 
