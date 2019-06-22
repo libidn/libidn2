@@ -50,26 +50,29 @@ endif
 libidn2_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) -no-undefined $(CODE_COVERAGE_LDFLAGS)
 
-IDNA_TABLE = idna-tables-6.3.0.txt
-IANA_URL = https://ftp.iana.org/assignments/idna-tables-6.3.0/$(IDNA_TABLE)
+IDNA_TABLE = idna-tables-properties.csv
+IANA_URL = https://www.iana.org/assignments/idna-tables-6.3.0/idna-tables-properties.csv
 TR46MAP = IdnaMappingTable.txt
 TR46MAP_URL = http://www.unicode.org/Public/idna/6.3.0/IdnaMappingTable.txt
 NFCQC = DerivedNormalizationProps.txt
 NFCQC_URL = http://www.unicode.org/Public/6.3.0/ucd/DerivedNormalizationProps.txt
 
 BUILT_SOURCES = data.c tr46map_data.c
-DISTCLEANFILES =  tr46map_data.c
-CLEANFILES = gentr46map$(BUILD_EXEEXT)
+DISTCLEANFILES = $(BUILT_SOURCES)
+CLEANFILES = gendata$(BUILD_EXEEXT) gentr46map$(BUILD_EXEEXT)
 MAINTAINERCLEANFILES = $(IDNA_TABLE) $(TR46MAP) $(NFCQC)
-EXTRA_DIST = gen-tables-from-iana.pl $(IDNA_TABLE) $(TR46MAP) $(NFCQC) tr46map_data.c data.c gentr46map.c
+EXTRA_DIST = $(IDNA_TABLE) $(TR46MAP) $(NFCQC) data.c gendata.c tr46map_data.c gentr46map.c
 
-data.c: $(srcdir)/gen-tables-from-iana.pl $(IDNA_TABLE)
-	cat $(IDNA_TABLE) | $(srcdir)/gen-tables-from-iana.pl > $@.new
+# Note: We do not want to list any gen* as a dep of *data.c because it will
+# cause it to be regenerated for every build.  We only need that when the real
+# source text files are updated.
+gendata$(BUILD_EXEEXT): gendata.c
+	$(CC_FOR_BUILD) $(AM_CPPFLAGS) $(CFLAGS_FOR_BUILD) $< -o $@
+data.c: $(srcdir)/gendata.c $(IDNA_TABLE)
+	$(MAKE) gendata$(BUILD_EXEEXT)
+	$(builddir)/gendata$(BUILD_EXEEXT) < $(IDNA_TABLE) > $@.new
 	mv $@.new $@
 
-# Note: We do not want to list gentr46map as a dep of tr46map_data.c because
-# it will cause it to be regenerated for every build.  We only need that when
-# the real source text files are updated.
 gentr46map$(BUILD_EXEEXT): gentr46map.c
 	$(CC_FOR_BUILD) $(AM_CPPFLAGS) $(CFLAGS_FOR_BUILD) $< -o $@
 tr46map_data.c: $(srcdir)/gentr46map.c $(TR46MAP) $(NFCQC)
@@ -78,10 +81,10 @@ tr46map_data.c: $(srcdir)/gentr46map.c $(TR46MAP) $(NFCQC)
 	mv $@.new $@
 
 $(IDNA_TABLE):
-	if ! echo "4ebaf0c72061474d20078897d254768d894507de $(IDNA_TABLE)" | sha1sum -c -; then \
+	if ! echo "25d3755487b196188624592785487b82b6fa3442 $(IDNA_TABLE)" | sha1sum -c -; then \
 	  rm -f $(IDNA_TABLE); \
 	  wget -O$(IDNA_TABLE) $(IANA_URL); \
-	  echo "4ebaf0c72061474d20078897d254768d894507de $(IDNA_TABLE)" | sha1sum -c -; \
+	  echo "25d3755487b196188624592785487b82b6fa3442 $(IDNA_TABLE)" | sha1sum -c -; \
 	fi
 
 $(TR46MAP):
