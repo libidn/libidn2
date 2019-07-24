@@ -3,6 +3,14 @@ Copyright (C) 2011-2017 Simon Josefsson
 Copyright (C) 2018-2019 Tim Ruehsen
 See the end for copying conditions.
 
+* Version 2.x.x (unreleased)
+
+** Mitre has assigned CVE-2019-12290 which was fixed by
+   the roundtrip feature introduced in 2.2.0 (commit 241e8f48)
+
+** Update the data tables from Unicode 6.3.0 to Unicode 11.0
+
+
 * Version 2.2.0 (released 2019-05-23)
 
 ** Perform A-Label roundtrip for lookup functions by default
