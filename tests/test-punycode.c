@@ -236,8 +236,8 @@ main (void)
 	}
 
       outlen = BUFSIZ;
-      rc = _idn2_punycode_encode (
-	punycode[i].inlen, punycode[i].in, &outlen, p);
+      rc = _idn2_punycode_encode_internal (punycode[i].inlen, punycode[i].in,
+					   &outlen, p);
       if (rc != punycode[i].rc)
 	{
 	  fail ("punycode_encode() entry %d failed: %d\n", (int) i, rc);
@@ -278,8 +278,8 @@ main (void)
 	}
 
       outlen = BUFSIZ;
-      rc = _idn2_punycode_decode (strlen (punycode[i].out), punycode[i].out,
-				    &outlen, q);
+      rc = _idn2_punycode_decode_internal (strlen (punycode[i].out),
+					   punycode[i].out, &outlen, q);
       if (rc != punycode[i].rc)
 	{
 	  fail ("punycode() entry %d failed: %d\n", (int) i, rc);

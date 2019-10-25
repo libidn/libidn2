@@ -141,7 +141,7 @@ label (const uint8_t * src, size_t srclen, uint8_t * dst, size_t * dstlen,
 	 entirely in lowercase (converting it to lowercase if
 	 necessary), and apply the tests of Section 5.4 and the
 	 conversion of Section 5.5 to that form. */
-      rc = _idn2_punycode_decode (srclen - 4, (char *) src + 4, &label32_len, label_u32);
+      rc = _idn2_punycode_decode_internal (srclen - 4, (char *) src + 4, &label32_len, label_u32);
       if (rc)
 	return rc;
 
@@ -199,7 +199,7 @@ label (const uint8_t * src, size_t srclen, uint8_t * dst, size_t * dstlen,
   dst[3] = '-';
 
   tmpl = *dstlen - 4;
-  rc = _idn2_punycode_encode (plen, p, &tmpl, (char *) dst + 4);
+  rc = _idn2_punycode_encode_internal (plen, p, &tmpl, (char *) dst + 4);
   free (p);
   if (rc != IDN2_OK)
     goto out;
@@ -401,8 +401,8 @@ _tr46 (const uint8_t * domain_u8, uint8_t ** out, int flags)
 	      return IDN2_ENCODING_ERROR;
 	    }
 
-	  rc =
-	    _idn2_punycode_decode (ace_len, (char *) ace, &name_len, name_u32);
+	  rc = _idn2_punycode_decode_internal (ace_len, (char *) ace,
+					       &name_len, name_u32);
 
 	  free (ace);
 

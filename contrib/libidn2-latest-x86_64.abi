@@ -4,6 +4,8 @@
     <dependency name='libc.so.6'/>
   </elf-needed>
   <elf-function-symbols>
+    <elf-symbol name='_idn2_punycode_decode' version='IDN2_0.0.0' is-default-version='no' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='_idn2_punycode_encode' version='IDN2_0.0.0' is-default-version='no' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
     <elf-symbol name='idn2_check_version' version='IDN2_0.0.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
     <elf-symbol name='idn2_free' version='IDN2_0.0.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
     <elf-symbol name='idn2_lookup_u8' version='IDN2_0.0.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
@@ -161,7 +163,7 @@
     <function-decl name='get_map_data' mangled-name='get_map_data' visibility='default' binding='global' size-in-bits='64'>
       <return type-id='type-id-1'/>
     </function-decl>
-    <function-decl name='_idn2_punycode_decode' mangled-name='_idn2_punycode_decode' visibility='default' binding='global' size-in-bits='64'>
+    <function-decl name='_idn2_punycode_decode_internal' mangled-name='_idn2_punycode_decode_internal' visibility='default' binding='global' size-in-bits='64'>
       <return type-id='type-id-1'/>
     </function-decl>
     <function-decl name='_idn2_label_test' mangled-name='_idn2_label_test' visibility='default' binding='global' size-in-bits='64'>
@@ -173,13 +175,16 @@
     <function-decl name='malloc' mangled-name='malloc' visibility='default' binding='global' size-in-bits='64'>
       <return type-id='type-id-1'/>
     </function-decl>
+    <function-decl name='_idn2_punycode_decode' mangled-name='_idn2_punycode_decode' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-1'/>
+    </function-decl>
     <function-decl name='_idn2_ascii_p' mangled-name='_idn2_ascii_p' visibility='default' binding='global' size-in-bits='64'>
       <return type-id='type-id-1'/>
     </function-decl>
     <function-decl name='_idn2_u8_to_u32_nfc' mangled-name='_idn2_u8_to_u32_nfc' visibility='default' binding='global' size-in-bits='64'>
       <return type-id='type-id-1'/>
     </function-decl>
-    <function-decl name='_idn2_punycode_encode' mangled-name='_idn2_punycode_encode' visibility='default' binding='global' size-in-bits='64'>
+    <function-decl name='_idn2_punycode_encode_internal' mangled-name='_idn2_punycode_encode_internal' visibility='default' binding='global' size-in-bits='64'>
       <return type-id='type-id-1'/>
     </function-decl>
     <function-decl name='c_strncasecmp' mangled-name='c_strncasecmp' visibility='default' binding='global' size-in-bits='64'>
@@ -293,7 +298,23 @@
       <return type-id='type-id-5'/>
     </function-decl>
   </abi-instr>
+  <abi-instr version='1.0' address-size='64' path='puny_encode.c' comp-dir-path='/home/nmav/cvs/libidn2/lib' language='LANG_C99'>
+    <function-decl name='_idn2_punycode_encode_internal' mangled-name='_idn2_punycode_encode' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='_idn2_punycode_encode@IDN2_0.0.0'>
+      <parameter type-id='type-id-14' name='input_length_orig'/>
+      <parameter type-id='type-id-12' name='input'/>
+      <parameter type-id='type-id-23' name='output_length'/>
+      <parameter type-id='type-id-6' name='output'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+  </abi-instr>
   <abi-instr version='1.0' address-size='64' path='puny_decode.c' comp-dir-path='/home/nmav/cvs/libidn2/lib' language='LANG_C99'>
+    <function-decl name='_idn2_punycode_decode_internal' mangled-name='_idn2_punycode_decode' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='_idn2_punycode_decode@IDN2_0.0.0'>
+      <parameter type-id='type-id-14' name='input_length'/>
+      <parameter type-id='type-id-5' name='input'/>
+      <parameter type-id='type-id-23' name='output_length'/>
+      <parameter type-id='type-id-22' name='output'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
     <function-decl name='memmove' mangled-name='memmove' visibility='default' binding='global' size-in-bits='64'>
       <return type-id='type-id-1'/>
     </function-decl>

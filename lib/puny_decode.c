@@ -69,7 +69,7 @@
 #define punycode_overflow IDN2_PUNYCODE_OVERFLOW
 #define punycode_big_output IDN2_PUNYCODE_BIG_OUTPUT
 #define punycode_bad_input IDN2_PUNYCODE_BAD_INPUT
-#define punycode_decode _idn2_punycode_decode
+#define punycode_decode _idn2_punycode_decode_internal
 
 /**********************************************************/
 /* Implementation (would normally go in its own .c file): */
@@ -221,3 +221,12 @@ int punycode_decode(
   /* cannot overflow because out <= old value of *output_length */
   return punycode_success;
 }
+
+/* Create a compatibility symbol if supported.  Hidden references make
+   the target symbol hidden, hence the alias.  */
+#ifdef HAVE_SYMVER_ALIAS_SUPPORT
+__typeof__ (_idn2_punycode_decode_internal) _idn2_punycode_decode
+   __attribute__ ((visibility ("default"),
+                   alias ("_idn2_punycode_decode_internal")));
+__asm__ (".symver _idn2_punycode_decode, _idn2_punycode_decode@IDN2_0.0.0");
+#endif

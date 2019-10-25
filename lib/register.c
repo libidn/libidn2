@@ -104,8 +104,8 @@ idn2_register_u8 (const uint8_t * ulabel, const uint8_t * alabel,
       if (!_idn2_ascii_p (alabel, alabellen))
 	return IDN2_INVALID_ALABEL;
 
-      rc = _idn2_punycode_decode (alabellen - 4, (char*)alabel + 4,
-				  &u32len, u32);
+      rc = _idn2_punycode_decode_internal (alabellen - 4, (char*)alabel + 4,
+					   &u32len, u32);
       if (rc != IDN2_OK)
 	return rc;
 
@@ -186,7 +186,7 @@ idn2_register_u8 (const uint8_t * ulabel, const uint8_t * alabel,
       tmp[3] = '-';
 
       tmpl = IDN2_LABEL_MAX_LENGTH - 4;
-      rc = _idn2_punycode_encode (u32len, u32, &tmpl, (char*)tmp + 4);
+      rc = _idn2_punycode_encode_internal (u32len, u32, &tmpl, (char*)tmp + 4);
       free (u32);
       if (rc != IDN2_OK)
 	return rc;

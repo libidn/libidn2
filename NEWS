@@ -10,6 +10,9 @@ See the end for copying conditions.
 
 ** Update the data tables from Unicode 6.3.0 to Unicode 11.0
 
+** Turn _idn2_punycode_encode, _idn2_punycode_decode
+   into compat symbols (Fixes #74)
+
 
 * Version 2.2.0 (released 2019-05-23)
 

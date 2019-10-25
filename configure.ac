@@ -49,6 +49,21 @@ LT_INIT([win32-dll])
 gl_INIT
 unistring_INIT
 
+dnl Ideally, this should attempt a link, but this requires a separate
+dnl version file, so we only check for compiler support here.
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
+__attribute__((visibility("hidden")))
+int
+versioned_symbol_internal (void)
+{
+}
+__typeof__ (versioned_symbol_internal) versioned_symbol
+   __attribute__ ((visibility ("default"),
+                   alias ("versioned_symbol_internal")));
+__asm__ (".symver versioned_symbol, versioned_symbol@IDN2_0.0.0");
+])], [AC_DEFINE([HAVE_SYMVER_ALIAS_SUPPORT], [1],
+     [The toolchain supports aliases and .symver.])])
+
 #
 # check for gtk-doc
 #

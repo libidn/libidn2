@@ -92,8 +92,8 @@ idn2_to_unicode_8z4z (const char * input, uint32_t ** output, G_GNUC_UNUSED int 
 	{
 	  s += 4;
 
-	  rc =
-	    _idn2_punycode_decode (e - s, (char *) s, &label_len, label_u32);
+	  rc = _idn2_punycode_decode_internal (e - s, (char *) s,
+					       &label_len, label_u32);
 	  if (rc)
 	    return rc;
 
