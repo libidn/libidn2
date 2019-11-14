@@ -45,11 +45,11 @@ done
 echo
 echo "* Make"
 make -s clean
-make -s
+make -s -j$(nproc)
 
 echo
 echo "* Make distcheck"
-make -s distcheck >/dev/null
+make -s distcheck -j$(nproc) >/dev/null
 
 echo
 echo "* Make dist"
