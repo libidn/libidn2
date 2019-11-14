@@ -3,7 +3,7 @@ Copyright (C) 2011-2017 Simon Josefsson
 Copyright (C) 2018-2019 Tim Ruehsen
 See the end for copying conditions.
 
-* Version 2.x.x (unreleased)
+* Version 2.3.0 (released 2019-11-14)
 
 ** Mitre has assigned CVE-2019-12290 which was fixed by
    the roundtrip feature introduced in 2.2.0 (commit 241e8f48)
