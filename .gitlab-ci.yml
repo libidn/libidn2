@@ -68,8 +68,6 @@ dist-check:
   - DISTCHECK_CONFIGURE_FLAGS=--disable-gtk-doc make distcheck
   tags:
   - shared
-  except:
-  - tags
   artifacts:
     expire_in: 2 weeks
     when: on_failure
