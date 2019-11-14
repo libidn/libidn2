@@ -49,6 +49,13 @@ LT_INIT([win32-dll])
 gl_INIT
 unistring_INIT
 
+# Detect the target system
+case "${host_os}" in
+    linux-gnu)
+        build_linux_gnu=yes
+esac
+AM_CONDITIONAL([TEST_GLIBC], [test "$build_linux_gnu" = "yes"])
+
 dnl Ideally, this should attempt a link, but this requires a separate
 dnl version file, so we only check for compiler support here.
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
