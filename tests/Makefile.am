@@ -29,8 +29,10 @@ if !HAVE_LIBUNISTRING
 LDADD += ../unistring/libunistring.la
 endif
 
-TESTS = test-punycode test-lookup test-register test-strerror test-tounicode \
-  test-glibc
+TESTS = test-punycode test-lookup test-register test-strerror test-tounicode
+ifeq ($(host_os),linux-gnu)
+  TESTS += test-glibc
+endif
 check_PROGRAMS = $(TESTS)
 
 test_punycode_LDADD = ../lib/puny_decode.o ../lib/puny_encode.o $(LDADD) $(CODE_COVERAGE_LIBS)
