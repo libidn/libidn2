@@ -50,7 +50,7 @@ const char version_etc_copyright[] =
   /* Do *not* mark this string for translation.  %s is a copyright
      symbol suitable for this locale, and %d is the copyright
      year.  */
-  "Copyright 2011-%s %d Simon Josefsson, Tim Ruehsen.";
+  "Copyright %s 2011-%d Simon Josefsson, Tim Ruehsen.";
 
 static void
 usage (int status)
