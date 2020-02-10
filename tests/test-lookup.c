@@ -1,5 +1,6 @@
 /* test-lookup.c --- Self tests for IDNA processing
    Copyright (C) 2011-2017 Simon Josefsson
+   Copyright (C) 2017-2020 Tim Ruehsen
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -838,6 +839,10 @@ static const struct idna idna[] = {
   {"\xc3\xa4_x", "xn--_x-uia", IDN2_OK, IDN2_TRANSITIONAL},
   /* failing lookup round-trip */
   {"xn--te_", "", IDN2_ALABEL_ROUNDTRIP_FAILED},
+  /* failing lookup round-trip: â˜º -> xn-- o-oia59s (illegal space in output, see https://gitlab.com/libidn/libidn2/issues/78) */
+  {"\xc3\xa2\xcb\x9c\xc2\xba", "", IDN2_DISALLOWED, IDN2_NO_TR46},
+  {"\xc3\xa2\xcb\x9c\xc2\xba", "", IDN2_ALABEL_ROUNDTRIP_FAILED, IDN2_TRANSITIONAL},
+  {"\xc3\xa2\xcb\x9c\xc2\xba", "", IDN2_ALABEL_ROUNDTRIP_FAILED, IDN2_NONTRANSITIONAL},
 };
 
 static int ok = 0, failed = 0;

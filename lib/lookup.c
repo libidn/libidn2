@@ -1,5 +1,6 @@
 /* lookup.c - implementation of IDNA2008 lookup functions
    Copyright (C) 2011-2017 Simon Josefsson
+   Copyright (C) 2017-2020 Tim Ruehsen
 
    Libidn2 is free software: you can redistribute it and/or modify it
    under the terms of either:
@@ -123,7 +124,7 @@ label (const uint8_t * src, size_t srclen, uint8_t * dst, size_t * dstlen,
        int flags)
 {
   size_t plen;
-  uint32_t *p;
+  uint32_t *p = NULL;
   const uint8_t *src_org = NULL;
   uint8_t *src_allocated = NULL;
   int rc, check_roundtrip = 0;
@@ -187,10 +188,7 @@ label (const uint8_t * src, size_t srclen, uint8_t * dst, size_t * dstlen,
 	p, plen);
 
       if (rc != IDN2_OK)
-	{
-	  free (p);
-	  goto out;
-	}
+	goto out;
     }
 
   dst[0] = 'x';
@@ -200,7 +198,6 @@ label (const uint8_t * src, size_t srclen, uint8_t * dst, size_t * dstlen,
 
   tmpl = *dstlen - 4;
   rc = _idn2_punycode_encode_internal (plen, p, &tmpl, (char *) dst + 4);
-  free (p);
   if (rc != IDN2_OK)
     goto out;
 
@@ -210,15 +207,31 @@ label (const uint8_t * src, size_t srclen, uint8_t * dst, size_t * dstlen,
   if (check_roundtrip)
     {
       if (srclen_org != *dstlen || c_strncasecmp ((char *) src_org, (char *) dst, srclen_org))
-      {
-        rc = IDN2_ALABEL_ROUNDTRIP_FAILED;
-	goto out;
-      }
+        {
+	  rc = IDN2_ALABEL_ROUNDTRIP_FAILED;
+	  goto out;
+        }
+    }
+  else if (!(flags & IDN2_NO_ALABEL_ROUNDTRIP))
+    {
+      rc = _idn2_punycode_decode_internal (*dstlen - 4, (char *) dst + 4, &label32_len, label_u32);
+      if (rc)
+        {
+	  rc = IDN2_ALABEL_ROUNDTRIP_FAILED;
+	  goto out;
+        }
+
+      if (plen != label32_len || u32_cmp (p, label_u32, label32_len))
+        {
+	  rc = IDN2_ALABEL_ROUNDTRIP_FAILED;
+	  goto out;
+        }
     }
 
   rc = IDN2_OK;
 
 out:
+  free (p);
   free (src_allocated);
   return rc;
 }
