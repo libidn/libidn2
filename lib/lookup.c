@@ -518,7 +518,7 @@ idn2_lookup_u8 (const uint8_t * src, uint8_t ** lookupname, int flags)
 {
   size_t lookupnamelen = 0;
   uint8_t _lookupname[IDN2_DOMAIN_MAX_LENGTH + 1];
-  uint8_t _mapped[IDN2_DOMAIN_MAX_LENGTH + 1];
+  uint8_t *src_allocated = NULL;
   int rc;
 
   if (src == NULL)
@@ -535,22 +535,12 @@ idn2_lookup_u8 (const uint8_t * src, uint8_t ** lookupname, int flags)
   if (!(flags & IDN2_NO_TR46))
     {
       uint8_t *out;
-      size_t outlen;
 
       rc = _tr46 (src, &out, flags);
       if (rc != IDN2_OK)
 	return rc;
 
-      outlen = u8_strlen (out);
-      if (outlen >= sizeof (_mapped))
-	{
-	  free (out);
-	  return IDN2_TOO_BIG_DOMAIN;
-	}
-
-      memcpy (_mapped, out, outlen + 1);
-      src = _mapped;
-      free (out);
+      src = src_allocated = out;
     }
 
   do
@@ -564,11 +554,17 @@ idn2_lookup_u8 (const uint8_t * src, uint8_t ** lookupname, int flags)
 
       rc = label (src, labellen, tmp, &tmplen, flags);
       if (rc != IDN2_OK)
+      {
+	free (src_allocated);
 	return rc;
+      }
 
       if (lookupnamelen + tmplen
 	  > IDN2_DOMAIN_MAX_LENGTH - (tmplen == 0 && *end == '\0' ? 1 : 2))
+      {
+        free (src_allocated);
 	return IDN2_TOO_BIG_DOMAIN;
+      }
 
       memcpy (_lookupname + lookupnamelen, tmp, tmplen);
       lookupnamelen += tmplen;
@@ -576,7 +572,10 @@ idn2_lookup_u8 (const uint8_t * src, uint8_t ** lookupname, int flags)
       if (*end == '.')
 	{
 	  if (lookupnamelen + 1 > IDN2_DOMAIN_MAX_LENGTH)
+	  {
+	    free (src_allocated);
 	    return IDN2_TOO_BIG_DOMAIN;
+	  }
 
 	  _lookupname[lookupnamelen] = '.';
 	  lookupnamelen++;
@@ -586,6 +585,8 @@ idn2_lookup_u8 (const uint8_t * src, uint8_t ** lookupname, int flags)
       src = end;
     }
   while (*src++);
+
+  free (src_allocated);
 
   if (lookupname)
     {

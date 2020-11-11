@@ -12,6 +12,9 @@ more.  Reported-by: Chris Malton.  See
 <https://gitlab.com/libidn/libidn2/issues/78> and
 <https://gitlab.isc.org/isc-projects/bind9/issues/1610>.
 
+** Fix domain too long error
+
+
 * Version 2.3.0 (released 2019-11-14)
 
 ** Mitre has assigned CVE-2019-12290 which was fixed by
