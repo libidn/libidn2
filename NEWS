@@ -3,6 +3,15 @@ Copyright (C) 2011-2017 Simon Josefsson
 Copyright (C) 2018-2019 Tim Ruehsen
 See the end for copying conditions.
 
+* Version 2.3.1 (unreleased)
+
+** Implement full roundtrip for lookup functionality
+With TR64 enabled (default), 'â˜ºi' was converted to 'xn-- o-oia59s'.
+The output contains an illegal space and thus could not be decoded any
+more.  Reported-by: Chris Malton.  See
+<https://gitlab.com/libidn/libidn2/issues/78> and
+<https://gitlab.isc.org/isc-projects/bind9/issues/1610>.
+
 * Version 2.3.0 (released 2019-11-14)
 
 ** Mitre has assigned CVE-2019-12290 which was fixed by
