@@ -1,3 +1,4 @@
+!po/POTFILES.in
 *.exe
 *.gcda
 *.gcno
@@ -113,6 +114,7 @@ fuzz/*_fuzzer
 fuzz/*_fuzzer.new/
 gl/
 lib/data.c
+lib/gendata
 lib/gentr46map
 lib/idn2.h
 lib/tr46map_data.c
@@ -124,7 +126,6 @@ libidn2.pc
 libtool
 m4/*
 po/*
-!po/POTFILES.in
 scan.tmp/
 src/Makefile
 src/Makefile.in
@@ -140,10 +141,10 @@ tests/Makefile
 tests/Makefile.in
 tests/repro-to-ascii-8z
 tests/repro-to-unicode-8z8z
+tests/test-glibc
 tests/test-lookup
 tests/test-punycode
 tests/test-register
 tests/test-strerror
 tests/test-tounicode
-tests/test-glibc
 unistring/
