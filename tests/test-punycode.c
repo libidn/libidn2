@@ -167,7 +167,7 @@ static int debug = 0;
 static int error_count = 0;
 static int break_on_error = 0;
 
-_GL_ATTRIBUTE_FORMAT_PRINTF (1, 2) static void
+_GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD (1, 2) static void
 fail (const char *format, ...)
 {
   va_list arg_ptr;

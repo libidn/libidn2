@@ -105,7 +105,7 @@ static const struct idna idna[] = {
 static int error_count = 0;
 static int break_on_error = 1;
 
-_GL_ATTRIBUTE_FORMAT_PRINTF (1, 2) static void
+_GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD (1, 2) static void
 fail (const char *format, ...)
 {
   va_list arg_ptr;
