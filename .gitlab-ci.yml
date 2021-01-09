@@ -17,7 +17,7 @@ Debian GNU/Linux:
   stage: stage1-testing
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
-  - ./bootstrap
+  - ./bootstrap --skip-po
   - ./configure -C --disable-doc --enable-gcc-warnings --enable-valgrind-tests
   - echo "nproc="$(nproc)" "$nproc
   - make -j$(nproc) check
@@ -39,7 +39,7 @@ abi-check:
   stage: stage1-testing
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
-  - ./bootstrap
+  - ./bootstrap --skip-po
   - CFLAGS="-g -Og" ./configure -C --disable-doc
   - make syntax-check
   - make -j$(nproc)
@@ -62,7 +62,7 @@ dist-check:
   stage: stage1-testing
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
-  - ./bootstrap
+  - ./bootstrap --skip-po
   - ./configure -C --enable-gtk-doc --enable-gtk-doc-pdf --disable-gcc-warnings --disable-valgrind-tests
   - make -j$(nproc)
   - DISTCHECK_CONFIGURE_FLAGS=--disable-gtk-doc make distcheck
@@ -87,7 +87,7 @@ Debian ASAN/UBSAN:
   stage: stage1-testing
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
-  - ./bootstrap
+  - ./bootstrap --skip-po
   - export CC=clang
   - export CFLAGS="-fsanitize=address -g -O0"
   - ASAN_OPTIONS=detect_leaks=0 ./configure --disable-doc --disable-gcc-warnings
@@ -113,7 +113,7 @@ Centos7:
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$CENTOS7_BUILD
   script:
   - sed -i 's/AM_GNU_GETTEXT_VERSION(0.19.3)/AM_GNU_GETTEXT_VERSION(0.18.2)/g' configure.ac
-  - ./bootstrap && ./configure --enable-gcc-warnings --disable-doc && make -j$(nproc) check
+  - ./bootstrap --skip-po && ./configure --enable-gcc-warnings --disable-doc && make -j$(nproc) check
   tags:
   - shared
   artifacts:
@@ -128,7 +128,7 @@ clang-analyzer/Fedora:
   stage: stage1-testing
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$FEDORA_BUILD
   script:
-  - ./bootstrap
+  - ./bootstrap --skip-po
   - scan-build ./configure --disable-doc --enable-gcc-warnings
   - make -j$(nproc) -C gl
   - scan-build --status-bugs -o scan-build-lib make -j$(nproc) -C lib
@@ -147,7 +147,7 @@ pages:
   stage: stage1-testing
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
-  - ./bootstrap
+  - ./bootstrap --skip-po
   - CFLAGS="-g -O0" ./configure --enable-gtk-doc --enable-code-coverage --disable-gcc-warnings
   - make -j$(nproc) check
   - make local-code-coverage-output
@@ -180,7 +180,7 @@ pages-test:
   stage: stage1-testing
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
-  - ./bootstrap
+  - ./bootstrap --skip-po
   - CFLAGS="-g -O0" ./configure --enable-gtk-doc --enable-code-coverage --disable-gcc-warnings
   - make -j$(nproc) check
   - make local-code-coverage-output
@@ -196,7 +196,7 @@ MinGW64:
   - mount -t binfmt_misc binfmt_misc /proc/sys/fs/binfmt_misc &&
     echo ':DOSWin:M::MZ::/usr/bin/wine64:' > /proc/sys/fs/binfmt_misc/register
   script:
-  - ./bootstrap
+  - ./bootstrap --skip-po
   - mingw64-configure --disable-valgrind-tests --disable-doc
   - mingw64-make -j$(nproc)
   - mingw64-make -j$(nproc) check
