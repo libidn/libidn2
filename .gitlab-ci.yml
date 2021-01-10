@@ -98,7 +98,8 @@ Debian ASAN/UBSAN:
   - make clean
   - export CFLAGS="-fsanitize=undefined,integer -fno-sanitize-recover=undefined,integer -g -O0"
   - ./configure --disable-doc --disable-gcc-warnings
-  - make -C unistring && make -C gl
+  - make -C unistring
+  - make -C gl
   - make -C lib CFLAGS="$CFLAGS -Wall -Wextra -Werror"
   - make -C examples CFLAGS="$CFLAGS -Wall -Wextra -Werror -Wno-unused-parameter"
   - make -j$(nproc) check
@@ -117,7 +118,10 @@ Centos7:
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$CENTOS7_BUILD
   script:
   - sed -i 's/AM_GNU_GETTEXT_VERSION(0.19.3)/AM_GNU_GETTEXT_VERSION(0.18.2)/g' configure.ac
-  - ./bootstrap --skip-po && ./configure --enable-gcc-warnings --disable-doc && make -j$(nproc) check
+  - ./bootstrap --skip-po
+  - ./configure --enable-gcc-warnings --disable-doc
+  - make -j$(nproc)
+  - make -j$(nproc) check
   tags:
   - shared
   artifacts:
@@ -166,7 +170,9 @@ pages:
   - rm -rf public/manual
   - mv doc/manual public/manual
   - make clean
-  - make clean && make && make -C fuzz check && make code-coverage-capture
+  - make
+  - make -C fuzz check
+  - make code-coverage-capture
   - contrib/make-coverage-badge "fuzz-coverage"
   - rm -rf public/fuzz-coverage
   - mv libidn2-*-coverage public/fuzz-coverage
@@ -199,8 +205,8 @@ MinGW64:
   stage: stage1-testing
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$FEDORA_BUILD
   before_script:
-  - mount -t binfmt_misc binfmt_misc /proc/sys/fs/binfmt_misc &&
-    echo ':DOSWin:M::MZ::/usr/bin/wine64:' > /proc/sys/fs/binfmt_misc/register
+  - mount -t binfmt_misc binfmt_misc /proc/sys/fs/binfmt_misc
+  - echo ':DOSWin:M::MZ::/usr/bin/wine64:' > /proc/sys/fs/binfmt_misc/register
   script:
   - ./bootstrap --skip-po
   - mingw64-configure --disable-valgrind-tests --disable-doc
