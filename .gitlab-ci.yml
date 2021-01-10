@@ -28,6 +28,7 @@ Debian GNU/Linux:
     expire_in: 2 weeks
     when: on_failure
     paths:
+      - ./config.h
       - ./*.log
       - tests/*.log
 
@@ -52,6 +53,7 @@ abi-check:
     expire_in: 2 weeks
     when: on_failure
     paths:
+      - ./config.h
       - ./*.log
       - tests/*.log
       - compat_reports/
@@ -77,6 +79,7 @@ dist-check:
     expire_in: 2 weeks
     when: on_success
     paths:
+      - ./config.h
       - ./*.log
       - libidn2-*.gz
 
@@ -105,8 +108,9 @@ Debian ASAN/UBSAN:
     expire_in: 2 weeks
     when: on_failure
     paths:
-      - tests/*.log
+      - ./config.h
       - ./*.log
+      - tests/*.log
 
 Centos7:
   stage: stage1-testing
@@ -120,6 +124,7 @@ Centos7:
     expire_in: 2 weeks
     when: on_failure
     paths:
+      - ./config.h
       - ./*.log
       - tests/*.log
       - compat_reports/
@@ -140,6 +145,7 @@ clang-analyzer/Fedora:
     expire_in: 2 weeks
     when: on_failure
     paths:
+      - ./config.h
       - ./*.log
       - scan-build-lib/*
 
@@ -209,6 +215,7 @@ MinGW64:
     expire_in: 2 weeks
     when: on_failure
     paths:
+      - ./config.h
       - ./*.log
       - tests/*.log
 
@@ -241,5 +248,6 @@ Tarball:
     expire_in: 2 weeks
     when: on_failure
     paths:
+      - libidn2-*/config.h
       - libidn2-*/*.log
       - libidn2-*/*/*.log
