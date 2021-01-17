@@ -101,17 +101,18 @@ usual way (i.e., ./configure && make).
  * [GTK-DOC](https://www.gtk.org/gtk-doc/) (for API manual)
  * [Git](https://git-scm.com/)
  * [Perl](https://www.cpan.org/)
- * [Valgrind](http://valgrind.org/) (optional) (No HTTPS at all)
+ * [Valgrind](https://valgrind.org/) (optional)
  * [abi-compliance-checker](https://github.com/lvc/abi-compliance-checker)
  * [ronn](https://rtomayko.github.io/ronn/)
 
 The software is typically distributed with your operating system, and
-the instructions for installing them differ.  Here are some hints.
+the instructions for installing them differ.  Here are some hints:
 
-gNewSense/Debian/Ubuntu:
+Debian 10.x, Ubuntu 20.04:
 ```
-apt-get install git autoconf automake libtool texinfo gperf git2cl
-apt-get install libunistring-dev gtk-doc-tools valgrind gengetopt
+apt-get install git autoconf automake libtool gettext autopoint gperf
+apt-get install libunistring-dev valgrind gengetopt
+apt-get install texinfo git2cl gtk-doc-tools
 apt-get install abi-compliance-checker ruby-ronn
 ```
 
