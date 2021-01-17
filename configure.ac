@@ -40,7 +40,6 @@ AC_CANONICAL_HOST
 
 AC_PROG_CC
 AM_CONDITIONAL(cross_compiling,[test "$cross_compiling" = yes])
-AX_PROG_CC_FOR_BUILD
 AC_USE_SYSTEM_EXTENSIONS
 gl_EARLY
 unistring_EARLY
@@ -48,6 +47,7 @@ m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
 LT_INIT([win32-dll])
 gl_INIT
 unistring_INIT
+AX_PROG_CC_FOR_BUILD
 
 # Detect the target system
 case "${host_os}" in
