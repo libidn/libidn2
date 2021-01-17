@@ -1,6 +1,6 @@
 /* test-lookup.c --- Self tests for IDNA processing
-   Copyright (C) 2011-2017 Simon Josefsson
-   Copyright (C) 2017-2020 Tim Ruehsen
+   Copyright (C) 2011-2021 Simon Josefsson
+   Copyright (C) 2017-2021 Tim Ruehsen
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by

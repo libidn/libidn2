@@ -1,4 +1,4 @@
-# Copyright (C) 2011-2017 Simon Josefsson
+# Copyright (C) 2011-2021 Simon Josefsson
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -43,9 +43,9 @@ exclude_file_name_regexp--sc_makefile_at_at_check = ^Makefile.am|src/Makefile\.a
 exclude_file_name_regexp--sc_prohibit_empty_lines_at_EOF = ^lib/IdnaMappingTable.txt|doc/reference/version.xml.in$$
 exclude_file_name_regexp--sc_prohibit_undesirable_word_seq = ^lib/idna-tables-properties.csv$$
 
-update-copyright-env = \
-	UPDATE_COPYRIGHT_USE_INTERVALS=2 \
-	UPDATE_COPYRIGHT_HOLDER="Simon Josefsson"
+my-update-copyright:
+	make update-copyright update-copyright-env='UPDATE_COPYRIGHT_HOLDER="Tim Ruehsen" UPDATE_COPYRIGHT_USE_INTERVALS=2'
+	make update-copyright update-copyright-env='UPDATE_COPYRIGHT_HOLDER="Simon Josefsson" UPDATE_COPYRIGHT_USE_INTERVALS=2'
 
 INDENT_SOURCES = lib/*.c lib/*.h src/*.c src/*.h tests/*.c
 

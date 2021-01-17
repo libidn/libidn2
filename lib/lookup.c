@@ -1,6 +1,6 @@
 /* lookup.c - implementation of IDNA2008 lookup functions
-   Copyright (C) 2011-2017 Simon Josefsson
-   Copyright (C) 2017-2020 Tim Ruehsen
+   Copyright (C) 2011-2021 Simon Josefsson
+   Copyright (C) 2017-2021 Tim Ruehsen
 
    Libidn2 is free software: you can redistribute it and/or modify it
    under the terms of either:

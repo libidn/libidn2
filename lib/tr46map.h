@@ -1,5 +1,5 @@
 /* tr46map.c - header file for IDNA2008 TR46
-   Copyright (C) 2016-2017 Tim Ruehsen
+   Copyright (C) 2016-2021 Tim Ruehsen
 
    Libidn2 is free software: you can redistribute it and/or modify it
    under the terms of either:

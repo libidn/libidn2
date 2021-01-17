@@ -1,6 +1,6 @@
 Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
-Copyright (C) 2011-2017 Simon Josefsson
-Copyright (C) 2018-2019 Tim Ruehsen
+Copyright (C) 2011-2021 Simon Josefsson
+Copyright (C) 2018-2021 Tim Ruehsen
 See the end for copying conditions.
 
 * Version 2.3.1 (unreleased)

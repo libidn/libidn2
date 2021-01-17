@@ -1,5 +1,5 @@
 /* version.c - implementation of version checking functions
-   Copyright (C) 2011-2017 Simon Josefsson
+   Copyright (C) 2011-2021 Simon Josefsson
 
    Libidn2 is free software: you can redistribute it and/or modify it
    under the terms of either:
