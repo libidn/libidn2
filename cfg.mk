@@ -47,6 +47,11 @@ my-update-copyright:
 	make update-copyright update-copyright-env='UPDATE_COPYRIGHT_HOLDER="Tim Ruehsen" UPDATE_COPYRIGHT_USE_INTERVALS=2'
 	make update-copyright update-copyright-env='UPDATE_COPYRIGHT_HOLDER="Simon Josefsson" UPDATE_COPYRIGHT_USE_INTERVALS=2'
 
+aximport:
+	for f in m4/ax_*.m4; do \
+		wget -O $$f "https://git.savannah.gnu.org/gitweb/?p=autoconf-archive.git;a=blob_plain;f=$$f"; \
+	done
+
 INDENT_SOURCES = lib/*.c lib/*.h src/*.c src/*.h tests/*.c
 
 doc/Makefile.gdoc:

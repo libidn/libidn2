@@ -167,7 +167,7 @@ AC_MSG_NOTICE([Summary of build options:
   Host OS:           ${host_os}
   Install prefix:    ${prefix}
   Compiler:          ${CC}
-  Host compiler      ${CC_FOR_BUILD}
+  Host compiler:     ${CC_FOR_BUILD} cflags: ${CFLAGS_FOR_BUILD} exeext: ${BUILD_EXEEXT}
   Warning flags:     ${WARN_CFLAGS}
   CFLAGS:            ${CFLAGS} ${CPPFLAGS}
   LDFlags:           ${LDFLAGS}
