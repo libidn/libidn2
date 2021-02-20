@@ -24,6 +24,10 @@ if !HAVE_LIBUNISTRING
 AM_CPPFLAGS += -I$(top_srcdir)/unistring/ -I$(top_builddir)/unistring/
 endif
 
+CC_FOR_BUILD ?= $(CC)
+CFLAGS_FOR_BUILD ?= $(CFLAGS)
+BUILD_EXEEXT ?= $(EXEEXT)
+
 lib_LTLIBRARIES = libidn2.la
 
 include_HEADERS = idn2.h
@@ -71,6 +75,9 @@ EXTRA_DIST = $(IDNA_TABLE) $(TR46MAP) $(NFCQC) data.c gendata.c tr46map_data.c g
 # Note: We do not want to list any gen* as a dep of *data.c because it will
 # cause it to be regenerated for every build.  We only need that when the real
 # source text files are updated.
+CC_FOR_BUILD ?= $(CC)
+CFLAGS_FOR_BUILD ?= $(CFLAGS)
+
 gendata$(BUILD_EXEEXT): gendata.c
 	$(CC_FOR_BUILD) $(AM_CPPFLAGS) $(CFLAGS_FOR_BUILD) $< -o $@
 data.c: $(srcdir)/gendata.c $(IDNA_TABLE)
