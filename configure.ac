@@ -38,6 +38,7 @@ AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([foreign -Wall -Wno-portability subdir-objects])
 AC_CANONICAL_HOST
 
+AX_PROG_CC_FOR_BUILD
 AC_PROG_CC
 AM_CONDITIONAL(cross_compiling,[test "$cross_compiling" = yes])
 AC_USE_SYSTEM_EXTENSIONS
@@ -47,7 +48,6 @@ m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
 LT_INIT([win32-dll])
 gl_INIT
 unistring_INIT
-AX_PROG_CC_FOR_BUILD
 
 # Detect the target system
 case "${host_os}" in
