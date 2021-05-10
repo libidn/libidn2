@@ -23,11 +23,13 @@ if !HAVE_LIBUNISTRING
 AM_CPPFLAGS += -I$(top_srcdir)/unistring/ -I$(top_builddir)/unistring/
 endif
 
-LDADD = ../lib/libidn2.la ../gl/libgnu.la $(LTLIBUNISTRING)
-
-if !HAVE_LIBUNISTRING
+LDADD = ../lib/libidn2.la
+if HAVE_LIBUNISTRING
+LDADD += $(LTLIBUNISTRING)
+else
 LDADD += ../unistring/libunistring.la
 endif
+LDADD += ../gl/libgnu.la
 
 TESTS = test-punycode test-lookup test-register test-strerror test-tounicode
 if TEST_GLIBC

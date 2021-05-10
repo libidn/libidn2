@@ -33,6 +33,10 @@
 
 #include "tr46map.h"
 
+/* We don't link this tool with gnulib, work around any config.h
+   redefine's from gnulib. */
+#undef free
+
 static size_t
 _u32_stream_len (uint32_t * src, size_t len);
 

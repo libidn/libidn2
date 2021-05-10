@@ -24,10 +24,6 @@ if !HAVE_LIBUNISTRING
 AM_CPPFLAGS += -I$(top_srcdir)/unistring/ -I$(top_builddir)/unistring/
 endif
 
-CC_FOR_BUILD ?= $(CC)
-CFLAGS_FOR_BUILD ?= $(CFLAGS)
-BUILD_EXEEXT ?= $(EXEEXT)
-
 lib_LTLIBRARIES = libidn2.la
 
 include_HEADERS = idn2.h
@@ -45,11 +41,14 @@ libidn2_la_SOURCES += data.h data.c
 libidn2_la_SOURCES += tr46map.h tr46map.c
 libidn2_la_SOURCES += tables.h tables.c
 libidn2_la_SOURCES += context.h context.c
-libidn2_la_LIBADD = $(LTLIBICONV) $(LTLIBINTL) $(LTLIBUNISTRING) ../gl/libgnu.la
 
-if !HAVE_LIBUNISTRING
+libidn2_la_LIBADD = $(LTLIBICONV) $(LTLIBINTL)
+if HAVE_LIBUNISTRING
+libidn2_la_LIBADD += $(LTLIBUNISTRING)
+else
 libidn2_la_LIBADD += ../unistring/libunistring.la
 endif
+libidn2_la_LIBADD += ../gl/libgnu.la
 
 libidn2_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) -no-undefined $(CODE_COVERAGE_LDFLAGS)
@@ -68,28 +67,22 @@ NFCQC_SHA1 = 4b1620b7a54ed761720345b5367932d5a029a279
 
 BUILT_SOURCES = data.c tr46map_data.c
 DISTCLEANFILES = $(BUILT_SOURCES)
-CLEANFILES = gendata$(BUILD_EXEEXT) gentr46map$(BUILD_EXEEXT)
+CLEANFILES = gendata$(EXEEXT) gentr46map$(EXEEXT)
 MAINTAINERCLEANFILES = $(IDNA_TABLE) $(TR46MAP) $(NFCQC)
 EXTRA_DIST = $(IDNA_TABLE) $(TR46MAP) $(NFCQC) data.c gendata.c tr46map_data.c gentr46map.c
 
-# Note: We do not want to list any gen* as a dep of *data.c because it will
-# cause it to be regenerated for every build.  We only need that when the real
-# source text files are updated.
-CC_FOR_BUILD ?= $(CC)
-CFLAGS_FOR_BUILD ?= $(CFLAGS)
-
-gendata$(BUILD_EXEEXT): gendata.c
-	$(CC_FOR_BUILD) $(AM_CPPFLAGS) $(CFLAGS_FOR_BUILD) $< -o $@
+gendata$(EXEEXT): gendata.c
+	$(CC) $(AM_CPPFLAGS) $(CFLAGS) $< -o $@
 data.c: $(srcdir)/gendata.c $(IDNA_TABLE)
-	$(MAKE) gendata$(BUILD_EXEEXT)
-	$(builddir)/gendata$(BUILD_EXEEXT) < $(IDNA_TABLE) > $@.new
+	$(MAKE) gendata$(EXEEXT)
+	$(builddir)/gendata$(EXEEXT) < $(IDNA_TABLE) > $@.new
 	mv $@.new $@
 
-gentr46map$(BUILD_EXEEXT): gentr46map.c
-	$(CC_FOR_BUILD) $(AM_CPPFLAGS) $(CFLAGS_FOR_BUILD) $< -o $@
+gentr46map$(EXEEXT): gentr46map.c
+	$(CC) $(AM_CPPFLAGS) $(CFLAGS) $< -o $@
 tr46map_data.c: $(srcdir)/gentr46map.c $(TR46MAP) $(NFCQC)
-	$(MAKE) gentr46map$(BUILD_EXEEXT)
-	$(builddir)/gentr46map$(BUILD_EXEEXT) > $@.new
+	$(MAKE) gentr46map$(EXEEXT)
+	$(builddir)/gentr46map$(EXEEXT) > $@.new
 	mv $@.new $@
 
 $(IDNA_TABLE):

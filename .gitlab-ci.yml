@@ -1,6 +1,6 @@
 stages:
-  - stage1-testing
-  - stage2-tarball-testing
+  - bootstrap-build
+  - tarball-test
 
 variables:
   BUILD_IMAGES_PROJECT: libidn/build-images
@@ -10,11 +10,180 @@ variables:
   BASE_BUILD: buildenv-basic
   GET_SOURCES_ATTEMPTS: "3"
 
+B-Debian-stable:
+  image: $CI_REGISTRY/libidn/build-images:libidn2-Debian-stable
+  stage: bootstrap-build
+  script:
+  - apt-get install autopoint
+  - ./bootstrap --skip-po --no-git
+  - ./configure --enable-gcc-warnings --enable-valgrind-tests || (cat config.log; exit 1)
+  - make V=1
+  - make check || (find . -name test-suite.log -exec cat {} +; exit 1)
+  - make dist
+  artifacts:
+    expire_in: 2 weeks
+    paths:
+    - libidn2-*.tar.gz
+
+B-Debian-testing:
+  image: debian:testing
+  stage: bootstrap-build
+  before_script:
+  - apt-get update -qq -y
+  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -q git autoconf automake libtool gettext texinfo gperf git2cl libunistring-dev gtk-doc-tools valgrind gengetopt abi-compliance-checker ruby-ronn autoconf-archive ronn autopoint texlive abigail-tools
+  script:
+  - ./bootstrap --skip-po
+  - ./configure --enable-gcc-warnings --enable-valgrind-tests || (cat config.log; exit 1)
+  - make V=1
+  - make check || (find . -name test-suite.log -exec cat {} +; exit 1)
+  - make dist
+  artifacts:
+    expire_in: 2 weeks
+    paths:
+    - libidn2-*.tar.gz
+
+T-Debian-oldoldstable:
+  image: debian:oldoldstable
+  stage: tarball-test
+  needs: [B-Debian-stable]
+  before_script:
+  - apt-get update
+  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq make gcc
+  script:
+  - tar xfz libidn2-*.tar.gz
+  - cd `ls -d libidn2-* | grep -v tar.gz`
+  - mkdir b
+  - cd b
+  - ../configure --enable-gcc-warnings || (cat config.log; exit 1)
+  - make check V=1 || (find . -name test-suite.log -exec cat {} +; exit 1)
+
+T-Debian-oldstable:
+  image: debian:oldstable
+  stage: tarball-test
+  needs: [B-Debian-stable]
+  before_script:
+  - apt-get update
+  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq make gcc
+  script:
+  - tar xfz libidn2-*.tar.gz
+  - cd `ls -d libidn2-* | grep -v tar.gz`
+  - mkdir b
+  - cd b
+  - ../configure --enable-gcc-warnings || (cat config.log; exit 1)
+  - make check V=1 || (find . -name test-suite.log -exec cat {} +; exit 1)
+
+T-Alpine:
+  image: alpine:latest
+  stage: tarball-test
+  needs: [B-Debian-testing]
+  before_script:
+  - echo "ipv6" >> /etc/modules
+  - apk update
+  - apk add build-base
+  script:
+  - tar xfz libidn2-*.tar.gz
+  - cd `ls -d libidn2-* | grep -v tar.gz`
+  - ./configure --enable-gcc-warnings || (cat config.log; exit 1)
+  - make check V=1 || (find . -name test-suite.log -exec cat {} +; exit 1)
+
+T-ArchLinux:
+  image: archlinux:latest
+  stage: tarball-test
+  needs: [B-Debian-stable]
+  before_script:
+  - pacman -Sy --noconfirm make gcc diffutils
+  script:
+  - tar xfz libidn2-*.tar.gz
+  - cd `ls -d libidn2-* | grep -v tar.gz`
+  - mkdir b
+  - cd b
+  - ../configure --enable-gcc-warnings || (cat config.log; exit 1)
+  - make check V=1 || (find . -name test-suite.log -exec cat {} +; exit 1)
+
+T-CentOS:
+  image: centos:latest
+  stage: tarball-test
+  needs: [B-Debian-stable]
+  before_script:
+  - yum -y install make gcc diffutils
+  script:
+  - tar xfa libidn2-*.tar.gz
+  - cd `ls -d libidn2-* | grep -v tar.gz`
+  - ./configure --enable-gcc-warnings || (cat config.log; exit 1)
+  - make check V=1 || (find . -name test-suite.log -exec cat {} +; exit 1)
+
+T-Ubuntu-14.04:
+  image: ubuntu:14.04
+  stage: tarball-test
+  needs: [B-Debian-stable]
+  before_script:
+  - apt-get update -qq
+  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq make gcc
+  script:
+  - tar xfa libidn2-*.tar.gz
+  - cd `ls -d libidn2-* | grep -v tar.gz`
+  - ./configure --enable-gcc-warnings || (cat config.log; exit 1)
+  - make WERROR_CFLAGS= check V=1 || (find . -name test-suite.log -exec cat {} +; exit 1)
+
+T-Ubuntu rolling:
+  image: ubuntu:rolling
+  stage: tarball-test
+  needs: [B-Debian-stable]
+  before_script:
+  - apt-get update -qq
+  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq git make gcc gtk-doc-tools texinfo texlive texlive-plain-generic dblatex
+  script:
+  - tar xfa libidn2-*.tar.gz
+  - cd `ls -d libidn2-* | grep -v tar.gz`
+  - ./configure --enable-gcc-warnings || (cat config.log; exit 1)
+  - make WERROR_CFLAGS= check V=1 || (find . -name test-suite.log -exec cat {} +; exit 1)
+  - make distcheck
+  artifacts:
+    expire_in: 2 weeks
+    paths:
+    - libidn2-*.tar.gz
+
+T-Mingw32:
+  allow_failure: true
+  image: debian:latest
+  stage: tarball-test
+  needs: [B-Debian-stable]
+  before_script:
+  - dpkg --add-architecture i386
+  - apt-get update -qq
+  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq make mingw-w64 wine wine32 libwine libwine:i386 binfmt-support wine-binfmt
+  - update-binfmts --enable wine
+  script:
+  - tar xfz libidn2-*.tar.gz
+  - cd `ls -d libidn2-* | grep -v tar.gz`
+  - mkdir b
+  - cd b
+  - ../configure --host=i686-w64-mingw32 CC='i686-w64-mingw32-gcc -static-libgcc' --enable-gcc-warnings || (cat config.log; exit 1)
+  - make WERROR_CFLAGS= check V=1 || (find . -name test-suite.log -exec cat {} +; exit 1)
+
+T-Mingw64:
+  allow_failure: true
+  image: debian:latest
+  stage: tarball-test
+  needs: [B-Debian-stable]
+  before_script:
+  - dpkg --add-architecture i386
+  - apt-get update -qq
+  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq make mingw-w64 wine wine32 wine64 binfmt-support wine-binfmt
+  - update-binfmts --enable wine
+  script:
+  - tar xfz libidn2-*.tar.gz
+  - cd `ls -d libidn2-* | grep -v tar.gz`
+  - mkdir b
+  - cd b
+  - ../configure --host=x86_64-w64-mingw32 --enable-gcc-warnings || (cat config.log; exit 1)
+  - make WERROR_CFLAGS= check V=1 || (find . -name test-suite.log -exec cat {} +; exit 1)
+
 # In this build we combine
 #  * fuzz/ building
 #  * build/valgrind-check
 Debian GNU/Linux:
-  stage: stage1-testing
+  stage: bootstrap-build
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
   - ./bootstrap --skip-po
@@ -37,7 +206,7 @@ Debian GNU/Linux:
 #  * abi-check
 # It is not run on tags
 abi-check:
-  stage: stage1-testing
+  stage: bootstrap-build
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
   - ./bootstrap --skip-po
@@ -61,7 +230,7 @@ abi-check:
 # In this build we do
 #  * distcheck
 dist-check:
-  stage: stage1-testing
+  stage: bootstrap-build
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
   - ./bootstrap --skip-po
@@ -87,7 +256,7 @@ dist-check:
 #  * build/asan-check
 #  * build w/Werror and ubsan-check
 Debian ASAN/UBSAN:
-  stage: stage1-testing
+  stage: bootstrap-build
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
   - ./bootstrap --skip-po
@@ -113,8 +282,8 @@ Debian ASAN/UBSAN:
       - ./*.log
       - tests/*.log
 
-Centos7:
-  stage: stage1-testing
+B-Centos7:
+  stage: bootstrap-build
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$CENTOS7_BUILD
   script:
   - sed -i 's/AM_GNU_GETTEXT_VERSION(0.19.3)/AM_GNU_GETTEXT_VERSION(0.18.2)/g' configure.ac
@@ -134,7 +303,7 @@ Centos7:
       - compat_reports/
 
 clang-analyzer/Fedora:
-  stage: stage1-testing
+  stage: bootstrap-build
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$FEDORA_BUILD
   script:
   - ./bootstrap --skip-po
@@ -154,7 +323,7 @@ clang-analyzer/Fedora:
       - scan-build-lib/*
 
 pages:
-  stage: stage1-testing
+  stage: bootstrap-build
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
   - ./bootstrap --skip-po
@@ -189,7 +358,7 @@ pages:
 # Target to run code coverage on non-master branches. That is intended
 # to ensure that compilation in master will not break the pages rule.
 pages-test:
-  stage: stage1-testing
+  stage: bootstrap-build
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
   - ./bootstrap --skip-po
@@ -202,7 +371,7 @@ pages-test:
     - master
 
 MinGW64:
-  stage: stage1-testing
+  stage: bootstrap-build
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$FEDORA_BUILD
   before_script:
   - mount -t binfmt_misc binfmt_misc /proc/sys/fs/binfmt_misc
@@ -228,7 +397,7 @@ MinGW64:
 # After having issues with building from tarball (make distcheck was ok),
 # outside a git repo, we test the tarball stand-alone.
 Tarball:
-  stage: stage2-tarball-testing
+  stage: tarball-test
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$BASE_BUILD
   variables:
     GIT_STRATEGY: none
@@ -240,9 +409,9 @@ Tarball:
     # unpack and build from tarball
     - tar xvf libidn2-*.gz
     - cd libidn2-*
-    - ./configure
+    - ./configure || (cat config.log; exit 1)
     - make
-    - make check
+    - make check || (find . -name test-suite.log -exec cat {} +; exit 1)
     # check if essential files are accidentally cleaned
     - make clean
     - make
