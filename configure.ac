@@ -47,6 +47,7 @@ m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
 LT_INIT([win32-dll])
 gl_INIT
 unistring_INIT
+AC_DEFINE([GNULIB_NO_VLA], 1, [Disable VLA usage in gettext.h.])
 
 # Detect the target system
 case "${host_os}" in
