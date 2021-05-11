@@ -13,6 +13,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+manual_title = Libidn2 - Internationalized Domain Names Library
+
+bootstrap-tools = gnulib,autoconf,automake,libtoolize,make,makeinfo,help2man,gperf,gengetopt,gtkdocize,tar,gzip
+
 local-checks-to-skip += sc_unmarked_diagnostics sc_bindtextdomain # Re-add when we have translation
 local-checks-to-skip += sc_immutable_NEWS
 local-checks-to-skip += sc_prohibit_strcmp
@@ -46,62 +50,3 @@ aximport:
 	done
 
 INDENT_SOURCES = lib/*.c lib/*.h src/*.c src/*.h tests/*.c
-
-# Release
-
-htmldir = ../www-libidn/libidn2
-
-ChangeLog:
-	git log --no-merges --date=short --pretty='format:%ad %an <%ae>%w(0,0,5)%+B' >ChangeLog
-
-tarball:
-	! git tag -l $(PACKAGE)-$(VERSION) | grep $(PACKAGE) > /dev/null
-	rm -f ChangeLog
-	$(MAKE) ChangeLog distcheck
-
-gendoc-copy:
-	cd doc && ../build-aux/gendocs.sh \
-		--html "--css-include=texinfo.css" \
-		-o ../$(htmldir)/manual/ $(PACKAGE) "$(PACKAGE_NAME)"
-
-gendoc-upload:
-	cd $(htmldir) && \
-		cvs add manual || true && \
-		cvs add manual/html_node || true && \
-		cvs add -kb manual/*.gz manual/*.pdf || true && \
-		cvs add manual/*.txt manual/*.html \
-			manual/html_node/*.html || true && \
-		cvs commit -m "Update." manual/
-
-gtkdoc-copy:
-	mkdir -p $(htmldir)/reference/
-	cp -v doc/reference/$(PACKAGE).pdf \
-		doc/reference/html/*.html \
-		doc/reference/html/*.png \
-		doc/reference/html/*.devhelp2 \
-		doc/reference/html/*.css \
-		$(htmldir)/reference/
-
-gtkdoc-upload:
-	cd $(htmldir) && \
-		cvs add reference || true && \
-		cvs add -kb reference/*.png reference/*.pdf || true && \
-		cvs add reference/*.html reference/*.css \
-			reference/*.devhelp2 || true && \
-		cvs commit -m "Update." reference/
-
-source:
-	-git commit -m Generated. ChangeLog
-	git tag -u 54265e8c -m $(VERSION) $(PACKAGE)-$(VERSION)
-
-release-check: syntax-check tarball gendoc-copy gtkdoc-copy
-
-release-upload-www: gendoc-upload gtkdoc-upload
-
-release-upload-ftp:
-	git push
-	git push --tags
-	build-aux/gnupload --to alpha.gnu.org:libidn $(distdir).tar.gz
-	cp $(distdir).tar.gz $(distdir).tar.gz.sig ../releases/$(PACKAGE)/
-
-release: release-check release-upload-www source release-upload-ftp

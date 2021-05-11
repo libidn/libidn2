@@ -1,9 +1,6 @@
 Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
-Copyright (C) 2011-2021 Simon Josefsson
-Copyright (C) 2018-2021 Tim Ruehsen
-See the end for copying conditions.
 
-* Version 2.3.1 (unreleased)
+* Noteworthy changes in release ?.? (????-??-??) [?]
 
 ** Implement full roundtrip for lookup functionality
 With TR64 enabled (default), 'â˜ºi' was converted to 'xn-- o-oia59s'.
@@ -20,7 +17,7 @@ more.  Reported-by: Chris Malton.  See
 In particular, it no longer attempts to detect a host CC compiler.
 See <https://gitlab.com/libidn/libidn2/-/issues/83>.
 
-* Version 2.3.0 (released 2019-11-14)
+* Noteworthy changes in release 2.3.0 (2019-11-14) [stable]
 
 ** Mitre has assigned CVE-2019-12290 which was fixed by
    the roundtrip feature introduced in 2.2.0 (commit 241e8f48)
@@ -31,7 +28,7 @@ See <https://gitlab.com/libidn/libidn2/-/issues/83>.
    into compat symbols (Fixes #74)
 
 
-* Version 2.2.0 (released 2019-05-23)
+* Noteworthy changes in release 2.2.0 (2019-05-23) [stable]
 
 ** Perform A-Label roundtrip for lookup functions by default
 
@@ -48,7 +45,7 @@ See <https://gitlab.com/libidn/libidn2/-/issues/83>.
 ** git tag changed to reflect https://semver.org/
 
 
-* Version 2.1.1 (released 2019-02-08)
+* Noteworthy changes in release 2.1.1 (2019-02-08) [beta]
 
 ** Revert SONAME bump from release 2.1.0
 
@@ -70,7 +67,7 @@ See <https://gitlab.com/libidn/libidn2/-/issues/83>.
 ** Restrict output length of idn2_to_ascii_4i() to 63 bytes
 
 
-* Version 2.1.0 (released 2019-01-04)
+* Noteworthy changes in release 2.1.0 (2019-01-04) [beta]
 
 ** Two exposed functions are no longer exposed:
    _idn2_punycode_encode() and _idn2_punycode_decode() which were
@@ -93,7 +90,7 @@ See <https://gitlab.com/libidn/libidn2/-/issues/83>.
 ** Update gnulib
 
 
-* Version 2.0.5 (released 2018-05-18)
+* Noteworthy changes in release 2.0.5 (2018-05-18) [beta]
 
 ** Switched the default library behavior to IDNA2008 as amended
    by TR#46 (non-transitional). That default behavior is enabled when
@@ -112,7 +109,7 @@ See <https://gitlab.com/libidn/libidn2/-/issues/83>.
 ** idn2: added option --usestd3asciirules.
 
 
-* Version 2.0.4 (released 2017-08-30)
+* Noteworthy changes in release 2.0.4 (2017-08-30) [beta]
 
 ** Fix integer overflow in bidi.c/_isBidi()
 
@@ -125,7 +122,7 @@ See <https://gitlab.com/libidn/libidn2/-/issues/83>.
 ** Update fuzzer corpora
 
 
-* Version 2.0.3 (released 2017-07-24) [beta]
+* Noteworthy changes in release 2.0.3 (2017-07-24) [beta]
 
 ** %IDN2_USE_STD3_ASCII_RULES disabled by default.
  Previously we were eliminating non-STD3 characters from domain strings
@@ -141,7 +138,7 @@ See <https://gitlab.com/libidn/libidn2/-/issues/83>.
 ** Modernize gtk-doc build infrastructure.
 
 
-* Version 2.0.2 (released 2017-04-27) [beta]
+* Noteworthy changes in release 2.0.2 (2017-04-27) [beta]
 
 ** Fix TR46 transitional mode
 
@@ -149,13 +146,13 @@ See <https://gitlab.com/libidn/libidn2/-/issues/83>.
 
 ** Fix several documentation issues
 
-* Version 2.0.1 (released 2017-04-22) [beta]
+* Noteworthy changes in release 2.0.1 (2017-04-22) [beta]
 
 ** idn2 utility now using IDNA2008 + TR46 by default
 
 ** Several doc fixes
 
-* Version 2.0.0 (released 2017-03-29) [beta]
+* Noteworthy changes in release 2.0.0 (2017-03-29) [beta]
 
 ** Version numbering scheme changed
 
@@ -184,13 +181,13 @@ See <https://gitlab.com/libidn/libidn2/-/issues/83>.
 
 ** API and ABI is backwards compatible with the previous version.
 
-* Version 0.16 (released 2017-01-16) [alpha]
+* Noteworthy changes in release 0.16 (2017-01-16) [alpha]
 
 ** build: Fix idn2_cmd.h build rule.
 
 ** API and ABI is backwards compatible with the previous version.
 
-* Version 0.15 (released 2017-01-14) [alpha]
+* Noteworthy changes in release 0.15 (2017-01-14) [alpha]
 
 ** Fix out-of-bounds read.
 
@@ -200,13 +197,13 @@ See <https://gitlab.com/libidn/libidn2/-/issues/83>.
 
 ** API and ABI is backwards compatible with the previous version.
 
-* Version 0.14 (released 2016-12-30) [alpha]
+* Noteworthy changes in release 0.14 (2016-12-30) [alpha]
 
 ** build: Fix gentr46map build.
 
 ** API and ABI is backwards compatible with the previous version.
 
-* Version 0.13 (released 2016-12-29) [alpha]
+* Noteworthy changes in release 0.13 (2016-12-29) [alpha]
 
 ** build: Doesn't download external files during build.
 
@@ -218,7 +215,7 @@ See <https://gitlab.com/libidn/libidn2/-/issues/83>.
 
 ** API and ABI is backwards compatible with the previous version.
 
-* Version 0.12 (released 2016-12-26) [alpha]
+* Noteworthy changes in release 0.12 (2016-12-26) [alpha]
 
 ** All changes by Tim Rühsen <tim.ruehsen@gmx.de> except stated otherwise.
 
@@ -247,7 +244,7 @@ Reported by Hanno Böck <hanno@hboeck.de>.
 
 ** API and ABI is backwards compatible with the previous version.
 
-* Version 0.11 (released 2016-11-03) [alpha]
+* Noteworthy changes in release 0.11 (2016-11-03) [alpha]
 
 ** Fix stack underflow in 'idn2' command line tool.
 Reported by Hanno Böck <hanno@hboeck.de>.
@@ -259,7 +256,7 @@ Reported by Dagobert Michelsen <dam@opencsw.org>.
 
 ** API and ABI is backwards compatible with the previous version.
 
-* Version 0.10 (released 2014-06-25) [alpha]
+* Noteworthy changes in release 0.10 (2014-06-25) [alpha]
 
 ** Update gnulib files.
 
@@ -267,7 +264,7 @@ Reported by Dagobert Michelsen <dam@opencsw.org>.
 
 ** API and ABI is backwards compatible with the previous version.
 
-* Version 0.9 (released 2013-07-23) [alpha]
+* Noteworthy changes in release 0.9 (2013-07-23) [alpha]
 
 ** Fix broken IANA link.
 Apparently IANA does not provide persistent URLs to their registries.
@@ -278,7 +275,7 @@ Apparently IANA does not provide persistent URLs to their registries.
 
 ** API and ABI is backwards compatible with the previous version.
 
-* Version 0.8 (released 2011-09-28) [alpha]
+* Noteworthy changes in release 0.8 (2011-09-28) [alpha]
 
 ** idn2: Fix build warnings.
 Reported by Didier Raboud <odyx@debian.org> in
@@ -288,7 +285,7 @@ Reported by Didier Raboud <odyx@debian.org> in
 
 ** API and ABI is backwards compatible with the previous version.
 
-* Version 0.7 (released 2011-08-11) [alpha]
+* Noteworthy changes in release 0.7 (2011-08-11) [alpha]
 
 ** libidn2: Fix missing strchrnul and strverscmp uses.
 Reported by Ray Satiro <raysatiro@yahoo.com>.
@@ -297,14 +294,14 @@ Reported by Ray Satiro <raysatiro@yahoo.com>.
 
 ** API and ABI is backwards compatible with the previous version.
 
-* Version 0.6 (released 2011-05-25) [alpha]
+* Noteworthy changes in release 0.6 (2011-05-25) [alpha]
 
 ** tests: Use -no-install instead of -static to fix --disable-static.
 Reported by Robert Scheck <robert@fedoraproject.org>.
 
 ** API and ABI is backwards compatible with the previous version.
 
-* Version 0.5 (released 2011-05-18) [alpha]
+* Noteworthy changes in release 0.5 (2011-05-18) [alpha]
 
 ** Fix NFC check to compare entire strings.
 Some non-NFC strings were permitted when they should have been
@@ -319,7 +316,7 @@ controlled sources.
 
 ** API and ABI is backwards compatible with the previous version.
 
-* Version 0.4 (released 2011-05-06) [alpha]
+* Noteworthy changes in release 0.4 (2011-05-06) [alpha]
 
 ** libidn2: Fix domain name maximum size issue.
 Domain names in string representation can be 254 characters long if
@@ -335,7 +332,7 @@ From "Abdulrahman I. ALGhadir" <aghadir@citc.gov.sa>.
 
 ** API and ABI is backwards compatible with the previous version.
 
-* Version 0.3 (released 2011-04-20) [alpha]
+* Noteworthy changes in release 0.3 (2011-04-20) [alpha]
 
 ** doc: Added Texinfo manual.
 
@@ -345,7 +342,7 @@ From "Abdulrahman I. ALGhadir" <aghadir@citc.gov.sa>.
 
 ** API and ABI is backwards compatible with the previous version.
 
-* Version 0.2 (released 2011-03-30) [alpha]
+* Noteworthy changes in release 0.2 (2011-03-30) [alpha]
 
 ** Added command line tool "idn2".
 
@@ -353,7 +350,7 @@ From "Abdulrahman I. ALGhadir" <aghadir@citc.gov.sa>.
 
 ** API and ABI is backwards compatible with the previous version.
 
-* Version 0.1 (released 2011-03-29) [alpha]
+* Noteworthy changes in release 0.1 (2011-03-29) [alpha]
 
 ** IDNA2008 Lookup+Register functions are now operational.
 The implementation is still subject to changes, and thus no API/ABI
@@ -363,7 +360,7 @@ outputs are from here on considered as real bugs.
 
 ** API and ABI is backwards compatible with the previous version.
 
-* Version 0.0 (released 2011-03-09) [alpha]
+* Noteworthy changes in release 0.0 (2011-03-09) [alpha]
 
 ** Initial draft release for public review of the API.
 IDNA2008-Lookup is fully implemented except for 1) the optional
@@ -374,6 +371,9 @@ interface and ignore the code!  Several changes are planned in the
 internal implementation.
 
 ----------------------------------------------------------------------
+Copyright (C) 2011-2021 Simon Josefsson
+Copyright (C) 2018-2021 Tim Ruehsen
+
 This file is free software: you can redistribute it and/or modify it
 under the terms of the GNU General Public License as published by the
 Free Software Foundation, either version 3 of the License, or (at your

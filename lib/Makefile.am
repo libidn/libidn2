@@ -50,8 +50,9 @@ libidn2_la_LIBADD += ../unistring/libunistring.la
 endif
 libidn2_la_LIBADD += ../gl/libgnu.la
 
-libidn2_la_LDFLAGS = \
-	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) -no-undefined $(CODE_COVERAGE_LDFLAGS)
+libidn2_la_LDFLAGS = -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
+	-no-undefined
+libidn2_la_LDFLAGS += $(CODE_COVERAGE_LDFLAGS)
 
 IDNA_TABLE = idna-tables-properties.csv
 IANA_URL = https://www.iana.org/assignments/idna-tables-11.0.0/idna-tables-properties.csv
@@ -110,4 +111,12 @@ if HAVE_LD_VERSION_SCRIPT
 libidn2_la_LDFLAGS += -Wl,--version-script=$(srcdir)/idn2.map
 else
 libidn2_la_LDFLAGS += -export-symbols-regex '^idn2_.*'
+endif
+
+if HAVE_LD_OUTPUT_DEF
+libidn2_la_LDFLAGS += -Wl,--output-def,libidn2-$(DLL_VERSION).def
+libidn2-$(DLL_VERSION).def: libidn2.la
+defexecdir = $(libdir)
+defexec_DATA = libidn2-$(DLL_VERSION).def
+DISTCLEANFILES += $(defexec_DATA)
 endif

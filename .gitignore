@@ -1,3 +1,4 @@
+!/unistring/Makefile.am
 !po/POTFILES.in
 *.exe
 *.gcda
@@ -9,10 +10,12 @@
 *~
 .deps/
 .libs/
+/.version
 /ABOUT-NLS
 /ChangeLog
 /GNUmakefile
 /INSTALL
+/README-release
 /aclocal.m4
 /aminclude_static.am
 /autom4te.cache/

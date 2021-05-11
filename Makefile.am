@@ -29,8 +29,8 @@ if ENABLE_DOC
 SUBDIRS += doc
 endif
 
-EXTRA_DIST += cfg.mk maint.mk CONTRIBUTING.md README.md COPYING COPYING.LESSERv3 \
-	COPYING.unicode COPYINGv2 AUTHORS NEWS ChangeLog INSTALL
+EXTRA_DIST += cfg.mk maint.mk CONTRIBUTING.md README.md
+EXTRA_DIST += COPYING COPYING.LESSERv3 COPYING.unicode COPYINGv2
 
 check-valgrind:
 	$(MAKE) check LOG_COMPILER="valgrind --error-exitcode=301 --leak-check=yes --show-reachable=yes --track-origins=yes --suppressions=suppressions.valgrind"
@@ -92,12 +92,25 @@ abi-check: lib/libidn2.la
 	@echo "ABI checks completed"
 	@echo "********************"
 
-dist-hook:
+# git-version-gen
+EXTRA_DIST += $(top_srcdir)/.version
+BUILT_SOURCES = $(top_srcdir)/.version
+$(top_srcdir)/.version:
+	echo $(VERSION) > $@-t && mv $@-t $@
+dist-hook: gen-ChangeLog
+	echo $(VERSION) > $(distdir)/.tarball-version
 	if test -d "$(top_srcdir)/contrib";then \
 		$(MAKE) -C $(top_srcdir) abi-check-latest; \
 	fi
-	rm -f ChangeLog
-	$(MAKE) ChangeLog
+
+.PHONY: gen-ChangeLog
+gen-ChangeLog:
+	$(AM_V_GEN)if test -d .git; then				\
+		$(top_srcdir)/build-aux/gitlog-to-changelog >		\
+			$(distdir)/cl-t &&				\
+		{ rm -f $(distdir)/ChangeLog &&				\
+		  mv $(distdir)/cl-t $(distdir)/ChangeLog; }		\
+	fi
 
 .PHONY: abi-dump abi-check
 

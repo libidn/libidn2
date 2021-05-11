@@ -1,6 +1,36 @@
+# Copyright (C) 2016-2021 Simon Josefsson
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 stages:
-  - bootstrap-build
+  - quick
+  - bootstrap
   - tarball-test
+
+# The quick stage should complete as quickly as possible but still
+# excercise the internal self-tests.  Primarily this is achieved by
+# --disable-doc and thus avoiding the 'make dist' step.  Having an
+# early stage like this avoids wasting build cycles attempting the
+# bootstrap builds on many platforms.
+
+# The bootstrap stage should attempt to build from version controlled
+# sources on all platforms we support development on.  Typically these
+# builds include documentation and results in a tarball artifact.
+
+# The tarball-test stage attempt to build the tarball (generated from
+# some bootstrap rule) on all platforms we support building the
+# project on.
 
 variables:
   BUILD_IMAGES_PROJECT: libidn/build-images
@@ -10,9 +40,34 @@ variables:
   BASE_BUILD: buildenv-basic
   GET_SOURCES_ATTEMPTS: "3"
 
+B-Debian-mini:
+  image: debian:testing-slim
+  stage: quick
+  before_script:
+  - apt-get update -qq -y
+  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -q git make autoconf automake libtool autopoint gperf gengetopt
+  script:
+  - ./bootstrap --skip-po
+  - ./configure --enable-gcc-warnings --disable-doc || (cat config.log; exit 1)
+  - make V=1
+  - make check || (find . -name test-suite.log -exec cat {} +; exit 1)
+
+B-Alpine-mini:
+  image: alpine:latest
+  stage: quick
+  before_script:
+  - echo "ipv6" >> /etc/modules
+  - apk update
+  - apk add build-base git autoconf automake libtool gettext-dev gperf gengetopt coreutils # XXX: coreutils only needed for /usr/bin/join used by gnulib-tool
+  script:
+  - ./bootstrap --skip-po
+  - ./configure --enable-gcc-warnings --disable-doc || (cat config.log; exit 1)
+  - make V=1
+  - make check || (find . -name test-suite.log -exec cat {} +; exit 1)
+
 B-Debian-stable:
   image: $CI_REGISTRY/libidn/build-images:libidn2-Debian-stable
-  stage: bootstrap-build
+  stage: bootstrap
   script:
   - env DEBIAN_FRONTEND=noninteractive apt-get install -y -q autopoint help2man
   - ./bootstrap --skip-po --no-git
@@ -27,7 +82,7 @@ B-Debian-stable:
 
 B-Debian-testing:
   image: debian:testing
-  stage: bootstrap-build
+  stage: bootstrap
   before_script:
   - apt-get update -qq -y
   - env DEBIAN_FRONTEND=noninteractive apt-get install -y -q git autoconf automake libtool gettext texinfo gperf git2cl libunistring-dev gtk-doc-tools valgrind gengetopt help2man abi-compliance-checker autoconf-archive autopoint texlive abigail-tools
@@ -183,7 +238,7 @@ T-Mingw64:
 #  * fuzz/ building
 #  * build/valgrind-check
 Debian GNU/Linux:
-  stage: bootstrap-build
+  stage: bootstrap
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
   - ./bootstrap --skip-po
@@ -206,7 +261,7 @@ Debian GNU/Linux:
 #  * abi-check
 # It is not run on tags
 abi-check:
-  stage: bootstrap-build
+  stage: bootstrap
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
   - ./bootstrap --skip-po
@@ -230,7 +285,7 @@ abi-check:
 # In this build we do
 #  * distcheck
 dist-check:
-  stage: bootstrap-build
+  stage: bootstrap
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
   - ./bootstrap --skip-po
@@ -256,7 +311,7 @@ dist-check:
 #  * build/asan-check
 #  * build w/Werror and ubsan-check
 Debian ASAN/UBSAN:
-  stage: bootstrap-build
+  stage: bootstrap
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
   - ./bootstrap --skip-po
@@ -283,7 +338,7 @@ Debian ASAN/UBSAN:
       - tests/*.log
 
 B-Centos7:
-  stage: bootstrap-build
+  stage: bootstrap
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$CENTOS7_BUILD
   script:
   - sed -i 's/AM_GNU_GETTEXT_VERSION(0.19.3)/AM_GNU_GETTEXT_VERSION(0.18.2)/g' configure.ac
@@ -303,7 +358,7 @@ B-Centos7:
       - compat_reports/
 
 clang-analyzer/Fedora:
-  stage: bootstrap-build
+  stage: bootstrap
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$FEDORA_BUILD
   script:
   - ./bootstrap --skip-po
@@ -323,7 +378,7 @@ clang-analyzer/Fedora:
       - scan-build-lib/*
 
 pages:
-  stage: bootstrap-build
+  stage: bootstrap
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
   - ./bootstrap --skip-po
@@ -358,7 +413,7 @@ pages:
 # Target to run code coverage on non-master branches. That is intended
 # to ensure that compilation in master will not break the pages rule.
 pages-test:
-  stage: bootstrap-build
+  stage: bootstrap
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
   - ./bootstrap --skip-po
@@ -371,7 +426,7 @@ pages-test:
     - master
 
 MinGW64:
-  stage: bootstrap-build
+  stage: bootstrap
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$FEDORA_BUILD
   before_script:
   - mount -t binfmt_misc binfmt_misc /proc/sys/fs/binfmt_misc
