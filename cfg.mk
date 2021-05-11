@@ -13,12 +13,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-CFGFLAGS ?= --enable-gtk-doc --enable-gtk-doc-pdf --enable-gcc-warnings --enable-valgrind-tests
-
-ifeq ($(.DEFAULT_GOAL),abort-due-to-no-makefile)
-.DEFAULT_GOAL := buildit
-endif
-
 local-checks-to-skip += sc_unmarked_diagnostics sc_bindtextdomain # Re-add when we have translation
 local-checks-to-skip += sc_immutable_NEWS
 local-checks-to-skip += sc_prohibit_strcmp
@@ -28,7 +22,6 @@ local-checks-to-skip += sc_prohibit_gnu_make_extensions
 # Ignore gnulib files.
 VC_LIST_ALWAYS_EXCLUDE_REGEX = \
   ^(bootstrap|maint.mk|build-aux/gnupload|src/gl/.*|gl/.*|m4/.*|^fuzz/.*.in/.*|^fuzz/.*.repro/.*)$$
-
 
 # Explicit syntax-check exceptions.
 exclude_file_name_regexp--sc_program_name = ^(tests|examples)/.*\.c$$
@@ -54,55 +47,9 @@ aximport:
 
 INDENT_SOURCES = lib/*.c lib/*.h src/*.c src/*.h tests/*.c
 
-doc/Makefile.gdoc:
-	printf "gdoc_MANS =\ngdoc_TEXINFOS =\n" > doc/Makefile.gdoc
-
-buildit: doc/Makefile.gdoc
-	test -f configure || autoreconf --force --install
-	test -f Makefile || ./configure $(CFGFLAGS)
-	make
-
-glimport:
-	gnulib-tool --add-import
-	cd src && gnulib-tool --add-import
-
 # Release
 
 htmldir = ../www-libidn/libidn2
-
-coverage-copy:
-	rm -fv `find $(htmldir)/coverage -type f | grep -v CVS`
-	mkdir -p $(htmldir)/coverage/
-	cp -rv $(COVERAGE_OUT)/* $(htmldir)/coverage/
-
-coverage-upload:
-	cd $(htmldir) && \
-	find coverage -type d -! -name CVS -! -name '.' \
-		-exec cvs add {} \; && \
-	find coverage -type d -! -name CVS -! -name '.' \
-		-exec sh -c "cvs add -kb {}/*.png" \; && \
-	find coverage -type d -! -name CVS -! -name '.' \
-		-exec sh -c "cvs add {}/*.html" \; && \
-	cvs add coverage/libidn2.info coverage/gcov.css || true && \
-	cvs commit -m "Update." coverage
-
-clang:
-	$(MAKE) clean
-	scan-build ./configure
-	rm -rf scan.tmp
-	scan-build -o scan.tmp $(MAKE)
-
-clang-copy:
-	rm -fv `find $(htmldir)/clang-analyzer -type f | grep -v CVS`
-	mkdir -p $(htmldir)/clang-analyzer/
-	cp -rv scan.tmp/*/* $(htmldir)/clang-analyzer/
-
-clang-upload:
-	cd $(htmldir) && \
-		cvs add clang-analyzer || true && \
-		cvs add clang-analyzer/*.css clang-analyzer/*.js \
-			clang-analyzer/*.html || true && \
-		cvs commit -m "Update." clang-analyzer
 
 ChangeLog:
 	git log --no-merges --date=short --pretty='format:%ad %an <%ae>%w(0,0,5)%+B' >ChangeLog
@@ -147,9 +94,9 @@ source:
 	-git commit -m Generated. ChangeLog
 	git tag -u 54265e8c -m $(VERSION) $(PACKAGE)-$(VERSION)
 
-release-check: syntax-check tarball gendoc-copy gtkdoc-copy coverage coverage-copy clang clang-copy
+release-check: syntax-check tarball gendoc-copy gtkdoc-copy
 
-release-upload-www: gendoc-upload gtkdoc-upload coverage-upload clang-upload
+release-upload-www: gendoc-upload gtkdoc-upload
 
 release-upload-ftp:
 	git push
