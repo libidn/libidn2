@@ -18,7 +18,8 @@ SUBDIRS = reference
 EXTRA_DIST = gdoc libidn2.html libidn2.pdf texinfo.css idn2.h2m
 BUILT_SOURCES = idn2.1
 info_TEXINFOS = libidn2.texi
-libidn2_TEXINFOS = libidn2.texi example-tounicode.c example-toascii.c decode.c lookup.c register.c $(gdoc_TEXINFOS)
+libidn2_TEXINFOS = libidn2.texi example-tounicode.c example-toascii.c	\
+	decode.c lookup.c register.c $(gdoc_TEXINFOS) idn2--help.texi
 
 AM_MAKEINFOHTMLFLAGS = $(AM_MAKEINFOFLAGS) \
 	--no-split --number-sections --css-include=texinfo.css
@@ -48,6 +49,10 @@ idn2.1: idn2.h2m $(top_srcdir)/src/idn2.c $(top_srcdir)/src/idn2.ggo \
 		$(top_srcdir)/configure.ac
 	$(HELP2MAN) --include=$(srcdir)/idn2.h2m \
 		--output=$@ $(top_builddir)/src/idn2$(EXEEXT)
+
+idn2--help.texi: $(top_srcdir)/src/idn2.c
+	$(top_builddir)/src/idn2$(EXEEXT) --help | $(GREP) '^ \+-' > tmp
+	mv tmp idn2--help.texi
 
 MAINTAINERCLEANFILES = $(dist_man_MANS) decode.c example-tounicode.c example-toascii.c lookup.c \
 	register.c stamp-vti version.texi
