@@ -55,7 +55,7 @@ libidn2_la_LDFLAGS = \
 
 IDNA_TABLE = idna-tables-properties.csv
 IANA_URL = https://www.iana.org/assignments/idna-tables-11.0.0/idna-tables-properties.csv
-IDNA_TABLE_SHA1 = 6d224090e6b1d3bef6632e932d5f38fd7fb2356a
+IDNA_TABLE_SHA1 = 1ed1ecc53e4c1458b58ba4dbec49c553f4779a7a
 
 TR46MAP = IdnaMappingTable.txt
 TR46MAP_URL = http://www.unicode.org/Public/idna/11.0.0/IdnaMappingTable.txt
