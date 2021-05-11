@@ -27,13 +27,6 @@ bin_PROGRAMS = idn2
 idn2_SOURCES = idn2.c blurbs.h
 idn2_LDADD = libidn2_cmd.la ../lib/libidn2.la $(LTLIBUNISTRING) $(LIBS)
 
-# have idn2_noinstall linked with local libidn2 for testing
-# please do not remove !
-check_PROGRAMS = idn2_noinstall
-idn2_noinstall_SOURCES = $(idn2_SOURCES)
-idn2_noinstall_LDFLAGS = -no-install
-idn2_noinstall_LDADD = $(idn2_LDADD)
-
 idn2.c: $(BUILT_SOURCES)
 
 noinst_LTLIBRARIES = libidn2_cmd.la
