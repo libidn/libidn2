@@ -77,7 +77,7 @@ idn2_strerror (int rc)
     case IDN2_DOT_IN_LABEL: return _("domain label has forbidden dot (TR46)");
     case IDN2_INVALID_TRANSITIONAL: return _("domain label has character forbidden in transitional mode (TR46)");
     case IDN2_INVALID_NONTRANSITIONAL: return _("domain label has character forbidden in non-transitional mode (TR46)");
-    case IDN2_ALABEL_ROUNDTRIP_FAILED: return _("Alabel roundtrip failed");
+    case IDN2_ALABEL_ROUNDTRIP_FAILED: return _("A-label roundtrip failed");
     default: return _("Unknown error");
     }
 }

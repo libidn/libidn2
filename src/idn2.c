@@ -93,7 +93,7 @@ Mandatory arguments to long options are mandatory for short options too.\n\
 "), stdout);
       fputs (_("\
       --usestd3asciirules   Enable STD3 ASCII rules\n\
-      --no-alabelroundtrip  Disable ALabel roundtrip for lookups\n\
+      --no-alabelroundtrip  Disable A-label roundtrip for lookups\n\
       --debug               Print debugging information\n\
       --quiet               Silent operation\n\
 "), stdout);
