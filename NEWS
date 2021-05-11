@@ -14,6 +14,11 @@ more.  Reported-by: Chris Malton.  See
 
 ** Fix domain too long error
 
+** doc: idn2.1 and libidn2.texi automatically get idn2 --help output.
+
+** Updated gnulib files and various build fixes.
+In particular, it no longer attempts to detect a host CC compiler.
+See <https://gitlab.com/libidn/libidn2/-/issues/83>.
 
 * Version 2.3.0 (released 2019-11-14)
 
