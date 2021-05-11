@@ -44,6 +44,7 @@ AC_USE_SYSTEM_EXTENSIONS
 gl_EARLY
 unistring_EARLY
 m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
+AM_MISSING_PROG(HELP2MAN, help2man, $missing_dir)
 LT_INIT([win32-dll])
 gl_INIT
 unistring_INIT

@@ -15,7 +15,7 @@
 
 SUBDIRS = reference
 
-EXTRA_DIST = gdoc libidn2.html libidn2.pdf texinfo.css idn2.md
+EXTRA_DIST = gdoc libidn2.html libidn2.pdf texinfo.css idn2.h2m
 BUILT_SOURCES = idn2.1
 info_TEXINFOS = libidn2.texi
 libidn2_TEXINFOS = libidn2.texi example-tounicode.c example-toascii.c decode.c lookup.c register.c $(gdoc_TEXINFOS)
@@ -44,8 +44,10 @@ example-toascii.c: $(top_srcdir)/examples/example-toascii.c
 dist_man_MANS = $(gdoc_MANS)
 dist_man_MANS += idn2.1
 
-idn2.1: idn2.md
-	ronn <$^ >$@ || false
+idn2.1: idn2.h2m $(top_srcdir)/src/idn2.c $(top_srcdir)/src/idn2.ggo \
+		$(top_srcdir)/configure.ac
+	$(HELP2MAN) --include=$(srcdir)/idn2.h2m \
+		--output=$@ $(top_builddir)/src/idn2$(EXEEXT)
 
 MAINTAINERCLEANFILES = $(dist_man_MANS) decode.c example-tounicode.c example-toascii.c lookup.c \
 	register.c stamp-vti version.texi

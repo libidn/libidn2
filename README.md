@@ -95,6 +95,7 @@ usual way (i.e., ./configure && make).
  * [Texinfo](https://www.gnu.org/software/texinfo/)
  * [Gperf](https://www.gnu.org/software/gperf/)
  * [Gengetopt](https://www.gnu.org/software/gengetopt/)
+ * [help2man](https://www.gnu.org/software/help2man/)
  * [Tar](https://www.gnu.org/software/tar/)
  * [Gzip](https://www.gnu.org/software/gzip/)
  * [Texlive & epsf](https://www.tug.org/texlive/) (for PDF manual)
@@ -103,7 +104,6 @@ usual way (i.e., ./configure && make).
  * [Perl](https://www.cpan.org/)
  * [Valgrind](https://valgrind.org/) (optional)
  * [abi-compliance-checker](https://github.com/lvc/abi-compliance-checker)
- * [ronn](https://rtomayko.github.io/ronn/)
 
 The software is typically distributed with your operating system, and
 the instructions for installing them differ.  Here are some hints:
@@ -111,9 +111,9 @@ the instructions for installing them differ.  Here are some hints:
 Debian 10.x, Ubuntu 20.04:
 ```
 apt-get install git autoconf automake libtool gettext autopoint gperf
-apt-get install libunistring-dev valgrind gengetopt
+apt-get install libunistring-dev valgrind gengetopt help2man
 apt-get install texinfo git2cl gtk-doc-tools
-apt-get install abi-compliance-checker ruby-ronn
+apt-get install abi-compliance-checker
 ```
 
 
