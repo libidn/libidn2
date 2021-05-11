@@ -14,7 +14,7 @@ B-Debian-stable:
   image: $CI_REGISTRY/libidn/build-images:libidn2-Debian-stable
   stage: bootstrap-build
   script:
-  - apt-get install autopoint help2man
+  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -q autopoint help2man
   - ./bootstrap --skip-po --no-git
   - ./configure --enable-gcc-warnings --enable-valgrind-tests || (cat config.log; exit 1)
   - make V=1
