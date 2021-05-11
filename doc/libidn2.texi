@@ -487,27 +487,29 @@ To process a string that starts with @code{-}, for example
 @code{idn2} recognizes these commands:
 
 @verbatim
-  -h, --help               Print help and exit
+  -h, --help                Print help and exit
 
-  -V, --version            Print version and exit
+  -V, --version             Print version and exit
 
-  -d, --decode             Decode (punycode) domain name
+  -d, --decode              Decode (punycode) domain name
 
-  -l, --lookup             Lookup domain name (default)
+  -l, --lookup              Lookup domain name (default)
 
-  -r, --register           Register label
+  -r, --register            Register label
 
-  -T, --tr46t              Enable TR46 transitional processing
+  -T, --tr46t               Enable TR46 transitional processing
 
-  -N, --tr46nt             Enable TR46 non-transitional processing (default)
+  -N, --tr46nt              Enable TR46 non-transitional processing
 
-      --no-tr46            Disable TR46 processing
+      --no-tr46             Disable TR46 processing
 
-      --usestd3asciirules  Enable STD3 ASCII rules
+      --usestd3asciirules   Enable STD3 ASCII rules
 
-      --debug              Print debugging information
+      --no-alabelroundtrip  Disable ALabel roundtrip for lookups
 
-      --quiet              Silent operation
+      --debug               Print debugging information
+
+      --quiet               Silent operation
 @end verbatim
 
 @section Environment Variables
