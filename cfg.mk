@@ -52,3 +52,8 @@ aximport:
 	done
 
 INDENT_SOURCES = lib/*.c lib/*.h src/*.c src/*.h tests/*.c
+
+sc_codespell:
+	@if `which codespell > /dev/null`; then \
+		codespell -L tim,mitre `git ls-files|egrep -v '_fuzzer.in|_fuzzer.repro|gnulib|^lib/.*\.(csv|txt)$$'`; \
+	fi

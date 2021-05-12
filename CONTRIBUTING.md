@@ -41,7 +41,7 @@ When submitting patches it is recommended to open a new merge request
 [on the gitlab site](https://gitlab.com/libidn/libidn2), to force the
 changes to pass the automated test suite.
 
-# Continous Integration
+# Continuous Integration
 
 The project is built auomatically on every git commit using GitLab
 CI/CD, see the file `.gitlab-ci.yml` for rules and [current libidn2
