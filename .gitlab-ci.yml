@@ -46,6 +46,7 @@ B-Debian-mini:
   script:
   - time ./bootstrap --skip-po --no-git
   - time ./configure --enable-gcc-warnings --disable-doc || (cat config.log; exit 1)
+  - time make syntax-check
   - time make V=1
   - time make check || (find . -name test-suite.log -exec cat {} +; exit 1)
 
