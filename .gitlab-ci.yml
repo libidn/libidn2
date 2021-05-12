@@ -199,7 +199,6 @@ T-Ubuntu rolling:
     - libidn2-*.tar.gz
 
 T-Mingw32:
-  allow_failure: true
   image: debian:latest
   stage: tarball-test
   needs: [B-Debian-stable]
@@ -217,7 +216,6 @@ T-Mingw32:
   - make WERROR_CFLAGS= check V=1 || (find . -name test-suite.log -exec cat {} +; exit 1)
 
 T-Mingw64:
-  allow_failure: true
   image: debian:latest
   stage: tarball-test
   needs: [B-Debian-stable]

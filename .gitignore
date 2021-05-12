@@ -115,6 +115,7 @@
 /lib/gendata
 /lib/gentr46map
 /lib/idn2.h
+/lib/libidn2-*.def
 /lib/libidn2.la
 /lib/tr46map_data.c
 /libidn2-*.tar.*
@@ -137,6 +138,7 @@
 /tests/repro-to-ascii-8z
 /tests/repro-to-unicode-8z8z
 /tests/test-glibc
+/tests/test-locale
 /tests/test-lookup
 /tests/test-punycode
 /tests/test-register

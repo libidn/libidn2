@@ -32,6 +32,7 @@ endif
 LDADD += ../gl/libgnu.la
 
 TESTS = test-punycode test-lookup test-register test-strerror test-tounicode
+TESTS += test-locale
 if TEST_GLIBC
 TESTS += test-glibc
 endif

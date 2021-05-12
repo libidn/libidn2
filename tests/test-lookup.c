@@ -1039,21 +1039,6 @@ test_homebrewed(void)
   } else
     ok++;
 
-  if ((rc = idn2_lookup_ul ("abc", NULL, 0)) != IDN2_OK) {
-    failed++;
-    printf("special #5 failed with %d\n", rc);
-  } else
-    ok++;
-
-  /* test libidn compatibility functions */
-  if ((rc = idna_to_ascii_lz ("abc", (char **) &out, 0)) != IDN2_OK) {
-    failed++;
-    printf("special #6 failed with %d\n", rc);
-  } else {
-    idn2_free (out);
-    ok++;
-  }
-
   if ((rc = idna_to_ascii_8z ("abc", (char **) &out, 0)) != IDN2_OK) {
     failed++;
     printf("special #7 failed with %d\n", rc);

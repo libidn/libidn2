@@ -194,9 +194,6 @@ main (void)
   if ((rc = idn2_register_ul (NULL, NULL, NULL, 0)) != IDN2_OK)
     fail ("special #5 failed with %d\n", rc);
 
-  if ((rc = idn2_register_ul ("foo", NULL, NULL, 0)) != IDN2_OK)
-    fail ("special #6 failed with %d\n", rc);
-
   if ((rc = idn2_register_u8 ((uint8_t*)"faß", NULL, NULL, IDN2_NFC_INPUT)) != IDN2_OK)
     fail ("special #7 failed with %d\n", rc);
 
