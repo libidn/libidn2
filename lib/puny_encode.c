@@ -61,7 +61,7 @@
 
 #include <config.h>
 
-#include "idn2.h" /* IDN2_OK, ... */
+#include "idn2.h"		/* IDN2_OK, ... */
 
 /* Re-definitions to avoid modifying code below too much. */
 #define punycode_uint uint32_t
@@ -80,8 +80,10 @@
 
 /*** Bootstring parameters for Punycode ***/
 
-enum { base = 36, tmin = 1, tmax = 26, skew = 38, damp = 700,
-       initial_bias = 72, initial_n = 0x80, delimiter = 0x2D };
+enum
+{ base = 36, tmin = 1, tmax = 26, skew = 38, damp = 700,
+  initial_bias = 72, initial_n = 0x80, delimiter = 0x2D
+};
 
 /* basic(cp) tests whether cp is a basic code point: */
 #define basic(cp) ((punycode_uint)(cp) < 0x80)
@@ -92,7 +94,8 @@ enum { base = 36, tmin = 1, tmax = 26, skew = 38, damp = 700,
 /* nonzero, in which case the uppercase form is used.  The behavior   */
 /* is undefined if flag is nonzero and digit d has no uppercase form. */
 
-static char encode_digit(punycode_uint d, int flag)
+static char
+encode_digit (punycode_uint d, int flag)
 {
   return d + 22 + 75 * (d < 26) - ((flag != 0) << 5);
   /*  0..25 map to ASCII a..z or A..Z */
@@ -107,11 +110,12 @@ static const punycode_uint maxint = -1;
 
 /*** Bias adaptation function ***/
 
-static punycode_uint adapt(
-  punycode_uint delta, punycode_uint numpoints, int firsttime ) _GL_ATTRIBUTE_CONST;
+static punycode_uint
+adapt (punycode_uint delta, punycode_uint numpoints, int firsttime)
+  _GL_ATTRIBUTE_CONST;
 
-static punycode_uint adapt(
-  punycode_uint delta, punycode_uint numpoints, int firsttime )
+     static punycode_uint adapt (punycode_uint delta, punycode_uint numpoints,
+				 int firsttime)
 {
   punycode_uint k;
 
@@ -119,20 +123,20 @@ static punycode_uint adapt(
   /* delta >> 1 is a faster way of doing delta / 2 */
   delta += delta / numpoints;
 
-  for (k = 0;  delta > ((base - tmin) * tmax) / 2;  k += base) {
-    delta /= base - tmin;
-  }
+  for (k = 0; delta > ((base - tmin) * tmax) / 2; k += base)
+    {
+      delta /= base - tmin;
+    }
 
   return k + (base - tmin + 1) * delta / (delta + skew);
 }
 
 /*** Main encode function ***/
 
-int punycode_encode(
-  size_t input_length_orig,
-  const punycode_uint input[],
-  size_t *output_length,
-  char output[] )
+int
+punycode_encode (size_t input_length_orig,
+		 const punycode_uint input[],
+		 size_t *output_length, char output[])
 {
   punycode_uint input_length, n, delta, h, b, bias, j, m, q, k, t;
   size_t out, max_out;
@@ -141,7 +145,8 @@ int punycode_encode(
   /* of integer as a code point, so we need to convert the size_t to  */
   /* a punycode_uint, which could overflow.                           */
 
-  if (input_length_orig > maxint) return punycode_overflow;
+  if (input_length_orig > maxint)
+    return punycode_overflow;
   input_length = (punycode_uint) input_length_orig;
 
   /* Initialize the state: */
@@ -154,14 +159,18 @@ int punycode_encode(
 
   /* Handle the basic code points: */
 
-  for (j = 0;  j < input_length;  ++j) {
-    if (basic(input[j])) {
-      if (max_out - out < 2) return punycode_big_output;
-      output[out++] = (char) input[j];
+  for (j = 0; j < input_length; ++j)
+    {
+      if (basic (input[j]))
+	{
+	  if (max_out - out < 2)
+	    return punycode_big_output;
+	  output[out++] = (char) input[j];
+	}
+      else if (input[j] > 0x10FFFF
+	       || (input[j] >= 0xD800 && input[j] <= 0xDBFF))
+	return punycode_bad_input;
     }
-    else if (input[j] > 0x10FFFF || (input[j] >= 0xD800 && input[j] <= 0xDBFF))
-      return punycode_bad_input;
-  }
 
   h = b = (punycode_uint) out;
   /* cannot overflow because out <= input_length <= maxint */
@@ -170,54 +179,66 @@ int punycode_encode(
   /* number of basic code points, and out is the number of ASCII code */
   /* points that have been output.                                    */
 
-  if (b > 0) output[out++] = delimiter;
+  if (b > 0)
+    output[out++] = delimiter;
 
   /* Main encoding loop: */
 
-  while (h < input_length) {
-    /* All non-basic code points < n have been     */
-    /* handled already.  Find the next larger one: */
+  while (h < input_length)
+    {
+      /* All non-basic code points < n have been     */
+      /* handled already.  Find the next larger one: */
 
-    for (m = maxint, j = 0;  j < input_length;  ++j) {
-      /* if (basic(input[j])) continue; */
-      /* (not needed for Punycode) */
-      if (input[j] >= n && input[j] < m) m = input[j];
+      for (m = maxint, j = 0; j < input_length; ++j)
+	{
+	  /* if (basic(input[j])) continue; */
+	  /* (not needed for Punycode) */
+	  if (input[j] >= n && input[j] < m)
+	    m = input[j];
+	}
+
+      /* Increase delta enough to advance the decoder's    */
+      /* <n,i> state to <m,0>, but guard against overflow: */
+
+      if (m - n > (maxint - delta) / (h + 1))
+	return punycode_overflow;
+      delta += (m - n) * (h + 1);
+      n = m;
+
+      for (j = 0; j < input_length; ++j)
+	{
+	  /* Punycode does not need to check whether input[j] is basic: */
+	  if (input[j] < n /* || basic(input[j]) */ )
+	    {
+	      if (++delta == 0)
+		return punycode_overflow;
+	    }
+
+	  if (input[j] == n)
+	    {
+	      /* Represent delta as a generalized variable-length integer: */
+
+	      for (q = delta, k = base;; k += base)
+		{
+		  if (out >= max_out)
+		    return punycode_big_output;
+		  t = k <= bias /* + tmin */ ? tmin :	/* +tmin not needed */
+		    k >= bias + tmax ? tmax : k - bias;
+		  if (q < t)
+		    break;
+		  output[out++] = encode_digit (t + (q - t) % (base - t), 0);
+		  q = (q - t) / (base - t);
+		}
+
+	      output[out++] = encode_digit (q, 0);
+	      bias = adapt (delta, h + 1, h == b);
+	      delta = 0;
+	      ++h;
+	    }
+	}
+
+      ++delta, ++n;
     }
-
-    /* Increase delta enough to advance the decoder's    */
-    /* <n,i> state to <m,0>, but guard against overflow: */
-
-    if (m - n > (maxint - delta) / (h + 1)) return punycode_overflow;
-    delta += (m - n) * (h + 1);
-    n = m;
-
-    for (j = 0;  j < input_length;  ++j) {
-      /* Punycode does not need to check whether input[j] is basic: */
-      if (input[j] < n /* || basic(input[j]) */ ) {
-        if (++delta == 0) return punycode_overflow;
-      }
-
-      if (input[j] == n) {
-        /* Represent delta as a generalized variable-length integer: */
-
-        for (q = delta, k = base;  ;  k += base) {
-          if (out >= max_out) return punycode_big_output;
-          t = k <= bias /* + tmin */ ? tmin :     /* +tmin not needed */
-              k >= bias + tmax ? tmax : k - bias;
-          if (q < t) break;
-          output[out++] = encode_digit(t + (q - t) % (base - t), 0);
-          q = (q - t) / (base - t);
-        }
-
-        output[out++] = encode_digit(q, 0);
-        bias = adapt(delta, h + 1, h == b);
-        delta = 0;
-        ++h;
-      }
-    }
-
-    ++delta, ++n;
-  }
 
   *output_length = out;
   return punycode_success;
@@ -227,7 +248,7 @@ int punycode_encode(
    the target symbol hidden, hence the alias.  */
 #ifdef HAVE_SYMVER_ALIAS_SUPPORT
 __typeof__ (_idn2_punycode_encode_internal) _idn2_punycode_encode
-   __attribute__ ((visibility ("default"),
-                   alias ("_idn2_punycode_encode_internal")));
+  __attribute__((visibility ("default"),
+		 alias ("_idn2_punycode_encode_internal")));
 __asm__ (".symver _idn2_punycode_encode, _idn2_punycode_encode@IDN2_0.0.0");
 #endif

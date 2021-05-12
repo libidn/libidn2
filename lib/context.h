@@ -34,12 +34,11 @@
 #include "idn2.h"
 
 int G_GNUC_IDN2_ATTRIBUTE_PURE
-	_idn2_contextj_rule (const uint32_t * label, size_t llen, size_t pos);
+_idn2_contextj_rule (const uint32_t * label, size_t llen, size_t pos);
 
 int G_GNUC_IDN2_ATTRIBUTE_PURE
-	_idn2_contexto_rule (const uint32_t * label, size_t llen, size_t pos);
+_idn2_contexto_rule (const uint32_t * label, size_t llen, size_t pos);
 
-bool G_GNUC_IDN2_ATTRIBUTE_CONST
-	_idn2_contexto_with_rule (uint32_t cp);
+bool G_GNUC_IDN2_ATTRIBUTE_CONST _idn2_contexto_with_rule (uint32_t cp);
 
 #endif /* LIBIDN2_CONTEXT_H */

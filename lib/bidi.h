@@ -33,6 +33,6 @@
 #include "idn2.h"
 
 int G_GNUC_IDN2_ATTRIBUTE_PURE
-	_idn2_bidi (const uint32_t * label, size_t llen);
+_idn2_bidi (const uint32_t * label, size_t llen);
 
 #endif /* LIBIDN2_BIDI_H */

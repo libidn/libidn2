@@ -46,7 +46,7 @@ main (void)
 
   printf ("ACE label (length %ld): '%s'\n", (long int) strlen (p), p);
 
-  free (p); /* or idn2_free() */
+  free (p);			/* or idn2_free() */
 
   return 0;
 }

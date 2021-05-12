@@ -46,7 +46,7 @@ _ok (const char *fname, int fline, int rc)
   if (!rc)
     {
       fprintf (stderr, "%s:%d: unexpected failure at input line %d\n",
-               fname, fline, line_cnt);
+	       fname, fline, line_cnt);
       exit (EXIT_FAILURE);
     }
 }
@@ -77,12 +77,12 @@ main (void)
       ok (property);
 
       if (!strcmp (property, "UNASSIGNED"))
-        continue;
+	continue;
 
       strtok (line, "-");
       range_end = strtok (NULL, "");
       if (!range_end)
-        range_end = line;
+	range_end = line;
 
       printf ("  {0x%s, 0x%s, %s},\n", line, range_end, property);
       idna_table_size++;

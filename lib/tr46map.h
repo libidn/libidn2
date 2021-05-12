@@ -55,14 +55,10 @@ typedef struct
   char check;			/* 0=NO 2=MAYBE (YES if codepoint has no table entry) */
 } NFCQCMap;
 
-int
-	get_idna_map (uint32_t c, IDNAMap * map);
-int
-	get_map_data (uint32_t * dst, const IDNAMap * map);
-int G_GNUC_IDN2_ATTRIBUTE_PURE
-	map_is (const IDNAMap * map, unsigned flags);
+int get_idna_map (uint32_t c, IDNAMap * map);
+int get_map_data (uint32_t * dst, const IDNAMap * map);
+int G_GNUC_IDN2_ATTRIBUTE_PURE map_is (const IDNAMap * map, unsigned flags);
 
-G_GNUC_IDN2_ATTRIBUTE_PURE NFCQCMap
-	*get_nfcqc_map (uint32_t c);
+G_GNUC_IDN2_ATTRIBUTE_PURE NFCQCMap *get_nfcqc_map (uint32_t c);
 
 #endif /* LIBIDN2_TR46MAP_H */

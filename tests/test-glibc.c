@@ -41,6 +41,7 @@ static const char *naemchen_latin1 = "n\344mchen";
 static const char *naemchen_utf8 = "n\xC3\xA4mchen";
 
 static const wchar_t L_shem[] = { 0x05E9, 0x05DD, 0 };
+
 static const char *shem_utf8 = "\xD7\xA9\xD7\x9D";
 
 /* Detected charset.  Note that charset_latin1 covers both ISO-8859-1
@@ -51,8 +52,7 @@ enum charset_kind
 };
 
 /* wcsrtombs with a static buffer.  */
-static char * __attribute__ ((malloc))
-wcsrtombs_strdup (const wchar_t *input)
+static char * __attribute__((malloc)) wcsrtombs_strdup (const wchar_t *input)
 {
   char buf[100];
   const wchar_t *src = input;
@@ -85,8 +85,8 @@ determine_current_charset_kind (void)
   if (strcmp (lc_string, "UTF-8") == 0)
     expected = charset_utf8;
   else if (strcmp (lc_string, "ISO-8859-1") == 0
-           || strcmp (lc_string, "ISO-8859-15") == 0
-           || strcmp (lc_string, "CP1252") == 0)
+	   || strcmp (lc_string, "ISO-8859-15") == 0
+	   || strcmp (lc_string, "CP1252") == 0)
     expected = charset_latin1;
   else
     expected = charset_neither;
@@ -99,7 +99,7 @@ determine_current_charset_kind (void)
       && strcmp (shem_bytes, shem_utf8) == 0)
     actual = charset_utf8;
   else if (strcmp (naemchen_bytes, naemchen_latin1) == 0
-      && strcmp (shem_bytes, "") == 0)
+	   && strcmp (shem_bytes, "") == 0)
     actual = charset_latin1;
   else
     actual = charset_neither;
@@ -110,7 +110,7 @@ determine_current_charset_kind (void)
   if (expected != actual)
     {
       printf ("error: locale %s: expected charset %u (%s), got %u\n",
-              locale, expected, lc_string, actual);
+	      locale, expected, lc_string, actual);
       exit (EXIT_FAILURE);
     }
 
@@ -121,22 +121,22 @@ static int errors;
 
 static void
 check_success (const char *func, const char *input, const char *expected,
-               int ret, char *actual)
+	       int ret, char *actual)
 {
   if (ret != 0)
     {
       printf ("error: locale %s: %s: input \"%s\": %d\n",
-              locale, func, input, ret);
+	      locale, func, input, ret);
       ++errors;
     }
   else
     {
       if (strcmp (actual, expected) != 0)
-        {
-          printf ("error: locale %s: %s: input \"%s\": \"%s\"\n",
-                  locale,func, input, actual);
-          ++errors;
-        }
+	{
+	  printf ("error: locale %s: %s: input \"%s\": \"%s\"\n",
+		  locale, func, input, actual);
+	  ++errors;
+	}
       idn2_free (actual);
     }
 }
@@ -166,16 +166,16 @@ check_to_unicode_lzlz_failure (const char *input, int expected)
   if (actual == 0)
     {
       printf ("error: idn2_to_unicode_lzlz: locale %s:"
-              "unexpected success for input \"%s\": \"%s\"\n",
-              locale, input, unexpected);
+	      "unexpected success for input \"%s\": \"%s\"\n",
+	      locale, input, unexpected);
       ++errors;
       idn2_free (unexpected);
     }
   else if (actual != expected)
     {
       printf ("error: idn2_to_unicode_lzlz: locale %s:"
-              "expected failure %d for input \"%s\", actual %d\n",
-              locale, expected, input, actual);
+	      "expected failure %d for input \"%s\", actual %d\n",
+	      locale, expected, input, actual);
       ++errors;
     }
 }
@@ -183,35 +183,38 @@ check_to_unicode_lzlz_failure (const char *input, int expected)
 static void
 run_utf8_tests (void)
 {
-  check_lookup_ul_success ("\327\251\327\2351.example", "xn--1-qic9a.example");
+  check_lookup_ul_success ("\327\251\327\2351.example",
+			   "xn--1-qic9a.example");
   check_lookup_ul_success ("\327\251\327\235.example", "xn--iebx.example");
   check_lookup_ul_success ("both.cname.idn-cname.n\303\244mchen.example",
-                           "both.cname.idn-cname.xn--nmchen-bua.example");
+			   "both.cname.idn-cname.xn--nmchen-bua.example");
   check_lookup_ul_success ("bu\303\237e.example", "xn--bue-6ka.example");
-  check_lookup_ul_success ("n\303\244mchen.example", "xn--nmchen-bua.example");
+  check_lookup_ul_success ("n\303\244mchen.example",
+			   "xn--nmchen-bua.example");
   check_lookup_ul_success ("n\303\244mchen_zwo.example",
-                           "xn--nmchen_zwo-q5a.example");
+			   "xn--nmchen_zwo-q5a.example");
   check_lookup_ul_success ("with.cname.n\303\244mchen.example",
-                           "with.cname.xn--nmchen-bua.example");
+			   "with.cname.xn--nmchen-bua.example");
   check_lookup_ul_success ("With.idn-cname.n\303\244mchen.example",
-                           "with.idn-cname.xn--nmchen-bua.example");
+			   "with.idn-cname.xn--nmchen-bua.example");
 
   check_to_unicode_lzlz_success ("non-idn-cname.example",
-                                 "non-idn-cname.example");
+				 "non-idn-cname.example");
   check_to_unicode_lzlz_success ("non-idn.example", "non-idn.example");
   check_to_unicode_lzlz_success ("non-idn-name.example",
-                                 "non-idn-name.example");
+				 "non-idn-name.example");
   check_to_unicode_lzlz_success ("xn--1-qic9a.example",
-                                 "\327\251\327\2351.example");
+				 "\327\251\327\2351.example");
   check_to_unicode_lzlz_success ("xn--anderes-nmchen-eib.example",
-                        "anderes-n\303\244mchen.example");
-  check_to_unicode_lzlz_success ("xn--bue-6ka.example", "bu\303\237e.example");
+				 "anderes-n\303\244mchen.example");
+  check_to_unicode_lzlz_success ("xn--bue-6ka.example",
+				 "bu\303\237e.example");
   check_to_unicode_lzlz_success ("xn--iebx.example",
-                                 "\327\251\327\235.example");
+				 "\327\251\327\235.example");
   check_to_unicode_lzlz_success ("xn--nmchen-bua.example",
-                                 "n\303\244mchen.example");
+				 "n\303\244mchen.example");
   check_to_unicode_lzlz_success ("xn--nmchen_zwo-q5a.example",
-                        "n\303\244mchen_zwo.example");
+				 "n\303\244mchen_zwo.example");
 
   check_to_unicode_lzlz_failure ("xn---.example", IDN2_PUNYCODE_BAD_INPUT);
   check_to_unicode_lzlz_failure ("xn--x.example", IDN2_PUNYCODE_BAD_INPUT);
@@ -221,28 +224,28 @@ static void
 run_latin1_tests (void)
 {
   check_lookup_ul_success ("both.cname.idn-cname.n\344mchen.example",
-                           "both.cname.idn-cname.xn--nmchen-bua.example");
+			   "both.cname.idn-cname.xn--nmchen-bua.example");
   check_lookup_ul_success ("bu\337e.example", "xn--bue-6ka.example");
   check_lookup_ul_success ("n\344mchen.example", "xn--nmchen-bua.example");
   check_lookup_ul_success ("n\344mchen_zwo.example",
-                           "xn--nmchen_zwo-q5a.example");
+			   "xn--nmchen_zwo-q5a.example");
   check_lookup_ul_success ("with.cname.n\344mchen.example",
-                           "with.cname.xn--nmchen-bua.example");
+			   "with.cname.xn--nmchen-bua.example");
   check_lookup_ul_success ("With.idn-cname.n\344mchen.example",
-                           "with.idn-cname.xn--nmchen-bua.example");
+			   "with.idn-cname.xn--nmchen-bua.example");
 
   check_to_unicode_lzlz_success ("non-idn-cname.example",
-                                 "non-idn-cname.example");
+				 "non-idn-cname.example");
   check_to_unicode_lzlz_success ("non-idn.example", "non-idn.example");
   check_to_unicode_lzlz_success ("non-idn-name.example",
-                                 "non-idn-name.example");
+				 "non-idn-name.example");
   check_to_unicode_lzlz_success ("xn--anderes-nmchen-eib.example",
-                                 "anderes-n\344mchen.example");
+				 "anderes-n\344mchen.example");
   check_to_unicode_lzlz_success ("xn--bue-6ka.example", "bu\337e.example");
   check_to_unicode_lzlz_success ("xn--nmchen-bua.example",
-                                 "n\344mchen.example");
+				 "n\344mchen.example");
   check_to_unicode_lzlz_success ("xn--nmchen_zwo-q5a.example",
-                                 "n\344mchen_zwo.example");
+				 "n\344mchen_zwo.example");
 
   check_to_unicode_lzlz_failure ("xn--1-qic9a.example", IDN2_ENCODING_ERROR);
   check_to_unicode_lzlz_failure ("xn--iebx.example", IDN2_ENCODING_ERROR);
@@ -250,23 +253,22 @@ run_latin1_tests (void)
   check_to_unicode_lzlz_failure ("xn--x.example", IDN2_PUNYCODE_BAD_INPUT);
 }
 
-static const char *const locale_candidates[] =
-  {
-   "C",
-   "C.UTF-8",
-   "en_US",
-   "en_US.utf8",
-   "en_US.iso88591",
-   "de_DE",
-   "de_DE.utf8",
-   "de_DE.iso88591",
-   "de_DE.iso885915@euro",
-   "fr_FR",
-   "fr_FR.utf8",
-   "fr_FR.iso88591",
-   "he_IL.utf8",
-   NULL
-  };
+static const char *const locale_candidates[] = {
+  "C",
+  "C.UTF-8",
+  "en_US",
+  "en_US.utf8",
+  "en_US.iso88591",
+  "de_DE",
+  "de_DE.utf8",
+  "de_DE.iso88591",
+  "de_DE.iso885915@euro",
+  "fr_FR",
+  "fr_FR.utf8",
+  "fr_FR.iso88591",
+  "he_IL.utf8",
+  NULL
+};
 
 int
 main (void)
@@ -278,21 +280,21 @@ main (void)
     {
       locale = locale_candidates[i];
       if (setlocale (LC_ALL, locale) == NULL)
-        continue;
+	continue;
 
       switch (determine_current_charset_kind ())
-        {
-        case charset_utf8:
-          run_utf8_tests ();
-          utf8_seen = true;
-          break;
-        case charset_latin1:
-          run_latin1_tests ();
-          latin1_seen = true;
-          break;
-        case charset_neither:
-          continue;
-        }
+	{
+	case charset_utf8:
+	  run_utf8_tests ();
+	  utf8_seen = true;
+	  break;
+	case charset_latin1:
+	  run_latin1_tests ();
+	  latin1_seen = true;
+	  break;
+	case charset_neither:
+	  continue;
+	}
     }
 
   if (!utf8_seen)

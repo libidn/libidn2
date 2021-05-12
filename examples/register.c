@@ -15,11 +15,11 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <stdio.h> /* printf, fflush, fgets, stdin, perror, fprintf */
-#include <string.h> /* strlen */
-#include <locale.h> /* setlocale */
-#include <stdlib.h> /* free */
-#include <idn2.h> /* idn2_register_ul, IDN2_OK, idn2_strerror, idn2_strerror_name */
+#include <stdio.h>		/* printf, fflush, fgets, stdin, perror, fprintf */
+#include <string.h>		/* strlen */
+#include <locale.h>		/* setlocale */
+#include <stdlib.h>		/* free */
+#include <idn2.h>		/* idn2_register_ul, IDN2_OK, idn2_strerror, idn2_strerror_name */
 
 int
 main (int argc, char *argv[])

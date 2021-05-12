@@ -32,13 +32,9 @@
 #include <stdint.h>
 #include "idn2.h"
 
-int G_GNUC_IDN2_ATTRIBUTE_CONST
-	_idn2_disallowed_p (uint32_t cp);
-int G_GNUC_IDN2_ATTRIBUTE_CONST
-	_idn2_contextj_p (uint32_t cp);
-int G_GNUC_IDN2_ATTRIBUTE_CONST
-	_idn2_contexto_p (uint32_t cp);
-int G_GNUC_IDN2_ATTRIBUTE_CONST
-	_idn2_unassigned_p (uint32_t cp);
+int G_GNUC_IDN2_ATTRIBUTE_CONST _idn2_disallowed_p (uint32_t cp);
+int G_GNUC_IDN2_ATTRIBUTE_CONST _idn2_contextj_p (uint32_t cp);
+int G_GNUC_IDN2_ATTRIBUTE_CONST _idn2_contexto_p (uint32_t cp);
+int G_GNUC_IDN2_ATTRIBUTE_CONST _idn2_unassigned_p (uint32_t cp);
 
 #endif /* LIBIDN2_TABLES_H */

@@ -33,7 +33,7 @@
 #include <string.h>		/* strverscmp */
 
 #ifdef __cplusplus
-extern // define a global const variable in C++, C doesn't need it.
+extern				// define a global const variable in C++, C doesn't need it.
 #endif
 const char version_etc_copyright[] =
   /* Do *not* mark this string for translation */

@@ -37,11 +37,9 @@
    redefine's from gnulib. */
 #undef free
 
-static size_t
-_u32_stream_len (uint32_t * src, size_t len);
+static size_t _u32_stream_len (uint32_t * src, size_t len);
 
-static size_t
-_u32_cp_stream_len (const uint8_t * stream, size_t ncp);
+static size_t _u32_cp_stream_len (const uint8_t * stream, size_t ncp);
 
 #define countof(a) (sizeof(a)/sizeof(*(a)))
 
@@ -107,10 +105,10 @@ _scan_file (const char *fname, int (*scan) (char *))
       return -1;
     }
 
-  while (fgets(buf, sizeof(buf), fp))
+  while (fgets (buf, sizeof (buf), fp))
     {
       linep = buf;
-      buflen = strlen(buf);
+      buflen = strlen (buf);
 
       // strip off \r\n
       while (buflen > 0 && (buf[buflen] == '\n' || buf[buflen] == '\r'))
@@ -486,7 +484,7 @@ _compact_idna_map (void)
   size_t ndata = 0, slen;
 
   if (data == NULL)
-    abort();
+    abort ();
 
   for (it = 0; it < map_pos; it++)
     {

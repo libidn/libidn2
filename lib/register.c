@@ -104,7 +104,7 @@ idn2_register_u8 (const uint8_t * ulabel, const uint8_t * alabel,
       if (!_idn2_ascii_p (alabel, alabellen))
 	return IDN2_INVALID_ALABEL;
 
-      rc = _idn2_punycode_decode_internal (alabellen - 4, (char*)alabel + 4,
+      rc = _idn2_punycode_decode_internal (alabellen - 4, (char *) alabel + 4,
 					   &u32len, u32);
       if (rc != IDN2_OK)
 	return rc;
@@ -116,7 +116,7 @@ idn2_register_u8 (const uint8_t * ulabel, const uint8_t * alabel,
 
       if (ulabel)
 	{
-	  if (strcmp ((char*)ulabel, (char*)u8) != 0)
+	  if (strcmp ((char *) ulabel, (char *) u8) != 0)
 	    return IDN2_UALABEL_MISMATCH;
 	}
 
@@ -124,14 +124,14 @@ idn2_register_u8 (const uint8_t * ulabel, const uint8_t * alabel,
       if (rc != IDN2_OK)
 	return rc;
 
-      rc = strcmp ((char*)alabel, (char*)tmp);
+      rc = strcmp ((char *) alabel, (char *) tmp);
       free (tmp);
       if (rc != 0)
 	return IDN2_UALABEL_MISMATCH;
 
       if (insertname)
 	{
-	  uint8_t *m = (uint8_t *)strdup ((char*)alabel);
+	  uint8_t *m = (uint8_t *) strdup ((char *) alabel);
 	  if (!m)
 	    return IDN2_MALLOC;
 
@@ -153,7 +153,7 @@ idn2_register_u8 (const uint8_t * ulabel, const uint8_t * alabel,
 
 	  if (insertname)
 	    {
-	      uint8_t *m = (uint8_t *)strdup ((char*)ulabel);
+	      uint8_t *m = (uint8_t *) strdup ((char *) ulabel);
 	      if (!m)
 		return IDN2_MALLOC;
 	      *insertname = m;
@@ -186,7 +186,8 @@ idn2_register_u8 (const uint8_t * ulabel, const uint8_t * alabel,
       tmp[3] = '-';
 
       tmpl = IDN2_LABEL_MAX_LENGTH - 4;
-      rc = _idn2_punycode_encode_internal (u32len, u32, &tmpl, (char*)tmp + 4);
+      rc =
+	_idn2_punycode_encode_internal (u32len, u32, &tmpl, (char *) tmp + 4);
       free (u32);
       if (rc != IDN2_OK)
 	return rc;
@@ -195,7 +196,7 @@ idn2_register_u8 (const uint8_t * ulabel, const uint8_t * alabel,
 
       if (insertname)
 	{
-	  uint8_t *m = (uint8_t *)strdup ((char*)tmp);
+	  uint8_t *m = (uint8_t *) strdup ((char *) tmp);
 	  if (!m)
 	    return IDN2_MALLOC;
 	  *insertname = m;

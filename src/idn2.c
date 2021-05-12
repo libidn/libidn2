@@ -44,7 +44,7 @@
 #include "blurbs.h"
 
 #ifdef __cplusplus
-extern // define a global const variable in C++, C doesn't need it.
+extern				// define a global const variable in C++, C doesn't need it.
 #endif
 const char version_etc_copyright[] =
   /* Do *not* mark this string for translation.  %s is a copyright
@@ -159,7 +159,7 @@ process_input (char *readbuf, int flags)
 
   if (args_info.register_given)
     {
-      rc = idn2_register_ul(readbuf, NULL, &output, flags);
+      rc = idn2_register_ul (readbuf, NULL, &output, flags);
       tag = "register";
     }
   else if (args_info.decode_given)

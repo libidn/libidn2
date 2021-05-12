@@ -61,7 +61,8 @@
  * Since: 2.0.0
  **/
 int
-idn2_to_unicode_8z4z (const char * input, uint32_t ** output, G_GNUC_UNUSED int flags)
+idn2_to_unicode_8z4z (const char *input, uint32_t ** output,
+		      G_GNUC_UNUSED int flags)
 {
   uint32_t *domain_u32;
   int rc;
@@ -87,8 +88,7 @@ idn2_to_unicode_8z4z (const char * input, uint32_t ** output, G_GNUC_UNUSED int 
 	e++;
 
       if (e - s >= 4 && (s[0] == 'x' || s[0] == 'X')
-	  && (s[1] == 'n' || s[1] == 'N')
-	  && s[2] == '-' && s[3] == '-')
+	  && (s[1] == 'n' || s[1] == 'N') && s[2] == '-' && s[3] == '-')
 	{
 	  s += 4;
 
@@ -103,9 +103,11 @@ idn2_to_unicode_8z4z (const char * input, uint32_t ** output, G_GNUC_UNUSED int 
 	  u32_cpy (out_u32 + out_len, label_u32, label_len);
 	}
       else
-        {
+	{
 	  /* convert UTF-8 input to UTF-32 */
-	  if (!(domain_u32 = u8_to_u32 ((uint8_t*)s, e - s, NULL, &label_len)))
+	  if (!
+	      (domain_u32 =
+	       u8_to_u32 ((uint8_t *) s, e - s, NULL, &label_len)))
 	    {
 	      if (errno == ENOMEM)
 		return IDN2_MALLOC;
@@ -144,7 +146,7 @@ idn2_to_unicode_8z4z (const char * input, uint32_t ** output, G_GNUC_UNUSED int 
 
       _out = u32_cpy_alloc (out_u32, out_len + 1);
       if (!_out)
-        {
+	{
 	  if (errno == ENOMEM)
 	    return IDN2_MALLOC;
 	  return IDN2_ENCODING_ERROR;
@@ -192,7 +194,7 @@ idn2_to_unicode_4z4z (const uint32_t * input, uint32_t ** output, int flags)
       return IDN2_OK;
     }
 
-  input_u8 = u32_to_u8 (input, u32_strlen(input) + 1, NULL, &length);
+  input_u8 = u32_to_u8 (input, u32_strlen (input) + 1, NULL, &length);
   if (!input_u8)
     {
       if (errno == ENOMEM)
@@ -200,7 +202,7 @@ idn2_to_unicode_4z4z (const uint32_t * input, uint32_t ** output, int flags)
       return IDN2_ENCODING_ERROR;
     }
 
-  rc = idn2_to_unicode_8z4z ((char*)input_u8, &output_u32, flags);
+  rc = idn2_to_unicode_8z4z ((char *) input_u8, &output_u32, flags);
   free (input_u8);
 
   if (rc == IDN2_OK)
@@ -208,7 +210,7 @@ idn2_to_unicode_4z4z (const uint32_t * input, uint32_t ** output, int flags)
       if (output)
 	*output = output_u32;
       else
-	free(output_u32);
+	free (output_u32);
     }
 
   return rc;
@@ -241,7 +243,8 @@ idn2_to_unicode_4z4z (const uint32_t * input, uint32_t ** output, int flags)
  * Since: 2.0.0
  **/
 int
-idn2_to_unicode_44i (const uint32_t * in, size_t inlen, uint32_t * out, size_t * outlen, int flags)
+idn2_to_unicode_44i (const uint32_t * in, size_t inlen, uint32_t * out,
+		     size_t *outlen, int flags)
 {
   uint32_t *input_u32;
   uint32_t *output_u32;
@@ -255,7 +258,7 @@ idn2_to_unicode_44i (const uint32_t * in, size_t inlen, uint32_t * out, size_t *
       return IDN2_OK;
     }
 
-  input_u32 = (uint32_t *) malloc ((inlen + 1) * sizeof(uint32_t));
+  input_u32 = (uint32_t *) malloc ((inlen + 1) * sizeof (uint32_t));
   if (!input_u32)
     return IDN2_MALLOC;
 
@@ -300,7 +303,7 @@ idn2_to_unicode_44i (const uint32_t * in, size_t inlen, uint32_t * out, size_t *
  * Since: 2.0.0
  **/
 int
-idn2_to_unicode_8z8z (const char * input, char ** output, int flags)
+idn2_to_unicode_8z8z (const char *input, char **output, int flags)
 {
   uint32_t *output_u32;
   uint8_t *output_u8;
@@ -311,7 +314,8 @@ idn2_to_unicode_8z8z (const char * input, char ** output, int flags)
   if (rc != IDN2_OK || !input)
     return rc;
 
-  output_u8 = u32_to_u8 (output_u32, u32_strlen(output_u32) + 1, NULL, &length);
+  output_u8 =
+    u32_to_u8 (output_u32, u32_strlen (output_u32) + 1, NULL, &length);
   free (output_u32);
 
   if (!output_u8)
@@ -352,7 +356,7 @@ idn2_to_unicode_8z8z (const char * input, char ** output, int flags)
  * Since: 2.0.0
  **/
 int
-idn2_to_unicode_8zlz (const char * input, char ** output, int flags)
+idn2_to_unicode_8zlz (const char *input, char **output, int flags)
 {
   int rc;
   uint8_t *output_u8, *output_l8;
@@ -363,23 +367,24 @@ idn2_to_unicode_8zlz (const char * input, char ** output, int flags)
     return rc;
 
   encoding = locale_charset ();
-  output_l8 = (uint8_t*) u8_strconv_to_encoding (output_u8, encoding, iconveh_error);
+  output_l8 =
+    (uint8_t *) u8_strconv_to_encoding (output_u8, encoding, iconveh_error);
 
   if (!output_l8)
     {
       if (errno == ENOMEM)
-        rc = IDN2_MALLOC;
+	rc = IDN2_MALLOC;
       else
-        rc = IDN2_ENCODING_ERROR;
+	rc = IDN2_ENCODING_ERROR;
 
-      free(output_l8);
+      free (output_l8);
     }
   else
     {
       if (output)
-        *output = (char *) output_l8;
+	*output = (char *) output_l8;
       else
-        free (output_l8);
+	free (output_l8);
 
       rc = IDN2_OK;
     }
@@ -413,7 +418,7 @@ idn2_to_unicode_8zlz (const char * input, char ** output, int flags)
  * Since: 2.0.0
  **/
 int
-idn2_to_unicode_lzlz (const char * input, char ** output, int flags)
+idn2_to_unicode_lzlz (const char *input, char **output, int flags)
 {
   uint8_t *input_l8;
   const char *encoding;
@@ -436,7 +441,7 @@ idn2_to_unicode_lzlz (const char * input, char ** output, int flags)
       return IDN2_ICONV_FAIL;
     }
 
-  rc = idn2_to_unicode_8zlz ((char*)input_l8, output, flags);
+  rc = idn2_to_unicode_8zlz ((char *) input_l8, output, flags);
   free (input_l8);
 
   return rc;

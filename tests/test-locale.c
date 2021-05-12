@@ -28,8 +28,8 @@
 static int error_count = 0;
 static int break_on_error = 1;
 
-_GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD (1, 2) static void
-fail (const char *format, ...)
+_GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD (1, 2)
+     static void fail (const char *format, ...)
 {
   va_list arg_ptr;
 
@@ -51,16 +51,20 @@ main (void)
   return 77;
 #endif
 
-  if ((rc = idn2_lookup_ul ("abc", NULL, 0)) != IDN2_OK) {
-    fail ("special #5 failed with %d\n", rc);
-  }
+  if ((rc = idn2_lookup_ul ("abc", NULL, 0)) != IDN2_OK)
+    {
+      fail ("special #5 failed with %d\n", rc);
+    }
 
   /* test libidn compatibility functions */
-  if ((rc = idna_to_ascii_lz ("abc", (char **) &out, 0)) != IDN2_OK) {
-    fail ("special #6 failed with %d\n", rc);
-  } else {
-    idn2_free (out);
-  }
+  if ((rc = idna_to_ascii_lz ("abc", (char **) &out, 0)) != IDN2_OK)
+    {
+      fail ("special #6 failed with %d\n", rc);
+    }
+  else
+    {
+      idn2_free (out);
+    }
 
   if ((rc = idn2_register_ul ("foo", NULL, NULL, 0)) != IDN2_OK)
     fail ("special #6 failed with %d\n", rc);
