@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-manual_title = Libidn2 - Internationalized Domain Names Library
+manual_title = Internationalized Domain Names Library
 
 old_NEWS_hash = 71ff7c3bdfcaf6931c1e980d859de147
 
