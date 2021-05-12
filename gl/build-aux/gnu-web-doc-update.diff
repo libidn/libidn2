@@ -1,0 +1,46 @@
+--- gnu-web-doc-update.orig	2021-05-12 20:15:55.893546182 +0200
++++ gnu-web-doc-update	2021-05-12 20:15:28.465402526 +0200
+@@ -1,8 +1,8 @@
+ #!/bin/sh
+ # Run this after each non-alpha release, to update the web documentation at
+-# https://www.gnu.org/software/$pkg/manual/
++# https://www.gnu.org/software/libidn/libidn2/manual/
+ 
+-VERSION=2021-01-09.09; # UTC
++VERSION=2021-05-12.18; # UTC
+ 
+ # Copyright (C) 2009-2021 Free Software Foundation, Inc.
+ 
+@@ -30,7 +30,7 @@
+ 
+ Run this script from top_srcdir (no arguments) after each non-alpha
+ release, to update the web documentation at
+-https://www.gnu.org/software/\$pkg/manual/
++https://www.gnu.org/software/libidn/libidn2/manual/
+ 
+ This script assumes you're using git for revision control, and
+ requires a .prev-version file as well as a Makefile, from which it
+@@ -139,8 +139,6 @@
+ 
+ prev=.prev-version
+ version=$(cat $prev) || die "no $prev file?"
+-pkg=$(sed -n 's/^PACKAGE = \(.*\)/\1/p' $builddir/Makefile) \
+-  || die "no Makefile?"
+ tmp_branch=web-doc-$version-$$
+ current_branch=$($GIT branch | sed -ne '/^\* /{s///;p;q;}')
+ 
+@@ -175,11 +173,11 @@
+ 
+ tmp=$(mktemp -d web-doc-update.XXXXXX) || exit 1
+ ( cd $tmp \
+-    && $CVS -d $cvs_user@cvs.sv.gnu.org:/webcvs/$pkg co $pkg )
+-$RSYNC -avP "$builddir"/doc/manual/ $tmp/$pkg/manual
++    && $CVS -d $cvs_user@cvs.sv.gnu.org:/webcvs/libidn co libidn )
++$RSYNC -avP "$builddir"/doc/manual/ $tmp/libidn/libidn2/manual
+ 
+ (
+-  cd $tmp/$pkg/manual
++  cd $tmp/libidn/libidn2/manual
+ 
+   # Add all the files.  This is simpler than trying to add only the
+   # new ones because of new directories
