@@ -1,5 +1,8 @@
 Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
 
+* Noteworthy changes in release ?.? (????-??-??) [?]
+
+
 * Noteworthy changes in release 2.3.1 (2021-05-12) [stable]
 
 ** Implement full roundtrip for lookup functionality
