@@ -15,6 +15,8 @@
 
 manual_title = Libidn2 - Internationalized Domain Names Library
 
+old_NEWS_hash = 71ff7c3bdfcaf6931c1e980d859de147
+
 bootstrap-tools = gnulib,autoconf,automake,libtoolize,make,makeinfo,help2man,gperf,gengetopt,gtkdocize,tar,gzip
 
 local-checks-to-skip += sc_unmarked_diagnostics sc_bindtextdomain # Re-add when we have translation
