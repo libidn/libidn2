@@ -60,22 +60,22 @@ Copyright @copyright{} 2011--2021 Simon Josefsson
 @node Introduction
 @chapter Introduction
 
-Libidn2 is a free software implementation of IDNA2008, Punycode and TR46
-in the form a library. It contains functionality to convert internationalized domain names
-to and from ASCII Compatible Encoding (ACE), following the IDNA2008 and TR46
-standards. It is available at @uref{https://gitlab.com/libidn/libidn2}.
+Libidn2 is a free software implementation of IDNA2008, Punycode and
+Unicode TR46.  Its purpose is to encode and decode internationalized
+domain names.
 
 The library is a rewrite of the popular but legacy libidn library, and
 is backwards (API) compatible with it. See @ref{Converting from
 libidn} for more information.
 
-For technical reference on IDNA protocols, see
+For technical reference, see:
 @itemize
-@item RFC 5890 (@uref{https://tools.ietf.org/html/rfc5890}),
-@item RFC 5891 (@uref{https://tools.ietf.org/html/rfc5891}),
-@item RFC 5892 (@uref{https://tools.ietf.org/html/rfc5892}),
-@item RFC 5893 (@uref{https://tools.ietf.org/html/rfc5893}),
-@item TR46 (@uref{http://www.unicode.org/reports/tr46/}).
+@item IDNA2008 Framework (@uref{https://tools.ietf.org/html/rfc5890})
+@item IDNA2008 Protocol (@uref{https://tools.ietf.org/html/rfc5891})
+@item IDNA2008 Unicode tables (@uref{https://tools.ietf.org/html/rfc5892})
+@item IDNA2008 Bidi rule (@uref{https://tools.ietf.org/html/rfc5893})
+@item Punycode (@uref{https://tools.ietf.org/html/rfc3492})
+@item Unicode IDNA Compatibility Processing (@uref{http://www.unicode.org/reports/tr46/})
 @end itemize
 
 Libidn2 uses GNU libunistring
@@ -84,8 +84,8 @@ processing and optionally GNU libiconv
 (@uref{https://www.gnu.org/software/libiconv/}) for character set
 conversion.
 
-The library is dual-licensed under LGPLv3 or GPLv2, see the file COPYING for
-detailed information.
+The library is dual-licensed under LGPLv3 or GPLv2, see the file COPYING
+for detailed information.
 
 @node Library Functions
 @chapter Library Functions

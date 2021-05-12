@@ -6,18 +6,21 @@
 
 # Libidn2 README -- Introduction information
 
-Libidn2 is a free software implementation of IDNA2008, Punycode and TR46.
-Its purpose is to encode and decode internationalized domain names.
+Libidn2 is a free software implementation of IDNA2008, Punycode and
+Unicode TR46.  Its purpose is to encode and decode internationalized
+domain names.
 
- * [RFC 5890](https://tools.ietf.org/html/rfc5890)
- * [RFC 5891](https://tools.ietf.org/html/rfc5891)
- * [RFC 5892](https://tools.ietf.org/html/rfc5892)
- * [RFC 5893](https://tools.ietf.org/html/rfc5893)
- * [TR46](https://www.unicode.org/reports/tr46/)
+For technical reference, see:
 
-The library contains functionality to convert internationalized domain names
-to and from ASCII Compatible Encoding (ACE), following the IDNA2008 and TR46
-standards.
+ * [IDNA2008 Framework](https://tools.ietf.org/html/rfc5890)
+ * [IDNA2008 Protocol](https://tools.ietf.org/html/rfc5891)
+ * [IDNA2008 Unicode tables](https://tools.ietf.org/html/rfc5892)
+ * [IDNA2008 Bidi rule](https://tools.ietf.org/html/rfc5893)
+ * [Punycode](https://tools.ietf.org/html/rfc3492)
+ * [Unicode IDNA Compatibility Processing](https://www.unicode.org/reports/tr46/)
+
+The library contains functionality to convert internationalized domain
+names to and from ASCII Compatible Encoding (ACE).
 
 The API consists of two main functions, ```idn2_to_ascii_8z``` for
 converting data from UTF-8 to ASCII Compatible Encoding (ACE), and
@@ -143,18 +146,3 @@ Libidn2 is being continuously fuzzed by [OSS-Fuzz](https://github.com/google/oss
 Of course you can do local fuzzing on your own, see `fuzz/README.md` for instructions.
 
 The code coverage of our fuzzers can be found [here](https://libidn.gitlab.io/libidn2/fuzz-coverage/).
-
-
-# Cross-compiling
-
-It is possible to cross-compile libidn2.  It is expected your cross
-compiler toolchain to have a specific prefix to the target host.  For
-example compiling for Windows with mingw64 (with prefix
-```i686-w64-mingw32```) can be done the following way:
-
-```
-./configure --host=i686-w64-mingw32 && make
-```
-
-After `./bootstrap`ing you find the `INSTALL` file in the main project
-directory including generic instructions about cross-compilation.

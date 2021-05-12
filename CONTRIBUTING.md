@@ -41,6 +41,29 @@ When submitting patches it is recommended to open a new merge request
 [on the gitlab site](https://gitlab.com/libidn/libidn2), to force the
 changes to pass the automated test suite.
 
+# Continous Integration
+
+The project is built auomatically on every git commit using GitLab
+CI/CD, see the file `.gitlab-ci.yml` for rules and [current libidn2
+pipeline](https://gitlab.com/libidn/libidn2/-/pipelines).
+
+# Cross-compiling
+
+It is possible to cross-compile libidn2.  It is expected that your
+cross compiler toolchain have a specific prefix to the target host.
+For example compiling for Windows with mingw64 (with prefix
+`i686-w64-mingw32`) can be done the following way:
+
+```
+./configure --host=i686-w64-mingw32 && make
+```
+
+Note that you must perform a `make` step using your native compiler
+after the initial `./bootstrap` and `./configure` to generate some
+files.  When cross-compiling from version controlled, you thus need to
+perform a two-step build.  Consider cross-compiling from a tarball
+generated using `make dist` too.
+
 ## Release process
 
 Read README-release on how to prepare a new release.  The file is
