@@ -1,5 +1,5 @@
---- README-release.orig	2021-01-06 18:11:36.867406428 +0100
-+++ README-release	2021-01-06 18:12:24.019799365 +0100
+--- README-release.orig	2021-05-12 21:09:19.810266045 +0200
++++ README-release	2021-05-12 21:09:05.714122474 +0200
 @@ -19,9 +19,9 @@
  
      git push origin master
@@ -12,7 +12,48 @@
  
  * Run the following command to download any new translations:
  
-@@ -68,28 +68,6 @@
+@@ -29,27 +29,26 @@
+ 
+ * Pre-release testing: ensure that the following commands succeed:
+ 
+-    c=check ve=check-very-expensive; git grep -q "^$ve:\$" && c=$ve
+-    make $c syntax-check distcheck
++    make check syntax-check distcheck
+ 
+ * To (i) set the date, version number, and release TYPE on line 3 of
+   NEWS, (ii) commit that, and (iii) tag the release, run
+ 
+     # "TYPE" must be stable, beta or alpha
+-    make release-commit RELEASE='X.Y TYPE'
++    make release-commit RELEASE='X.Y.Z TYPE'
+ 
+ * Run the following to create release tarballs.  Your choice selects the
+   corresponding upload-to destination in the emitted gnupload command.
+   The different destinations are specified in cfg.mk.  See the definitions
+   of gnu_ftp_host-{alpha,beta,stable}.
+ 
+-    make release RELEASE='X.Y TYPE'
++    make release RELEASE='X.Y.Z TYPE'
+ 
+ * Test the tarball.  Copy it to a few odd-ball systems and ensure that
+   it builds and passes all tests.
+ 
+ * While that's happening, write the release announcement that you will
+-  soon post.  Start with the template, $HOME/announce-@PACKAGE@-X.Y
++  soon post.  Start with the template, $HOME/announce-libidn2-X.Y.Z
+   that was just created by that "make" command.
+ 
+ Once all the builds and tests have passed,
+@@ -57,7 +56,7 @@
+ * Run the gnupload command that was suggested by your "make release"
+   run above, or run
+ 
+-    make upload RELEASE='X.Y TYPE'
++    make upload RELEASE='X.Y.Z TYPE'
+ 
+ * Wait a few minutes (maybe up to 30?) and then use the release URLs to
+   download all tarball/signature pairs and use gpg --verify to ensure
+@@ -68,28 +67,6 @@
      v=$(cat .prev-version)
      git push origin master tag v$v
  
@@ -41,3 +82,9 @@
  * Send the announcement email message.
  
  * After each non-alpha release, run
+@@ -98,4 +75,4 @@
+ 
+   to update the on-line manual accessible at
+ 
+-    https://www.gnu.org/software/@PACKAGE@/manual/
++    https://www.gnu.org/software/libidn/libidn2/manual/
