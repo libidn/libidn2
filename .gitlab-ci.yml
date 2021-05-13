@@ -193,16 +193,6 @@ T-ArchLinux:
   - ../configure --enable-gcc-warnings || (cat config.log; exit 1)
   - make check V=1 || (find . -name test-suite.log -exec cat {} +; exit 1)
 
-T-CentOS6:
-  image: centos:6
-  stage: tarball-test
-  needs: [B-Debian-stable]
-  script:
-  - tar xfa libidn2-*.tar.gz
-  - cd `ls -d libidn2-* | grep -v tar.gz`
-  - ./configure --enable-gcc-warnings || (cat config.log; exit 1)
-  - make check V=1 || (find . -name test-suite.log -exec cat {} +; exit 1)
-
 T-CentOS7:
   image: centos:7
   stage: tarball-test
