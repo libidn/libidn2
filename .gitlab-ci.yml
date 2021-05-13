@@ -170,7 +170,7 @@ T-CentOS:
   stage: tarball-test
   needs: [B-Debian-stable]
   before_script:
-  - yum -y install make gcc diffutils
+  - yum -y install make gcc diffutils valgrind
   script:
   - tar xfa libidn2-*.tar.gz
   - cd `ls -d libidn2-* | grep -v tar.gz`
