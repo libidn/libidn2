@@ -59,6 +59,20 @@ B-Alpine-mini:
   - time make V=1
   - time make check || (find . -name test-suite.log -exec cat {} +; exit 1)
 
+B-Centos8:
+  image: $CI_REGISTRY/libidn/build-images:libidn2-Centos8
+  stage: bootstrap
+  script:
+  - time ./bootstrap --skip-po --no-git
+  - time ./configure || (cat config.log; exit 1)
+  - time make V=1
+  - time make check || (find . -name test-suite.log -exec cat {} +; exit 1)
+  - time make dist
+  artifacts:
+    expire_in: 2 weeks
+    paths:
+    - libidn2-*.tar.gz
+
 B-Debian-stable:
   image: $CI_REGISTRY/libidn/build-images:libidn2-Debian-stable
   stage: bootstrap
@@ -170,7 +184,7 @@ T-CentOS:
   stage: tarball-test
   needs: [B-Debian-stable]
   before_script:
-  - yum -y install make gcc diffutils valgrind libunistring-devel
+  - dnf --enablerepo=powertools -y install make gcc diffutils valgrind libunistring-devel
   script:
   - tar xfa libidn2-*.tar.gz
   - cd `ls -d libidn2-* | grep -v tar.gz`
@@ -366,7 +380,6 @@ B-Centos7:
   stage: bootstrap
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$CENTOS7_BUILD
   script:
-  - sed -i 's/AM_GNU_GETTEXT_VERSION(0.19.3)/AM_GNU_GETTEXT_VERSION(0.18.2)/g' configure.ac
   - ./bootstrap --skip-po
   - ./configure --enable-gcc-warnings --disable-doc
   - make -j$(nproc)
