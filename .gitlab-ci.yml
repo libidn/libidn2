@@ -412,25 +412,6 @@ Debian ASAN/UBSAN:
       - ./*.log
       - tests/*.log
 
-B-Centos7:
-  stage: bootstrap
-  image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$CENTOS7_BUILD
-  script:
-  - ./bootstrap --skip-po
-  - ./configure --enable-gcc-warnings --disable-doc
-  - make -j$(nproc)
-  - make -j$(nproc) check
-  tags:
-  - shared
-  artifacts:
-    expire_in: 2 weeks
-    when: on_failure
-    paths:
-      - ./config.h
-      - ./*.log
-      - tests/*.log
-      - compat_reports/
-
 clang-analyzer/Fedora:
   stage: bootstrap
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$FEDORA_BUILD
