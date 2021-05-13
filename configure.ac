@@ -179,6 +179,6 @@ AC_MSG_NOTICE([Summary of build options:
   Library types:     Shared=${enable_shared}, Static=${enable_static}
   Libiconv:          $am_cv_func_iconv $LTLIBICONV
   Libunistring:      $ac_cv_libunistring $LIBUNISTRING_VERSION $LTLIBUNISTRING
-  Valgrind:          gl_cv_prog_valgrind_works ${VALGRIND}
+  Valgrind:          $gl_cv_prog_valgrind_works ${VALGRIND}
   Version script:    $have_ld_version_script
 ])
