@@ -1,10 +1,3 @@
-[![build status](https://gitlab.com/libidn/libidn2/badges/master/pipeline.svg)](https://gitlab.com/libidn/libidn2/pipelines)
-[![coverage status](https://gitlab.com/libidn/libidn2/badges/master/coverage.svg)](https://libidn.gitlab.io/libidn2/coverage)
-[![fuzz coverage status](https://libidn.gitlab.io/libidn2/fuzz-coverage/badge.svg)](https://libidn.gitlab.io/libidn2/fuzz-coverage)
-[![Coverity Scan Build Status](https://scan.coverity.com/projects/12080/badge.svg)](https://scan.coverity.com/projects/libidn2)
-[![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/gitlab/libidn/libidn2.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/gl/libidn/libidn2/context:cpp)
-
-
 # Libidn2 README -- Introduction information
 
 Libidn2 is a free software implementation of IDNA2008, Punycode and
@@ -23,25 +16,28 @@ For technical reference, see:
 The library contains functionality to convert internationalized domain
 names to and from ASCII Compatible Encoding (ACE).
 
-The API consists of two main functions, ```idn2_to_ascii_8z``` for
+The API consists of two main functions, `idn2_to_ascii_8z` for
 converting data from UTF-8 to ASCII Compatible Encoding (ACE), and
-```idn2_to_unicode_8z8z``` to convert ACE names into UTF-8
-format. There are several variations of these main functions, which
-accept UTF-32, or input in the local system encoding. All functions
-assume zero-terminated strings.
+`idn2_to_unicode_8z8z` to convert ACE names into UTF-8 format. There
+are several variations of these main functions, which accept UTF-32,
+or input in the local system encoding. All functions assume
+zero-terminated strings.
 
 This library is backwards (API) compatible with the [libidn
 library](https://www.gnu.org/software/libidn/).  Replacing the
-```idna.h``` header with ```idn2.h``` into a program is sufficient to
-switch the application from IDNA2003 to IDNA2008 as supported by this
+`idna.h` header with `idn2.h` into a program is sufficient to switch
+the application from IDNA2003 to IDNA2008 as supported by this
 library.
 
 Libidn2 is believed to be a complete IDNA2008 and TR46 implementation,
 it contains an extensive test-suite, and is included in the continuous
-fuzzing project [OSS-Fuzz](https://bugs.chromium.org/p/oss-fuzz/issues/list?q=libidn2).
+fuzzing project
+[OSS-Fuzz](https://bugs.chromium.org/p/oss-fuzz/issues/list?q=libidn2).
 
-You can check the current test code coverage [here](https://libidn.gitlab.io/libidn2/coverage/index.html)
-and the current fuzzing code coverage [here](https://libidn.gitlab.io/libidn2/fuzz-coverage/index.html).
+You can check the current test code coverage
+[here](https://libidn.gitlab.io/libidn2/coverage/index.html) and the
+current fuzzing code coverage
+[here](https://libidn.gitlab.io/libidn2/fuzz-coverage/index.html).
 
 
 # License
@@ -63,8 +59,9 @@ while the rest of the package is GPLv3+.  See the file
 Software releases of libidn2 can be downloaded from
 https://ftp.gnu.org/gnu/libidn/ and ftp://ftp.gnu.org/gnu/libidn/
 
-Development of libidn2 is organized [through GitLab website](https://gitlab.com/libidn/libidn2),
-and there is [an issue tracker for reporting bugs](https://gitlab.com/libidn/libidn2/issues).
+Development of libidn2 is organized [through GitLab
+website](https://gitlab.com/libidn/libidn2), and there is [an issue
+tracker for reporting bugs](https://gitlab.com/libidn/libidn2/issues).
 
 
 # Dependencies
