@@ -196,7 +196,6 @@ T-CentOS6:
   stage: tarball-test
   needs: [B-Debian-stable]
   before_script:
-  - yum -y update
   - yum -y install make gcc diffutils
   script:
   - tar xfa libidn2-*.tar.gz
