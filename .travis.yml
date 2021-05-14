@@ -1,41 +1,18 @@
-sudo: required
-dist: trusty
-
-language: c
-
-os:
-#  - linux
-  - osx
-
-compiler:
-  - gcc
-  - clang
-
-git:
-    depth: 3
-
-matrix:
-    exclude:
-        - os: osx
-          compiler: gcc
-
-cache: ccache
-
-addons:
-    apt:
-        packages:
-            - autoconf
-            - automake
-            - autopoint
-            - libtool
-            - gettext
-            - libunistring0
-            - libc6
-            - valgrind
-            - lcov
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "X8r6VMrZhNubVDmIaqiSnYhbiPddfLWAz6TRwvruVkLfdOuM0hjOVccS4+atQXh+13R0k/9DavanRAa9MoI5TzHomb/6l5zJG/6P2aXyv+JTtMgfVPBWu+//VdMstUXIoul34KR0h/nKVNCLZ93qLaqjEuSkZ+b/ZwcwaSe+aTeJn2JB3Yb2N+SKHpkM+JjVMXdYSngZhQvJlYsUlvaZzWZJ9/wNqpJu37gFGLfQxOZl1dRGHNhjctTHz1mrh8nxrXcqcR1SgBf9yexNfU0zboX5jBpuZFAAYbln6MTtZB+OCOw6tqyWAJWx+adeZozuhlGfmOX7635at6xVSNzC3RzN/ilqpyJ2GqoFjZEEVmJoW1tnrJP9TrxGXE10tBLZQoH1bwuwLM1ascRG0AsQcQdgziHBb1gJCtdruFgxH+OfPpe2lHyySwKFOQK5GftSqRjMr9mMZjZ73R3k9EKKv5W/jRmXkBcttgOKXKXSCd6EGXQRpkXck+zC9YNuBBXBjtKPZYmGYMuLvo3xh6MZR7UnQDr63/SQRfxTHi0vMZ176BFrpOOSoBxruBcInYLQwdY1aqR5bu4aZbZr3lTXAZjvL6yIfrvxE0bA+7TCDgPEZ4I6HY2pOdr0CtLHi5vc4+dkaR8UKUoaheLPbykLt16U/JXsJioSDmXbNfQ+cOk="
 
 before_install:
-  - echo $TRAVIS_OS_NAME
-  - ./.travis_setup.sh
+  - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
 
-script: ./.travis.sh
+addons:
+  coverity_scan:
+    project:
+      name: "libidn/libidn2"
+      description: "<Your project description here>"
+    notification_email: simon@josefsson.org
+    build_command_prepend: "./bootstrap && ./configure"
+    build_command: "make"
+    branch_pattern: coverity_scan
