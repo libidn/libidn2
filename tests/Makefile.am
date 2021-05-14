@@ -51,8 +51,8 @@ EXTRA_DIST = gen-utc-test.pl $(IDNA_TXT) $(IDNA_INC)
 
 $(IDNA_TXT):
 	rm -f $(IDNA_TXT)
-	wget http://www.unicode.org/Public/idna/6.3.0/IdnaTest.txt
-	echo "d3690c2bb64ea003ac481bbd50c3330eaf1cf691 IdnaTest.txt" | sha1sum -c -
+	wget https://www.unicode.org/Public/idna/10.0.0/IdnaTest.txt
+	echo "35f344b624f9978ee5c484ab0182038e92a9f41c IdnaTest.txt" | sha1sum -c -
 
 $(IDNA_INC): $(IDNA_TXT) $(srcdir)/gen-utc-test.pl
 	$(srcdir)/gen-utc-test.pl < $< > $@
