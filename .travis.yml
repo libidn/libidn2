@@ -1,5 +1,5 @@
 sudo: required
-dist: trusty
+dist: focal
 
 language: c
 
@@ -24,14 +24,22 @@ cache: ccache
 addons:
     apt:
         packages:
-            - autoconf
-            - automake
-            - autopoint
-            - libtool
-            - gettext
-            - libunistring0
-            - libc6
-            - valgrind
+            - git
+	    - autoconf
+	    - automake
+	    - libtool
+	    - gettext
+	    - texinfo
+	    - gperf
+	    - libunistring-dev
+	    - gtk-doc-tools
+	    - valgrind
+	    - gengetopt
+	    - help2man
+	    - abi-compliance-checker
+	    - autopoint
+	    - texlive
+	    - abigail-tools
             - lcov
 
 before_install:
