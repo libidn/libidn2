@@ -57,4 +57,4 @@ $(IDNA_TXT):
 $(IDNA_INC): $(IDNA_TXT) $(srcdir)/gen-utc-test.pl
 	$(srcdir)/gen-utc-test.pl < $< > $@
 
-LOG_COMPILER = $(VALGRIND)
+LOG_COMPILER = $(LOG_VALGRIND)
