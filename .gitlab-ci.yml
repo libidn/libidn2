@@ -15,8 +15,8 @@
 
 stages:
   - quick
-  - bootstrap
-  - tarball-test
+  - build
+  - test
 
 # The quick stage should complete as quickly as possible but still
 # excercise the internal self-tests.  Primarily this is achieved by
@@ -24,13 +24,14 @@ stages:
 # early stage like this avoids wasting build cycles attempting the
 # bootstrap builds on many platforms.
 
-# The bootstrap stage should attempt to build from version controlled
-# sources on all platforms we support development on.  Typically these
-# builds include documentation and results in a tarball artifact.
+# The build stage should attempt to build from version controlled
+# sources on platforms we support development on, with the variety of
+# pre-dependencies that we want to support.  Typically these builds
+# results in a tarball artifact.
 
-# The tarball-test stage attempt to build the tarball (generated from
-# some bootstrap rule) on all platforms we support building the
-# project on.
+# The test stage attempt to build the tarball on all platforms we
+# support building the project on, with as many combinations of
+# pre-depencencies as useful.
 
 variables:
   BUILD_IMAGES_PROJECT: libidn/build-images
@@ -52,7 +53,7 @@ B-Debian-mini:
 
 B-Alpine-mini:
   image: $CI_REGISTRY/libidn/build-images:libidn2-Alpine-mini
-  stage: bootstrap
+  stage: build
   script:
   - time ./bootstrap --skip-po --no-git
   - time ./configure --enable-gcc-warnings --disable-doc || (cat config.log; exit 1)
@@ -61,7 +62,7 @@ B-Alpine-mini:
 
 B-Centos7:
   image: $CI_REGISTRY/libidn/build-images:libidn2-Centos7
-  stage: bootstrap
+  stage: build
   script:
   - time ./bootstrap --skip-po --no-git
   - time ./configure || (cat config.log; exit 1)
@@ -75,7 +76,7 @@ B-Centos7:
 
 B-Centos8:
   image: $CI_REGISTRY/libidn/build-images:libidn2-Centos8
-  stage: bootstrap
+  stage: build
   script:
   - time ./bootstrap --skip-po --no-git
   - time ./configure || (cat config.log; exit 1)
@@ -89,7 +90,7 @@ B-Centos8:
 
 B-Debian-stable:
   image: $CI_REGISTRY/libidn/build-images:libidn2-Debian-stable
-  stage: bootstrap
+  stage: build
   script:
   - env DEBIAN_FRONTEND=noninteractive apt-get install -y -q autopoint help2man
   - ./bootstrap --skip-po --no-git
@@ -104,7 +105,7 @@ B-Debian-stable:
 
 B-Debian-testing:
   image: debian:testing
-  stage: bootstrap
+  stage: build
   before_script:
   - apt-get update -qq -y
   - env DEBIAN_FRONTEND=noninteractive apt-get install -y -q git autoconf automake libtool gettext texinfo gperf git2cl libunistring-dev gtk-doc-tools valgrind gengetopt help2man abi-compliance-checker autoconf-archive autopoint texlive abigail-tools
@@ -121,7 +122,7 @@ B-Debian-testing:
 
 B-armcross:
   image: $CI_REGISTRY/libidn/build-images:libidn2-Debian-testing-mini
-  stage: bootstrap
+  stage: build
   before_script:
   - env DEBIAN_FRONTEND=noninteractive apt-get install -y -q gcc-arm-linux-gnueabi qemu-user qemu-user-binfmt file
   - update-binfmts --enable qemu-arm
@@ -137,7 +138,7 @@ B-armcross:
 
 T-Debian-oldoldstable:
   image: debian:oldoldstable
-  stage: tarball-test
+  stage: test
   needs: [B-Debian-stable]
   before_script:
   - apt-get update
@@ -152,7 +153,7 @@ T-Debian-oldoldstable:
 
 T-Debian-oldstable:
   image: debian:oldstable
-  stage: tarball-test
+  stage: test
   needs: [B-Debian-stable]
   before_script:
   - apt-get update
@@ -167,7 +168,7 @@ T-Debian-oldstable:
 
 T-Alpine:
   image: alpine:latest
-  stage: tarball-test
+  stage: test
   needs: [B-Debian-testing]
   before_script:
   - echo "ipv6" >> /etc/modules
@@ -181,7 +182,7 @@ T-Alpine:
 
 T-ArchLinux:
   image: archlinux:latest
-  stage: tarball-test
+  stage: test
   needs: [B-Debian-stable]
   before_script:
   - pacman -Sy --noconfirm make gcc diffutils
@@ -195,7 +196,7 @@ T-ArchLinux:
 
 T-CentOS7:
   image: centos:7
-  stage: tarball-test
+  stage: test
   needs: [B-Debian-stable]
   before_script:
   - yum -y install make gcc diffutils valgrind libunistring-devel
@@ -207,7 +208,7 @@ T-CentOS7:
 
 T-CentOS8:
   image: centos:8
-  stage: tarball-test
+  stage: test
   needs: [B-Debian-stable]
   before_script:
   - dnf --enablerepo=powertools -y install make gcc diffutils valgrind libunistring-devel
@@ -219,7 +220,7 @@ T-CentOS8:
 
 T-Ubuntu-14.04:
   image: ubuntu:14.04
-  stage: tarball-test
+  stage: test
   needs: [B-Debian-stable]
   before_script:
   - apt-get update -qq
@@ -232,7 +233,7 @@ T-Ubuntu-14.04:
 
 T-Ubuntu rolling:
   image: ubuntu:rolling
-  stage: tarball-test
+  stage: test
   needs: [B-Debian-stable]
   before_script:
   - apt-get update -qq
@@ -250,7 +251,7 @@ T-Ubuntu rolling:
 
 T-Mingw32:
   image: debian:latest
-  stage: tarball-test
+  stage: test
   needs: [B-Debian-stable]
   before_script:
   - dpkg --add-architecture i386
@@ -267,7 +268,7 @@ T-Mingw32:
 
 T-Mingw64:
   image: debian:latest
-  stage: tarball-test
+  stage: test
   needs: [B-Debian-stable]
   before_script:
   - dpkg --add-architecture i386
@@ -284,7 +285,7 @@ T-Mingw64:
 
 T-armcross:
   image: debian:latest
-  stage: tarball-test
+  stage: test
   needs: [B-Debian-stable]
   before_script:
   - apt-get update -qq
@@ -303,7 +304,7 @@ T-armcross:
 #  * fuzz/ building
 #  * build/valgrind-check
 Debian GNU/Linux:
-  stage: bootstrap
+  stage: build
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
   - ./bootstrap --skip-po
@@ -326,7 +327,7 @@ Debian GNU/Linux:
 #  * abi-check
 # It is not run on tags
 abi-check:
-  stage: bootstrap
+  stage: build
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
   - ./bootstrap --skip-po
@@ -350,7 +351,7 @@ abi-check:
 # In this build we do
 #  * distcheck
 dist-check:
-  stage: bootstrap
+  stage: build
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
   - ./bootstrap --skip-po
@@ -376,7 +377,7 @@ dist-check:
 #  * build/asan-check
 #  * build w/Werror and ubsan-check
 Debian ASAN/UBSAN:
-  stage: bootstrap
+  stage: build
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
   - ./bootstrap --skip-po
@@ -403,7 +404,7 @@ Debian ASAN/UBSAN:
       - tests/*.log
 
 clang-analyzer/Fedora:
-  stage: bootstrap
+  stage: build
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$FEDORA_BUILD
   script:
   - ./bootstrap --skip-po
@@ -423,7 +424,7 @@ clang-analyzer/Fedora:
       - scan-build-lib/*
 
 pages:
-  stage: bootstrap
+  stage: build
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
   - ./bootstrap --skip-po
@@ -458,7 +459,7 @@ pages:
 # Target to run code coverage on non-master branches. That is intended
 # to ensure that compilation in master will not break the pages rule.
 pages-test:
-  stage: bootstrap
+  stage: build
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
   script:
   - ./bootstrap --skip-po
@@ -471,7 +472,7 @@ pages-test:
     - master
 
 MinGW64:
-  stage: bootstrap
+  stage: build
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$FEDORA_BUILD
   before_script:
   - mount -t binfmt_misc binfmt_misc /proc/sys/fs/binfmt_misc
@@ -497,7 +498,7 @@ MinGW64:
 # After having issues with building from tarball (make distcheck was ok),
 # outside a git repo, we test the tarball stand-alone.
 Tarball:
-  stage: tarball-test
+  stage: test
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$BASE_BUILD
   variables:
     GIT_STRATEGY: none
@@ -527,11 +528,7 @@ Tarball:
       - libidn2-*/*.log
       - libidn2-*/*/*.log
 
-# You can override the included template(s) by including variable overrides
 # SAST customization: https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
-# Secret Detection customization: https://docs.gitlab.com/ee/user/application_security/secret_detection/#customizing-settings
-# Note that environment variables can be set in several places
-# See https://docs.gitlab.com/ee/ci/variables/#priority-of-environment-variables
 sast:
   stage: test
 include:
