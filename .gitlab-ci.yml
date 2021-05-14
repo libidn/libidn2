@@ -74,7 +74,7 @@ B-Centos7:
   - time ./bootstrap --skip-po --no-git
   - time ./configure || (cat config.log; exit 1)
   - time make V=1
-  - time make check VALGRINDFLAGS="--suppression=suppressions.valgrind" || (find . -name test-suite.log -exec cat {} +; exit 1)
+  - time make check || (find . -name test-suite.log -exec cat {} +; exit 1)
   - time make dist
   artifacts:
     expire_in: 2 weeks
@@ -211,7 +211,7 @@ T-CentOS7:
   - tar xfa libidn2-*.tar.gz
   - cd `ls -d libidn2-* | grep -v tar.gz`
   - ./configure --enable-gcc-warnings || (cat config.log; exit 1)
-  - make check V=1 VALGRINDFLAGS="--suppression=suppressions.valgrind" || (find . -name test-suite.log -exec cat {} +; exit 1)
+  - make check V=1 || (find . -name test-suite.log -exec cat {} +; exit 1)
 
 T-CentOS8:
   image: centos:8

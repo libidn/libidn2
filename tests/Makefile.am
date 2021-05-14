@@ -47,7 +47,7 @@ test_lookup_SOURCES = test-lookup.c
 
 BUILT_SOURCES = $(IDNA_TXT) $(IDNA_INC)
 MAINTAINERCLEANFILES = $(BUILT_SOURCES)
-EXTRA_DIST = gen-utc-test.pl $(IDNA_TXT) $(IDNA_INC) suppressions.valgrind
+EXTRA_DIST = gen-utc-test.pl $(IDNA_TXT) $(IDNA_INC)
 
 $(IDNA_TXT):
 	rm -f $(IDNA_TXT)
@@ -57,4 +57,5 @@ $(IDNA_TXT):
 $(IDNA_INC): $(IDNA_TXT) $(srcdir)/gen-utc-test.pl
 	$(srcdir)/gen-utc-test.pl < $< > $@
 
+AM_VALGRINDFLAGS = --suppressions=$(top_srcdir)/unistring/libunistring.valgrind
 LOG_COMPILER = $(LOG_VALGRIND)
