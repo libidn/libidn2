@@ -37,7 +37,6 @@ variables:
   BUILD_IMAGES_PROJECT: libidn/build-images
   DEBIAN_BUILD: buildenv-debian-buster
   FEDORA_BUILD: buildenv-fedora
-  CENTOS7_BUILD: buildenv-centos7
   BASE_BUILD: buildenv-basic
   GET_SOURCES_ATTEMPTS: "3"
 
@@ -50,6 +49,14 @@ B-Debian-mini:
   - time make syntax-check gnulib_dir=$GNULIB_SRCDIR
   - time make V=1
   - time make check || (find . -name test-suite.log -exec cat {} +; exit 1)
+
+sast:
+  stage: quick
+  # SAST customization: https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
+  variables:
+    SAST_EXCLUDED_PATHS: examples, fuzz, tests, lib/gendata.c, lib/gentr46map.c
+include:
+- template: Security/SAST.gitlab-ci.yml
 
 B-Alpine-mini:
   image: $CI_REGISTRY/libidn/build-images:libidn2-Alpine-mini
@@ -527,9 +534,3 @@ Tarball:
       - libidn2-*/config.h
       - libidn2-*/*.log
       - libidn2-*/*/*.log
-
-# SAST customization: https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
-sast:
-  stage: test
-include:
-- template: Security/SAST.gitlab-ci.yml
