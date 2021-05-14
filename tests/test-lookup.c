@@ -47,6 +47,22 @@ static const struct idna idna[] = {
   /* U+19DA */
   {"\xe1\xa7\x9a", "xn--pkf", IDN2_DISALLOWED},
 
+  /* U+32FF */
+  {"\xe3\x8b\xbf", "xn--nnqt1l", IDN2_OK, IDN2_NONTRANSITIONAL},
+  {"\xe3\x8b\xbf", "xn--nnqt1l", IDN2_OK, IDN2_TRANSITIONAL},
+  {"\xe3\x8b\xbf", "xn--nnqt1l", IDN2_OK,
+   IDN2_NONTRANSITIONAL | IDN2_NFC_INPUT},
+  {"\xe3\x8b\xbf", "xn--nnqt1l", IDN2_OK,
+   IDN2_TRANSITIONAL | IDN2_NFC_INPUT},
+  {"\xe3\x8b\xbf", "xn--nnqt1l", IDN2_OK,
+   IDN2_NONTRANSITIONAL | IDN2_NFC_INPUT | IDN2_ALABEL_ROUNDTRIP},
+  {"\xe3\x8b\xbf", "xn--nnqt1l", IDN2_OK,
+   IDN2_TRANSITIONAL | IDN2_NFC_INPUT | IDN2_ALABEL_ROUNDTRIP},
+  {"\xe3\x8b\xbf", "xn--nnqt1l", IDN2_OK,
+   IDN2_NONTRANSITIONAL | IDN2_USE_STD3_ASCII_RULES | IDN2_ALABEL_ROUNDTRIP},
+  {"\xe3\x8b\xbf", "xn--nnqt1l", IDN2_OK,
+   IDN2_TRANSITIONAL | IDN2_USE_STD3_ASCII_RULES | IDN2_ALABEL_ROUNDTRIP},
+
   /* UTC's test vectors. */
 #include "IdnaTest.inc"
 
