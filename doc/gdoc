@@ -23,7 +23,7 @@ eval '(exit $?0)' && eval 'exec perl -S "$0" ${1+"$@"}'
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # This will read a C source code file and scan for embedded comments
 # in the style of gnome comments (+minor extensions - see below).
@@ -704,11 +704,11 @@ sub output_man {
 	print ".SH \"REPORTING BUGS\"\n";
 	print "Report bugs to <". $args{'bugsto'} . ">.\n";
         print ".br\n";
-	print "General guidelines for reporting bugs: http://www.gnu.org/gethelp/\n";
+	print "General guidelines for reporting bugs: https://www.gnu.org/gethelp/\n";
         print ".br\n";
 	if ($args{'pkgname'}) {
 	    print $args{'pkgname'} . " home page: " .
-		"http://www.gnu.org/software/" . $args{'module'} . "/\n";
+		"https://www.gnu.org/software/" . $args{'module'} . "/\n";
 	}
 	print "\n";
     }
@@ -739,7 +739,7 @@ sub output_man {
 	print "should give you access to the complete manual.\n";
 	print "As an alternative you may obtain the manual from:\n";
 	print ".IP\n";
-	print ".B http://www.gnu.org/software/libidn/" . $args{'module'} . "/manual/\n";
+	print ".B https://www.gnu.org/software/libidn/" . $args{'module'} . "/manual/\n";
 	print ".PP\n";
     }
 }
