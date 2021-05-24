@@ -163,7 +163,7 @@ static const struct punycode punycode[] = {
     0x0020, 0x003C, 0x002D}, "-> $1.00 <--", IDN2_OK}
 };
 
-static int debug = 0;
+static int debug = 1;
 static int error_count = 0;
 static int break_on_error = 0;
 
@@ -317,5 +317,9 @@ main (void)
   free (q);
   free (p);
 
-  return 0;
+
+  if (debug)
+    printf ("Self tests done with %d errors\n", error_count);
+
+  return error_count ? EXIT_FAILURE : EXIT_SUCCESS;
 }
