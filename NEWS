@@ -6,6 +6,13 @@ Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
 Now U+32FF works.  Fixes
 <https://gitlab.com/libidn/libidn2/-/issues/77>.
 
+** Fix build errors related to doc/idn2--help.texi.
+With older makeinfo, this would manifest itself by looking for
+idn2-help.texi instead.  Further, some BSD grep implementations did
+not like the \+ regexp command, so we now rely on the (apparently)
+more portable * regexp command.  Reported-By: David Gessel.  See
+<https://gitlab.com/libidn/libidn2/-/issues/93>.
+
 * Noteworthy changes in release 2.3.1 (2021-05-12) [stable]
 
 ** Implement full roundtrip for lookup functionality

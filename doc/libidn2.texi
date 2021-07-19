@@ -486,7 +486,7 @@ To process a string that starts with @code{-}, for example
 @section Options
 @code{idn2} recognizes these commands:
 
-@verbatiminclude idn2--help.texi
+@verbatiminclude idn2-help.texi
 
 @section Environment Variables
 
