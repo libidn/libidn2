@@ -13,6 +13,8 @@ not like the \+ regexp command, so we now rely on the (apparently)
 more portable * regexp command.  Reported-By: David Gessel.  See
 <https://gitlab.com/libidn/libidn2/-/issues/93>.
 
+** doc: Improve GTK-DOC manual.
+
 * Noteworthy changes in release 2.3.1 (2021-05-12) [stable]
 
 ** Implement full roundtrip for lookup functionality

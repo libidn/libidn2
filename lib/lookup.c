@@ -718,6 +718,8 @@ idn2_lookup_ul (const char *src, char **lookupname, int flags)
  * Return value: Returns %IDN2_OK on success, or error code.
  *
  * Since: 2.0.0
+ *
+ * Deprecated: 2.1.1: Use idn2_to_ascii_4i2().
  **/
 int
 idn2_to_ascii_4i (const uint32_t * input, size_t inlen, char *output,
@@ -750,7 +752,7 @@ idn2_to_ascii_4i (const uint32_t * input, size_t inlen, char *output,
 }
 
 /**
- * idn2_to_ascii_4i:
+ * idn2_to_ascii_4i2:
  * @input: zero terminated input Unicode (UCS-4) string.
  * @inlen: number of elements in @input.
  * @output: pointer to newly allocated zero-terminated output string.
