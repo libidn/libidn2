@@ -195,8 +195,8 @@ extern "C"
  * @IDN2_NONTRANSITIONAL: Perform Unicode TR46 non-transitional processing (default).
  * @IDN2_ALLOW_UNASSIGNED: Libidn compatibility flag, unused.
  * @IDN2_USE_STD3_ASCII_RULES: Use STD3 ASCII rules.
- * This is a #TR46 only flag, and will be ignored when set without either
- * @IDN2_TRANSITIONAL or @IDN2_NONTRANSITIONAL.
+ * This is a Unicode TR46 only flag, and will be ignored when set without
+ * either @IDN2_TRANSITIONAL or @IDN2_NONTRANSITIONAL.
  *
  * Flags to IDNA2008 functions, to be binary or:ed together.  Specify
  * only 0 if you want the default behaviour.
@@ -329,13 +329,13 @@ extern "C"
   extern _IDN2_API int
     idn2_to_unicode_lzlz (const char * input, char ** output, int flags);
 
-  extern _IDN2_API G_GNUC_IDN2_ATTRIBUTE_CONST const char *
-    idn2_strerror (int rc);
-  extern _IDN2_API G_GNUC_IDN2_ATTRIBUTE_CONST const char *
-    idn2_strerror_name (int rc);
+  extern _IDN2_API const char *
+    idn2_strerror (int rc) G_GNUC_IDN2_ATTRIBUTE_CONST;
+  extern _IDN2_API const char *
+    idn2_strerror_name (int rc) G_GNUC_IDN2_ATTRIBUTE_CONST;
 
-  extern _IDN2_API G_GNUC_IDN2_ATTRIBUTE_PURE const char *
-    idn2_check_version (const char *req_version);
+  extern _IDN2_API const char *
+    idn2_check_version (const char *req_version) G_GNUC_IDN2_ATTRIBUTE_PURE;
 
   extern _IDN2_API void
     idn2_free (void *ptr);
