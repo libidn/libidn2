@@ -21,7 +21,8 @@ $ ./bootstrap
 $ ./configure --enable-gtk-doc --enable-gtk-doc-pdf --enable-gcc-warnings --enable-valgrind-tests
 ```
 
-You may want to use --gnulib-srcdir=/foo/bar/gnulib to avoid having to
+You may want to use `./bootstrap --gnulib-srcdir=/foo/bar/gnulib' (or
+set the `GNULIB_SRCDIR' environment variable) to avoid having to
 checkout gnulib every time.  Make sure the gnulib directory you point
 to is up to date.
 
