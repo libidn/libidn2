@@ -23,7 +23,7 @@ AC_INIT([Libidn2],
 # Interfaces added:                             AGE++
 # Interfaces removed:                           AGE=0
 AC_SUBST(LT_CURRENT, 3)
-AC_SUBST(LT_REVISION, 7)
+AC_SUBST(LT_REVISION, 8)
 AC_SUBST(LT_AGE, 3)
 
 DLL_VERSION=`expr ${LT_CURRENT} - ${LT_AGE}`
