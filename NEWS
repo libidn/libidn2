@@ -1,6 +1,6 @@
 Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
 
-* Noteworthy changes in release ?.? (????-??-??) [?]
+* Noteworthy changes in release 2.3.2 (2021-07-19) [stable]
 
 ** Upgrade TR46 tables from Unicode 11 to Unicode 13.
 Now U+32FF works.  Fixes
