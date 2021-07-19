@@ -52,6 +52,7 @@
 /doc/libidn2.vrs
 /doc/lookup.c
 /doc/man/
+/doc/reference/gtkdoc-check.test
 /doc/reference/html-build.stamp
 /doc/reference/html.stamp
 /doc/reference/html/

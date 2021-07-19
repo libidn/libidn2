@@ -15,14 +15,13 @@
 
 SUBDIRS = reference
 
-EXTRA_DIST = gdoc libidn2.html libidn2.pdf texinfo.css idn2.h2m
+EXTRA_DIST = gdoc idn2.h2m
 BUILT_SOURCES = idn2.1
 info_TEXINFOS = libidn2.texi
 libidn2_TEXINFOS = libidn2.texi example-tounicode.c example-toascii.c	\
 	decode.c lookup.c register.c $(gdoc_TEXINFOS) idn2-help.texi
 
-AM_MAKEINFOHTMLFLAGS = $(AM_MAKEINFOFLAGS) \
-	--no-split --number-sections --css-include=texinfo.css
+AM_MAKEINFOHTMLFLAGS = --no-split $(AM_MAKEINFOFLAGS)
 
 decode.c: $(top_srcdir)/examples/decode.c
 	tail -n +18 $< > $@.tmp
@@ -68,7 +67,4 @@ GDOC_MAN_EXTRA_ARGS = -module $(PACKAGE) -sourceversion $(VERSION) \
 include $(srcdir)/Makefile.gdoci
 
 maintainer-clean-local:
-	rm -rf man texi manual
-
-manual:
-	../build-aux/gendocs.sh --html --css-include=texinfo.css -o manual $(PACKAGE) "$(PACKAGE_NAME)"
+	rm -rf man texi

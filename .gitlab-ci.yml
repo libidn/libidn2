@@ -444,7 +444,7 @@ pages:
   - mv Libidn2-*-coverage public/coverage
   - rm -rf public/reference
   - mv doc/reference/html public/reference
-  - make -C doc manual
+  - make web-manual
   - rm -rf public/manual
   - mv doc/manual public/manual
   - make clean
@@ -474,6 +474,12 @@ pages-test:
   - CFLAGS="-g -O0" ./configure --enable-gtk-doc --enable-code-coverage --disable-gcc-warnings
   - make -j$(nproc) check
   - make local-code-coverage-output
+  - make web-manual
+  - make clean
+  - make
+  - make -C fuzz check
+  - make code-coverage-capture
+  - contrib/make-coverage-badge "fuzz-coverage"
   tags:
   - shared
   except:
