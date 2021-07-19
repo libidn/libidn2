@@ -131,6 +131,7 @@ B-armcross:
   image: $CI_REGISTRY/libidn/build-images:libidn2-Debian-testing-mini
   stage: build
   before_script:
+  - apt-get update -qq -y
   - env DEBIAN_FRONTEND=noninteractive apt-get install -y -q gcc-arm-linux-gnueabi qemu-user qemu-user-binfmt file
   - update-binfmts --enable qemu-arm
   script:
