@@ -19,6 +19,8 @@ old_NEWS_hash = 242cfb82253b8723027ea485bd83e49e
 
 bootstrap-tools = gnulib,autoconf,automake,libtoolize,make,makeinfo,help2man,gperf,gengetopt,gtkdocize,tar,gzip
 
+upload_dest_dir_ = libidn
+
 local-checks-to-skip += sc_unmarked_diagnostics sc_bindtextdomain # Re-add when we have translation
 local-checks-to-skip += sc_immutable_NEWS
 local-checks-to-skip += sc_prohibit_strcmp
