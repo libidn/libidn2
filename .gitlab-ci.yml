@@ -65,6 +65,7 @@ B-Alpine-mini:
   - time ./bootstrap --skip-po --no-git
   - time ./configure --enable-gcc-warnings --disable-doc || (cat config.log; exit 1)
   - time make V=1
+  - time make syntax-check
   - time make check || (find . -name test-suite.log -exec cat {} +; exit 1)
 
 B-Centos7:
@@ -76,6 +77,7 @@ B-Centos7:
   - time make V=1
   - time make check || (find . -name test-suite.log -exec cat {} +; exit 1)
   - time make dist
+  - time make syntax-check
   artifacts:
     expire_in: 2 weeks
     paths:
