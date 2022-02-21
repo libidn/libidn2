@@ -1,4 +1,4 @@
-# Copyright (C) 2016-2021 Simon Josefsson
+# Copyright (C) 2016-2022 Simon Josefsson
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -40,8 +40,8 @@ variables:
   BASE_BUILD: buildenv-basic
   GET_SOURCES_ATTEMPTS: "3"
 
-B-Debian-mini:
-  image: $CI_REGISTRY/libidn/build-images:libidn2-Debian-testing-mini
+B-Debian-quick:
+  image: $CI_REGISTRY/libidn/build-images:libidn2-quick-Debian-testing
   stage: quick
   script:
   - time ./bootstrap --skip-po --no-git
@@ -58,8 +58,8 @@ sast:
 include:
 - template: Security/SAST.gitlab-ci.yml
 
-B-Alpine-mini:
-  image: $CI_REGISTRY/libidn/build-images:libidn2-Alpine-mini
+B-Alpine-quick:
+  image: $CI_REGISTRY/libidn/build-images:libidn2-quick-Alpine
   stage: build
   script:
   - time ./bootstrap --skip-po --no-git
@@ -68,37 +68,23 @@ B-Alpine-mini:
   - time make syntax-check
   - time make check || (find . -name test-suite.log -exec cat {} +; exit 1)
 
-B-Centos7:
-  image: $CI_REGISTRY/libidn/build-images:libidn2-Centos7
+B-AlmaLinux8:
+  image: $CI_REGISTRY/libidn/build-images:libidn2-AlmaLinux8
   stage: build
   script:
   - time ./bootstrap --skip-po --no-git
   - time ./configure || (cat config.log; exit 1)
   - time make V=1
   - time make check || (find . -name test-suite.log -exec cat {} +; exit 1)
-  - time make dist
-  - time make syntax-check
-  artifacts:
-    expire_in: 2 weeks
-    paths:
-    - libidn2-*.tar.gz
-
-B-Centos8:
-  image: $CI_REGISTRY/libidn/build-images:libidn2-Centos8
-  stage: build
-  script:
-  - time ./bootstrap --skip-po --no-git
-  - time ./configure || (cat config.log; exit 1)
-  - time make V=1
-  - time make check || (find . -name test-suite.log -exec cat {} +; exit 1)
+  - rm -rf contrib/ # FIXME XXX remove once we support modern abidiff -- see issue #102
   - time make dist
   artifacts:
     expire_in: 2 weeks
     paths:
     - libidn2-*.tar.gz
 
-B-Debian-stable:
-  image: $CI_REGISTRY/libidn/build-images:libidn2-Debian-stable
+B-Debian11:
+  image: $CI_REGISTRY/libidn/build-images:libidn2-Debian11
   stage: build
   script:
   - env DEBIAN_FRONTEND=noninteractive apt-get install -y -q autopoint help2man
@@ -117,12 +103,13 @@ B-Debian-testing:
   stage: build
   before_script:
   - apt-get update -qq -y
-  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -q git autoconf automake libtool gettext texinfo gperf git2cl libunistring-dev gtk-doc-tools valgrind gengetopt help2man abi-compliance-checker autoconf-archive autopoint texlive abigail-tools
+  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -q git make autoconf automake libtool gettext autopoint gperf libunistring-dev valgrind gengetopt help2man texinfo texlive git2cl gtk-doc-tools
   script:
   - ./bootstrap --skip-po
   - ./configure --enable-gcc-warnings --enable-valgrind-tests || (cat config.log; exit 1)
   - make V=1
   - make check || (find . -name test-suite.log -exec cat {} +; exit 1)
+  - rm -rf contrib/ # FIXME XXX remove once we support modern abidiff -- see issue #102
   - make dist
   artifacts:
     expire_in: 2 weeks
@@ -130,7 +117,7 @@ B-Debian-testing:
     - libidn2-*.tar.gz
 
 B-armcross:
-  image: $CI_REGISTRY/libidn/build-images:libidn2-Debian-testing-mini
+  image: $CI_REGISTRY/libidn/build-images:libidn2-Debian11
   stage: build
   before_script:
   - apt-get update -qq -y
@@ -146,10 +133,23 @@ B-armcross:
   - LANG=C.UTF-8 qemu-arm src/idn2 --debug foo
   - make check
 
-T-Debian-oldoldstable:
-  image: debian:oldoldstable
+T-Debian5:
+  image: debian/eol:lenny
   stage: test
-  needs: [B-Debian-stable]
+  needs: [B-Debian11]
+  before_script:
+  - apt-get update
+  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq make gcc locales-all
+  script:
+  - tar xfz libidn2-*.tar.gz
+  - cd `ls -d libidn2-* | grep -v tar.gz`
+  - ./configure --enable-gcc-warnings || (cat config.log; exit 1)
+  - make check V=1 || (find . -name test-suite.log -exec cat {} +; exit 1)
+
+T-Debian9:
+  image: debian:stretch
+  stage: test
+  needs: [B-Debian11]
   before_script:
   - apt-get update
   - env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq make gcc
@@ -161,10 +161,10 @@ T-Debian-oldoldstable:
   - ../configure --enable-gcc-warnings || (cat config.log; exit 1)
   - make check V=1 || (find . -name test-suite.log -exec cat {} +; exit 1)
 
-T-Debian-oldstable:
-  image: debian:oldstable
+T-Debian10:
+  image: debian:buster
   stage: test
-  needs: [B-Debian-stable]
+  needs: [B-Debian11]
   before_script:
   - apt-get update
   - env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq make gcc
@@ -193,9 +193,9 @@ T-Alpine:
 T-ArchLinux:
   image: archlinux:latest
   stage: test
-  needs: [B-Debian-stable]
+  needs: [B-Debian11]
   before_script:
-  - pacman -Sy --noconfirm make gcc diffutils
+  - pacman -Syu --noconfirm make gcc diffutils
   script:
   - tar xfz libidn2-*.tar.gz
   - cd `ls -d libidn2-* | grep -v tar.gz`
@@ -207,7 +207,7 @@ T-ArchLinux:
 T-CentOS7:
   image: centos:7
   stage: test
-  needs: [B-Debian-stable]
+  needs: [B-Debian11]
   before_script:
   - yum -y install make gcc diffutils valgrind libunistring-devel
   script:
@@ -216,10 +216,10 @@ T-CentOS7:
   - ./configure --enable-gcc-warnings || (cat config.log; exit 1)
   - make check V=1 || (find . -name test-suite.log -exec cat {} +; exit 1)
 
-T-CentOS8:
-  image: centos:8
+T-AlmaLinux8:
+  image: almalinux:8
   stage: test
-  needs: [B-Debian-stable]
+  needs: [B-Debian11]
   before_script:
   - dnf --enablerepo=powertools -y install make gcc diffutils valgrind libunistring-devel
   script:
@@ -231,7 +231,7 @@ T-CentOS8:
 T-Ubuntu-14.04:
   image: ubuntu:14.04
   stage: test
-  needs: [B-Debian-stable]
+  needs: [B-Debian11]
   before_script:
   - apt-get update -qq
   - env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq make gcc
@@ -244,7 +244,7 @@ T-Ubuntu-14.04:
 T-Ubuntu rolling:
   image: ubuntu:rolling
   stage: test
-  needs: [B-Debian-stable]
+  needs: [B-Debian11]
   before_script:
   - apt-get update -qq
   - env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq git make gcc gtk-doc-tools texinfo texlive texlive-plain-generic dblatex
@@ -262,7 +262,7 @@ T-Ubuntu rolling:
 T-Mingw32:
   image: debian:latest
   stage: test
-  needs: [B-Debian-stable]
+  needs: [B-Debian11]
   before_script:
   - dpkg --add-architecture i386
   - apt-get update -qq
@@ -279,7 +279,7 @@ T-Mingw32:
 T-Mingw64:
   image: debian:latest
   stage: test
-  needs: [B-Debian-stable]
+  needs: [B-Debian11]
   before_script:
   - dpkg --add-architecture i386
   - apt-get update -qq
@@ -296,7 +296,7 @@ T-Mingw64:
 T-armcross:
   image: debian:latest
   stage: test
-  needs: [B-Debian-stable]
+  needs: [B-Debian11]
   before_script:
   - apt-get update -qq
   - env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq make gcc-arm-linux-gnueabi
