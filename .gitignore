@@ -111,7 +111,6 @@
 /fuzz/*_fuzzer
 /fuzz/*_fuzzer.new/
 /gl/
-/gtk-doc.m4
 /gtk-doc.make
 /lib/data.c
 /lib/gendata
