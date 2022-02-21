@@ -109,11 +109,11 @@ usual way (i.e., ./configure && make).
 The software is typically distributed with your operating system, and
 the instructions for installing them differ.  Here are some hints:
 
-Debian 10.x, Ubuntu 20.04:
+Debian 10.x, Debian 11.x, Ubuntu 20.04:
 ```
-apt-get install git autoconf automake libtool gettext autopoint gperf
+apt-get install git make autoconf automake libtool gettext autopoint gperf
 apt-get install libunistring-dev valgrind gengetopt help2man
-apt-get install texinfo git2cl gtk-doc-tools
+apt-get install texinfo texlive git2cl gtk-doc-tools
 apt-get install abi-compliance-checker abigail-tools
 ```
 
