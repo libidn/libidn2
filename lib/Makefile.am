@@ -52,12 +52,12 @@ IANA_URL = https://www.iana.org/assignments/idna-tables-12.0.0/idna-tables-prope
 IDNA_TABLE_SHA1 = 3d0eaac1d0c0a3e651d1a3a05e86cc1b587a1a80
 
 TR46MAP = IdnaMappingTable.txt
-TR46MAP_URL = https://www.unicode.org/Public/idna/13.0.0/IdnaMappingTable.txt
-TR46MAP_SHA1 = 3a0780a522623a78b9780c98c40cbe7b4e0c077a
+TR46MAP_URL = https://www.unicode.org/Public/idna/14.0.0/IdnaMappingTable.txt
+TR46MAP_SHA1 = 5be4d60c103a68158f8841fcd2b61c422283954c
 
 NFCQC = DerivedNormalizationProps.txt
-NFCQC_URL = https://www.unicode.org/Public/13.0.0/ucd/DerivedNormalizationProps.txt
-NFCQC_SHA1 = e5b5f5fe7a27fa5e70fcec4d466a35160be28bdc
+NFCQC_URL = https://www.unicode.org/Public/14.0.0/ucd/DerivedNormalizationProps.txt
+NFCQC_SHA1 = 2b6363537b9d94ff13d4258e1631c6cde073a6e1
 
 BUILT_SOURCES = data.c tr46map_data.c
 DISTCLEANFILES = $(BUILT_SOURCES)
