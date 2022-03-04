@@ -17,12 +17,9 @@ AM_CPPFLAGS =
 
 AM_CPPFLAGS += -DIDN2_BUILDING -DSRCDIR=\"$(srcdir)\"
 AM_CPPFLAGS += -I$(top_builddir)/gl -I$(top_srcdir)/gl
+AM_CPPFLAGS += -I$(top_srcdir)/unistring/ -I$(top_builddir)/unistring/
 AM_CFLAGS = $(WARN_CFLAGS)
 AM_CFLAGS += $(CFLAG_VISIBILITY) $(CODE_COVERAGE_CFLAGS)
-
-if !HAVE_LIBUNISTRING
-AM_CPPFLAGS += -I$(top_srcdir)/unistring/ -I$(top_builddir)/unistring/
-endif
 
 lib_LTLIBRARIES = libidn2.la
 
@@ -43,11 +40,7 @@ libidn2_la_SOURCES += tables.h tables.c
 libidn2_la_SOURCES += context.h context.c
 
 libidn2_la_LIBADD = $(LTLIBICONV) $(LTLIBINTL)
-if HAVE_LIBUNISTRING
-libidn2_la_LIBADD += $(LTLIBUNISTRING)
-else
-libidn2_la_LIBADD += ../unistring/libunistring.la
-endif
+libidn2_la_LIBADD += ../unistring/libunistring.la $(LTLIBUNISTRING)
 libidn2_la_LIBADD += ../gl/libgnu.la
 
 libidn2_la_LDFLAGS = -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \

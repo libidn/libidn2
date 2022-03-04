@@ -15,13 +15,7 @@
 
 DISTCHECK_CONFIGURE_FLAGS ?= --enable-gtk-doc --enable-gtk-doc-pdf --disable-gcc-warnings
 
-SUBDIRS = gl
-
-if !HAVE_LIBUNISTRING
-SUBDIRS += unistring
-endif
-
-SUBDIRS += lib src examples tests fuzz po
+SUBDIRS = gl unistring lib src examples tests fuzz po
 ACLOCAL_AMFLAGS = -I m4 -I unistring/m4
 EXTRA_DIST = m4/gnulib-cache.m4
 

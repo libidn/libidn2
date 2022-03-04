@@ -16,19 +16,12 @@
 AM_CPPFLAGS = -I$(top_srcdir) -I$(top_srcdir)/lib -I$(top_builddir)/lib -I$(srcdir) -I$(top_builddir)
 AM_CPPFLAGS += -I$(top_builddir)/gl -I$(top_srcdir)/gl
 AM_CPPFLAGS += -DSRCDIR=\"$(srcdir)\"
+AM_CPPFLAGS += -I$(top_srcdir)/unistring/ -I$(top_builddir)/unistring/
 AM_CFLAGS = $(WARN_CFLAGS)
 AM_LDFLAGS = -no-install
 
-if !HAVE_LIBUNISTRING
-AM_CPPFLAGS += -I$(top_srcdir)/unistring/ -I$(top_builddir)/unistring/
-endif
-
 LDADD = ../lib/libidn2.la
-if HAVE_LIBUNISTRING
-LDADD += $(LTLIBUNISTRING)
-else
-LDADD += ../unistring/libunistring.la
-endif
+LDADD += ../unistring/libunistring.la $(LTLIBUNISTRING)
 LDADD += ../gl/libgnu.la
 
 TESTS = test-punycode test-lookup test-register test-strerror test-tounicode

@@ -34,7 +34,7 @@ VC_LIST_ALWAYS_EXCLUDE_REGEX = \
 # Explicit syntax-check exceptions.
 exclude_file_name_regexp--sc_program_name = ^(tests|examples)/.*\.c$$
 exclude_file_name_regexp--sc_prohibit_empty_lines_at_EOF = ^doc/reference/version.xml.in$$
-exclude_file_name_regexp--sc_trailing_blank = ^(tests/IdnaTest.(txt|inc))|(doc/gdoc)$$
+exclude_file_name_regexp--sc_trailing_blank = ^(tests/IdnaTest.(txt|inc))|(doc/gdoc)|(unistring/lib/uni.*diff)$$
 exclude_file_name_regexp--sc_require_config_h = ^examples/.*\.c|lib/gen.*\.c|^fuzz/main.c$$
 exclude_file_name_regexp--sc_require_config_h_first = ^examples/.*\.c|lib/gen.*\.c|^fuzz/main.c$$
 exclude_file_name_regexp--sc_prohibit_strncpy = ^src/idn2.c$$

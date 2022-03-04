@@ -419,6 +419,7 @@ clang-analyzer/Fedora:
   script:
   - ./bootstrap --skip-po
   - scan-build ./configure --disable-doc --enable-gcc-warnings
+  - make -j$(nproc) -C unistring
   - make -j$(nproc) -C gl
   - scan-build --status-bugs -o scan-build-lib make -j$(nproc) -C lib
   tags:

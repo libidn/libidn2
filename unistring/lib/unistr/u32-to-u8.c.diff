@@ -1,0 +1,14 @@
+diff --git a/lib/unistr/u32-to-u8.c b/lib/unistr/u32-to-u8.c
+index bf462b414d..81661b9dd5 100644
+--- a/lib/unistr/u32-to-u8.c
++++ b/lib/unistr/u32-to-u8.c
+@@ -63,7 +63,8 @@ FUNC (const SRC_UNIT *s, size_t n, DST_UNIT *resultbuf, size_t *lengthp)
+          u8_uctomb will verify uc anyway.  */
+ 
+       /* Store it in the output string.  */
+-      count = u8_uctomb (result + length, uc, allocated - length);
++      count = u8_uctomb (result ? result + length : NULL,
++                        uc, allocated - length);
+       if (count == -1)
+         {
+           if (!(result == resultbuf || result == NULL))
