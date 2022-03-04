@@ -2,6 +2,13 @@ Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
 
 * Noteworthy changes in release ?.? (????-??-??) [?]
 
+** Upgrade IDNA Tables from Unicode 11 to 12.
+
+** Updated gnulib files and various build fixes.
+Gnulib's Unicode code claims conformance to Unicode 14.0.0 rather than
+Unicode 9.0.0.  A bug in Libidn2's build system was fixed that caused
+the system libunistring to be used even though the system version was
+too old.
 
 * Noteworthy changes in release 2.3.2 (2021-07-19) [stable]
 
