@@ -47,15 +47,15 @@ libidn2_la_LDFLAGS = -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
 	-no-undefined
 libidn2_la_LDFLAGS += $(CODE_COVERAGE_LDFLAGS)
 
-IDNA_TABLE = idna-tables-properties.csv
+IDNA_TABLE = $(srcdir)/idna-tables-properties.csv
 IANA_URL = https://www.iana.org/assignments/idna-tables-12.0.0/idna-tables-properties.csv
 IDNA_TABLE_SHA1 = 3d0eaac1d0c0a3e651d1a3a05e86cc1b587a1a80
 
-TR46MAP = IdnaMappingTable.txt
+TR46MAP = $(srcdir)/IdnaMappingTable.txt
 TR46MAP_URL = https://www.unicode.org/Public/idna/14.0.0/IdnaMappingTable.txt
 TR46MAP_SHA1 = 5be4d60c103a68158f8841fcd2b61c422283954c
 
-NFCQC = DerivedNormalizationProps.txt
+NFCQC = $(srcdir)/DerivedNormalizationProps.txt
 NFCQC_URL = https://www.unicode.org/Public/14.0.0/ucd/DerivedNormalizationProps.txt
 NFCQC_SHA1 = 2b6363537b9d94ff13d4258e1631c6cde073a6e1
 
@@ -89,14 +89,14 @@ $(IDNA_TABLE):
 $(TR46MAP):
 	if ! echo "$(TR46MAP_SHA1) $(TR46MAP)" | sha1sum -c -; then \
 	  rm -f $(TR46MAP); \
-	  wget $(TR46MAP_URL); \
+	  wget -O(TR46MAP) $(TR46MAP_URL); \
 	  echo "$(TR46MAP_SHA1) $(TR46MAP)" | sha1sum -c -; \
 	fi
 
 $(NFCQC):
 	if ! echo "$(NFCQC_SHA1) $(NFCQC)" | sha1sum -c -; then \
 	  rm -f $(NFCQC); \
-	  wget $(NFCQC_URL); \
+	  wget -O$(NFCQC) $(NFCQC_URL); \
 	  echo "$(NFCQC_SHA1) $(NFCQC)" | sha1sum -c -; \
 	fi
 
