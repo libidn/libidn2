@@ -133,6 +133,34 @@ B-armcross:
   - LANG=C.UTF-8 qemu-arm src/idn2 --debug foo
   - make check
 
+# https://releases.llvm.org/13.0.0/tools/clang/docs/AddressSanitizer.html
+# https://releases.llvm.org/13.0.0/tools/clang/docs/UndefinedBehaviorSanitizer.html
+# https://lists.gnu.org/archive/html/bug-gnulib/2022-03/msg00016.html
+B-Fedora35-ASAN/UBSan:
+  stage: build
+  image: $CI_REGISTRY/libidn/build-images:libidn2-Fedora35
+  script:
+  - ./bootstrap --skip-po --no-git
+  - export CC=clang
+  - export CFLAGS="-fsanitize=address -g -O0"
+  - ASAN_OPTIONS=detect_leaks=0 ./configure --disable-doc --disable-gcc-warnings
+  - make V=1 -j$(nproc) check
+  - make clean
+  - export CFLAGS="-fsanitize=undefined,integer -fno-sanitize-recover=undefined,integer -g -O0"
+  - ./configure --disable-doc --disable-gcc-warnings
+  - make V=1 -C unistring
+  - make V=1 -C gl
+  - make V=1 -C lib CFLAGS="$CFLAGS -Wall -Wextra -Werror"
+  - make V=1 -C examples CFLAGS="$CFLAGS -Wall -Wextra -Werror -Wno-unused-parameter"
+  - make V=1 -j$(nproc) check
+  artifacts:
+    expire_in: 2 weeks
+    when: on_failure
+    paths:
+      - ./config.h
+      - ./*.log
+      - tests/*.log
+
 T-Debian5:
   image: debian/eol:lenny
   stage: test
@@ -311,28 +339,6 @@ T-armcross:
   - arm-linux-gnueabi-readelf -h src/.libs/idn2
 
 # In this build we combine
-#  * fuzz/ building
-#  * build/valgrind-check
-Debian GNU/Linux:
-  stage: build
-  image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
-  script:
-  - ./bootstrap --skip-po
-  - ./configure -C --disable-doc --enable-gcc-warnings --enable-valgrind-tests
-  - echo "nproc="$(nproc)" "$nproc
-  - make -j$(nproc) check
-  - make -j$(nproc) -C fuzz
-  tags:
-  - shared
-  artifacts:
-    expire_in: 2 weeks
-    when: on_failure
-    paths:
-      - ./config.h
-      - ./*.log
-      - tests/*.log
-
-# In this build we combine
 #  * syntax-check
 #  * abi-check
 # It is not run on tags
@@ -382,34 +388,6 @@ dist-check:
       - ./config.h
       - ./*.log
       - libidn2-*.gz
-
-# https://releases.llvm.org/13.0.0/tools/clang/docs/AddressSanitizer.html
-# https://releases.llvm.org/13.0.0/tools/clang/docs/UndefinedBehaviorSanitizer.html
-# https://lists.gnu.org/archive/html/bug-gnulib/2022-03/msg00016.html
-B-Fedora35-ASAN/UBSan:
-  stage: build
-  image: $CI_REGISTRY/libidn/build-images:libidn2-Fedora35
-  script:
-  - ./bootstrap --skip-po --no-git
-  - export CC=clang
-  - export CFLAGS="-fsanitize=address -g -O0"
-  - ASAN_OPTIONS=detect_leaks=0 ./configure --disable-doc --disable-gcc-warnings
-  - make V=1 -j$(nproc) check
-  - make clean
-  - export CFLAGS="-fsanitize=undefined,integer -fno-sanitize-recover=undefined,integer -g -O0"
-  - ./configure --disable-doc --disable-gcc-warnings
-  - make V=1 -C unistring
-  - make V=1 -C gl
-  - make V=1 -C lib CFLAGS="$CFLAGS -Wall -Wextra -Werror"
-  - make V=1 -C examples CFLAGS="$CFLAGS -Wall -Wextra -Werror -Wno-unused-parameter"
-  - make V=1 -j$(nproc) check
-  artifacts:
-    expire_in: 2 weeks
-    when: on_failure
-    paths:
-      - ./config.h
-      - ./*.log
-      - tests/*.log
 
 clang-analyzer/Fedora:
   stage: build
