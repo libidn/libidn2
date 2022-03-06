@@ -66,56 +66,26 @@ tracker for reporting bugs](https://gitlab.com/libidn/libidn2/issues).
 
 # Dependencies
 
-To build Libidn2 you will need a POSIX shell to run ./configure and
-the Unix make tool.
+To build Libidn2 you will need a POSIX shell to run ./configure, the
+Unix "make" tool, and a C compiler to build the library.
 
  * [Bash](https://www.gnu.org/software/bash/)
  * [Make](https://www.gnu.org/software/make/)
+ * [C compiler](https://www.gnu.org/software/gcc/)
 
-The shared libidn2 library uses GNU libunistring for Unicode
-processing and GNU libiconv for character set conversion.  You should
-install them before building and installing libidn2.  See the
-following links for more information on these packages:
+The shared libidn2 library may use GNU libunistring for Unicode
+processing and GNU libiconv for character set conversion.  It is
+recommended to install them before building and installing libidn2.
+See the following links for more information on these packages:
 
  * [Unistring](https://www.gnu.org/software/libunistring/)
  * [iconv](https://www.gnu.org/software/libiconv/)
 
-Note that the iconv dependency is optional -- it is required for the
-functions involving locale to UTF conversions -- but is recommended.
+The iconv dependency is optional -- it is required for the functions
+involving locale to UTF8 conversions -- but is recommended.
 
-If you wish to build the project from version controlled sources,
-rebuild all generated files (e.g., run autoreconf), or modify some
-source code files, you will need to have additional tools installed.
-None of the following tools are necessary if you build Libidn2 in the
-usual way (i.e., ./configure && make).
-
- * [Automake](https://www.gnu.org/software/automake/)
- * [Autoconf](https://www.gnu.org/software/autoconf/)
- * [Libtool](https://www.gnu.org/software/libtool/)
- * [Gettext](https://www.gnu.org/software/gettext/)
- * [Texinfo](https://www.gnu.org/software/texinfo/)
- * [Gperf](https://www.gnu.org/software/gperf/)
- * [Gengetopt](https://www.gnu.org/software/gengetopt/)
- * [help2man](https://www.gnu.org/software/help2man/)
- * [Tar](https://www.gnu.org/software/tar/)
- * [Gzip](https://www.gnu.org/software/gzip/)
- * [Texlive & epsf](https://www.tug.org/texlive/) (for PDF manual)
- * [GTK-DOC](https://www.gtk.org/gtk-doc/) (for API manual)
- * [Git](https://git-scm.com/)
- * [Perl](https://www.cpan.org/)
- * [Valgrind](https://valgrind.org/) (optional)
- * [abi-compliance-checker](https://github.com/lvc/abi-compliance-checker)
-
-The software is typically distributed with your operating system, and
-the instructions for installing them differ.  Here are some hints:
-
-Debian 10.x, Debian 11.x, Ubuntu 20.04:
-```
-apt-get install git make autoconf automake libtool gettext autopoint gperf
-apt-get install libunistring-dev valgrind gengetopt help2man
-apt-get install texinfo texlive git2cl gtk-doc-tools
-apt-get install abi-compliance-checker abigail-tools
-```
+When the recommended libunistring is not available, libidn2 provides
+replacement functionality which increases the size of the library.
 
 
 # Contributing
