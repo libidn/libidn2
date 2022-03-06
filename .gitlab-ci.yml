@@ -92,6 +92,7 @@ B-Debian11:
   - ./configure --enable-gcc-warnings --enable-valgrind-tests || (cat config.log; exit 1)
   - make V=1
   - make check || (find . -name test-suite.log -exec cat {} +; exit 1)
+  - make -C doc compare-makefile
   - make syntax-check
   - make dist
   artifacts:

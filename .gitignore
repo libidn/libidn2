@@ -28,7 +28,6 @@
 /config.status
 /configure
 /doc/.gitignore
-/doc/Makefile.gdoc
 /doc/coverage/
 /doc/decode.c
 /doc/example-toascii.c

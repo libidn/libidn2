@@ -830,7 +830,7 @@ sub dump_function {
 #	    print STDERR "param = '$param', type = '$type'\n";
 	}
     } else {
-	print STDERR "warning: $lineno: Cannot understand prototype: '$prototype'\n" if (!($prototype  =~ m,GSASL_VALID_MECHANISM_CHARACTERS,));
+	print STDERR "warning: $lineno: Cannot understand prototype: '$prototype'\n";
 	return;
     }
 
@@ -914,7 +914,6 @@ sub dump_enum {
 # 2 - scanning field start.
 # 3 - scanning prototype.
 $state = 0;
-$section = "";
 
 $doc_special = "\@\%\$\#";
 
@@ -934,15 +933,16 @@ $doc_content = $doc_com."(.*)";
 $contents = "";
 $section_default = "Description";	# default section
 $section = $section_default;
-$enum = 0;
-
-$lineno = 0;
 
 foreach $file (@ARGV) {
     if (!open(IN,"<$file")) {
 	print STDERR "Error: Cannot open file $file\n";
 	next;
     }
+    $state = 0;
+    $section = "";
+    $enum = 0;
+    $lineno = 0;
     while ($line = <IN>) {
 	$lineno++;
 
