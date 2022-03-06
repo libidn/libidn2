@@ -21,6 +21,8 @@ bootstrap-tools = gnulib,autoconf,automake,libtoolize,make,makeinfo,help2man,gpe
 
 upload_dest_dir_ = libidn
 
+GNUPLOADFLAGS = --symlink-regex
+
 local-checks-to-skip += sc_unmarked_diagnostics sc_bindtextdomain # Re-add when we have translation
 local-checks-to-skip += sc_immutable_NEWS
 local-checks-to-skip += sc_prohibit_strcmp
