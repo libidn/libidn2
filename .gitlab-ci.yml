@@ -153,7 +153,6 @@ B-Fedora35-ASAN/UBSan:
   - make V=1 -C lib CFLAGS="$CFLAGS -Wall -Wextra -Werror"
   - make V=1 -C examples CFLAGS="$CFLAGS -Wall -Wextra -Werror -Wno-unused-parameter"
   - make V=1 -j$(nproc) check
-  - make V=1 distcheck
   artifacts:
     expire_in: 2 weeks
     when: on_failure
