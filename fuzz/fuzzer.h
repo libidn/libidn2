@@ -22,10 +22,10 @@
  * This file is part of libidn2.
  */
 
-#include <stddef.h> /* size_t */
-#include <stdint.h> /* uint8_t */
+#include <stddef.h>		/* size_t */
+#include <stdint.h>		/* uint8_t */
 
 #ifdef __cplusplus
 extern "C"
 #endif
-int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size);
+int LLVMFuzzerTestOneInput (const uint8_t * data, size_t size);

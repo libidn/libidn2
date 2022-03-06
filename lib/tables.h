@@ -27,10 +27,10 @@
 */
 
 #ifndef LIBIDN2_TABLES_H
-#define LIBIDN2_TABLES_H
+# define LIBIDN2_TABLES_H
 
-#include <stdint.h>
-#include "idn2.h"
+# include <stdint.h>
+# include "idn2.h"
 
 int G_GNUC_IDN2_ATTRIBUTE_CONST _idn2_disallowed_p (uint32_t cp);
 int G_GNUC_IDN2_ATTRIBUTE_CONST _idn2_contextj_p (uint32_t cp);

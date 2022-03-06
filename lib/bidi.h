@@ -27,10 +27,10 @@
 */
 
 #ifndef LIBIDN2_BIDI_H
-#define LIBIDN2_BIDI_H
+# define LIBIDN2_BIDI_H
 
-#include <stdint.h>
-#include "idn2.h"
+# include <stdint.h>
+# include "idn2.h"
 
 int G_GNUC_IDN2_ATTRIBUTE_PURE
 _idn2_bidi (const uint32_t * label, size_t llen);

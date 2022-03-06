@@ -27,11 +27,11 @@
 */
 
 #ifndef LIBIDN2_IDNA_H
-#define LIBIDN2_IDNA_H
+# define LIBIDN2_IDNA_H
 
-#include <stdint.h>
-#include <stdbool.h>
-#include "idn2.h"
+# include <stdint.h>
+# include <stdbool.h>
+# include "idn2.h"
 
 enum
 {

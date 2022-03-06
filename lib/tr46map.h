@@ -27,18 +27,18 @@
 */
 
 #ifndef LIBIDN2_TR46MAP_H
-#define LIBIDN2_TR46MAP_H
+# define LIBIDN2_TR46MAP_H
 
-#include <stdint.h>
-#include "idn2.h"
+# include <stdint.h>
+# include "idn2.h"
 
-#define TR46_FLG_VALID                   1
-#define TR46_FLG_MAPPED                  2
-#define TR46_FLG_IGNORED                 4
-#define TR46_FLG_DEVIATION               8
-#define TR46_FLG_DISALLOWED             16
-#define TR46_FLG_DISALLOWED_STD3_MAPPED 32
-#define TR46_FLG_DISALLOWED_STD3_VALID  64
+# define TR46_FLG_VALID                   1
+# define TR46_FLG_MAPPED                  2
+# define TR46_FLG_IGNORED                 4
+# define TR46_FLG_DEVIATION               8
+# define TR46_FLG_DISALLOWED             16
+# define TR46_FLG_DISALLOWED_STD3_MAPPED 32
+# define TR46_FLG_DISALLOWED_STD3_VALID  64
 
 typedef struct
 {

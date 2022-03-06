@@ -87,11 +87,12 @@ B-Debian11:
   image: $CI_REGISTRY/libidn/build-images:libidn2-Debian11
   stage: build
   script:
-  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -q autopoint help2man
+  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -q indent help2man
   - ./bootstrap --skip-po --no-git
   - ./configure --enable-gcc-warnings --enable-valgrind-tests || (cat config.log; exit 1)
   - make V=1
   - make check || (find . -name test-suite.log -exec cat {} +; exit 1)
+  - make syntax-check
   - make dist
   artifacts:
     expire_in: 2 weeks

@@ -53,8 +53,6 @@ aximport:
 		wget -O $$f "https://git.savannah.gnu.org/gitweb/?p=autoconf-archive.git;a=blob_plain;f=$$f"; \
 	done
 
-INDENT_SOURCES = examples/*.c lib/*.c lib/*.h src/*.c src/*.h tests/*.c
-
 sc_codespell:
 	@if `which codespell > /dev/null`; then \
 		codespell -L tim,mitre `git ls-files|egrep -v '_fuzzer.in|_fuzzer.repro|gnulib|^lib/.*\.(csv|txt)$$'`; \

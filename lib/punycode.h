@@ -27,10 +27,10 @@
 */
 
 #ifndef LIBIDN2_PUNYCODE_H
-#define LIBIDN2_PUNYCODE_H
+# define LIBIDN2_PUNYCODE_H
 
-#include <stddef.h>
-#include <stdint.h>
+# include <stddef.h>
+# include <stdint.h>
 
 extern int
 _idn2_punycode_encode_internal (size_t input_length,

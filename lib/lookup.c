@@ -46,8 +46,8 @@
 
 #ifdef HAVE_LIBUNISTRING
 /* copied from gnulib */
-#include <limits.h>
-#define _C_CTYPE_LOWER_N(N) \
+# include <limits.h>
+# define _C_CTYPE_LOWER_N(N) \
    case 'a' + (N): case 'b' + (N): case 'c' + (N): case 'd' + (N): \
    case 'e' + (N): case 'f' + (N): \
    case 'g' + (N): case 'h' + (N): case 'i' + (N): case 'j' + (N): \
@@ -55,7 +55,7 @@
    case 'o' + (N): case 'p' + (N): case 'q' + (N): case 'r' + (N): \
    case 's' + (N): case 't' + (N): case 'u' + (N): case 'v' + (N): \
    case 'w' + (N): case 'x' + (N): case 'y' + (N): case 'z' + (N)
-#define _C_CTYPE_UPPER _C_CTYPE_LOWER_N ('A' - 'a')
+# define _C_CTYPE_UPPER _C_CTYPE_LOWER_N ('A' - 'a')
 static inline int
 c_tolower (int c)
 {
@@ -100,7 +100,7 @@ c_strncasecmp (const char *s1, const char *s2, size_t n)
     return (c1 > c2 ? 1 : c1 < c2 ? -1 : 0);
 }
 #else
-#include <c-strcase.h>
+# include <c-strcase.h>
 #endif
 
 static int

@@ -27,11 +27,11 @@
 */
 
 #ifndef LIBIDN2_CONTEXT_H
-#define LIBIDN2_CONTEXT_H
+# define LIBIDN2_CONTEXT_H
 
-#include <stdint.h>
-#include <stdbool.h>
-#include "idn2.h"
+# include <stdint.h>
+# include <stdbool.h>
+# include "idn2.h"
 
 int G_GNUC_IDN2_ATTRIBUTE_PURE
 _idn2_contextj_rule (const uint32_t * label, size_t llen, size_t pos);

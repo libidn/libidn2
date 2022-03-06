@@ -27,10 +27,10 @@
 */
 
 #ifndef LIBIDN2_DATA_H
-#define LIBIDN2_DATA_H
+# define LIBIDN2_DATA_H
 
-#include <stdint.h>
-#include <sys/types.h>
+# include <stdint.h>
+# include <sys/types.h>
 
 enum
 {
