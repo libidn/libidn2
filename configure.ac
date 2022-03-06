@@ -44,7 +44,6 @@ AM_INIT_AUTOMAKE([1.13 -Wall -Wno-portability subdir-objects])
 AM_SILENT_RULES([yes])
 
 AC_PROG_CC
-AM_CONDITIONAL(cross_compiling,[test "$cross_compiling" = yes])
 AC_USE_SYSTEM_EXTENSIONS
 gl_EARLY
 unistring_EARLY
@@ -141,12 +140,6 @@ if test "$enable_doc" = "yes";then
     doc/reference/version.xml
   ])
 fi
-
-if test "$ac_cv_libunistring" = "yes";then
-  AC_SEARCH_LIBS(uc_joining_type, unistring, [], [ac_cv_libunistring=no])
-fi
-
-AM_CONDITIONAL(HAVE_LIBUNISTRING, test "$ac_cv_libunistring" = "yes")
 
 AC_CONFIG_FILES([
   Makefile
