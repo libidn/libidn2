@@ -1,4 +1,4 @@
-# Copyright (C) 2011-2021 Simon Josefsson
+# Copyright (C) 2011-2022 Simon Josefsson
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -47,6 +47,7 @@ exclude_file_name_regexp--sc_prohibit_undesirable_word_seq = ^lib/idna-tables-pr
 my-update-copyright:
 	make update-copyright update-copyright-env='UPDATE_COPYRIGHT_HOLDER="Tim Ruehsen" UPDATE_COPYRIGHT_USE_INTERVALS=2'
 	make update-copyright update-copyright-env='UPDATE_COPYRIGHT_HOLDER="Simon Josefsson" UPDATE_COPYRIGHT_USE_INTERVALS=2'
+	perl -pi -e "s/2011-20..  Simon Josefsson/2011-`(date +%Y)`  Simon Josefsson/" lib/version.c
 
 aximport:
 	for f in m4/ax_*.m4; do \

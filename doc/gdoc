@@ -2,7 +2,7 @@ eval '(exit $?0)' && eval 'exec perl -S "$0" ${1+"$@"}'
     & eval 'exec perl -S "$0" $argv:q'
     if 0;
 
-## Copyright (c) 2002-2021 Simon Josefsson
+## Copyright (c) 2002-2022 Simon Josefsson
 ##                    added -texinfo, -listfunc, -pkg-name
 ##                    man page revamp
 ##                    various improvements
