@@ -127,12 +127,14 @@ compare-makefile:
 	diff -u $(srcdir)/Makefile.am tmp-$@ && \
 	rm -f tmp-$@
 
+EXTRA_DIST += stamp-gdoc
+
 $(gdoc_MANS) $(gdoc_TEXINFOS): stamp-gdoc
 
 clean-local:
 	-rm -f stamp-gdoc
 
-stamp-gdoc: $(top_builddir)/.version $(GDOC_SRC)
+stamp-gdoc: $(top_srcdir)/.version $(GDOC_SRC)
 	$(AM_V_at)$(MKDIR_P) man texi
 	$(AM_V_GEN)for i in `$(srcdir)/gdoc -listfunc $(GDOC_SRC)`; do \
 		$(srcdir)/gdoc -man \

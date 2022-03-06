@@ -94,7 +94,7 @@ $(top_srcdir)/.version:
 dist-hook: gen-ChangeLog
 	echo $(VERSION) > $(distdir)/.tarball-version
 	if test -d "$(top_srcdir)/contrib";then \
-		$(MAKE) -C $(top_srcdir) abi-check-latest; \
+		$(MAKE) -C $(top_builddir) abi-check-latest; \
 	fi
 
 .PHONY: gen-ChangeLog
