@@ -14,24 +14,27 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 stages:
-  - quick
-  - build
-  - test
 
-# The quick stage should complete as quickly as possible but still
-# excercise the internal self-tests.  Primarily this is achieved by
-# --disable-doc and thus avoiding the 'make dist' step.  Having an
-# early stage like this avoids wasting build cycles attempting the
+# The "quick" stage should complete as quickly as possible but still
+# excercise some useful internal self-tests.  Primarily this is
+# achieved by --disable-doc and avoiding the 'make dist' step.  Having
+# an early stage like this avoids wasting build cycles attempting the
 # bootstrap builds on many platforms.
 
-# The build stage should attempt to build from version controlled
+  - quick
+
+# The "build" stage should attempt to build from version controlled
 # sources on platforms we support development on, with the variety of
 # pre-dependencies that we want to support.  Typically these builds
 # results in a tarball artifact.
 
-# The test stage attempt to build the tarball on all platforms we
+  - build
+
+# The "test" stage attempt to build the tarball on all platforms we
 # support building the project on, with as many combinations of
 # pre-depencencies as useful.
+
+  - test
 
 variables:
   BUILD_IMAGES_PROJECT: libidn/build-images
@@ -45,7 +48,9 @@ B-Debian-quick:
   stage: quick
   script:
   - time ./bootstrap --skip-po --no-git
-  - time ./configure --enable-gcc-warnings --disable-doc || (cat config.log; exit 1)
+  - mkdir -p a/b/c
+  - cd a/b/c
+  - time ../../../configure CFLAGS=-O0 --enable-gcc-warnings --disable-doc || (cat config.log; exit 1)
   - time make syntax-check gnulib_dir=$GNULIB_SRCDIR
   - time make V=1
   - time make check || (find . -name test-suite.log -exec cat {} +; exit 1)
@@ -94,6 +99,7 @@ B-Debian11:
   - make check || (find . -name test-suite.log -exec cat {} +; exit 1)
   - make -C doc compare-makefile
   - make syntax-check
+  - make abi-check
   - make dist
   artifacts:
     expire_in: 2 weeks
@@ -339,32 +345,6 @@ T-armcross:
   - make V=1
   - arm-linux-gnueabi-readelf -h lib/.libs/libidn2.so
   - arm-linux-gnueabi-readelf -h src/.libs/idn2
-
-# In this build we combine
-#  * syntax-check
-#  * abi-check
-# It is not run on tags
-abi-check:
-  stage: build
-  image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
-  script:
-  - ./bootstrap --skip-po
-  - CFLAGS="-g -Og" ./configure -C --disable-doc
-  - make syntax-check
-  - make -j$(nproc)
-  - make abi-check
-  tags:
-  - shared
-  except:
-  - tags
-  artifacts:
-    expire_in: 2 weeks
-    when: on_failure
-    paths:
-      - ./config.h
-      - ./*.log
-      - tests/*.log
-      - compat_reports/
 
 # In this build we do
 #  * distcheck
