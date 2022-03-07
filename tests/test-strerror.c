@@ -15,9 +15,13 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <config.h>
+#ifdef HAVE_CONFIG_H
+# include <config.h>
+#endif
 
 #include <idn2.h>
+
+#include <stdio.h>
 
 int G_GNUC_IDN2_ATTRIBUTE_CONST
 main (void)
@@ -32,6 +36,8 @@ main (void)
       if (!idn2_strerror_name (i))
 	failed++;
     }
+
+  printf ("\nerror_count: %d\n", failed);
 
   return !!failed;
 }

@@ -17,7 +17,9 @@
 
 /* Based on GNU Libidn tst_punycode.c */
 
-#include <config.h>
+#ifdef HAVE_CONFIG_H
+# include <config.h>
+#endif
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -303,22 +305,6 @@ const test_t test[] = {
 
 static int debug = 1;
 static int error_count = 0;
-static int break_on_error = 0;
-
-_GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD (1, 2)
-     static void fail (const char *format, ...)
-{
-  va_list arg_ptr;
-
-  va_start (arg_ptr, format);
-  vprintf (format, arg_ptr);
-  va_end (arg_ptr);
-
-  error_count++;
-
-  if (break_on_error)
-    exit (EXIT_FAILURE);
-}
 
 static void
 ucs4print (const uint32_t * str, size_t len)
@@ -360,7 +346,8 @@ _check_4z (const test_t * t, int rc, uint32_t * ucs4, const char *funcname)
     {
       printf ("Test[%u] '%s' failed (got %d, expected %d):\n",
 	      (unsigned) (t - test), t->name, rc, t->rc_expected);
-      fail ("  %s(): %s\n", funcname, idn2_strerror (rc));
+      printf ("  %s(): %s\n", funcname, idn2_strerror (rc));
+      error_count++;
     }
   else if (rc == IDN2_OK)
     {
@@ -374,7 +361,9 @@ _check_4z (const test_t * t, int rc, uint32_t * ucs4, const char *funcname)
 	      ucs4print (t->u32_expected, _u32_strlen (t->u32_expected));
 	    }
 
-	  fail ("%s() entry %u mismatch\n", funcname, (unsigned) (t - test));
+	  printf ("%s() entry %u mismatch\n", funcname,
+		  (unsigned) (t - test));
+	  error_count++;
 	}
     }
   else if (debug)
@@ -524,8 +513,8 @@ main (void)
   idn2_to_unicode_lzlz ("abc", NULL, 0);
   idn2_to_unicode_lzlz ("xn--tda", NULL, 0);
 
-  if (debug && error_count)
-    printf ("error_count: %d\n", error_count);
+  if (debug)
+    printf ("\nerror_count: %d\n", error_count);
 
   return !!error_count;
 }

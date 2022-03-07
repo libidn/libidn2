@@ -53,6 +53,12 @@ B-Debian-quick:
   - time ../../../configure CFLAGS=-O0 --enable-gcc-warnings --disable-doc || (cat config.log; exit 1)
   - time make syntax-check gnulib_dir=$GNULIB_SRCDIR
   - time make V=1
+  - apt-get install libidn2-dev
+  - set -o pipefail && (rm -f foo && gcc -o foo -Itests ../../../tests/test-lookup.c -lidn2 -lunistring && ./foo ../../../tests/IdnaTest.txt | tail -1) || (rm -f foo && gcc -o foo -Itests ../../../tests/test-lookup.c lib/.libs/libidn2.a gl/.libs/libgnu.a unistring/.libs/libunistring.a && ./foo ../../../tests/IdnaTest.txt | tail -1)
+  - set -o pipefail && rm -f foo && gcc -o foo ../../../tests/test-register.c -lidn2 && ./foo | tail -1
+  - set -o pipefail && rm -f foo && gcc -o foo ../../../tests/test-strerror.c -lidn2 && ./foo | tail -1
+  - set -o pipefail && rm -f foo && gcc -o foo ../../../tests/test-tounicode.c -lidn2 -lunistring && ./foo | tail -1
+  - set -o pipefail && rm -f foo && gcc -o foo ../../../tests/test-locale.c -lidn2 && ./foo | tail -1
   - time make check || (find . -name test-suite.log -exec cat {} +; exit 1)
 
 sast:

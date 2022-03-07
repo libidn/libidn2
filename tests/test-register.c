@@ -15,7 +15,9 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <config.h>
+#ifdef HAVE_CONFIG_H
+# include <config.h>
+#endif
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -104,25 +106,11 @@ static const struct idna idna[] = {
    IDN2_TOO_BIG_LABEL},
 };
 
-static int error_count = 0;
-static int break_on_error = 1;
-
-_GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD (1, 2)
-     static void fail (const char *format, ...)
-{
-  va_list arg_ptr;
-
-  va_start (arg_ptr, format);
-  vfprintf (stderr, format, arg_ptr);
-  va_end (arg_ptr);
-  error_count++;
-  if (break_on_error)
-    exit (EXIT_FAILURE);
-}
 
 int
 main (void)
 {
+  int error_count = 0;
   uint8_t *out;
   unsigned i;
   int rc;
@@ -137,39 +125,57 @@ main (void)
   for (i = 0; i < sizeof (idna) / sizeof (idna[0]); i++)
     {
       out = (uint8_t *) 0x1234;
-      rc =
-	idn2_register_u8 ((uint8_t *) idna[i].ulabel,
-			  (uint8_t *) idna[i].alabel, &out, idna[i].flags);
+      rc = idn2_register_u8 ((uint8_t *) idna[i].ulabel,
+			     (uint8_t *) idna[i].alabel, &out, idna[i].flags);
       printf ("%3u  %-25s %-25s %-25s %s\n", i, idn2_strerror_name (rc),
 	      rc == IDN2_OK ? idna[i].out : "",
 	      idna[i].alabel ? idna[i].alabel : "(null)",
 	      idna[i].ulabel ? idna[i].ulabel : "(null)");
       if (rc != idna[i].rc)
-	fail ("expected rc %d got rc %d\n", idna[i].rc, rc);
+	{
+	  printf ("expected rc %d got rc %d\n", idna[i].rc, rc);
+	  error_count++;
+	}
       else if (rc == IDN2_OK && strcmp ((char *) out, idna[i].out) != 0)
-	fail ("expected: %s\ngot: %s\n", idna[i].out, out);
+	{
+	  printf ("expected: %s\ngot: %s\n", idna[i].out, out);
+	  error_count++;
+	}
 
       if (rc == IDN2_OK)
 	{
 	  uint8_t *tmp;
 
 	  if (out == (void *) 0x1234)
-	    fail ("out has not been set");
+	    {
+	      printf ("out has not been set\n");
+	      error_count++;
+	    }
 
-	  rc =
-	    idn2_lookup_u8 ((uint8_t *) idna[i].ulabel, &tmp, idna[i].flags);
+	  rc = idn2_lookup_u8 ((uint8_t *) idna[i].ulabel, &tmp,
+			       idna[i].flags);
 	  if (rc != IDN2_OK)
-	    fail ("lookup failed?! tv %u", i);
+	    {
+	      printf ("lookup failed?! tv %u\n", i);
+	      error_count++;
+	    }
 	  if (strcmp ((char *) out, (char *) tmp) != 0)
-	    fail ("lookup and register different? lookup %s register %s\n",
-		  tmp, out);
+	    {
+	      printf
+		("lookup and register different? lookup %s register %s\n",
+		 tmp, out);
+	      error_count++;
+	    }
 	  idn2_free (tmp);
 	  idn2_free (out);
 	}
       else
 	{
 	  if (out != (void *) 0x1234)
-	    fail ("out has been tainted on error");
+	    {
+	      printf ("out has been tainted on error\n");
+	      error_count++;
+	    }
 	}
     }
   puts ("-----------------------------------------------------------"
@@ -177,35 +183,61 @@ main (void)
 
   /* special calls to cover edge cases */
   if ((rc = idn2_register_u8 (NULL, NULL, NULL, 0)) != IDN2_OK)
-    fail ("special #1 failed with %d\n", rc);
+    {
+      printf ("special #1 failed with %d\n", rc);
+      error_count++;
+    }
 
   out = (uint8_t *) 0x123;
   if ((rc = idn2_register_u8 (NULL, NULL, &out, 0)) != IDN2_OK)
-    fail ("special #2 failed with %d\n", rc);
+    {
+      printf ("special #2 failed with %d\n", rc);
+      error_count++;
+    }
   if (out)
-    fail ("special #2 failed with out!=NULL\n");
+    {
+      printf ("special #2 failed with out!=NULL\n");
+      error_count++;
+    }
 
-  if ((rc =
-       idn2_register_u8 (NULL, (uint8_t *) "xn+-xxx", &out,
-			 0)) != IDN2_INVALID_ALABEL)
-    fail ("special #3 failed with %d\n", rc);
+  if ((rc = idn2_register_u8 (NULL, (uint8_t *) "xn+-xxx",
+			      &out, 0)) != IDN2_INVALID_ALABEL)
+    {
+      printf ("special #3 failed with %d\n", rc);
+      error_count++;
+    }
   if (out)
-    fail ("special #3 failed with out!=NULL\n");
+    {
+      printf ("special #3 failed with out!=NULL\n");
 
-  if ((rc =
-       idn2_register_u8 (NULL, (uint8_t *) "xn--\xff", &out,
-			 0)) != IDN2_INVALID_ALABEL)
-    fail ("special #4 failed with %d\n", rc);
+      error_count++;
+    }
+  if ((rc = idn2_register_u8 (NULL, (uint8_t *) "xn--\xff",
+			      &out, 0)) != IDN2_INVALID_ALABEL)
+    {
+      printf ("special #4 failed with %d\n", rc);
+      error_count++;
+    }
   if (out)
-    fail ("special #4 failed with out!=NULL\n");
+    {
+      printf ("special #4 failed with out!=NULL\n");
 
+      error_count++;
+    }
   if ((rc = idn2_register_ul (NULL, NULL, NULL, 0)) != IDN2_OK)
-    fail ("special #5 failed with %d\n", rc);
+    {
+      printf ("special #5 failed with %d\n", rc);
 
-  if ((rc =
-       idn2_register_u8 ((uint8_t *) "faß", NULL, NULL,
-			 IDN2_NFC_INPUT)) != IDN2_OK)
-    fail ("special #7 failed with %d\n", rc);
+      error_count++;
+    }
+  if ((rc = idn2_register_u8 ((uint8_t *) "faß",
+			      NULL, NULL, IDN2_NFC_INPUT)) != IDN2_OK)
+    {
+      printf ("special #7 failed with %d\n", rc);
+      error_count++;
+    }
 
-  return error_count;
+  printf ("\nerror_count: %d\n", error_count);
+
+  return !!error_count;
 }

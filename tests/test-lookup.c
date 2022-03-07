@@ -16,7 +16,9 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <config.h>
+#ifdef HAVE_CONFIG_H
+# include <config.h>
+#endif
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -1381,6 +1383,12 @@ test_unicode_range (void)
     }
 }
 
+#ifdef SRCDIR
+# define IDNATEST_TXT SRCDIR "/IdnaTest.txt"
+#else
+# define IDNATEST_TXT "IdnaTest.txt"
+#endif
+
 int
 main (int argc, const char *argv[])
 {
@@ -1395,8 +1403,7 @@ main (int argc, const char *argv[])
   separator ();
 
   // test all IDNA cases from Unicode 9.0.0
-  if (_scan_file
-      (argc == 1 ? SRCDIR "/IdnaTest.txt" : argv[1], test_IdnaTest))
+  if (_scan_file (argc == 1 ? IDNATEST_TXT : argv[1], test_IdnaTest))
     return EXIT_FAILURE;
 
   separator ();

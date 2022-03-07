@@ -45,6 +45,7 @@ exclude_file_name_regexp--sc_prohibit_atoi_atof = ^lib/gentr46map\.c$$
 exclude_file_name_regexp--sc_makefile_at_at_check = ^Makefile.am|src/Makefile\.am|tests/Makefile.am$$
 exclude_file_name_regexp--sc_prohibit_empty_lines_at_EOF = ^lib/IdnaMappingTable.txt|doc/reference/version.xml.in$$
 exclude_file_name_regexp--sc_prohibit_undesirable_word_seq = ^lib/idna-tables-properties.csv$$
+exclude_file_name_regexp--sc_prohibit_have_config_h = ^tests/test-lookup.c|tests/test-register.c|tests/test-tounicode.c|tests/test-strerror.c|tests/test-locale.c$$
 
 my-update-copyright:
 	make update-copyright update-copyright-env='UPDATE_COPYRIGHT_HOLDER="Tim Ruehsen" UPDATE_COPYRIGHT_USE_INTERVALS=2'

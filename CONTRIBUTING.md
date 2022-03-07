@@ -84,15 +84,29 @@ New functionality should be accompanied by a test case which verifies
 the correctness of the new functionality as well as under failure.
 The libidn2 test suite is run on "make check".
 
-When submitting patches it is recommended to open a new merge request
-[on the gitlab site](https://gitlab.com/libidn/libidn2), to force the
-changes to pass the automated test suite.
+When adding a new test code, it is better if it builds standalone
+outside of the libidn2 build infrastructure, using only public header
+files and symbols from installed system libidn2 library (or
+libiconv/libunistring).  Exceptions to this rule is permitted, to do
+white box testing, but there should be sufficient black box coverage
+testing of all public APIs through standalone-usable test code.  If
+your test code does both white box and black box testing, please try
+to separate it into two different source code files, so that one of
+them can be used by system integrators to test functionality of the
+installed library.  The CI/CD testing (.gitlab-ci.yml) contains rule
+that attempts to confirm this for the known working test codes.
 
 # Continuous Integration
 
 The project is built auomatically on every git commit using GitLab
 CI/CD, see the file `.gitlab-ci.yml` for rules and [current libidn2
 pipeline](https://gitlab.com/libidn/libidn2/-/pipelines).
+
+# Submitting patches
+
+When submitting patches it is recommended to open a new merge request
+[on the gitlab site](https://gitlab.com/libidn/libidn2), to force the
+changes to pass the automated test suite.
 
 # Cross-compiling
 
