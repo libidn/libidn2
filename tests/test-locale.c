@@ -37,6 +37,10 @@ main (void)
   if ((rc = idn2_lookup_ul ("abc", NULL, 0)) != IDN2_OK)
     {
       printf ("special #5 failed with %d\n", rc);
+
+      if (rc == IDN2_ICONV_FAIL)
+	return 77;
+
       error_count++;
     }
 
