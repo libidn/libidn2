@@ -41,8 +41,6 @@
 
 #include "idn2_cmd.h"
 
-#include "blurbs.h"
-
 #ifdef __cplusplus
 extern				// define a global const variable in C++, C doesn't need it.
 #endif
@@ -143,17 +141,6 @@ process_input (char *readbuf, int flags)
   if (len && readbuf[len - 1] == '\n')
     readbuf[len - 1] = '\0';
 
-  if (strcmp (readbuf, "show w") == 0)
-    {
-      puts (WARRANTY);
-      return;
-    }
-  else if (strcmp (readbuf, "show c") == 0)
-    {
-      puts (CONDITIONS);
-      return;
-    }
-
   if (args_info.debug_given)
     hexdump ("input", readbuf);
 
@@ -211,7 +198,7 @@ main (int argc, char *argv[])
 
   if (!args_info.quiet_given
       && args_info.inputs_num == 0 && isatty (fileno (stdin)))
-    fprintf (stderr, "%s %s\n" GREETING, PACKAGE, VERSION);
+    version_etc (stderr, NULL, PACKAGE, VERSION, (char *) NULL);
 
   if (args_info.debug_given)
     fprintf (stderr, _("Charset: %s\n"), locale_charset ());

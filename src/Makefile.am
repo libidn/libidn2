@@ -21,7 +21,7 @@ AM_CFLAGS = $(WARN_CFLAGS)
 
 bin_PROGRAMS = idn2
 
-idn2_SOURCES = idn2.c blurbs.h
+idn2_SOURCES = idn2.c
 idn2_LDADD = libidn2_cmd.la ../lib/libidn2.la ../gl/libgnu.la ../unistring/libunistring.la $(LTLIBUNISTRING) $(LIBS)
 
 idn2.c: $(BUILT_SOURCES)
