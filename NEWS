@@ -12,6 +12,11 @@ Unicode 9.0.0.  A bug in Libidn2's build system was fixed that caused
 the system libunistring to be used even though the system version was
 too old.
 
+** Self-check improvements.
+The C self-checks in tests/ should now be usable outside of the
+libidn2 build environment, for system integration checks of a
+system-installed libidn2.
+
 * Noteworthy changes in release 2.3.2 (2021-07-19) [stable]
 
 ** Upgrade TR46 tables from Unicode 11 to Unicode 13.
