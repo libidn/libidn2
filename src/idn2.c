@@ -126,6 +126,9 @@ hexdump (const char *prefix, const char *str)
     for (i = 0; i < u32len; i++)
       fprintf (stderr, "UCS-4 %s[%lu] = U+%04x\n",
 	       prefix, (unsigned long) i, u32[i]);
+
+  free (u8);
+  free (u32);
 }
 
 static struct gengetopt_args_info args_info;
