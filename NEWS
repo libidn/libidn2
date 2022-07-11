@@ -1,6 +1,6 @@
 Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
 
-* Noteworthy changes in release ?.? (????-??-??) [?]
+* Noteworthy changes in release 2.3.3 (2022-07-11) [stable]
 
 ** Upgrade IDNA Tables from Unicode 11 to 12.
 
