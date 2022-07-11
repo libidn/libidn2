@@ -301,7 +301,7 @@ T-Debian-testing:
   - grep am_cv_func_iconv_summary config.log
   - cd ..
   - env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq autoconf autopoint libtool gtk-doc-tools
-  - autoreconf -fvi
+  - AUTOPOINT=true autoreconf -fvi
   - ./configure --enable-gcc-warnings
   - grep am_cv_func_iconv_summary config.log
   - make check V=1 VERBOSE=t
