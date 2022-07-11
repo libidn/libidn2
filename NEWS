@@ -13,6 +13,7 @@ the system libunistring to be used even though the system version was
 too old.
 
 ** Self-check improvements.
+Self-checks for the idn2 command line tool were added.  Closes: #96.
 The C self-checks in tests/ should now be usable outside of the
 libidn2 build environment, for system integration checks of a
 system-installed libidn2.

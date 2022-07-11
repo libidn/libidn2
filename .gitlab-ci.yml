@@ -38,28 +38,34 @@ stages:
 
 variables:
   BUILD_IMAGES_PROJECT: libidn/build-images
-  DEBIAN_BUILD: buildenv-debian-buster
   FEDORA_BUILD: buildenv-fedora
-  BASE_BUILD: buildenv-basic
   GET_SOURCES_ATTEMPTS: "3"
 
 B-Debian-quick:
   image: $CI_REGISTRY/libidn/build-images:libidn2-quick-Debian-testing
   stage: quick
   script:
-  - time ./bootstrap --skip-po --no-git
+  - echo $GNULIB_SRCDIR
+  - time ./bootstrap --skip-po
+  - git diff --exit-code # catch changes resulting in *-dirty version number
   - mkdir -p a/b/c
   - cd a/b/c
-  - time ../../../configure CFLAGS=-O0 --enable-gcc-warnings --disable-doc || (cat config.log; exit 1)
+  - time ../../../configure CFLAGS=-O0 --enable-gcc-warnings --disable-doc
   - time make syntax-check gnulib_dir=$GNULIB_SRCDIR
   - time make V=1
-  - apt-get install libidn2-dev
+  - apt-get install idn2 libidn2-dev
   - set -o pipefail && (rm -f foo && gcc -o foo -Itests ../../../tests/test-lookup.c -lidn2 -lunistring && ./foo ../../../tests/IdnaTest.txt | tail -1) || (rm -f foo && gcc -o foo -Itests ../../../tests/test-lookup.c lib/.libs/libidn2.a gl/.libs/libgnu.a unistring/.libs/libunistring.a && ./foo ../../../tests/IdnaTest.txt | tail -1)
   - set -o pipefail && rm -f foo && gcc -o foo ../../../tests/test-register.c -lidn2 && ./foo | tail -1
   - set -o pipefail && rm -f foo && gcc -o foo ../../../tests/test-strerror.c -lidn2 && ./foo | tail -1
   - set -o pipefail && rm -f foo && gcc -o foo ../../../tests/test-tounicode.c -lidn2 -lunistring && ./foo | tail -1
   - set -o pipefail && rm -f foo && gcc -o foo ../../../tests/test-locale.c -lidn2 && ./foo | tail -1
-  - time make check || (find . -name test-suite.log -exec cat {} +; exit 1)
+  - env LANG=C.UTF-8 IDN2=idn2 ../../../tests/test-idn2.sh
+  - time make check VERBOSE=t
+  artifacts:
+    paths:
+    - libidn2-*.tar.gz
+    - ./config.h
+    - "**/*.log"
 
 sast:
   stage: quick
@@ -73,44 +79,51 @@ B-Alpine-quick:
   image: $CI_REGISTRY/libidn/build-images:libidn2-quick-Alpine
   stage: build
   script:
-  - time ./bootstrap --skip-po --no-git
-  - time ./configure --enable-gcc-warnings --disable-doc || (cat config.log; exit 1)
+  - time ./bootstrap --skip-po
+  - time ./configure --enable-gcc-warnings --disable-doc
   - time make V=1
   - time make syntax-check
-  - time make check || (find . -name test-suite.log -exec cat {} +; exit 1)
+  - time make check VERBOSE=t
+  artifacts:
+    paths:
+    - libidn2-*.tar.gz
+    - ./config.h
+    - "**/*.log"
 
 B-AlmaLinux8:
   image: $CI_REGISTRY/libidn/build-images:libidn2-AlmaLinux8
   stage: build
   script:
-  - time ./bootstrap --skip-po --no-git
-  - time ./configure || (cat config.log; exit 1)
+  - time ./bootstrap --skip-po
+  - time ./configure
   - time make V=1
-  - time make check || (find . -name test-suite.log -exec cat {} +; exit 1)
+  - time make check VERBOSE=t
   - rm -rf contrib/ # FIXME XXX remove once we support modern abidiff -- see issue #102
   - time make dist
   artifacts:
-    expire_in: 2 weeks
     paths:
     - libidn2-*.tar.gz
+    - ./config.h
+    - "**/*.log"
 
 B-Debian11:
   image: $CI_REGISTRY/libidn/build-images:libidn2-Debian11
   stage: build
   script:
   - env DEBIAN_FRONTEND=noninteractive apt-get install -y -q indent help2man
-  - ./bootstrap --skip-po --no-git
-  - ./configure --enable-gcc-warnings --enable-valgrind-tests || (cat config.log; exit 1)
+  - ./bootstrap --skip-po
+  - ./configure --enable-gcc-warnings --enable-valgrind-tests
   - make V=1
-  - make check || (find . -name test-suite.log -exec cat {} +; exit 1)
+  - make check VERBOSE=t
   - make -C doc compare-makefile
   - make syntax-check
   - make abi-check
   - make dist
   artifacts:
-    expire_in: 2 weeks
     paths:
     - libidn2-*.tar.gz
+    - ./config.h
+    - "**/*.log"
 
 B-Debian-testing:
   image: debian:testing
@@ -120,15 +133,22 @@ B-Debian-testing:
   - env DEBIAN_FRONTEND=noninteractive apt-get install -y -q git make autoconf automake libtool gettext autopoint gperf libunistring-dev valgrind gengetopt help2man texinfo texlive git2cl gtk-doc-tools
   script:
   - ./bootstrap --skip-po
-  - ./configure --enable-gcc-warnings --enable-valgrind-tests || (cat config.log; exit 1)
+  - ./configure --enable-gcc-warnings --enable-valgrind-tests
   - make V=1
-  - make check || (find . -name test-suite.log -exec cat {} +; exit 1)
+  - make check VERBOSE=t
   - rm -rf contrib/ # FIXME XXX remove once we support modern abidiff -- see issue #102
+  - rm unistring/libunistring.la # FIXME XXX debug why this is needed...
   - make dist
+  - make install
+  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq man
+  - git clone --depth=1 https://salsa.debian.org/debian/libidn2.git debian-libidn2
+  - LC_ALL=C.UTF-8 debian-libidn2/debian/tests/idn2
+  - debian-libidn2/debian/tests/libidn2
   artifacts:
-    expire_in: 2 weeks
     paths:
     - libidn2-*.tar.gz
+    - ./config.h
+    - "**/*.log"
 
 B-armcross:
   image: $CI_REGISTRY/libidn/build-images:libidn2-Debian11
@@ -138,14 +158,20 @@ B-armcross:
   - env DEBIAN_FRONTEND=noninteractive apt-get install -y -q gcc-arm-linux-gnueabi qemu-user qemu-user-binfmt file
   - update-binfmts --enable qemu-arm
   script:
-  - ./bootstrap --skip-po --no-git
-  - ./configure --enable-gcc-warnings --disable-doc || (cat config.log; exit 1)
+  - ./bootstrap --skip-po
+  - ./configure --enable-gcc-warnings --disable-doc
   - make V=1
-  - ./configure --enable-gcc-warnings --disable-doc --host=arm-linux-gnueabi CFLAGS="-static --static" || (cat config.log; exit 1)
+  - ./configure --enable-gcc-warnings --disable-doc --host=arm-linux-gnueabi CFLAGS="-static --static"
   - make V=1
   - file src/idn2
   - LANG=C.UTF-8 qemu-arm src/idn2 --debug foo
-  - make check
+  - LANG=C.UTF-8 src/idn2 --debug räksmörgås
+  - LANG=C.UTF-8 make check VERBOSE=t
+  artifacts:
+    paths:
+    - libidn2-*.tar.gz
+    - ./config.h
+    - "**/*.log"
 
 # https://releases.llvm.org/13.0.0/tools/clang/docs/AddressSanitizer.html
 # https://releases.llvm.org/13.0.0/tools/clang/docs/UndefinedBehaviorSanitizer.html
@@ -154,11 +180,11 @@ B-Fedora35-ASAN/UBSan:
   stage: build
   image: $CI_REGISTRY/libidn/build-images:libidn2-Fedora35
   script:
-  - ./bootstrap --skip-po --no-git
+  - ./bootstrap --skip-po
   - export CC=clang
   - export CFLAGS="-fsanitize=address -g -O0"
   - ASAN_OPTIONS=detect_leaks=0 ./configure --disable-doc --disable-gcc-warnings
-  - make V=1 -j$(nproc) check
+  - make V=1 -j$(nproc) check VERBOSE=t
   - make clean
   - export CFLAGS="-fsanitize=undefined,integer -fno-sanitize-recover=undefined,integer -g -O0"
   - ./configure --disable-doc --disable-gcc-warnings
@@ -166,14 +192,38 @@ B-Fedora35-ASAN/UBSan:
   - make V=1 -C gl
   - make V=1 -C lib CFLAGS="$CFLAGS -Wall -Wextra -Werror"
   - make V=1 -C examples CFLAGS="$CFLAGS -Wall -Wextra -Werror -Wno-unused-parameter"
-  - make V=1 -j$(nproc) check
+  - make V=1 -j$(nproc) check VERBOSE=t
   artifacts:
-    expire_in: 2 weeks
-    when: on_failure
     paths:
-      - ./config.h
-      - ./*.log
-      - tests/*.log
+    - libidn2-*.tar.gz
+    - ./config.h
+    - "**/*.log"
+
+B-Fedora35-clang-analyzer:
+  stage: build
+  image: $CI_REGISTRY/libidn/build-images:libidn2-Fedora35
+  before_script:
+  - dnf install -y clang-analyzer
+  script:
+  - ./bootstrap --skip-po
+  - scan-build ./configure --enable-gtk-doc --enable-gtk-doc-pdf
+  - make -j$(nproc) -C unistring
+  - make -j$(nproc) -C gl
+  - scan-build -o clang-analyzer make -j$(nproc) -C lib
+  - make
+  - make web-manual
+  - rm -rf contrib/ # FIXME XXX remove once we support modern abidiff -- see issue #102
+  - make dist
+  tags:
+  - shared
+  except:
+  - tags
+  artifacts:
+    when: on_success
+    paths:
+    - doc/reference
+    - doc/manual
+    - clang-analyzer
 
 T-Debian5:
   image: debian/eol:lenny
@@ -185,8 +235,13 @@ T-Debian5:
   script:
   - tar xfz libidn2-*.tar.gz
   - cd `ls -d libidn2-* | grep -v tar.gz`
-  - ./configure --enable-gcc-warnings || (cat config.log; exit 1)
-  - make check V=1 || (find . -name test-suite.log -exec cat {} +; exit 1)
+  - ./configure --enable-gcc-warnings
+  - make check V=1 VERBOSE=t
+  artifacts:
+    paths:
+    - libidn2-*.tar.gz
+    - ./config.h
+    - "**/*.log"
 
 T-Debian9:
   image: debian:stretch
@@ -200,8 +255,13 @@ T-Debian9:
   - cd `ls -d libidn2-* | grep -v tar.gz`
   - mkdir b
   - cd b
-  - ../configure --enable-gcc-warnings || (cat config.log; exit 1)
-  - make check V=1 || (find . -name test-suite.log -exec cat {} +; exit 1)
+  - ../configure --enable-gcc-warnings
+  - make check V=1 VERBOSE=t
+  artifacts:
+    paths:
+    - libidn2-*.tar.gz
+    - ./config.h
+    - "**/*.log"
 
 T-Debian10:
   image: debian:buster
@@ -215,8 +275,13 @@ T-Debian10:
   - cd `ls -d libidn2-* | grep -v tar.gz`
   - mkdir b
   - cd b
-  - ../configure --enable-gcc-warnings || (cat config.log; exit 1)
-  - make check V=1 || (find . -name test-suite.log -exec cat {} +; exit 1)
+  - ../configure --enable-gcc-warnings
+  - make check V=1 VERBOSE=t
+  artifacts:
+    paths:
+    - libidn2-*.tar.gz
+    - ./config.h
+    - "**/*.log"
 
 T-Alpine:
   image: alpine:latest
@@ -229,8 +294,13 @@ T-Alpine:
   script:
   - tar xfz libidn2-*.tar.gz
   - cd `ls -d libidn2-* | grep -v tar.gz`
-  - ./configure --enable-gcc-warnings || (cat config.log; exit 1)
-  - make check V=1 || (find . -name test-suite.log -exec cat {} +; exit 1)
+  - ./configure --enable-gcc-warnings
+  - make check V=1 VERBOSE=t
+  artifacts:
+    paths:
+    - libidn2-*.tar.gz
+    - ./config.h
+    - "**/*.log"
 
 T-ArchLinux:
   image: archlinux:latest
@@ -243,8 +313,13 @@ T-ArchLinux:
   - cd `ls -d libidn2-* | grep -v tar.gz`
   - mkdir b
   - cd b
-  - ../configure --enable-gcc-warnings || (cat config.log; exit 1)
-  - make check V=1 || (find . -name test-suite.log -exec cat {} +; exit 1)
+  - ../configure --enable-gcc-warnings
+  - make check V=1 VERBOSE=t
+  artifacts:
+    paths:
+    - libidn2-*.tar.gz
+    - ./config.h
+    - "**/*.log"
 
 T-CentOS7:
   image: centos:7
@@ -255,8 +330,13 @@ T-CentOS7:
   script:
   - tar xfa libidn2-*.tar.gz
   - cd `ls -d libidn2-* | grep -v tar.gz`
-  - ./configure --enable-gcc-warnings || (cat config.log; exit 1)
-  - make check V=1 || (find . -name test-suite.log -exec cat {} +; exit 1)
+  - ./configure --enable-gcc-warnings
+  - make check V=1 VERBOSE=t
+  artifacts:
+    paths:
+    - libidn2-*.tar.gz
+    - ./config.h
+    - "**/*.log"
 
 T-AlmaLinux8:
   image: almalinux:8
@@ -267,8 +347,13 @@ T-AlmaLinux8:
   script:
   - tar xfa libidn2-*.tar.gz
   - cd `ls -d libidn2-* | grep -v tar.gz`
-  - ./configure --enable-gcc-warnings || (cat config.log; exit 1)
-  - make check V=1 || (find . -name test-suite.log -exec cat {} +; exit 1)
+  - ./configure --enable-gcc-warnings
+  - make check V=1 VERBOSE=t
+  artifacts:
+    paths:
+    - libidn2-*.tar.gz
+    - ./config.h
+    - "**/*.log"
 
 T-Ubuntu-14.04:
   image: ubuntu:14.04
@@ -280,8 +365,13 @@ T-Ubuntu-14.04:
   script:
   - tar xfa libidn2-*.tar.gz
   - cd `ls -d libidn2-* | grep -v tar.gz`
-  - ./configure --enable-gcc-warnings || (cat config.log; exit 1)
-  - make check V=1 || (find . -name test-suite.log -exec cat {} +; exit 1)
+  - ./configure --enable-gcc-warnings
+  - make check V=1 VERBOSE=t
+  artifacts:
+    paths:
+    - libidn2-*.tar.gz
+    - ./config.h
+    - "**/*.log"
 
 T-Ubuntu rolling:
   image: ubuntu:rolling
@@ -293,13 +383,17 @@ T-Ubuntu rolling:
   script:
   - tar xfa libidn2-*.tar.gz
   - cd `ls -d libidn2-* | grep -v tar.gz`
-  - ./configure --enable-gcc-warnings || (cat config.log; exit 1)
-  - make check V=1 || (find . -name test-suite.log -exec cat {} +; exit 1)
+  - ./configure --enable-gcc-warnings
+  - make check V=1 VERBOSE=t
   - make distcheck
+  # check if essential files are accidentally cleaned
+  - make clean
+  - make
   artifacts:
-    expire_in: 2 weeks
     paths:
     - libidn2-*.tar.gz
+    - ./config.h
+    - "**/*.log"
 
 T-Mingw32:
   image: debian:latest
@@ -315,8 +409,13 @@ T-Mingw32:
   - cd `ls -d libidn2-* | grep -v tar.gz`
   - mkdir b
   - cd b
-  - ../configure --host=i686-w64-mingw32 CC='i686-w64-mingw32-gcc -static-libgcc' --enable-gcc-warnings || (cat config.log; exit 1)
-  - make check V=1 || (find . -name test-suite.log -exec cat {} +; exit 1)
+  - ../configure --host=i686-w64-mingw32 CC='i686-w64-mingw32-gcc -static-libgcc' --enable-gcc-warnings
+  - make check V=1 VERBOSE=t
+  artifacts:
+    paths:
+    - libidn2-*.tar.gz
+    - ./config.h
+    - "**/*.log"
 
 T-Mingw64:
   image: debian:latest
@@ -332,125 +431,37 @@ T-Mingw64:
   - cd `ls -d libidn2-* | grep -v tar.gz`
   - mkdir b
   - cd b
-  - ../configure --host=x86_64-w64-mingw32 --enable-gcc-warnings || (cat config.log; exit 1)
-  - make check V=1 || (find . -name test-suite.log -exec cat {} +; exit 1)
+  - ../configure --host=x86_64-w64-mingw32 --enable-gcc-warnings
+  - make check V=1 VERBOSE=t
+  artifacts:
+    paths:
+    - libidn2-*.tar.gz
+    - ./config.h
+    - "**/*.log"
 
 T-armcross:
   image: debian:latest
   stage: test
   needs: [B-Debian11]
   before_script:
+  - dpkg --add-architecture armel
   - apt-get update -qq
-  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq make gcc-arm-linux-gnueabi
+  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq make gcc-arm-linux-gnueabi libstdc++6:armel
   script:
   - tar xfz libidn2-*.tar.gz
   - cd `ls -d libidn2-* | grep -v tar.gz`
   - mkdir b
   - cd b
-  - ../configure --host=arm-linux-gnueabi --enable-gcc-warnings || (cat config.log; exit 1)
+  - ../configure --host=arm-linux-gnueabi --enable-gcc-warnings
   - make V=1
   - arm-linux-gnueabi-readelf -h lib/.libs/libidn2.so
   - arm-linux-gnueabi-readelf -h src/.libs/idn2
-
-# In this build we do
-#  * distcheck
-dist-check:
-  stage: build
-  image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
-  script:
-  - ./bootstrap --skip-po
-  - ./configure -C --enable-gtk-doc --enable-gtk-doc-pdf --disable-gcc-warnings --disable-valgrind-tests
-  - make -j$(nproc)
-  - DISTCHECK_CONFIGURE_FLAGS=--disable-gtk-doc make distcheck
-  tags:
-  - shared
+  - make check VERBOSE=t
   artifacts:
-    expire_in: 2 weeks
-    when: on_failure
     paths:
-      - libidn2-*
-  artifacts:
-    expire_in: 2 weeks
-    when: on_success
-    paths:
-      - ./config.h
-      - ./*.log
-      - libidn2-*.gz
-
-clang-analyzer/Fedora:
-  stage: build
-  image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$FEDORA_BUILD
-  script:
-  - ./bootstrap --skip-po
-  - scan-build ./configure --disable-doc --enable-gcc-warnings
-  - make -j$(nproc) -C unistring
-  - make -j$(nproc) -C gl
-  - scan-build --status-bugs -o scan-build-lib make -j$(nproc) -C lib
-  tags:
-  - shared
-  except:
-  - tags
-  artifacts:
-    expire_in: 2 weeks
-    when: on_failure
-    paths:
-      - ./config.h
-      - ./*.log
-      - scan-build-lib/*
-
-pages:
-  stage: build
-  image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
-  script:
-  - ./bootstrap --skip-po
-  - CFLAGS="-g -O0" ./configure --enable-gtk-doc --enable-code-coverage --disable-gcc-warnings
-  - make -j$(nproc) check
-  - make local-code-coverage-output
-  - mkdir -p public
-  - rm -rf public/coverage
-  - mv Libidn2-*-coverage public/coverage
-  - rm -rf public/reference
-  - mv doc/reference/html public/reference
-  - make web-manual
-  - rm -rf public/manual
-  - mv doc/manual public/manual
-  - make clean
-  - make
-  - make -C fuzz check
-  - make code-coverage-capture
-  - contrib/make-coverage-badge "fuzz-coverage"
-  - rm -rf public/fuzz-coverage
-  - mv Libidn2-*-coverage public/fuzz-coverage
-  - mv badge.svg public/fuzz-coverage/
-  tags:
-  - shared
-  artifacts:
-    when: on_success
-    paths:
-      - public
-  only:
-    - master
-
-# Target to run code coverage on non-master branches. That is intended
-# to ensure that compilation in master will not break the pages rule.
-pages-test:
-  stage: build
-  image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$DEBIAN_BUILD
-  script:
-  - ./bootstrap --skip-po
-  - CFLAGS="-g -O0" ./configure --enable-gtk-doc --enable-code-coverage --disable-gcc-warnings
-  - make -j$(nproc) check
-  - make local-code-coverage-output
-  - make web-manual
-  - make clean
-  - make
-  - make -C fuzz check
-  - make code-coverage-capture
-  - contrib/make-coverage-badge "fuzz-coverage"
-  tags:
-  - shared
-  except:
-    - master
+    - libidn2-*.tar.gz
+    - ./config.h
+    - "**/*.log"
 
 MinGW64:
   stage: build
@@ -462,7 +473,7 @@ MinGW64:
   - ./bootstrap --skip-po
   - mingw64-configure --disable-valgrind-tests --disable-doc
   - mingw64-make -j$(nproc)
-  - mingw64-make -j$(nproc) check
+  - mingw64-make -j$(nproc) check VERBOSE=t
   tags:
   - shared
   - docker
@@ -476,35 +487,42 @@ MinGW64:
       - ./*.log
       - tests/*.log
 
-# After having issues with building from tarball (make distcheck was ok),
-# outside a git repo, we test the tarball stand-alone.
-Tarball:
+.pages:
   stage: test
-  image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$BASE_BUILD
-  variables:
-    GIT_STRATEGY: none
+  needs: ["B-Fedora35-clang-analyzer"]
+  image: $CI_REGISTRY/libidn/build-images:libidn2-Debian11
+  before_script:
+  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -q lcov help2man
   script:
-    # remove all files from git repo
-    - mv libidn2-*.gz /tmp
-    - rm -rf * .git* .travis*
-    - mv /tmp/libidn2-*.gz .
-    # unpack and build from tarball
-    - tar xvf libidn2-*.gz
-    - cd libidn2-*
-    - ./configure || (cat config.log; exit 1)
-    - make
-    - make check || (find . -name test-suite.log -exec cat {} +; exit 1)
-    # check if essential files are accidentally cleaned
-    - make clean
-    - make
-  tags:
-    - shared
-  dependencies:
-    - dist-check
+  - rm -rf public
+  - mkdir -p public
+  - mv clang-analyzer/* public/clang-analyzer
+  - mv doc/manual public/manual
+  - mv doc/reference/html public/reference
+  - mv doc/reference/libidn2.pdf public/reference/
+  - ./bootstrap --skip-po
+  - CFLAGS="-g -O0" ./configure --enable-gtk-doc --enable-code-coverage --disable-gcc-warnings
+  - make -j$(nproc) check VERBOSE=t
+  - make local-code-coverage-output
+  - mv Libidn2-*-coverage public/coverage
+  - make clean
+  - make
+  - make -C fuzz check VERBOSE=t
+  - make code-coverage-capture
+  - contrib/make-coverage-badge "fuzz-coverage"
+  - mv Libidn2-*-coverage public/fuzz-coverage
+  - mv badge.svg public/fuzz-coverage/
   artifacts:
-    expire_in: 2 weeks
-    when: on_failure
+    when: on_success
     paths:
-      - libidn2-*/config.h
-      - libidn2-*/*.log
-      - libidn2-*/*/*.log
+      - public
+
+pages:
+  extends: .pages
+  only:
+    - master
+
+pages-test:
+  extends: .pages
+  except:
+    - master

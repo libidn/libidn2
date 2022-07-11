@@ -20,17 +20,27 @@ AM_CPPFLAGS += -I$(top_srcdir)/unistring/ -I$(top_builddir)/unistring/
 AM_CFLAGS = $(WARN_CFLAGS)
 AM_LDFLAGS = -no-install
 
+AM_VALGRINDFLAGS = --suppressions=$(top_srcdir)/unistring/libunistring.valgrind
+
 LDADD = ../lib/libidn2.la
 LDADD += ../unistring/libunistring.la $(LTLIBUNISTRING)
 LDADD += ../gl/libgnu.la
 
-TESTS = test-punycode test-lookup test-register test-strerror test-tounicode
-TESTS += test-locale
+ctests = test-punycode test-lookup test-register test-strerror test-tounicode
+ctests += test-locale
 if TEST_GLIBC
-TESTS += test-glibc
+ctests += test-glibc
 endif
+check_PROGRAMS = $(ctests)
 
-check_PROGRAMS = $(TESTS)
+dist_check_SCRIPTS = test-idn2.sh
+
+TESTS = $(dist_check_SCRIPTS) $(ctests)
+TEST_EXTENSIONS = .sh
+LOG_COMPILER = $(LOG_VALGRIND)
+SH_LOG_COMPILER= $(SHELL) -x
+
+AM_TESTS_ENVIRONMENT = EXEEXT="$(EXEEXT)" LOG_VALGRIND="$(LOG_VALGRIND)" LIBTOOL="$(LIBTOOL)"
 
 test_punycode_LDADD = ../lib/puny_decode.o ../lib/puny_encode.o $(LDADD) $(CODE_COVERAGE_LIBS)
 
@@ -49,6 +59,3 @@ $(IDNA_TXT):
 
 $(IDNA_INC): $(IDNA_TXT) $(srcdir)/gen-utc-test.pl
 	$(srcdir)/gen-utc-test.pl < $< > $@
-
-AM_VALGRINDFLAGS = --suppressions=$(top_srcdir)/unistring/libunistring.valgrind
-LOG_COMPILER = $(LOG_VALGRIND)

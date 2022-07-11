@@ -206,6 +206,12 @@ main (int argc, char *argv[])
   if (args_info.debug_given)
     fprintf (stderr, _("Charset: %s\n"), locale_charset ());
 
+#if !HAVE_ICONV
+  if (strcmp (locale_charset (), "UTF-8") != 0)
+    error (77, 0, _("libiconv required for non-UTF-8 character encoding: %s"),
+	   locale_charset ());
+#endif
+
   if (!args_info.quiet_given
       && args_info.inputs_num == 0 && isatty (fileno (stdin)))
     fprintf (stderr, "%s", _("Type each input string on a line by itself, "
