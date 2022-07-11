@@ -285,6 +285,32 @@ T-Debian10:
     - ./config.h
     - "**/*.log"
 
+T-Debian-testing:
+  image: debian:testing
+  stage: test
+  needs: [B-Debian11]
+  before_script:
+  - apt-get update
+  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq make gcc
+  script:
+  - tar xfz libidn2-*.tar.gz
+  - cd `ls -d libidn2-* | grep -v tar.gz`
+  - mkdir b
+  - cd b
+  - ../configure --enable-gcc-warnings
+  - grep am_cv_func_iconv_summary config.log
+  - cd ..
+  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq autoconf autopoint libtool gtk-doc-tools
+  - autoreconf -fvi
+  - ./configure --enable-gcc-warnings
+  - grep am_cv_func_iconv_summary config.log
+  - make check V=1 VERBOSE=t
+  artifacts:
+    paths:
+    - libidn2-*.tar.gz
+    - ./config.h
+    - "**/*.log"
+
 T-Alpine:
   image: alpine:latest
   stage: test
