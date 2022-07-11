@@ -51,6 +51,7 @@ B-Debian-quick:
   - mkdir -p a/b/c
   - cd a/b/c
   - time ../../../configure CFLAGS=-O0 --enable-gcc-warnings --disable-doc
+  - grep am_cv_func_iconv_summary config.log
   - time make syntax-check gnulib_dir=$GNULIB_SRCDIR
   - time make V=1
   - apt-get install idn2 libidn2-dev
@@ -61,6 +62,7 @@ B-Debian-quick:
   - set -o pipefail && rm -f foo && gcc -o foo ../../../tests/test-locale.c -lidn2 && ./foo | tail -1
   - env LANG=C.UTF-8 IDN2=idn2 ../../../tests/test-idn2.sh
   - time make check VERBOSE=t
+  - git diff --exit-code # nothing should change version controlled files
   artifacts:
     paths:
     - libidn2-*.tar.gz
