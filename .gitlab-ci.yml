@@ -54,7 +54,7 @@ B-Debian-quick:
   - grep am_cv_func_iconv_summary config.log
   - time make syntax-check gnulib_dir=$GNULIB_SRCDIR
   - time make V=1
-  - apt-get install idn2 libidn2-dev
+  - env DEBIAN_FRONTEND=noninteractive apt-get install -y idn2 libidn2-dev
   - set -o pipefail && (rm -f foo && gcc -o foo -Itests ../../../tests/test-lookup.c -lidn2 -lunistring && ./foo ../../../tests/IdnaTest.txt | tail -1) || (rm -f foo && gcc -o foo -Itests ../../../tests/test-lookup.c lib/.libs/libidn2.a gl/.libs/libgnu.a unistring/.libs/libunistring.a && ./foo ../../../tests/IdnaTest.txt | tail -1)
   - set -o pipefail && rm -f foo && gcc -o foo ../../../tests/test-register.c -lidn2 && ./foo | tail -1
   - set -o pipefail && rm -f foo && gcc -o foo ../../../tests/test-strerror.c -lidn2 && ./foo | tail -1
