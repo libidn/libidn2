@@ -64,19 +64,28 @@ website](https://gitlab.com/libidn/libidn2), and there is [an issue
 tracker for reporting bugs](https://gitlab.com/libidn/libidn2/issues).
 
 
-# Dependencies
+# Building & Dependencies
 
-To build Libidn2 you will need a POSIX shell to run ./configure, the
-Unix "make" tool, and a C compiler to build the library.
+To build Libidn2 you will need a POSIX shell, the Unix "make" tool,
+and a C compiler.
 
  * [Bash](https://www.gnu.org/software/bash/)
  * [Make](https://www.gnu.org/software/make/)
  * [C compiler](https://www.gnu.org/software/gcc/)
 
-The shared libidn2 library may use GNU libunistring for Unicode
-processing and GNU libiconv for character set conversion.  It is
-recommended to install them before building and installing libidn2.
-See the following links for more information on these packages:
+When building from a released *.tar.* archive, after unpacking you
+build the package like this:
+
+```
+./configure
+make
+make check
+```
+
+The Libidn2 library may use GNU libunistring for Unicode processing
+and GNU libiconv for character set conversion.  It is recommended to
+install them before building and installing libidn2.  See the
+following links for more information on these packages:
 
  * [Unistring](https://www.gnu.org/software/libunistring/)
  * [iconv](https://www.gnu.org/software/libiconv/)
@@ -84,9 +93,14 @@ See the following links for more information on these packages:
 The iconv dependency is optional -- it is required for the functions
 involving locale to UTF8 conversions -- but is recommended.
 
-When the recommended libunistring is not available, libidn2 provides
-replacement functionality which increases the size of the library.
+When the recommended libunistring is not available, libidn2 uses
+internal replacement functionality which increases the size of the
+library.  To use the internal libunistring-replacement rather than the
+system libunistring (even when deemed to be sufficient) you may use:
 
+```
+./configure --with-included-libunistring
+```
 
 # Contributing
 
@@ -100,8 +114,8 @@ Dependencies:
 
 To test the code coverage of the test suite use the following:
 ```
-$ ./configure --enable-code-coverage
-$ make && make check && make code-coverage-capture
+./configure --enable-code-coverage
+make && make check && make code-coverage-capture
 ```
 
 The current coverage report can be found [here](https://libidn.gitlab.io/libidn2/coverage/).
