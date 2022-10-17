@@ -49,6 +49,9 @@ static const struct idna idna[] = {
   /* U+19DA */
   {"\xe1\xa7\x9a", "xn--pkf", IDN2_OK},
 
+  /* U+1E4D5 introduced with Unicode 15.0.0 */
+  {"\xf0\x9e\x93\x95", "xn--th5h", IDN2_OK},
+
   /* U+111C9 */
   {"\xf0\x91\x87\x89", "xn--5d1d", IDN2_LEADING_COMBINING},
   {"\xf0\x91\x87\x89" "foo", "xn--foo-tp2u", IDN2_LEADING_COMBINING},
