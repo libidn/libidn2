@@ -60,7 +60,8 @@ main (void)
   char *range_end;
   char *property;
   int idna_table_size = 0;
-  enum { IANA, UTC } table_syntax;
+  enum
+  { IANA, UTC } table_syntax;
 
   ok (next_line ());
   if (strstr (line, "Codepoint,Property,") == line)
