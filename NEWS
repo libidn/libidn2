@@ -2,6 +2,10 @@ Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
 
 * Noteworthy changes in release ?.? (????-??-??) [?]
 
+** Unicode 15.0.0 support.
+This requires a recent enough libunistring, or that internal
+libunistring functions are used (see below).
+
 ** Gnulib's libunistring-optional is used.
 This allows you to force libidn2 to use internal libunistring with the
 following command: ./configure --with-included-libunistring
