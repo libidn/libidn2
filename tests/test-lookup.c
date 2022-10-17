@@ -47,7 +47,7 @@ static const struct idna idna[] = {
   {"..", "..", IDN2_OK},	/* XXX should we disallow this? */
 
   /* U+19DA */
-  {"\xe1\xa7\x9a", "xn--pkf", IDN2_DISALLOWED},
+  {"\xe1\xa7\x9a", "xn--pkf", IDN2_OK},
 
   /* U+111C9 */
   {"\xf0\x91\x87\x89", "xn--5d1d", IDN2_LEADING_COMBINING},

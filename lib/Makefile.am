@@ -47,9 +47,9 @@ libidn2_la_LDFLAGS = -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
 	-no-undefined
 libidn2_la_LDFLAGS += $(CODE_COVERAGE_LDFLAGS)
 
-IDNA_TABLE = $(srcdir)/idna-tables-properties.csv
-IANA_URL = https://www.iana.org/assignments/idna-tables-12.0.0/idna-tables-properties.csv
-IDNA_TABLE_SHA1 = 3d0eaac1d0c0a3e651d1a3a05e86cc1b587a1a80
+IDNA_TABLE = $(srcdir)/Idna2008-15.0.0.txt
+IANA_URL = https://www.unicode.org/Public/idna/idna2008derived/Idna2008-15.0.0.txt
+IDNA_TABLE_SHA1 = 6aad2582843823a6a91d188c5296c90dc8733df0
 
 TR46MAP = $(srcdir)/IdnaMappingTable.txt
 TR46MAP_URL = https://www.unicode.org/Public/idna/15.0.0/IdnaMappingTable.txt
