@@ -2,11 +2,21 @@ Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
 
 * Noteworthy changes in release ?.? (????-??-??) [?]
 
-** Unicode 15.0.0 support.
-This requires a recent enough libunistring, or that internal
-libunistring functions are used (see below).
+** Support for Unicode 15.0.0.  Closes: #112.
+We now uses Unicode.org's IDNA2008 tables rather than IANA's.  See
+<https://gitlab.com/libidn/libidn2/-/issues/112> and
+<https://lists.gnu.org/archive/html/help-libidn/2022-10/msg00000.html>
+for rationale, which can be summarized into 1) IANA are still on
+2019-era Unicode version 12 and we wish to support Unicode version
+12-15, 2) consistency with some other implementations, 3) the only
+incompatibility related to U+19DA is deemed to have minor real-world
+consequences.  Thus we break backwards compatibility for U+19DA in
+this release compared against libidn2 0.11..2.3.3 thus reverting back
+to the libidn2 <= 0.11 behaviour.  We decided to not bump ABI version
+and believe this is the best choice going forward as well for minor
+internal non-API related ABI changes.
 
-** Gnulib's libunistring-optional is used.
+** Gnulib updated and now libunistring-optional is used.
 This allows you to force libidn2 to use internal libunistring with the
 following command: ./configure --with-included-libunistring
 
