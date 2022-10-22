@@ -100,7 +100,7 @@ main (void)
 	  printf ("  {0x%s, 0x%s, %s},\n", line, range_end, property);
 	  idna_table_size++;
 	}
-      else if (table_syntax = UTC)
+      else if (table_syntax == UTC)
 	{
 	  if (line[0] == '#')
 	    continue;
