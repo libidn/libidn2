@@ -1,5 +1,8 @@
 Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
 
+* Noteworthy changes in release ?.? (????-??-??) [?]
+
+
 * Noteworthy changes in release 2.3.4 (2022-10-23) [stable]
 
 ** Support for Unicode 15.0.0.  Closes: #112.
