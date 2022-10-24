@@ -287,10 +287,6 @@ B-Fedora35-clang-analyzer:
   - make web-manual
   - rm -rf contrib/ # FIXME XXX remove once we support modern abidiff -- see issue #102
   - make dist
-  tags:
-  - shared
-  except:
-  - tags
   artifacts:
     when: on_success
     paths:
@@ -573,11 +569,6 @@ MinGW64:
   - mingw64-configure --disable-valgrind-tests --disable-doc
   - mingw64-make -j$(nproc)
   - mingw64-make -j$(nproc) check VERBOSE=t
-  tags:
-  - shared
-  - docker
-  except:
-  - tags
   artifacts:
     expire_in: 2 weeks
     when: on_failure
