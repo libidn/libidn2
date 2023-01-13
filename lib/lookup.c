@@ -741,7 +741,7 @@ idn2_to_ascii_4i (const uint32_t *input, size_t inlen, char *output,
       size_t len = strlen (out);
 
       if (len > 63)
-	rc = IDN2_TOO_BIG_DOMAIN;
+	rc = IDN2_TOO_BIG_LABEL;
       else if (output)
 	memcpy (output, out, len);
 
