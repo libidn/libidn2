@@ -24,7 +24,6 @@ IDN2_0.0.0 {
     idn2_register_u8;
 
     idn2_lookup_ul;
-    idn2_decode_ul;
     idn2_register_ul;
 
     idn2_to_ascii_4i;
