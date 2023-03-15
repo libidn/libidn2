@@ -1144,6 +1144,17 @@ test_homebrewed (void)
       idn2_free (out);
       ok++;
     }
+
+  if ((rc = idn2_to_ascii_4i2 (NULL, 4, (char **) &out, 0)) != IDN2_OK)
+    {
+      failed++;
+      printf ("special #10 failed with %d\n", rc);
+    }
+  else
+    {
+      idn2_free (out);
+      ok++;
+    }
 }
 
 // decode embedded UTF-16/32 sequences
