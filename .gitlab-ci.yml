@@ -317,7 +317,8 @@ T-Debian9:
   stage: test
   needs: [B-Debian11]
   before_script:
-  - apt-get update
+  - sed -i 's/deb.debian.org/archive.debian.org/g' /etc/apt/sources.list
+  - apt-get update || true
   - env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq make gcc
   script:
   - tar xfz libidn2-*.tar.gz
