@@ -136,7 +136,7 @@ B-clang:
   - apt-get install -qqy --no-install-recommends git make autoconf automake libtool gettext autopoint gperf libunistring-dev gengetopt help2man texinfo texlive git2cl gtk-doc-tools
   script:
   - time ./bootstrap --skip-po
-  - time ./configure --enable-gcc-warnings --disable-doc CC="clang-16 -std=gnu2x"
+  - time ./configure --enable-gcc-warnings --disable-doc CC="clang -std=gnu2x"
   - time make V=1
   - time make syntax-check
   - time make check VERBOSE=t
@@ -147,6 +147,11 @@ B-clang:
     - libidn2-*.tar.gz
     - ./config.h
     - "**/*.log"
+  artifacts: 
+    when: on_failure
+    paths:
+      - ./config.h
+      - "**/*.log"
 
 B-Alpine-quick:
   image: $CI_REGISTRY/libidn/build-images:libidn2-quick-Alpine
