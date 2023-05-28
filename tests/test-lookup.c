@@ -692,7 +692,7 @@ static const struct idna idna[] = {
    },
   {"\xf0\x90\x88\x85\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",
    "xn--dn-mja7734x.example", IDN2_UNASSIGNED, IDN2_NO_TR46
-   /* 5-1-2 Unassinged outside BMP; zone editors should reject */
+   /* 5-1-2 Unassigned outside BMP; zone editors should reject */
    /* Don't resolve as xn--dn-mja7922x.example */
    },
   {"\xc8\xb4\xc3\xad\x64\x6e\x2e\x65\x78\x61\x6d\x70\x6c\x65",

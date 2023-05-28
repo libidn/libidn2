@@ -60,5 +60,5 @@ aximport:
 
 sc_codespell:
 	@if `which codespell > /dev/null`; then \
-		codespell -L tim,mitre `git -C $(top_srcdir) ls-files | egrep -v '_fuzzer.in|_fuzzer.repro|gnulib|^lib/.*\.(csv|txt)$$'`; \
+		codespell -L tim,mitre,bu `git -C $(top_srcdir) ls-files | egrep -v '_fuzzer.in|_fuzzer.repro|gnulib|^lib/.*\.(csv|txt)$$'`; \
 	fi
