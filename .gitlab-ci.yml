@@ -147,7 +147,7 @@ B-clang:
     - libidn2-*.tar.gz
     - ./config.h
     - "**/*.log"
-  artifacts: 
+  artifacts:
     when: on_failure
     paths:
       - ./config.h
