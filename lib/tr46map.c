@@ -38,7 +38,7 @@
 #define countof(a) (sizeof(a)/sizeof(*(a)))
 
 static void
-_fill_map (uint32_t c, const uint8_t * p, IDNAMap * map)
+_fill_map (uint32_t c, const uint8_t *p, IDNAMap *map)
 {
   uint32_t value;
 
@@ -70,7 +70,7 @@ _fill_map (uint32_t c, const uint8_t * p, IDNAMap * map)
 }
 
 static int
-_compare_idna_map (const uint32_t * c, const uint8_t * p)
+_compare_idna_map (const uint32_t *c, const uint8_t *p)
 {
   IDNAMap map;
 
@@ -102,7 +102,7 @@ IDNAMap
 */
 
 int
-get_idna_map (uint32_t c, IDNAMap * map)
+get_idna_map (uint32_t c, IDNAMap *map)
 {
   uint8_t *p;
 
@@ -135,13 +135,13 @@ get_idna_map (uint32_t c, IDNAMap * map)
 }
 
 int
-map_is (const IDNAMap * map, unsigned flags)
+map_is (const IDNAMap *map, unsigned flags)
 {
   return (idna_flags[map->flag_index] & flags) == flags;
 }
 
 static int G_GNUC_IDN2_ATTRIBUTE_PURE
-_compare_nfcqc_map (uint32_t * c, NFCQCMap * m2)
+_compare_nfcqc_map (uint32_t *c, NFCQCMap *m2)
 {
   if (*c < m2->cp1)
     return -1;
@@ -161,7 +161,7 @@ get_nfcqc_map (uint32_t c)
 
 /* copy 'n' codepoints from mapdata stream */
 int
-get_map_data (uint32_t * dst, const IDNAMap * map)
+get_map_data (uint32_t *dst, const IDNAMap *map)
 {
   int n = map->nmappings;
   const uint8_t *src = mapdata + map->offset;

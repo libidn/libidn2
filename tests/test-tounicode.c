@@ -307,7 +307,7 @@ static int debug = 1;
 static int error_count = 0;
 
 static void
-ucs4print (const uint32_t * str, size_t len)
+ucs4print (const uint32_t *str, size_t len)
 {
   size_t i;
 
@@ -319,7 +319,7 @@ ucs4print (const uint32_t * str, size_t len)
 }
 
 static size_t G_GNUC_IDN2_ATTRIBUTE_PURE
-_u32_strlen (const uint32_t * s)
+_u32_strlen (const uint32_t *s)
 {
   const uint32_t *e;
 
@@ -330,7 +330,7 @@ _u32_strlen (const uint32_t * s)
 }
 
 static size_t G_GNUC_IDN2_ATTRIBUTE_PURE
-_u32_strcmp (const uint32_t * s1, const uint32_t * s2)
+_u32_strcmp (const uint32_t *s1, const uint32_t *s2)
 {
   while (*s1 && *s2 && *s1 == *s2)
     s1++, s2++;
@@ -339,7 +339,7 @@ _u32_strcmp (const uint32_t * s1, const uint32_t * s2)
 }
 
 static void
-_check_4z (const test_t * t, int rc, uint32_t * ucs4, const char *funcname)
+_check_4z (const test_t *t, int rc, uint32_t *ucs4, const char *funcname)
 {
   if (rc != t->rc_expected
       && !(rc == IDN2_ICONV_FAIL && t->rc_expected == IDN2_ENCODING_ERROR))

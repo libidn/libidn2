@@ -52,7 +52,7 @@
  * Strings are very likely already in NFC form.
  */
 G_GNUC_IDN2_ATTRIBUTE_PURE static int
-_isNFC (uint32_t * label, size_t len)
+_isNFC (uint32_t *label, size_t len)
 {
   int lastCanonicalClass = 0;
   int result = 1;
@@ -85,8 +85,8 @@ _isNFC (uint32_t * label, size_t len)
 }
 
 int
-_idn2_u8_to_u32_nfc (const uint8_t * src, size_t srclen,
-		     uint32_t ** out, size_t *outlen, int nfc)
+_idn2_u8_to_u32_nfc (const uint8_t *src, size_t srclen,
+		     uint32_t **out, size_t *outlen, int nfc)
 {
   uint32_t *p;
   size_t plen;
@@ -121,7 +121,7 @@ _idn2_u8_to_u32_nfc (const uint8_t * src, size_t srclen,
 }
 
 bool
-_idn2_ascii_p (const uint8_t * src, size_t srclen)
+_idn2_ascii_p (const uint8_t *src, size_t srclen)
 {
   size_t i;
 
@@ -133,7 +133,7 @@ _idn2_ascii_p (const uint8_t * src, size_t srclen)
 }
 
 int
-_idn2_label_test (int what, const uint32_t * label, size_t llen)
+_idn2_label_test (int what, const uint32_t *label, size_t llen)
 {
   if (what & TEST_NFC)
     {

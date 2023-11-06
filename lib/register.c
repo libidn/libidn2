@@ -71,8 +71,8 @@
  *   is returned, or another error code is returned.
  **/
 int
-idn2_register_u8 (const uint8_t * ulabel, const uint8_t * alabel,
-		  uint8_t ** insertname, int flags)
+idn2_register_u8 (const uint8_t *ulabel, const uint8_t *alabel,
+		  uint8_t **insertname, int flags)
 {
   int rc;
 

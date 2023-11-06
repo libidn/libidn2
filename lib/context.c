@@ -34,7 +34,7 @@
 #include "context.h"
 
 int
-_idn2_contextj_rule (const uint32_t * label, size_t llen, size_t pos)
+_idn2_contextj_rule (const uint32_t *label, size_t llen, size_t pos)
 {
   uint32_t cp;
 
@@ -124,7 +124,7 @@ _uc_script_name (ucs4_t uc)
 }
 
 int
-_idn2_contexto_rule (const uint32_t * label, size_t llen, size_t pos)
+_idn2_contexto_rule (const uint32_t *label, size_t llen, size_t pos)
 {
   uint32_t cp = label[pos];
 

@@ -124,7 +124,7 @@ set_default_flags (int *flags)
 }
 
 static int
-label (const uint8_t * src, size_t srclen, uint8_t * dst, size_t *dstlen,
+label (const uint8_t *src, size_t srclen, uint8_t *dst, size_t *dstlen,
        int flags)
 {
   size_t plen;
@@ -260,7 +260,7 @@ out:
   (TEST_NFC | TEST_2HYPHEN | TEST_HYPHEN_STARTEND | TEST_LEADING_COMBINING | TEST_NONTRANSITIONAL)
 
 static int
-_tr46 (const uint8_t * domain_u8, uint8_t ** out, int flags)
+_tr46 (const uint8_t *domain_u8, uint8_t **out, int flags)
 {
   size_t len, it;
   uint32_t *domain_u32;
@@ -531,7 +531,7 @@ _tr46 (const uint8_t * domain_u8, uint8_t ** out, int flags)
  * Since: 0.1
  **/
 int
-idn2_lookup_u8 (const uint8_t * src, uint8_t ** lookupname, int flags)
+idn2_lookup_u8 (const uint8_t *src, uint8_t **lookupname, int flags)
 {
   size_t lookupnamelen = 0;
   uint8_t _lookupname[IDN2_DOMAIN_MAX_LENGTH + 1];
@@ -722,7 +722,7 @@ idn2_lookup_ul (const char *src, char **lookupname, int flags)
  * Deprecated: 2.1.1: Use idn2_to_ascii_4i2().
  **/
 int
-idn2_to_ascii_4i (const uint32_t * input, size_t inlen, char *output,
+idn2_to_ascii_4i (const uint32_t *input, size_t inlen, char *output,
 		  int flags)
 {
   char *out;
@@ -786,7 +786,7 @@ idn2_to_ascii_4i (const uint32_t * input, size_t inlen, char *output,
  * Since: 2.1.1
  **/
 int
-idn2_to_ascii_4i2 (const uint32_t * input, size_t inlen, char **output,
+idn2_to_ascii_4i2 (const uint32_t *input, size_t inlen, char **output,
 		   int flags)
 {
   uint32_t *input_u32;
@@ -852,7 +852,7 @@ idn2_to_ascii_4i2 (const uint32_t * input, size_t inlen, char **output,
  * Since: 2.0.0
  **/
 int
-idn2_to_ascii_4z (const uint32_t * input, char **output, int flags)
+idn2_to_ascii_4z (const uint32_t *input, char **output, int flags)
 {
   uint8_t *input_u8;
   size_t length;

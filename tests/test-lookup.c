@@ -1148,7 +1148,7 @@ test_homebrewed (void)
 
 // decode embedded UTF-16/32 sequences
 static uint8_t *
-_decodeIdnaTest (const uint8_t * src_u8)
+_decodeIdnaTest (const uint8_t *src_u8)
 {
   size_t it2 = 0, len;
   uint32_t *src;

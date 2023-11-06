@@ -184,7 +184,7 @@ _GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD (1, 2)
 }
 
 static void
-ucs4print (const uint32_t * str, size_t len)
+ucs4print (const uint32_t *str, size_t len)
 {
   size_t i;
 
