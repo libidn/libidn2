@@ -1,5 +1,5 @@
 /* lookup.c - example program to demonstrate IDNA2008 Lookup using Libidn2
-   Copyright (C) 2011-2022 Simon Josefsson
+   Copyright (C) 2011-2023 Simon Josefsson
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by

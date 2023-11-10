@@ -1,4 +1,4 @@
-# Copyright (C) 2011-2022 Simon Josefsson
+# Copyright (C) 2011-2023 Simon Josefsson
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -52,6 +52,7 @@ my-update-copyright:
 	make update-copyright update-copyright-env='UPDATE_COPYRIGHT_HOLDER="Tim Ruehsen" UPDATE_COPYRIGHT_USE_INTERVALS=2'
 	make update-copyright update-copyright-env='UPDATE_COPYRIGHT_HOLDER="Simon Josefsson" UPDATE_COPYRIGHT_USE_INTERVALS=2'
 	perl -pi -e "s/2011-20..  Simon Josefsson/2011-`(date +%Y)`  Simon Josefsson/" lib/version.c
+	perl -pi -e "s/2002-20.. Simon Josefsson/2002-`(date +%Y)` Simon Josefsson/" doc/Makefile.am
 
 aximport:
 	for f in m4/ax_*.m4; do \

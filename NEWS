@@ -434,8 +434,8 @@ interface and ignore the code!  Several changes are planned in the
 internal implementation.
 
 ----------------------------------------------------------------------
-Copyright (C) 2011-2022 Simon Josefsson
-Copyright (C) 2018-2022 Tim Ruehsen
+Copyright (C) 2011-2023 Simon Josefsson
+Copyright (C) 2018-2023 Tim Ruehsen
 
 This file is free software: you can redistribute it and/or modify it
 under the terms of the GNU General Public License as published by the

@@ -13,7 +13,7 @@
 This manual is for Libidn2 (version @value{VERSION}, @value{UPDATED}),
 an implementation of IDNA2008/TR46 internationalized domain names.
 
-Copyright @copyright{} 2011--2022 Simon Josefsson
+Copyright @copyright{} 2011--2023 Simon Josefsson
 @end copying
 
 @dircategory Software libraries
