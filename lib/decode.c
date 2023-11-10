@@ -1,4 +1,4 @@
-/* lookup.c - implementation of IDNA2008 lookup functions
+/* decode.c - implementation of IDNA2008 decoding functions
    Copyright (C) 2011-2022 Simon Josefsson
 
    Libidn2 is free software: you can redistribute it and/or modify it
