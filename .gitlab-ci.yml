@@ -129,9 +129,10 @@ B-gcc:
     - "**/*.log"
 
 B-clang:
-  image: silkeh/clang:dev
+  image: silkeh/clang:latest
   stage: build
   before_script:
+  - clang --version
   - apt-get update -qqy
   - apt-get install -qqy --no-install-recommends git make autoconf automake libtool gettext autopoint gperf libunistring-dev gengetopt help2man texinfo texlive git2cl gtk-doc-tools
   script:
