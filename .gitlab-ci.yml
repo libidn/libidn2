@@ -188,7 +188,7 @@ B-Debian11:
   image: $CI_REGISTRY/libidn/build-images:libidn2-Debian11
   stage: build
   script:
-  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -q indent help2man
+  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -q help2man
   - ./bootstrap --skip-po
   - ./configure --enable-gcc-warnings --enable-valgrind-tests
   - make V=1
