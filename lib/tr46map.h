@@ -1,4 +1,4 @@
-/* tr46map.c - header file for IDNA2008 TR46
+/* tr46map.h - header file for IDNA2008 TR46
    Copyright (C) 2016-2023 Tim Ruehsen
 
    Libidn2 is free software: you can redistribute it and/or modify it

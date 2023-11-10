@@ -1,4 +1,4 @@
-/* tables.h - IDNA tables
+/* data.h - IDNA tables
    Copyright (C) 2011-2023 Simon Josefsson
 
    Libidn2 is free software: you can redistribute it and/or modify it
