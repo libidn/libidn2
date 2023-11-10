@@ -55,13 +55,17 @@ B-Debian-quick:
   - time make syntax-check gnulib_dir=$GNULIB_SRCDIR
   - time make V=1
   - time make check VERBOSE=t
-  - env DEBIAN_FRONTEND=noninteractive apt-get install -y idn2
-  - set -o pipefail && rm -f foo && gcc -o foo -Itests ../../../tests/test-lookup.c lib/.libs/libidn2.a gl/.libs/libgnu.a unistring/.libs/libunistring.a -lunistring && ./foo ../../../tests/IdnaTest.txt | tail -1
-  - set -o pipefail && rm -f foo && gcc -o foo ../../../tests/test-register.c lib/.libs/libidn2.a gl/.libs/libgnu.a unistring/.libs/libunistring.a -lunistring && ./foo | tail -1
-  - set -o pipefail && rm -f foo && gcc -o foo ../../../tests/test-strerror.c lib/.libs/libidn2.a gl/.libs/libgnu.a unistring/.libs/libunistring.a -lunistring && ./foo | tail -1
-  - set -o pipefail && rm -f foo && gcc -o foo ../../../tests/test-tounicode.c lib/.libs/libidn2.a gl/.libs/libgnu.a unistring/.libs/libunistring.a -lunistring && ./foo | tail -1
-  - set -o pipefail && rm -f foo && gcc -o foo ../../../tests/test-locale.c lib/.libs/libidn2.a gl/.libs/libgnu.a unistring/.libs/libunistring.a -lunistring && ./foo | tail -1
-  - env LANG=C.UTF-8 IDN2=idn2 ../../../tests/test-idn2.sh
+  - gcc -o foo -Ilib -Itests ../../../tests/test-lookup.c lib/.libs/libidn2.a gl/.libs/libgnu.a unistring/.libs/libunistring.a -lunistring
+  - ./foo ../../../tests/IdnaTest.txt | tail -1
+  - gcc -o foo -Ilib ../../../tests/test-register.c lib/.libs/libidn2.a gl/.libs/libgnu.a unistring/.libs/libunistring.a -lunistring
+  - ./foo
+  - gcc -o foo -Ilib ../../../tests/test-strerror.c lib/.libs/libidn2.a gl/.libs/libgnu.a unistring/.libs/libunistring.a -lunistring
+  - ./foo
+  - gcc -o foo -Ilib ../../../tests/test-tounicode.c lib/.libs/libidn2.a gl/.libs/libgnu.a unistring/.libs/libunistring.a -lunistring
+  - ./foo
+  - gcc -o foo -Ilib ../../../tests/test-locale.c lib/.libs/libidn2.a gl/.libs/libgnu.a unistring/.libs/libunistring.a -lunistring
+  - ./foo
+  - env LANG=C.UTF-8 IDN2=src/idn2 ../../../tests/test-idn2.sh
   - git diff --exit-code # nothing should change version controlled files
   artifacts:
     paths:
