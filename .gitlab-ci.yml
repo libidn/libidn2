@@ -213,7 +213,7 @@ B-Debian-testing:
   stage: build
   before_script:
   - apt-get update -qq -y
-  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -q git make autoconf automake libtool gettext autopoint gperf libunistring-dev valgrind gengetopt help2man texinfo texlive gtk-doc-tools
+  - apt-get install -qq -y make gcc git autoconf automake libtool gettext autopoint gperf libunistring-dev valgrind gengetopt help2man texinfo texlive gtk-doc-tools abi-compliance-checker abigail-tools
   script:
   - ./bootstrap --skip-po
   - ./configure --enable-gcc-warnings --enable-valgrind-tests
