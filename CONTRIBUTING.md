@@ -41,7 +41,7 @@ usual way (i.e., ./configure && make).
 The software is typically distributed with your operating system, and
 the instructions for installing them differ.  Here are some hints:
 
-DPKG-based distributions:
+APT/DPKG-based distributions:
 ```
 apt-get install make gcc
 apt-get install git autoconf automake libtool gettext autopoint gperf
@@ -50,12 +50,13 @@ apt-get install texinfo texlive gtk-doc-tools
 apt-get install abi-compliance-checker abigail-tools
 ```
 
-RPM-based distributions:
+DNF/RPM-based distributions:
 ```
 dnf install -y make gcc
 dnf install -y git autoconf automake libtool gettext-devel patch gperf
 dnf install -y libunistring-devel valgrind gengetopt help2man
 dnf install -y texinfo texinfo-tex texlive gtk-doc dblatex
+dnf install -y libabigail
 ```
 
 
