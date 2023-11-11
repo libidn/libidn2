@@ -41,7 +41,7 @@ usual way (i.e., ./configure && make).
 The software is typically distributed with your operating system, and
 the instructions for installing them differ.  Here are some hints:
 
-Debian 10.x, Debian 11.x, Ubuntu 20.04:
+DPKG-based distributions:
 ```
 apt-get install make gcc
 apt-get install git autoconf automake libtool gettext autopoint gperf
@@ -50,7 +50,7 @@ apt-get install texinfo texlive gtk-doc-tools
 apt-get install abi-compliance-checker abigail-tools
 ```
 
-Fedora 35:
+RPM-based distributions:
 ```
 dnf install -y make gcc
 dnf install -y git autoconf automake libtool gettext-devel patch gperf
