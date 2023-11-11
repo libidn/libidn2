@@ -181,7 +181,8 @@ B-AlmaLinux8:
   - time ./configure
   - time make V=1
   - time make check VERBOSE=t
-  - rm -rf contrib/ # FIXME XXX remove once we support modern abidiff -- see issue #102
+  - make syntax-check
+  - make abi-check
   - time make dist
   artifacts:
     paths:
@@ -218,7 +219,6 @@ B-Debian-testing:
   - ./configure --enable-gcc-warnings --enable-valgrind-tests
   - make V=1
   - make check VERBOSE=t
-  - rm -rf contrib/ # FIXME XXX remove once we support modern abidiff -- see issue #102
   - rm unistring/libunistring.la # FIXME XXX debug why this is needed...
   - make dist
   - make install
@@ -312,7 +312,6 @@ B-Fedora35-clang-analyzer:
   - scan-build -o clang-analyzer make -j$(nproc) -C lib
   - make
   - make web-manual
-  - rm -rf contrib/ # FIXME XXX remove once we support modern abidiff -- see issue #102
   - make dist
   artifacts:
     when: on_success
