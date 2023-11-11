@@ -39,6 +39,17 @@ stages:
 variables:
   GET_SOURCES_ATTEMPTS: "3"
 
+default:
+  interruptible: true
+  artifacts:
+    expire_in: 2 weeks
+    when: always
+    paths:
+    - "*.tar.gz"
+    - ./*.log
+    - ./config.h
+    - ./**/*.log
+
 B-Debian-quick:
   image: $CI_REGISTRY/libidn/build-images:libidn2-mini-Debian-testing
   stage: quick
@@ -65,11 +76,6 @@ B-Debian-quick:
   - ./foo
   - env LANG=C.UTF-8 IDN2=src/idn2 ../../../tests/test-idn2.sh
   - git diff --exit-code # nothing should change version controlled files
-  artifacts:
-    paths:
-    - libidn2-*.tar.gz
-    - ./config.h
-    - "**/*.log"
 
 # https://www.synopsys.com/blogs/software-security/integrating-coverity-scan-with-gitlab-ci/
 Coverity:
@@ -125,11 +131,6 @@ B-gcc:
   - time make check VERBOSE=t
   - git status
   - git diff --exit-code
-  artifacts:
-    paths:
-    - libidn2-*.tar.gz
-    - ./config.h
-    - "**/*.log"
 
 B-clang:
   image: silkeh/clang:latest
@@ -146,16 +147,6 @@ B-clang:
   - time make check VERBOSE=t
   - git status
   - git diff --exit-code
-  artifacts:
-    paths:
-    - libidn2-*.tar.gz
-    - ./config.h
-    - "**/*.log"
-  artifacts:
-    when: on_failure
-    paths:
-      - ./config.h
-      - "**/*.log"
 
 B-Alpine:
   image: $CI_REGISTRY/libidn/build-images:libidn2-mini-Alpine
@@ -166,11 +157,6 @@ B-Alpine:
   - time make V=1
   - time make syntax-check
   - time make check VERBOSE=t
-  artifacts:
-    paths:
-    - libidn2-*.tar.gz
-    - ./config.h
-    - "**/*.log"
 
 B-AlmaLinux8:
   image: $CI_REGISTRY/libidn/build-images:libidn2-AlmaLinux8
@@ -183,11 +169,6 @@ B-AlmaLinux8:
   - make syntax-check
   - make abi-check
   - time make dist
-  artifacts:
-    paths:
-    - libidn2-*.tar.gz
-    - ./config.h
-    - "**/*.log"
 
 B-Debian12:
   image: $CI_REGISTRY/libidn/build-images:libidn2-Debian12
@@ -201,11 +182,6 @@ B-Debian12:
   - make syntax-check
   - make abi-check
   - make dist
-  artifacts:
-    paths:
-    - libidn2-*.tar.gz
-    - ./config.h
-    - "**/*.log"
 
 B-Debian-testing:
   image: debian:testing
@@ -225,11 +201,6 @@ B-Debian-testing:
   - git clone --depth=1 https://salsa.debian.org/debian/libidn2.git debian-libidn2
   - LC_ALL=C.UTF-8 debian-libidn2/debian/tests/idn2
   - debian-libidn2/debian/tests/libidn2
-  artifacts:
-    paths:
-    - libidn2-*.tar.gz
-    - ./config.h
-    - "**/*.log"
 
 B-Trisquel11:
   image: $CI_REGISTRY/libidn/build-images:libidn2-Trisquel11
@@ -243,11 +214,6 @@ B-Trisquel11:
   - make syntax-check
   - make abi-check
   - make dist
-  artifacts:
-    paths:
-    - libidn2-*.tar.gz
-    - ./config.h
-    - "**/*.log"
 
 B-armcross:
   image: $CI_REGISTRY/libidn/build-images:libidn2-Debian12
@@ -266,11 +232,6 @@ B-armcross:
   - LANG=C.UTF-8 qemu-arm src/idn2 --debug foo
   - LANG=C.UTF-8 src/idn2 --debug räksmörgås
   - LANG=C.UTF-8 make check VERBOSE=t
-  artifacts:
-    paths:
-    - libidn2-*.tar.gz
-    - ./config.h
-    - "**/*.log"
 
 # https://releases.llvm.org/13.0.0/tools/clang/docs/AddressSanitizer.html
 # https://releases.llvm.org/13.0.0/tools/clang/docs/UndefinedBehaviorSanitizer.html
@@ -294,11 +255,6 @@ B-Fedora39-ASAN/UBSan:
   - make V=1 -C lib CFLAGS="$CFLAGS -Wall -Wextra -Werror"
   - make V=1 -C examples CFLAGS="$CFLAGS -Wall -Wextra -Werror -Wno-unused-parameter"
   - make V=1 -j$(nproc) check VERBOSE=t
-  artifacts:
-    paths:
-    - libidn2-*.tar.gz
-    - ./config.h
-    - "**/*.log"
 
 B-Fedora39-clang-analyzer:
   stage: build
@@ -332,13 +288,6 @@ B-MinGW64:
   - mingw64-configure --disable-valgrind-tests --disable-doc
   - mingw64-make -j$(nproc)
   - mingw64-make -j$(nproc) check VERBOSE=t
-  artifacts:
-    expire_in: 2 weeks
-    when: on_failure
-    paths:
-      - ./config.h
-      - ./*.log
-      - tests/*.log
 
 T-Debian5:
   image: debian/eol:lenny
@@ -352,11 +301,6 @@ T-Debian5:
   - cd `ls -d libidn2-* | grep -v tar.gz`
   - ./configure --enable-gcc-warnings
   - make check V=1 VERBOSE=t
-  artifacts:
-    paths:
-    - libidn2-*.tar.gz
-    - ./config.h
-    - "**/*.log"
 
 T-Debian9:
   image: debian:stretch
@@ -373,11 +317,6 @@ T-Debian9:
   - cd b
   - ../configure --enable-gcc-warnings
   - make check V=1 VERBOSE=t
-  artifacts:
-    paths:
-    - libidn2-*.tar.gz
-    - ./config.h
-    - "**/*.log"
 
 T-Debian10:
   image: debian:buster
@@ -393,11 +332,6 @@ T-Debian10:
   - cd b
   - ../configure --enable-gcc-warnings
   - make check V=1 VERBOSE=t
-  artifacts:
-    paths:
-    - libidn2-*.tar.gz
-    - ./config.h
-    - "**/*.log"
 
 T-Debian-testing:
   image: debian:testing
@@ -419,11 +353,6 @@ T-Debian-testing:
   - ./configure --enable-gcc-warnings
   - grep am_cv_func_iconv_summary config.log
   - make check V=1 VERBOSE=t
-  artifacts:
-    paths:
-    - libidn2-*.tar.gz
-    - ./config.h
-    - "**/*.log"
 
 T-Alpine:
   image: alpine:latest
@@ -438,11 +367,6 @@ T-Alpine:
   - cd `ls -d libidn2-* | grep -v tar.gz`
   - ./configure --enable-gcc-warnings
   - make check V=1 VERBOSE=t
-  artifacts:
-    paths:
-    - libidn2-*.tar.gz
-    - ./config.h
-    - "**/*.log"
 
 T-ArchLinux:
   image: archlinux:latest
@@ -457,11 +381,6 @@ T-ArchLinux:
   - cd b
   - ../configure --enable-gcc-warnings
   - make check V=1 VERBOSE=t
-  artifacts:
-    paths:
-    - libidn2-*.tar.gz
-    - ./config.h
-    - "**/*.log"
 
 T-CentOS7:
   image: centos:7
@@ -474,11 +393,6 @@ T-CentOS7:
   - cd `ls -d libidn2-* | grep -v tar.gz`
   - ./configure --enable-gcc-warnings
   - make check V=1 VERBOSE=t
-  artifacts:
-    paths:
-    - libidn2-*.tar.gz
-    - ./config.h
-    - "**/*.log"
 
 T-AlmaLinux8:
   image: almalinux:8
@@ -491,11 +405,6 @@ T-AlmaLinux8:
   - cd `ls -d libidn2-* | grep -v tar.gz`
   - ./configure --enable-gcc-warnings
   - make check V=1 VERBOSE=t
-  artifacts:
-    paths:
-    - libidn2-*.tar.gz
-    - ./config.h
-    - "**/*.log"
 
 T-Ubuntu14.04:
   image: ubuntu:14.04
@@ -509,11 +418,6 @@ T-Ubuntu14.04:
   - cd `ls -d libidn2-* | grep -v tar.gz`
   - ./configure --enable-gcc-warnings
   - make check V=1 VERBOSE=t
-  artifacts:
-    paths:
-    - libidn2-*.tar.gz
-    - ./config.h
-    - "**/*.log"
 
 T-Trisquel11:
   image: kpengboy/trisquel:11.0
@@ -527,10 +431,6 @@ T-Trisquel11:
   - cd `ls -d libidn2-* | grep -v tar.gz`
   - ./configure --enable-gcc-warnings
   - make check V=1 VERBOSE=t
-  artifacts:
-    paths:
-    - ./config.h
-    - "**/*.log"
 
 T-Ubuntu-rolling:
   image: ubuntu:rolling
@@ -548,11 +448,6 @@ T-Ubuntu-rolling:
   # check if essential files are accidentally cleaned
   - make clean
   - make
-  artifacts:
-    paths:
-    - libidn2-*.tar.gz
-    - ./config.h
-    - "**/*.log"
 
 T-Mingw32:
   image: debian:latest
@@ -570,11 +465,6 @@ T-Mingw32:
   - cd b
   - ../configure --host=i686-w64-mingw32 CC='i686-w64-mingw32-gcc -static-libgcc' --enable-gcc-warnings
   - make check V=1 VERBOSE=t
-  artifacts:
-    paths:
-    - libidn2-*.tar.gz
-    - ./config.h
-    - "**/*.log"
 
 T-Mingw64:
   image: debian:latest
@@ -592,11 +482,6 @@ T-Mingw64:
   - cd b
   - ../configure --host=x86_64-w64-mingw32 --enable-gcc-warnings
   - make check V=1 VERBOSE=t
-  artifacts:
-    paths:
-    - libidn2-*.tar.gz
-    - ./config.h
-    - "**/*.log"
 
 T-armcross:
   image: debian:latest
@@ -616,11 +501,6 @@ T-armcross:
   - arm-linux-gnueabi-readelf -h lib/.libs/libidn2.so
   - arm-linux-gnueabi-readelf -h src/.libs/idn2
   - make check VERBOSE=t
-  artifacts:
-    paths:
-    - libidn2-*.tar.gz
-    - ./config.h
-    - "**/*.log"
 
 .pages:
   stage: test
