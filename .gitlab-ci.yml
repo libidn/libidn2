@@ -158,7 +158,7 @@ B-clang:
       - ./config.h
       - "**/*.log"
 
-B-Alpine-quick:
+B-Alpine:
   image: $CI_REGISTRY/libidn/build-images:libidn2-mini-Alpine
   stage: build
   script:
@@ -255,7 +255,7 @@ B-armcross:
   stage: build
   before_script:
   - apt-get update -qq -y
-  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -q gcc-arm-linux-gnueabi qemu-user qemu-user-binfmt file
+  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -q gcc-arm-linux-gnueabi qemu-user qemu-user-binfmt file binfmt-support
   - update-binfmts --enable qemu-arm
   script:
   - ./bootstrap --skip-po
