@@ -117,7 +117,7 @@ B-gcc:
   stage: build
   before_script:
   - apt-get update -qqy
-  - apt-get install -qqy --no-install-recommends git make autoconf automake libtool gettext autopoint gperf libunistring-dev gengetopt help2man texinfo texlive git2cl gtk-doc-tools
+  - apt-get install -qqy --no-install-recommends git make autoconf automake libtool gettext autopoint gperf libunistring-dev gengetopt help2man texinfo texlive gtk-doc-tools
   script:
   - time ./bootstrap --skip-po
   - time ./configure --enable-gcc-warnings --disable-doc CC="/usr/local/bin/gcc -std=gnu2x"
@@ -138,7 +138,7 @@ B-clang:
   before_script:
   - clang --version
   - apt-get update -qqy
-  - apt-get install -qqy --no-install-recommends git make autoconf automake libtool gettext autopoint gperf libunistring-dev gengetopt help2man texinfo texlive git2cl gtk-doc-tools
+  - apt-get install -qqy --no-install-recommends git make autoconf automake libtool gettext autopoint gperf libunistring-dev gengetopt help2man texinfo texlive gtk-doc-tools
   script:
   - time ./bootstrap --skip-po
   - time ./configure --enable-gcc-warnings --disable-doc CC="clang -std=gnu2x"
@@ -213,7 +213,7 @@ B-Debian-testing:
   stage: build
   before_script:
   - apt-get update -qq -y
-  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -q git make autoconf automake libtool gettext autopoint gperf libunistring-dev valgrind gengetopt help2man texinfo texlive git2cl gtk-doc-tools
+  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -q git make autoconf automake libtool gettext autopoint gperf libunistring-dev valgrind gengetopt help2man texinfo texlive gtk-doc-tools
   script:
   - ./bootstrap --skip-po
   - ./configure --enable-gcc-warnings --enable-valgrind-tests
