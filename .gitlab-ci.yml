@@ -37,8 +37,6 @@ stages:
   - test
 
 variables:
-  BUILD_IMAGES_PROJECT: libidn/build-images
-  FEDORA_BUILD: buildenv-fedora
   GET_SOURCES_ATTEMPTS: "3"
 
 B-Debian-quick:
@@ -276,9 +274,9 @@ B-armcross:
 # https://releases.llvm.org/13.0.0/tools/clang/docs/AddressSanitizer.html
 # https://releases.llvm.org/13.0.0/tools/clang/docs/UndefinedBehaviorSanitizer.html
 # https://lists.gnu.org/archive/html/bug-gnulib/2022-03/msg00016.html
-B-Fedora35-ASAN/UBSan:
+B-Fedora39-ASAN/UBSan:
   stage: build
-  image: $CI_REGISTRY/libidn/build-images:libidn2-Fedora35
+  image: $CI_REGISTRY/libidn/build-images:libidn2-Fedora39
   script:
   - ./bootstrap --skip-po
   - export CC=clang
@@ -299,9 +297,9 @@ B-Fedora35-ASAN/UBSan:
     - ./config.h
     - "**/*.log"
 
-B-Fedora35-clang-analyzer:
+B-Fedora39-clang-analyzer:
   stage: build
-  image: $CI_REGISTRY/libidn/build-images:libidn2-Fedora35
+  image: $CI_REGISTRY/libidn/build-images:libidn2-Fedora39
   before_script:
   - dnf install -y clang-analyzer
   script:
@@ -319,6 +317,25 @@ B-Fedora35-clang-analyzer:
     - doc/reference
     - doc/manual
     - clang-analyzer
+
+B-MinGW64:
+  stage: build
+  image: $CI_REGISTRY/libidn/build-images:libidn2-Fedora29-MinGW64
+  before_script:
+  - mount -t binfmt_misc binfmt_misc /proc/sys/fs/binfmt_misc
+  - echo ':DOSWin:M::MZ::/usr/bin/wine64:' > /proc/sys/fs/binfmt_misc/register
+  script:
+  - ./bootstrap --skip-po
+  - mingw64-configure --disable-valgrind-tests --disable-doc
+  - mingw64-make -j$(nproc)
+  - mingw64-make -j$(nproc) check VERBOSE=t
+  artifacts:
+    expire_in: 2 weeks
+    when: on_failure
+    paths:
+      - ./config.h
+      - ./*.log
+      - tests/*.log
 
 T-Debian5:
   image: debian/eol:lenny
@@ -602,28 +619,9 @@ T-armcross:
     - ./config.h
     - "**/*.log"
 
-MinGW64:
-  stage: build
-  image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$FEDORA_BUILD
-  before_script:
-  - mount -t binfmt_misc binfmt_misc /proc/sys/fs/binfmt_misc
-  - echo ':DOSWin:M::MZ::/usr/bin/wine64:' > /proc/sys/fs/binfmt_misc/register
-  script:
-  - ./bootstrap --skip-po
-  - mingw64-configure --disable-valgrind-tests --disable-doc
-  - mingw64-make -j$(nproc)
-  - mingw64-make -j$(nproc) check VERBOSE=t
-  artifacts:
-    expire_in: 2 weeks
-    when: on_failure
-    paths:
-      - ./config.h
-      - ./*.log
-      - tests/*.log
-
 .pages:
   stage: test
-  needs: ["B-Fedora35-clang-analyzer"]
+  needs: ["B-Fedora39-clang-analyzer"]
   image: $CI_REGISTRY/libidn/build-images:libidn2-Debian12
   before_script:
   - env DEBIAN_FRONTEND=noninteractive apt-get install -y -q lcov
