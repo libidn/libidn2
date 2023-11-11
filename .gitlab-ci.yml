@@ -42,7 +42,7 @@ variables:
   GET_SOURCES_ATTEMPTS: "3"
 
 B-Debian-quick:
-  image: $CI_REGISTRY/libidn/build-images:libidn2-quick-Debian-testing
+  image: $CI_REGISTRY/libidn/build-images:libidn2-mini-Debian-testing
   stage: quick
   script:
   - echo $GNULIB_SRCDIR
@@ -75,7 +75,7 @@ B-Debian-quick:
 
 # https://www.synopsys.com/blogs/software-security/integrating-coverity-scan-with-gitlab-ci/
 Coverity:
-  image: $CI_REGISTRY/libidn/build-images:libidn2-quick-Debian-testing
+  image: $CI_REGISTRY/libidn/build-images:libidn2-mini-Debian-testing
   stage: build
   only:
     refs:
@@ -159,7 +159,7 @@ B-clang:
       - "**/*.log"
 
 B-Alpine-quick:
-  image: $CI_REGISTRY/libidn/build-images:libidn2-quick-Alpine
+  image: $CI_REGISTRY/libidn/build-images:libidn2-mini-Alpine
   stage: build
   script:
   - time ./bootstrap --skip-po
