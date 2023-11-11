@@ -59,6 +59,11 @@ dnf install -y texinfo texinfo-tex texlive gtk-doc dblatex
 dnf install -y libabigail
 ```
 
+On macOS with Xcode and Homebrew:
+```
+brew install autoconf automake libtool gengetopt help2man texinfo
+```
+
 
 ## Building the project
 
