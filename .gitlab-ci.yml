@@ -149,7 +149,7 @@ B-clang:
   - git diff --exit-code
 
 B-Alpine:
-  image: $CI_REGISTRY/libidn/build-images:libidn2-mini-Alpine
+  image: $CI_REGISTRY/libidn/build-images:libidn2-Alpine
   stage: build
   script:
   - time ./bootstrap --skip-po
