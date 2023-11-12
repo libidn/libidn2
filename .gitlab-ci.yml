@@ -23,21 +23,18 @@ stages:
 
   - quick
 
-# The "build" stage should attempt to build from version controlled
+# The "bootstrap" stage should attempt to build from version controlled
 # sources on platforms we support development on, with the variety of
 # pre-dependencies that we want to support.  Typically these builds
 # results in a tarball artifact.
 
-  - build
+  - bootstrap
 
-# The "test" stage attempt to build the tarball on all platforms we
+# The "tarball" stage attempt to build the tarball on all platforms we
 # support building the project on, with as many combinations of
 # pre-depencencies as useful.
 
-  - test
-
-variables:
-  GET_SOURCES_ATTEMPTS: "3"
+  - tarball
 
 default:
   interruptible: true
@@ -50,7 +47,7 @@ default:
     - ./config.h
     - ./**/*.log
 
-B-Debian-quick:
+Q-Debian-testing:
   image: $CI_REGISTRY/libidn/build-images:libidn2-mini-Debian-testing
   stage: quick
   script:
@@ -77,10 +74,18 @@ B-Debian-quick:
   - env LANG=C.UTF-8 IDN2=src/idn2 ../../../tests/test-idn2.sh
   - git diff --exit-code # nothing should change version controlled files
 
+sast:
+  stage: quick
+  # SAST customization: https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
+  variables:
+    SAST_EXCLUDED_PATHS: examples, fuzz, tests, lib/gendata.c, lib/gentr46map.c
+include:
+- template: Security/SAST.gitlab-ci.yml
+
 # https://www.synopsys.com/blogs/software-security/integrating-coverity-scan-with-gitlab-ci/
 Coverity:
   image: $CI_REGISTRY/libidn/build-images:libidn2-mini-Debian-testing
-  stage: build
+  stage: bootstrap
   only:
     refs:
       - master
@@ -108,19 +113,11 @@ Coverity:
     paths:
       - cov-int/*.txt
 
-sast:
-  stage: quick
-  # SAST customization: https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
-  variables:
-    SAST_EXCLUDED_PATHS: examples, fuzz, tests, lib/gendata.c, lib/gentr46map.c
-include:
-- template: Security/SAST.gitlab-ci.yml
-
 B-MacOS13Xcode14:
   image: macos-13-xcode-14
-  stage: build
+  stage: bootstrap
   tags:
-    - saas-macos-medium-m1
+  - saas-macos-medium-m1
   before_script:
   - env HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALL_UPGRADE=1 HOMEBREW_NO_INSTALL_CLEANUP=1 HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew install autoconf automake libtool gengetopt help2man texinfo
   script:
@@ -132,7 +129,7 @@ B-MacOS13Xcode14:
 
 B-gcc:
   image: gcc:latest
-  stage: build
+  stage: bootstrap
   before_script:
   - gcc --version
   - apt-get update -qqy
@@ -143,12 +140,11 @@ B-gcc:
   - time make V=1
   - time make syntax-check
   - time make check VERBOSE=t
-  - git status
-  - git diff --exit-code
+  - git diff --exit-code # nothing should change version controlled files
 
 B-clang:
   image: silkeh/clang:latest
-  stage: build
+  stage: bootstrap
   before_script:
   - clang --version
   - apt-get update -qqy
@@ -159,22 +155,22 @@ B-clang:
   - time make V=1
   - time make syntax-check
   - time make check VERBOSE=t
-  - git status
-  - git diff --exit-code
+  - git diff --exit-code # nothing should change version controlled files
 
 B-Alpine:
   image: $CI_REGISTRY/libidn/build-images:libidn2-Alpine
-  stage: build
+  stage: bootstrap
   script:
   - time ./bootstrap --skip-po
   - time ./configure --enable-gcc-warnings --disable-doc
   - time make V=1
   - time make syntax-check
   - time make check VERBOSE=t
+  - git diff --exit-code # nothing should change version controlled files
 
 B-AlmaLinux8:
   image: $CI_REGISTRY/libidn/build-images:libidn2-AlmaLinux8
-  stage: build
+  stage: bootstrap
   script:
   - time ./bootstrap --skip-po
   - time ./configure
@@ -183,10 +179,11 @@ B-AlmaLinux8:
   - make syntax-check
   - make abi-check
   - time make dist
+  - git diff --exit-code # nothing should change version controlled files
 
 B-Debian12:
   image: $CI_REGISTRY/libidn/build-images:libidn2-Debian12
-  stage: build
+  stage: bootstrap
   script:
   - ./bootstrap --skip-po
   - ./configure --enable-gcc-warnings --enable-valgrind-tests
@@ -196,10 +193,11 @@ B-Debian12:
   - make syntax-check
   - make abi-check
   - make dist
+  - git diff --exit-code # nothing should change version controlled files
 
 B-Debian-testing:
   image: debian:testing
-  stage: build
+  stage: bootstrap
   before_script:
   - apt-get update -qq -y
   - apt-get install -qq -y make gcc git autoconf automake libtool gettext autopoint gperf libunistring-dev valgrind gengetopt help2man texinfo texlive gtk-doc-tools abi-compliance-checker abigail-tools
@@ -208,6 +206,7 @@ B-Debian-testing:
   - ./configure --enable-gcc-warnings --enable-valgrind-tests
   - make V=1
   - make check VERBOSE=t
+  - git diff --exit-code # nothing should change version controlled files
   - rm unistring/libunistring.la # FIXME XXX debug why this is needed...
   - make dist
   - make install
@@ -218,7 +217,7 @@ B-Debian-testing:
 
 B-Trisquel11:
   image: $CI_REGISTRY/libidn/build-images:libidn2-Trisquel11
-  stage: build
+  stage: bootstrap
   script:
   - ./bootstrap --skip-po
   - ./configure --enable-gcc-warnings --enable-valgrind-tests
@@ -228,10 +227,11 @@ B-Trisquel11:
   - make syntax-check
   - make abi-check
   - make dist
+  - git diff --exit-code # nothing should change version controlled files
 
 B-armcross:
   image: $CI_REGISTRY/libidn/build-images:libidn2-Debian12
-  stage: build
+  stage: bootstrap
   before_script:
   - apt-get update -qq -y
   - env DEBIAN_FRONTEND=noninteractive apt-get install -y -q gcc-arm-linux-gnueabi qemu-user qemu-user-binfmt file binfmt-support
@@ -251,7 +251,7 @@ B-armcross:
 # https://releases.llvm.org/13.0.0/tools/clang/docs/UndefinedBehaviorSanitizer.html
 # https://lists.gnu.org/archive/html/bug-gnulib/2022-03/msg00016.html
 B-Fedora39-ASAN/UBSan:
-  stage: build
+  stage: bootstrap
   image: $CI_REGISTRY/libidn/build-images:libidn2-Fedora39
   before_script:
   - dnf install -y clang
@@ -271,7 +271,7 @@ B-Fedora39-ASAN/UBSan:
   - make V=1 -j$(nproc) check VERBOSE=t
 
 B-Fedora39-clang-analyzer:
-  stage: build
+  stage: bootstrap
   image: $CI_REGISTRY/libidn/build-images:libidn2-Fedora39
   before_script:
   - dnf install -y clang-analyzer
@@ -292,7 +292,7 @@ B-Fedora39-clang-analyzer:
     - clang-analyzer
 
 B-MinGW64:
-  stage: build
+  stage: bootstrap
   image: $CI_REGISTRY/libidn/build-images:libidn2-Fedora29-MinGW64
   before_script:
   - mount -t binfmt_misc binfmt_misc /proc/sys/fs/binfmt_misc
@@ -305,7 +305,7 @@ B-MinGW64:
 
 T-Debian5:
   image: debian/eol:lenny
-  stage: test
+  stage: tarball
   needs: [B-Trisquel11]
   before_script:
   - apt-get update
@@ -318,7 +318,7 @@ T-Debian5:
 
 T-Debian9:
   image: debian:stretch
-  stage: test
+  stage: tarball
   needs: [B-Trisquel11]
   before_script:
   - sed -i 's/deb.debian.org/archive.debian.org/g' /etc/apt/sources.list
@@ -334,7 +334,7 @@ T-Debian9:
 
 T-Debian10:
   image: debian:buster
-  stage: test
+  stage: tarball
   needs: [B-Trisquel11]
   before_script:
   - apt-get update
@@ -349,7 +349,7 @@ T-Debian10:
 
 T-Debian-testing:
   image: debian:testing
-  stage: test
+  stage: tarball
   needs: [B-Trisquel11]
   before_script:
   - apt-get update
@@ -370,7 +370,7 @@ T-Debian-testing:
 
 T-Alpine:
   image: alpine:latest
-  stage: test
+  stage: tarball
   needs: [B-Debian-testing]
   before_script:
   - echo "ipv6" >> /etc/modules
@@ -384,7 +384,7 @@ T-Alpine:
 
 T-ArchLinux:
   image: archlinux:latest
-  stage: test
+  stage: tarball
   needs: [B-Trisquel11]
   before_script:
   - pacman -Syu --noconfirm make gcc diffutils
@@ -398,7 +398,7 @@ T-ArchLinux:
 
 T-CentOS7:
   image: centos:7
-  stage: test
+  stage: tarball
   needs: [B-Trisquel11]
   before_script:
   - yum -y install make gcc diffutils valgrind libunistring-devel
@@ -410,7 +410,7 @@ T-CentOS7:
 
 T-AlmaLinux8:
   image: almalinux:8
-  stage: test
+  stage: tarball
   needs: [B-Trisquel11]
   before_script:
   - dnf --enablerepo=powertools -y install make gcc diffutils valgrind libunistring-devel
@@ -422,7 +422,7 @@ T-AlmaLinux8:
 
 T-Ubuntu14.04:
   image: ubuntu:14.04
-  stage: test
+  stage: tarball
   needs: [B-Trisquel11]
   before_script:
   - apt-get update -qq
@@ -435,7 +435,7 @@ T-Ubuntu14.04:
 
 T-Trisquel11:
   image: kpengboy/trisquel:11.0
-  stage: test
+  stage: tarball
   needs: [B-Trisquel11]
   before_script:
   - apt-get update -qq
@@ -448,7 +448,7 @@ T-Trisquel11:
 
 T-Ubuntu-rolling:
   image: ubuntu:rolling
-  stage: test
+  stage: tarball
   needs: [B-Trisquel11]
   before_script:
   - apt-get update -qq
@@ -465,7 +465,7 @@ T-Ubuntu-rolling:
 
 T-Mingw32:
   image: debian:latest
-  stage: test
+  stage: tarball
   needs: [B-Trisquel11]
   before_script:
   - dpkg --add-architecture i386
@@ -482,7 +482,7 @@ T-Mingw32:
 
 T-Mingw64:
   image: debian:latest
-  stage: test
+  stage: tarball
   needs: [B-Trisquel11]
   before_script:
   - dpkg --add-architecture i386
@@ -499,7 +499,7 @@ T-Mingw64:
 
 T-armcross:
   image: debian:latest
-  stage: test
+  stage: tarball
   needs: [B-Trisquel11]
   before_script:
   - dpkg --add-architecture armel
@@ -517,7 +517,7 @@ T-armcross:
   - make check VERBOSE=t
 
 .pages:
-  stage: test
+  stage: bootstrap
   needs: ["B-Fedora39-clang-analyzer"]
   image: $CI_REGISTRY/libidn/build-images:libidn2-Debian12
   before_script:
