@@ -167,9 +167,7 @@ static size_t
 _u32_to_stream (uint8_t *dst, size_t dst_size, uint32_t *src, size_t len)
 {
   unsigned it;
-  size_t n = 0;
-
-  n = _u32_stream_len (src, len);
+  size_t n = _u32_stream_len (src, len);
 
   if (!dst)
     return n;
