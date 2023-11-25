@@ -290,7 +290,7 @@ read_IdnaMappings (char *linep)
       uint32_t cp, tmp[20] = { 0 }, tmp2[20] = { 0 };
       int pos;
 
-      while ((n = sscanf (mapping, " %X%n", &cp, &pos)) == 1)
+      while (sscanf (mapping, " %X%n", &cp, &pos) == 1)
 	{
 	  if (mapdata_pos >= countof (genmapdata))
 	    {
