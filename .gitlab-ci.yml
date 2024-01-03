@@ -355,8 +355,6 @@ B-Windows-UCRT64:
     C:\msys64\usr\bin\bash -lcx '
     pacman --noconfirm -Syu git autoconf automake libtool make mingw-w64-ucrt-x86_64-gcc help2man gengetopt gperf patch gettext-devel texinfo
     # https://docs.github.com/en/get-started/getting-started-with-git/configuring-git-to-handle-line-endings
-    # ' is already registered with AC_CONFIG_FILES.
-    # ../autoconf-2.72/lib/autoconf/status.m4:289: AC_CONFIG_FILES is expanded from...
     file configure.ac
     git config --global core.autocrlf false
     git config --global core.eol lf
