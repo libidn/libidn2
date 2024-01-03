@@ -1,4 +1,4 @@
-# Copyright (C) 2016-2023 Simon Josefsson
+# Copyright (C) 2016-2024 Simon Josefsson
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,27 +14,24 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 stages:
+  - quick
+  - build
+  - test
 
 # The "quick" stage should complete as quickly as possible but still
 # excercise some useful internal self-tests.  Primarily this is
 # achieved by --disable-doc and avoiding the 'make dist' step.  Having
 # an early stage like this avoids wasting build cycles attempting the
 # bootstrap builds on many platforms.
-
-  - quick
-
-# The "bootstrap" stage should attempt to build from version controlled
+#
+# The "build" stage should attempt to build from version controlled
 # sources on platforms we support development on, with the variety of
 # pre-dependencies that we want to support.  Typically these builds
 # results in a tarball artifact.
-
-  - bootstrap
-
-# The "tarball" stage attempt to build the tarball on all platforms we
+#
+# The "test" stage attempt to build the tarball on all platforms we
 # support building the project on, with as many combinations of
 # pre-depencencies as useful.
-
-  - tarball
 
 default:
   interruptible: true
@@ -74,92 +71,41 @@ Q-Debian-testing:
   - env LANG=C.UTF-8 IDN2=src/idn2 ../../../tests/test-idn2.sh
   - git diff --exit-code # nothing should change version controlled files
 
-sast:
-  stage: quick
-  # SAST customization: https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
-  variables:
-    SAST_EXCLUDED_PATHS: examples, fuzz, tests, lib/gendata.c, lib/gentr46map.c
-include:
-- template: Security/SAST.gitlab-ci.yml
-
-# https://www.synopsys.com/blogs/software-security/integrating-coverity-scan-with-gitlab-ci/
-Coverity:
-  image: $CI_REGISTRY/libidn/build-images:libidn2-mini-Debian-testing
-  stage: bootstrap
-  only:
-    refs:
-      - master
-      - coverity
-  allow_failure: true
-  before_script:
-  - apt-get update -qq -y
-  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -q curl
-  script:
-  - test -n "$COVERITY_SCAN_TOKEN" && test -n "$COVERITY_SCAN_PROJECT_NAME"
-  - curl -o /tmp/cov-analysis-linux64.tgz https://scan.coverity.com/download/linux64
-    --form project=$COVERITY_SCAN_PROJECT_NAME --form token=$COVERITY_SCAN_TOKEN
-  - sha1sum /tmp/cov-analysis-linux64.tgz
-  - tar xfz /tmp/cov-analysis-linux64.tgz
-  - time ./bootstrap --skip-po
-  - time ./configure --enable-gcc-warnings --disable-doc CFLAGS="-g -Og"
-  - cov-analysis-linux64-*/bin/cov-build --dir cov-int make check -j$(nproc)
-  - tar cfz cov-int.tar.gz cov-int
-  - curl https://scan.coverity.com/builds?project=$COVERITY_SCAN_PROJECT_NAME
-    --form token=$COVERITY_SCAN_TOKEN --form email=$GITLAB_USER_EMAIL
-    --form file=@cov-int.tar.gz --form version="`git describe --tags`"
-    --form description="`git describe --tags` / $CI_COMMIT_TITLE / $CI_COMMIT_REF_NAME:$CI_PIPELINE_ID"
-  artifacts:
-    expire_in: 1 week
-    paths:
-      - cov-int/*.txt
-
-B-MacOS13Xcode14:
-  image: macos-13-xcode-14
-  stage: bootstrap
-  tags:
-  - saas-macos-medium-m1
-  before_script:
-  - env HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALL_UPGRADE=1 HOMEBREW_NO_INSTALL_CLEANUP=1 HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew install autoconf automake libtool gengetopt help2man texinfo
-  script:
-  - time ./bootstrap --skip-po
-  - time ./configure --enable-gcc-warnings
-  - make syntax-check
-  - make -j$(nproc) check V=1 VERBOSE=t
-  - git diff --exit-code # nothing should change version controlled files
-
 B-gcc:
   image: gcc:latest
-  stage: bootstrap
+  stage: build
   before_script:
   - gcc --version
   - apt-get update -qqy
   - apt-get install -qqy --no-install-recommends git make autoconf automake libtool gettext autopoint gperf libunistring-dev gengetopt help2man texinfo texlive gtk-doc-tools
   script:
+  - gcc --version
   - time ./bootstrap --skip-po
-  - time ./configure --enable-gcc-warnings --disable-doc CC="/usr/local/bin/gcc -std=gnu2x"
-  - time make V=1
+  - time ./configure CC="gcc -std=gnu2x" --enable-gcc-warnings --disable-doc
   - time make syntax-check
+  - time make -j$(nproc) V=1
   - time make check VERBOSE=t
   - git diff --exit-code # nothing should change version controlled files
 
 B-clang:
   image: silkeh/clang:latest
-  stage: bootstrap
+  stage: build
   before_script:
   - clang --version
   - apt-get update -qqy
   - apt-get install -qqy --no-install-recommends git make autoconf automake libtool gettext autopoint gperf libunistring-dev gengetopt help2man texinfo texlive gtk-doc-tools
   script:
+  - clang --version
   - time ./bootstrap --skip-po
-  - time ./configure --enable-gcc-warnings --disable-doc CC="clang -std=gnu2x"
-  - time make V=1
+  - time ./configure CC="clang -std=gnu2x" --enable-gcc-warnings --disable-doc
   - time make syntax-check
+  - time make -j$(nproc) V=1
   - time make check VERBOSE=t
   - git diff --exit-code # nothing should change version controlled files
 
 B-Alpine:
   image: $CI_REGISTRY/libidn/build-images:libidn2-Alpine
-  stage: bootstrap
+  stage: build
   script:
   - time ./bootstrap --skip-po
   - time ./configure --enable-gcc-warnings --disable-doc
@@ -170,7 +116,7 @@ B-Alpine:
 
 B-AlmaLinux8:
   image: $CI_REGISTRY/libidn/build-images:libidn2-AlmaLinux8
-  stage: bootstrap
+  stage: build
   script:
   - time ./bootstrap --skip-po
   - time ./configure
@@ -183,11 +129,11 @@ B-AlmaLinux8:
 
 B-Debian12:
   image: $CI_REGISTRY/libidn/build-images:libidn2-Debian12
-  stage: bootstrap
+  stage: build
   script:
   - ./bootstrap --skip-po
   - ./configure --enable-gcc-warnings --enable-valgrind-tests
-  - make V=1
+  - make -j$(nproc) V=1
   - make check VERBOSE=t
   - make -C doc compare-makefile
   - make syntax-check
@@ -197,31 +143,31 @@ B-Debian12:
 
 B-Debian-testing:
   image: debian:testing
-  stage: bootstrap
+  stage: build
   before_script:
   - apt-get update -qq -y
   - apt-get install -qq -y make gcc git autoconf automake libtool gettext autopoint gperf libunistring-dev valgrind gengetopt help2man texinfo texlive gtk-doc-tools abi-compliance-checker abigail-tools
   script:
   - ./bootstrap --skip-po
   - ./configure --enable-gcc-warnings --enable-valgrind-tests
-  - make V=1
+  - make -j$(nproc) V=1
   - make check VERBOSE=t
   - git diff --exit-code # nothing should change version controlled files
   - rm unistring/libunistring.la # FIXME XXX debug why this is needed...
   - make dist
   - make install
-  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq man
+  - apt-get install -y -qq man
   - git clone --depth=1 https://salsa.debian.org/debian/libidn2.git debian-libidn2
   - LC_ALL=C.UTF-8 debian-libidn2/debian/tests/idn2
   - debian-libidn2/debian/tests/libidn2
 
 B-Trisquel11:
   image: $CI_REGISTRY/libidn/build-images:libidn2-Trisquel11
-  stage: bootstrap
+  stage: build
   script:
   - ./bootstrap --skip-po
   - ./configure --enable-gcc-warnings --enable-valgrind-tests
-  - make V=1
+  - make -j$(nproc) V=1
   - make check VERBOSE=t
   - make -C doc compare-makefile
   - make syntax-check
@@ -231,10 +177,10 @@ B-Trisquel11:
 
 B-armcross:
   image: $CI_REGISTRY/libidn/build-images:libidn2-Debian12
-  stage: bootstrap
+  stage: build
   before_script:
   - apt-get update -qq -y
-  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -q gcc-arm-linux-gnueabi qemu-user qemu-user-binfmt file binfmt-support
+  - apt-get install -y -q gcc-arm-linux-gnueabi qemu-user qemu-user-binfmt file binfmt-support
   - update-binfmts --enable qemu-arm
   script:
   - ./bootstrap --skip-po
@@ -251,7 +197,7 @@ B-armcross:
 # https://releases.llvm.org/13.0.0/tools/clang/docs/UndefinedBehaviorSanitizer.html
 # https://lists.gnu.org/archive/html/bug-gnulib/2022-03/msg00016.html
 B-Fedora39-ASAN/UBSan:
-  stage: bootstrap
+  stage: build
   image: $CI_REGISTRY/libidn/build-images:libidn2-Fedora39
   before_script:
   - dnf install -y clang
@@ -271,7 +217,7 @@ B-Fedora39-ASAN/UBSan:
   - make V=1 -j$(nproc) check VERBOSE=t
 
 B-Fedora39-clang-analyzer:
-  stage: bootstrap
+  stage: build
   image: $CI_REGISTRY/libidn/build-images:libidn2-Fedora39
   before_script:
   - dnf install -y clang-analyzer
@@ -291,8 +237,78 @@ B-Fedora39-clang-analyzer:
     - doc/manual
     - clang-analyzer
 
+sast:
+  stage: quick
+  # SAST customization: https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
+  variables:
+    SAST_EXCLUDED_PATHS: examples, fuzz, tests, lib/gendata.c, lib/gentr46map.c
+include:
+- template: Security/SAST.gitlab-ci.yml
+
+# https://www.synopsys.com/blogs/software-security/integrating-coverity-scan-with-gitlab-ci/
+Coverity:
+  image: $CI_REGISTRY/libidn/build-images:libidn2-mini-Debian-testing
+  stage: build
+  only:
+    refs:
+      - master
+      - coverity
+  allow_failure: true
+  before_script:
+  - apt-get update -qq -y
+  - apt-get install -y -q curl
+  script:
+  - test -n "$COVERITY_SCAN_TOKEN" && test -n "$COVERITY_SCAN_PROJECT_NAME"
+  - curl -o /tmp/cov-analysis-linux64.tgz https://scan.coverity.com/download/linux64
+    --form project=$COVERITY_SCAN_PROJECT_NAME --form token=$COVERITY_SCAN_TOKEN
+  - sha1sum /tmp/cov-analysis-linux64.tgz
+  - tar xfz /tmp/cov-analysis-linux64.tgz
+  - time ./bootstrap --skip-po
+  - time ./configure --enable-gcc-warnings --disable-doc CFLAGS="-g -Og"
+  - cov-analysis-linux64-*/bin/cov-build --dir cov-int make check -j$(nproc)
+  - tar cfz cov-int.tar.gz cov-int
+  - curl https://scan.coverity.com/builds?project=$COVERITY_SCAN_PROJECT_NAME
+    --form token=$COVERITY_SCAN_TOKEN --form email=$GITLAB_USER_EMAIL
+    --form file=@cov-int.tar.gz --form version="`git describe --tags`"
+    --form description="`git describe --tags` / $CI_COMMIT_TITLE / $CI_COMMIT_REF_NAME:$CI_PIPELINE_ID"
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - cov-int/*.txt
+
+# https://docs.gitlab.com/ee/ci/runners/saas/macos/environment.html
+B-macOS14Xcode15:
+  stage: build
+  image: macos-14-xcode-15
+  tags: [ saas-macos-medium-m1 ]
+  variables:
+    HOMEBREW_NO_AUTO_UPDATE: 1
+    HOMEBREW_NO_INSTALL_UPGRADE: 1
+    HOMEBREW_NO_INSTALL_CLEANUP: 1
+    HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: 1
+  before_script:
+  - brew install autoconf automake libtool gengetopt help2man texinfo
+  script:
+  - time ./bootstrap --skip-po
+  - time ./configure --enable-gcc-warnings
+  - make syntax-check
+  - time make -j$(nproc) check V=1 VERBOSE=t
+  - git diff --exit-code # nothing should change version controlled files
+
+macOS13Xcode14:
+  image: macos-13-xcode-14
+  tags: [ saas-macos-medium-m1 ]
+  stage: test
+  needs: [B-Trisquel11]
+  script:
+  - tar xfz libidn2-*.tar.gz
+  - cd `ls -d libidn2-* | grep -v tar.gz`
+  - ./configure --enable-gcc-warnings
+  - make syntax-check
+  - time make -j$(nproc) check V=1 VERBOSE=t
+
 B-MinGW64:
-  stage: bootstrap
+  stage: build
   image: $CI_REGISTRY/libidn/build-images:libidn2-Fedora29-MinGW64
   before_script:
   - mount -t binfmt_misc binfmt_misc /proc/sys/fs/binfmt_misc
@@ -303,13 +319,85 @@ B-MinGW64:
   - mingw64-make -j$(nproc)
   - mingw64-make -j$(nproc) check VERBOSE=t
 
+# https://docs.gitlab.com/ee/ci/runners/saas/windows_saas_runner.html
+B-Windows-UCRT64:
+  when: manual
+  tags: [ shared-windows, windows-1809 ]
+  stage: build
+  script: # https://www.msys2.org/docs/ci/#other-systems
+  - wget.exe -nv -O msys2.exe https://github.com/msys2/msys2-installer/releases/download/nightly-x86_64/msys2-base-x86_64-latest.sfx.exe
+  - ./msys2.exe -y -oC:\
+  - Remove-Item msys2.exe
+  - $env:CHERE_INVOKING = 'yes'
+  - $env:MSYSTEM = 'UCRT64' # https://www.msys2.org/docs/environments/
+  - C:\msys64\usr\bin\bash -lc ' '
+  - C:\msys64\usr\bin\bash -lc 'pacman --noconfirm -Syuu'
+  - C:\msys64\usr\bin\bash -lc 'pacman --noconfirm -Syuu'
+  - |
+    C:\msys64\usr\bin\bash -lc '
+    pacman --noconfirm -Syu git autoconf automake libtool make mingw-w64-ucrt-x86_64-gcc help2man gengetopt gperf patch gettext-devel texinfo
+    # https://docs.github.com/en/get-started/getting-started-with-git/configuring-git-to-handle-line-endings
+    # ' is already registered with AC_CONFIG_FILES.
+    # ../autoconf-2.72/lib/autoconf/status.m4:289: AC_CONFIG_FILES is expanded from...
+    file configure.ac
+    git config --global core.autocrlf false
+    git config --global core.eol lf
+    git rm -rf --cached . | tail
+    git reset --hard HEAD
+    file configure.ac
+    ./bootstrap --skip-po
+    ./configure --enable-gcc-warnings
+    make V=1 -k check VERBOSE=t'
+
+Windows-MSYS:
+  tags: [ shared-windows, windows-1809 ]
+  stage: test
+  needs: [B-Trisquel11]
+  script: # https://www.msys2.org/docs/ci/#other-systems
+  - wget.exe -nv -O msys2.exe https://github.com/msys2/msys2-installer/releases/download/nightly-x86_64/msys2-base-x86_64-latest.sfx.exe
+  - ./msys2.exe -y -oC:\
+  - Remove-Item msys2.exe
+  - $env:CHERE_INVOKING = 'yes'
+  - $env:MSYSTEM = 'MSYS' # https://www.msys2.org/docs/environments/
+  - C:\msys64\usr\bin\bash -lc ' '
+  - C:\msys64\usr\bin\bash -lc 'pacman --noconfirm -Syuu'
+  - C:\msys64\usr\bin\bash -lc 'pacman --noconfirm -Syuu'
+  - |
+    C:\msys64\usr\bin\bash -lcx '
+    pacman --noconfirm -Syu make gcc libiconv-devel
+    tar xfa libidn2-*.tar.gz
+    cd `ls -d libidn2-* | grep -v tar.gz`
+    ./configure --enable-gcc-warnings
+    make V=1 -k check VERBOSE=t'
+
+Windows-MINGW64:
+  tags: [ shared-windows, windows-1809 ]
+  stage: test
+  needs: [B-Trisquel11]
+  script: # https://www.msys2.org/docs/ci/#other-systems
+  - wget.exe -nv -O msys2.exe https://github.com/msys2/msys2-installer/releases/download/nightly-x86_64/msys2-base-x86_64-latest.sfx.exe
+  - ./msys2.exe -y -oC:\
+  - Remove-Item msys2.exe
+  - $env:CHERE_INVOKING = 'yes'
+  - $env:MSYSTEM = 'MINGW64' # https://www.msys2.org/docs/environments/
+  - C:\msys64\usr\bin\bash -lc ' '
+  - C:\msys64\usr\bin\bash -lc 'pacman --noconfirm -Syuu'
+  - C:\msys64\usr\bin\bash -lc 'pacman --noconfirm -Syuu'
+  - |
+    C:\msys64\usr\bin\bash -lcx '
+    pacman --noconfirm -Syu make mingw-w64-x86_64-gcc
+    tar xfa libidn2-*.tar.gz
+    cd `ls -d libidn2-* | grep -v tar.gz`
+    ./configure --enable-gcc-warnings
+    make V=1 -k check VERBOSE=t'
+
 T-Debian5:
   image: debian/eol:lenny
-  stage: tarball
+  stage: test
   needs: [B-Trisquel11]
   before_script:
   - apt-get update
-  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq make gcc locales-all
+  - apt-get install -y -qq make gcc locales-all
   script:
   - tar xfz libidn2-*.tar.gz
   - cd `ls -d libidn2-* | grep -v tar.gz`
@@ -318,12 +406,12 @@ T-Debian5:
 
 T-Debian9:
   image: debian:stretch
-  stage: tarball
+  stage: test
   needs: [B-Trisquel11]
   before_script:
   - sed -i 's/deb.debian.org/archive.debian.org/g' /etc/apt/sources.list
   - apt-get update || true
-  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq make gcc
+  - apt-get install -y -qq make gcc
   script:
   - tar xfz libidn2-*.tar.gz
   - cd `ls -d libidn2-* | grep -v tar.gz`
@@ -334,11 +422,11 @@ T-Debian9:
 
 T-Debian10:
   image: debian:buster
-  stage: tarball
+  stage: test
   needs: [B-Trisquel11]
   before_script:
   - apt-get update
-  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq make gcc
+  - apt-get install -y -qq make gcc
   script:
   - tar xfz libidn2-*.tar.gz
   - cd `ls -d libidn2-* | grep -v tar.gz`
@@ -349,11 +437,11 @@ T-Debian10:
 
 T-Debian-testing:
   image: debian:testing
-  stage: tarball
+  stage: test
   needs: [B-Trisquel11]
   before_script:
   - apt-get update
-  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq make gcc
+  - apt-get install -y -qq make gcc
   script:
   - tar xfz libidn2-*.tar.gz
   - cd `ls -d libidn2-* | grep -v tar.gz`
@@ -362,7 +450,7 @@ T-Debian-testing:
   - ../configure --enable-gcc-warnings
   - grep am_cv_func_iconv_summary config.log
   - cd ..
-  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq autoconf autopoint libtool gtk-doc-tools
+  - apt-get install -y -qq autoconf autopoint libtool gtk-doc-tools
   - AUTOPOINT=true autoreconf -fvi
   - ./configure --enable-gcc-warnings
   - grep am_cv_func_iconv_summary config.log
@@ -370,7 +458,7 @@ T-Debian-testing:
 
 T-Alpine:
   image: alpine:latest
-  stage: tarball
+  stage: test
   needs: [B-Debian-testing]
   before_script:
   - echo "ipv6" >> /etc/modules
@@ -384,7 +472,7 @@ T-Alpine:
 
 T-ArchLinux:
   image: archlinux:latest
-  stage: tarball
+  stage: test
   needs: [B-Trisquel11]
   before_script:
   - pacman -Syu --noconfirm make gcc diffutils
@@ -398,7 +486,7 @@ T-ArchLinux:
 
 T-CentOS7:
   image: centos:7
-  stage: tarball
+  stage: test
   needs: [B-Trisquel11]
   before_script:
   - yum -y install make gcc diffutils valgrind libunistring-devel
@@ -410,7 +498,7 @@ T-CentOS7:
 
 T-AlmaLinux8:
   image: almalinux:8
-  stage: tarball
+  stage: test
   needs: [B-Trisquel11]
   before_script:
   - dnf --enablerepo=powertools -y install make gcc diffutils valgrind libunistring-devel
@@ -422,11 +510,11 @@ T-AlmaLinux8:
 
 T-Ubuntu14.04:
   image: ubuntu:14.04
-  stage: tarball
+  stage: test
   needs: [B-Trisquel11]
   before_script:
   - apt-get update -qq
-  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq make gcc
+  - apt-get install -y -qq make gcc
   script:
   - tar xfa libidn2-*.tar.gz
   - cd `ls -d libidn2-* | grep -v tar.gz`
@@ -435,11 +523,11 @@ T-Ubuntu14.04:
 
 T-Trisquel11:
   image: kpengboy/trisquel:11.0
-  stage: tarball
+  stage: test
   needs: [B-Trisquel11]
   before_script:
   - apt-get update -qq
-  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq make gcc
+  - apt-get install -y -qq make gcc
   script:
   - tar xfa libidn2-*.tar.gz
   - cd `ls -d libidn2-* | grep -v tar.gz`
@@ -448,11 +536,11 @@ T-Trisquel11:
 
 T-Ubuntu-rolling:
   image: ubuntu:rolling
-  stage: tarball
+  stage: test
   needs: [B-Trisquel11]
   before_script:
   - apt-get update -qq
-  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq git make gcc gtk-doc-tools texinfo texlive texlive-plain-generic dblatex
+  - apt-get install -y -qq git make gcc gtk-doc-tools texinfo texlive texlive-plain-generic dblatex
   script:
   - tar xfa libidn2-*.tar.gz
   - cd `ls -d libidn2-* | grep -v tar.gz`
@@ -463,48 +551,14 @@ T-Ubuntu-rolling:
   - make clean
   - make
 
-T-Mingw32:
-  image: debian:latest
-  stage: tarball
-  needs: [B-Trisquel11]
-  before_script:
-  - dpkg --add-architecture i386
-  - apt-get update -qq
-  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq make mingw-w64 wine wine32 libwine libwine:i386 binfmt-support wine-binfmt
-  - update-binfmts --enable wine
-  script:
-  - tar xfz libidn2-*.tar.gz
-  - cd `ls -d libidn2-* | grep -v tar.gz`
-  - mkdir b
-  - cd b
-  - ../configure --host=i686-w64-mingw32 CC='i686-w64-mingw32-gcc -static-libgcc' --enable-gcc-warnings
-  - make check V=1 VERBOSE=t
-
-T-Mingw64:
-  image: debian:latest
-  stage: tarball
-  needs: [B-Trisquel11]
-  before_script:
-  - dpkg --add-architecture i386
-  - apt-get update -qq
-  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq make mingw-w64 wine wine32 wine64 binfmt-support wine-binfmt
-  - update-binfmts --enable wine
-  script:
-  - tar xfz libidn2-*.tar.gz
-  - cd `ls -d libidn2-* | grep -v tar.gz`
-  - mkdir b
-  - cd b
-  - ../configure --host=x86_64-w64-mingw32 --enable-gcc-warnings
-  - make check V=1 VERBOSE=t
-
 T-armcross:
   image: debian:latest
-  stage: tarball
+  stage: test
   needs: [B-Trisquel11]
   before_script:
   - dpkg --add-architecture armel
   - apt-get update -qq
-  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -qq make gcc-arm-linux-gnueabi libstdc++6:armel
+  - apt-get install -y -qq make gcc-arm-linux-gnueabi libstdc++6:armel
   script:
   - tar xfz libidn2-*.tar.gz
   - cd `ls -d libidn2-* | grep -v tar.gz`
@@ -516,12 +570,46 @@ T-armcross:
   - arm-linux-gnueabi-readelf -h src/.libs/idn2
   - make check VERBOSE=t
 
+T-Mingw32:
+  image: debian:latest
+  stage: test
+  needs: [B-Trisquel11]
+  before_script:
+  - dpkg --add-architecture i386
+  - apt-get update -qq
+  - apt-get install -y -qq make mingw-w64 wine wine32 libwine libwine:i386 binfmt-support wine-binfmt
+  - update-binfmts --enable wine
+  script:
+  - tar xfz libidn2-*.tar.gz
+  - cd `ls -d libidn2-* | grep -v tar.gz`
+  - mkdir b
+  - cd b
+  - ../configure --host=i686-w64-mingw32 CC='i686-w64-mingw32-gcc -static-libgcc' --enable-gcc-warnings
+  - make check V=1 VERBOSE=t
+
+T-Mingw64:
+  image: debian:latest
+  stage: test
+  needs: [B-Trisquel11]
+  before_script:
+  - dpkg --add-architecture i386
+  - apt-get update -qq
+  - apt-get install -y -qq make mingw-w64 wine wine32 wine64 binfmt-support wine-binfmt
+  - update-binfmts --enable wine
+  script:
+  - tar xfz libidn2-*.tar.gz
+  - cd `ls -d libidn2-* | grep -v tar.gz`
+  - mkdir b
+  - cd b
+  - ../configure --host=x86_64-w64-mingw32 --enable-gcc-warnings
+  - make check V=1 VERBOSE=t
+
 .pages:
-  stage: bootstrap
+  stage: build
   needs: ["B-Fedora39-clang-analyzer"]
   image: $CI_REGISTRY/libidn/build-images:libidn2-Debian12
   before_script:
-  - env DEBIAN_FRONTEND=noninteractive apt-get install -y -q lcov
+  - apt-get install -y -q lcov
   script:
   - rm -rf public
   - mkdir -p public
