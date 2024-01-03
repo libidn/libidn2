@@ -1,5 +1,5 @@
 # Libidn2 CONTRIBUTING -- Information for developers
-Copyright (C) 2011-2023 Simon Josefsson
+Copyright (C) 2011-2024 Simon Josefsson
 See the end for copying conditions.
 
 This file contains instructions for developers and advanced users.

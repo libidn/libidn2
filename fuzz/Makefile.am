@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023 Tim Ruehsen
+# Copyright (c) 2017-2024 Tim Ruehsen
 
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),

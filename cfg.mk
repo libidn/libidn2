@@ -1,4 +1,4 @@
-# Copyright (C) 2011-2023 Simon Josefsson
+# Copyright (C) 2011-2024 Simon Josefsson
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,7 +26,6 @@ GNUPLOADFLAGS = --symlink-regex
 local-checks-to-skip += sc_unmarked_diagnostics sc_bindtextdomain # Re-add when we have translation
 local-checks-to-skip += sc_immutable_NEWS
 local-checks-to-skip += sc_prohibit_strcmp
-local-checks-to-skip += sc_copyright_check
 local-checks-to-skip += sc_prohibit_gnu_make_extensions
 
 # Ignore gnulib files.
