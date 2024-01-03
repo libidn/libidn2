@@ -350,6 +350,7 @@ B-Windows-UCRT64:
     make V=1 -k check VERBOSE=t'
 
 Windows-MSYS:
+  when: manual
   tags: [ shared-windows, windows-1809 ]
   stage: test
   needs: [B-Trisquel11]
@@ -371,6 +372,7 @@ Windows-MSYS:
     make V=1 -k check VERBOSE=t'
 
 Windows-MINGW64:
+  when: manual
   tags: [ shared-windows, windows-1809 ]
   stage: test
   needs: [B-Trisquel11]

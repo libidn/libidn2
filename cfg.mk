@@ -15,7 +15,7 @@
 
 manual_title = Internationalized Domain Names Library
 
-old_NEWS_hash = 802fbde30158e257a5762f2ea07a4d83
+old_NEWS_hash = be4b8e37f34e4150007be9594029551d
 
 bootstrap-tools = gnulib,autoconf,automake,libtoolize,make,makeinfo,help2man,gperf,gengetopt,gtkdocize,tar,gzip
 
@@ -24,7 +24,6 @@ upload_dest_dir_ = libidn
 GNUPLOADFLAGS = --symlink-regex
 
 local-checks-to-skip += sc_unmarked_diagnostics sc_bindtextdomain # Re-add when we have translation
-local-checks-to-skip += sc_immutable_NEWS
 local-checks-to-skip += sc_prohibit_strcmp
 local-checks-to-skip += sc_prohibit_gnu_make_extensions
 
