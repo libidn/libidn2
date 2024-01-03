@@ -15,7 +15,9 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <config.h>
+#ifdef HAVE_CONFIG_H
+# include <config.h>
+#endif
 
 #include <stdio.h>		/* printf */
 #include <stdlib.h>		/* EXIT_SUCCESS */
@@ -26,103 +28,108 @@
 int
 main (void)
 {
-  int exit_code = EXIT_SUCCESS;
-  char *out = NULL;
-  int j;
   unsigned gvn = IDN2_VERSION_NUMBER;
-  unsigned gvmmp = (IDN2_VERSION_MAJOR << 16)
-    + (IDN2_VERSION_MINOR << 8) + IDN2_VERSION_PATCH;
+  unsigned gvmmp = (IDN2_VERSION_MAJOR << 24)
+    + (IDN2_VERSION_MINOR << 16) + IDN2_VERSION_PATCH;
+  const char *check_version_null;
+  char buf[BUFSIZ];
+  int j;
 
   printf ("IDN2_VERSION: %s\n", IDN2_VERSION);
   printf ("IDN2_VERSION_MAJOR: %d\n", IDN2_VERSION_MAJOR);
   printf ("IDN2_VERSION_MINOR: %d\n", IDN2_VERSION_MINOR);
   printf ("IDN2_VERSION_PATCH: %d\n", IDN2_VERSION_PATCH);
   printf ("IDN2_VERSION_NUMBER: %x\n", gvn);
-  printf ("(IDN2_VERSION_MAJOR << 16) + (IDN2_VERSION_MINOR << 8)"
-	  " + IDN2_VERSION_PATCH: %x\n", gvmmp);
+  printf ("IDN2_VERSION_MAJOR.IDN2_VERSION_MINOR."
+	  "IDN2_VERSION_PATCH: %d.%d.%d\n",
+	  IDN2_VERSION_MAJOR, IDN2_VERSION_MINOR, IDN2_VERSION_PATCH);
 
-  j = asprintf (&out, "%d.%d.%d", IDN2_VERSION_MAJOR,
-		IDN2_VERSION_MINOR, IDN2_VERSION_PATCH);
-  if (j < 0)
-    {
-      printf ("FAIL: asprintf: %d", j);
-      exit_code = EXIT_FAILURE;
-      out = NULL;
-    }
-
-  if (out)
-    printf ("IDN2_VERSION_MAJOR.IDN2_VERSION_MINOR"
-	    ".IDN2_VERSION_PATCH: %s\n", out);
-
-  if (!idn2_check_version (NULL))
+  check_version_null = idn2_check_version (NULL);
+  if (!check_version_null)
     {
       printf ("FAIL: idn2_check_version (NULL)\n");
-      exit_code = EXIT_FAILURE;
+      return EXIT_FAILURE;
+    }
+  printf ("idn2_check_version (NULL): %s\n", check_version_null);
+
+  j = snprintf (buf, sizeof buf, "%d.%d.%d", IDN2_VERSION_MAJOR,
+		IDN2_VERSION_MINOR, IDN2_VERSION_PATCH);
+  if (j < 0 || j == sizeof buf)
+    {
+      printf ("FAIL: snprintf: %d", j);
+      return EXIT_FAILURE;
     }
 
-  printf ("idn2_check_version (NULL): %s\n", idn2_check_version (NULL));
+  if (!idn2_check_version (buf))
+    {
+      printf ("FAIL: idn2_check_version(buf == %s)\n", buf);
+      return EXIT_FAILURE;
+    }
+
+  /* IDN2_VERSION may look like "1.0.4.10-b872" but the derived string
+     should be "1.0.4" anyway.  */
+  if (strncmp (IDN2_VERSION, buf, strlen (buf)) != 0)
+    {
+      printf ("FAIL: strncmp (IDN2_VERSION, %s, strlen (%s))\n", buf, buf);
+      return EXIT_FAILURE;
+    }
 
   if (!idn2_check_version (IDN2_VERSION))
     {
       printf ("FAIL: idn2_check_version (IDN2_VERSION)\n");
-      exit_code = EXIT_FAILURE;
+      return EXIT_FAILURE;
+    }
+
+  if (check_version_null != idn2_check_version (NULL))
+    {
+      printf ("FAIL: check_version_null != idn2_check_version (NULL)\n");
+      return EXIT_FAILURE;
+    }
+
+  if (idn2_check_version (IDN2_VERSION) != idn2_check_version (IDN2_VERSION))
+    {
+      printf ("FAIL: idn2_check_version (IDN2_VERSION) "
+	      "!= idn2_check_version (IDN2_VERSION)\n");
+      return EXIT_FAILURE;
     }
 
   if (!idn2_check_version ("1.0.1"))
     {
       printf ("FAIL: idn2_check_version (1.0.1)\n");
-      exit_code = EXIT_FAILURE;
+      return EXIT_FAILURE;
     }
 
-  if (strcmp (IDN2_VERSION, idn2_check_version (NULL)) != 0)
+  if (strcmp (IDN2_VERSION, check_version_null) != 0)
     {
       printf ("FAIL: strcmp (IDN2_VERSION, idn2_check_version (NULL))\n");
-      exit_code = EXIT_FAILURE;
+      return EXIT_FAILURE;
     }
 
-  if (IDN2_VERSION_NUMBER != gvn)
+  if (gvn != gvmmp)
     {
-      printf ("FAIL: IDN2_VERSION_NUMBER != gvn\n");
-      exit_code = EXIT_FAILURE;
-    }
-
-  if (out)
-    {
-      if (!idn2_check_version (out))
-	{
-	  printf ("FAIL: idn2_check_version(%s)\n", out);
-	  exit_code = EXIT_FAILURE;
-	}
-
-      /* IDN2_VERSION may look like "1.0.4.10-b872" but the derived string
-         should be "1.0.4" anyway.  */
-      if (strncmp (IDN2_VERSION, out, strlen (out)) != 0)
-	{
-	  printf ("FAIL: strncmp (IDN2_VERSION, %s, strlen (%s))\n", out,
-		  out);
-	  exit_code = EXIT_FAILURE;
-	}
-
-      free (out);
+      printf ("FAIL: IDN2_VERSION_NUMBER != (IDN2_VERSION_MAJOR << 24) +"
+	      " (IDN2_VERSION_MINOR << 16) + IDN2_VERSION_PATCH: %x\n",
+	      gvmmp);
+      return EXIT_FAILURE;
     }
 
   if (idn2_check_version ("100.100"))
     {
       printf ("FAIL: idn2_check_version(100.100)\n");
-      exit_code = EXIT_FAILURE;
+      return EXIT_FAILURE;
     }
 
   if (idn2_check_version ("4711.42.23"))
     {
       printf ("FAIL: idn2_check_version(4711.42.23)\n");
-      exit_code = EXIT_FAILURE;
+      return EXIT_FAILURE;
     }
 
   if (idn2_check_version ("UNKNOWN"))
     {
       printf ("FAIL: idn2_check_version (UNKNOWN)\n");
-      exit_code = EXIT_FAILURE;
+      return EXIT_FAILURE;
     }
 
-  return exit_code;
+  return EXIT_SUCCESS;
 }
