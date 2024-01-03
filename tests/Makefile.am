@@ -26,8 +26,8 @@ LDADD = ../lib/libidn2.la
 LDADD += ../unistring/libunistring.la $(LTLIBUNISTRING)
 LDADD += ../gl/libgnu.la
 
-ctests = test-punycode test-lookup test-register test-strerror test-tounicode
-ctests += test-locale
+ctests = test-version test-strerror test-locale test-tounicode
+ctests += test-punycode test-lookup test-register
 if TEST_GLIBC
 ctests += test-glibc
 endif
@@ -35,7 +35,7 @@ check_PROGRAMS = $(ctests)
 
 dist_check_SCRIPTS = test-idn2.sh
 
-TESTS = $(dist_check_SCRIPTS) $(ctests)
+TESTS = $(ctests) $(dist_check_SCRIPTS)
 TEST_EXTENSIONS = .sh
 LOG_COMPILER = $(LOG_VALGRIND)
 SH_LOG_COMPILER= $(SHELL) -x

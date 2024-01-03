@@ -145,6 +145,7 @@
 /tests/test-register
 /tests/test-strerror
 /tests/test-tounicode
+/tests/test-version
 /unistring/
 Makefile
 Makefile.in

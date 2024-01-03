@@ -210,15 +210,6 @@ main (void)
   int rc;
   size_t i, outlen;
 
-  if (!idn2_check_version (IDN2_VERSION))
-    fail ("idn2_check_version(%s) failed\n", IDN2_VERSION);
-
-  if (!idn2_check_version (NULL))
-    fail ("idn2_check_version(NULL) failed\n");
-
-  if (idn2_check_version ("100.100"))
-    fail ("idn2_check_version(\"100.100\") failed\n");
-
   p = (char *) malloc (sizeof (*p) * BUFSIZ);
   if (p == NULL)
     fail ("malloc() returned NULL\n");
