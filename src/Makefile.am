@@ -17,7 +17,7 @@ AM_CPPFLAGS = -I$(top_builddir)/gl -I$(top_srcdir)/gl
 AM_CPPFLAGS += -I$(top_srcdir) -I$(top_builddir) -I$(top_builddir)/lib -I$(srcdir)
 AM_CPPFLAGS += -DLOCALEDIR=\"$(localedir)\"
 AM_CPPFLAGS += -I$(top_srcdir)/unistring/ -I$(top_builddir)/unistring/
-AM_CFLAGS = $(WARN_CFLAGS)
+AM_CFLAGS = $(WERROR_CFLAGS) $(WARN_CFLAGS)
 
 bin_PROGRAMS = idn2
 

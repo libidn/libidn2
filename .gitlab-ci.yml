@@ -57,11 +57,10 @@ Q-Debian-testing:
   - git diff --exit-code # catch changes resulting in *-dirty version number
   - mkdir -p a/b/c
   - cd a/b/c
-  - time ../../../configure CFLAGS=-O0 --enable-gcc-warnings --disable-doc
+  - time ../../../configure CFLAGS=-O0 --enable-gcc-warnings=error --disable-doc
   - grep am_cv_func_iconv_summary config.log
-  - time make syntax-check
-  - time make V=1
-  - time make check VERBOSE=t
+  - time make -j$(nproc) -k syntax-check
+  - time make -j$(nproc) -k V=1 check VERBOSE=t
   - gcc -o foo -Ilib -Itests ../../../tests/test-lookup.c lib/.libs/libidn2.a gl/.libs/libgnu.a unistring/.libs/libunistring.a -lunistring
   - ./foo ../../../tests/IdnaTest.txt | tail -1
   - gcc -o foo -Ilib ../../../tests/test-register.c lib/.libs/libidn2.a gl/.libs/libgnu.a unistring/.libs/libunistring.a -lunistring
@@ -85,10 +84,10 @@ B-gcc:
   script:
   - gcc --version
   - time ./bootstrap --skip-po
-  - time ./configure CC="gcc -std=gnu2x" --enable-gcc-warnings --disable-doc
-  - time make syntax-check
-  - time make -j$(nproc) V=1
-  - time make check VERBOSE=t
+  - time ./configure CC="gcc -std=gnu2x" --enable-gcc-warnings=error --disable-doc
+  - time make -j$(nproc) -k V=1
+  - time make -j$(nproc) -k syntax-check
+  - time make -j$(nproc) -k check VERBOSE=t
   - git diff --exit-code # nothing should change version controlled files
 
 B-clang:
@@ -101,10 +100,10 @@ B-clang:
   script:
   - clang --version
   - time ./bootstrap --skip-po
-  - time ./configure CC="clang -std=gnu2x" --enable-gcc-warnings --disable-doc
-  - time make syntax-check
-  - time make -j$(nproc) V=1
-  - time make check VERBOSE=t
+  - time ./configure CC="clang -std=gnu2x" --enable-gcc-warnings=error --disable-doc
+  - time make -j$(nproc) -k syntax-check
+  - time make -j$(nproc) -k V=1
+  - time make -j$(nproc) -k check V=1 VERBOSE=t
   - git diff --exit-code # nothing should change version controlled files
 
 B-Alpine-arm64:
@@ -119,9 +118,9 @@ B-Alpine-arm64:
   - apk add gcc make libc-dev git autoconf automake libtool gettext-dev gperf gengetopt patch coreutils
   script:
   - time ./bootstrap --skip-po
-  - time ./configure --disable-doc --enable-gcc-warnings
+  - time ./configure --disable-doc --enable-gcc-warnings=error
   - time make -j$(nproc) syntax-check
-  - time make -j$(nproc) V=1
+  - time make -j$(nproc) -k V=1
   - time make -j$(nproc) check V=1 VERBOSE=t
   - git diff --exit-code # nothing should change version controlled files
 
@@ -130,10 +129,10 @@ B-AlmaLinux8:
   stage: build
   script:
   - time ./bootstrap --skip-po
-  - time ./configure
-  - time make V=1
-  - time make check VERBOSE=t
-  - make syntax-check
+  - time ./configure --enable-gcc-warnings=error
+  - time make -j$(nproc) -k V=1
+  - time make -j$(nproc) -k check VERBOSE=t
+  - make -j$(nproc) -k syntax-check
   - make abi-check
   - time make dist
   - git diff --exit-code # nothing should change version controlled files
@@ -143,11 +142,10 @@ B-Debian12:
   stage: build
   script:
   - ./bootstrap --skip-po
-  - ./configure --enable-gcc-warnings --enable-valgrind-tests
-  - make -j$(nproc) V=1
-  - make check VERBOSE=t
+  - ./configure --enable-gcc-warnings=error --enable-valgrind-tests
+  - make -j$(nproc) V=1 -k check VERBOSE=t
   - make -C doc compare-makefile
-  - make syntax-check
+  - make -j$(nproc) syntax-check
   - make abi-check
   - make dist
   - git diff --exit-code # nothing should change version controlled files
@@ -160,9 +158,9 @@ B-Debian-testing:
   - apt-get install -qq -y make gcc git autoconf automake libtool gettext autopoint gperf libunistring-dev valgrind gengetopt help2man texinfo texlive gtk-doc-tools abi-compliance-checker abigail-tools
   script:
   - ./bootstrap --skip-po
-  - ./configure --enable-gcc-warnings --enable-valgrind-tests
+  - ./configure --enable-gcc-warnings=error --enable-valgrind-tests
   - make -j$(nproc) V=1
-  - make check VERBOSE=t
+  - make -j$(nproc) -k check VERBOSE=t
   - git diff --exit-code # nothing should change version controlled files
   - rm unistring/libunistring.la # FIXME XXX debug why this is needed...
   - make dist
@@ -177,11 +175,11 @@ B-Trisquel11:
   stage: build
   script:
   - ./bootstrap --skip-po
-  - ./configure --enable-gcc-warnings --enable-valgrind-tests
+  - ./configure --enable-gcc-warnings=error --enable-valgrind-tests
   - make -j$(nproc) V=1
-  - make check VERBOSE=t
+  - make -j$(nproc) -k check VERBOSE=t
   - make -C doc compare-makefile
-  - make syntax-check
+  - make -j$(nproc) -k syntax-check
   - make abi-check
   - make dist
   - git diff --exit-code # nothing should change version controlled files
@@ -195,14 +193,14 @@ B-armcross:
   - update-binfmts --enable qemu-arm
   script:
   - ./bootstrap --skip-po
-  - ./configure --enable-gcc-warnings --disable-doc
-  - make V=1
-  - ./configure --enable-gcc-warnings --disable-doc --host=arm-linux-gnueabi CFLAGS="-static --static"
-  - make V=1
+  - ./configure --enable-gcc-warnings=error --disable-doc
+  - make -j$(nproc) -k V=1
+  - ./configure --enable-gcc-warnings=error --disable-doc --host=arm-linux-gnueabi CFLAGS="-static --static"
+  - make -j$(nproc) -k V=1
   - file src/idn2
   - LANG=C.UTF-8 qemu-arm src/idn2 --debug foo
   - LANG=C.UTF-8 src/idn2 --debug räksmörgås
-  - LANG=C.UTF-8 make check VERBOSE=t
+  - LANG=C.UTF-8 make -j$(nproc) -k check VERBOSE=t
 
 # https://releases.llvm.org/13.0.0/tools/clang/docs/AddressSanitizer.html
 # https://releases.llvm.org/13.0.0/tools/clang/docs/UndefinedBehaviorSanitizer.html
@@ -274,7 +272,7 @@ Coverity:
   - sha1sum /tmp/cov-analysis-linux64.tgz
   - tar xfz /tmp/cov-analysis-linux64.tgz
   - time ./bootstrap --skip-po
-  - time ./configure --enable-gcc-warnings --disable-doc CFLAGS="-g -Og"
+  - time ./configure --enable-gcc-warnings=error --disable-doc CFLAGS="-g -Og"
   - cov-analysis-linux64-*/bin/cov-build --dir cov-int make check -j$(nproc)
   - tar cfz cov-int.tar.gz cov-int
   - curl https://scan.coverity.com/builds?project=$COVERITY_SCAN_PROJECT_NAME
@@ -299,13 +297,14 @@ B-macOS14Xcode15:
     HOMEBREW_NO_INSTALL_UPGRADE: 1
     HOMEBREW_NO_INSTALL_CLEANUP: 1
     HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: 1
+    WERROR_CFLAGS: "-Wno-error=format-nonliteral"
   before_script:
   - brew install autoconf automake libtool gengetopt help2man texinfo
   script:
   - time ./bootstrap --skip-po
-  - time ./configure --enable-gcc-warnings
+  - time ./configure --enable-gcc-warnings=error
   - make syntax-check
-  - time make -j$(nproc) check V=1 VERBOSE=t
+  - time make -j$(nproc) check -k V=1 VERBOSE=t
   - git diff --exit-code # nothing should change version controlled files
 
 macOS13Xcode14:
@@ -316,10 +315,12 @@ macOS13Xcode14:
   tags: [ saas-macos-medium-m1 ]
   stage: test
   needs: [B-Trisquel11]
+  variables:
+    WERROR_CFLAGS: "-Wno-error=format-nonliteral"
   script:
   - tar xfz libidn2-*.tar.gz
   - cd `ls -d libidn2-* | grep -v tar.gz`
-  - ./configure --enable-gcc-warnings
+  - ./configure --enable-gcc-warnings=error WERROR_CFLAGS="-Wno-error=unused-value -Wno-error=format-nonliteral -Wno-error=attributes -Wno-error=char-subscripts"
   - make syntax-check
   - time make -j$(nproc) check V=1 VERBOSE=t
 
@@ -342,6 +343,8 @@ B-Windows-UCRT64:
   - when: manual
   tags: [ shared-windows, windows-1809 ]
   stage: build
+  variables:
+    WERROR_CFLAGS: "-Wno-error=format-nonliteral -Wno-error=unused-value"
   script: # https://www.msys2.org/docs/ci/#other-systems
   - wget.exe -nv -O msys2.exe https://github.com/msys2/msys2-installer/releases/download/nightly-x86_64/msys2-base-x86_64-latest.sfx.exe
   - ./msys2.exe -y -oC:\
@@ -362,8 +365,9 @@ B-Windows-UCRT64:
     git reset --hard HEAD
     file configure.ac
     ./bootstrap --skip-po
-    ./configure --enable-gcc-warnings
+    ./configure --enable-gcc-warnings=error
     make -j$(nproc) V=1 -k check VERBOSE=t'
+  - C:\msys64\usr\bin\bash -lc 'grep ^PASS tests/test-register.log'
 
 Windows-MSYS:
   rules:
@@ -372,6 +376,8 @@ Windows-MSYS:
   tags: [ shared-windows, windows-1809 ]
   stage: test
   needs: [B-Trisquel11]
+  variables:
+    WERROR_CFLAGS: "-Wno-error=unused-value -Wno-error=format-nonliteral -Wno-error=attributes -Wno-error=char-subscripts"
   script: # https://www.msys2.org/docs/ci/#other-systems
   - wget.exe -nv -O msys2.exe https://github.com/msys2/msys2-installer/releases/download/nightly-x86_64/msys2-base-x86_64-latest.sfx.exe
   - ./msys2.exe -y -oC:\
@@ -386,8 +392,9 @@ Windows-MSYS:
     pacman --noconfirm -Syu make gcc libiconv-devel
     tar xfa libidn2-*.tar.gz
     cd `ls -d libidn2-* | grep -v tar.gz`
-    ./configure --enable-gcc-warnings
+    ./configure --enable-gcc-warnings=error
     make -j$(nproc) V=1 -k check VERBOSE=t'
+  - C:\msys64\usr\bin\bash -lc 'grep ^PASS tests/test-register.log'
 
 Windows-MINGW64:
   rules:
@@ -396,6 +403,8 @@ Windows-MINGW64:
   tags: [ shared-windows, windows-1809 ]
   stage: test
   needs: [B-Trisquel11]
+  variables:
+    WERROR_CFLAGS: "-Wno-error=format-nonliteral -Wno-error=unused-value"
   script: # https://www.msys2.org/docs/ci/#other-systems
   - wget.exe -nv -O msys2.exe https://github.com/msys2/msys2-installer/releases/download/nightly-x86_64/msys2-base-x86_64-latest.sfx.exe
   - ./msys2.exe -y -oC:\
@@ -410,8 +419,9 @@ Windows-MINGW64:
     pacman --noconfirm -Syu make mingw-w64-x86_64-gcc
     tar xfa libidn2-*.tar.gz
     cd `ls -d libidn2-* | grep -v tar.gz`
-    ./configure --enable-gcc-warnings
+    ./configure --enable-gcc-warnings=error
     make -j$(nproc) V=1 -k check VERBOSE=t'
+  - C:\msys64\usr\bin\bash -lc 'grep ^PASS tests/test-register.log'
 
 Debian5:
   image: debian/eol:lenny
@@ -423,8 +433,8 @@ Debian5:
   script:
   - tar xfz libidn2-*.tar.gz
   - cd `ls -d libidn2-* | grep -v tar.gz`
-  - ./configure --enable-gcc-warnings
-  - make check V=1 VERBOSE=t
+  - ./configure --enable-gcc-warnings=error
+  - make -j$(nproc) -k check V=1 VERBOSE=t
 
 Debian9:
   image: debian:stretch
@@ -439,8 +449,8 @@ Debian9:
   - cd `ls -d libidn2-* | grep -v tar.gz`
   - mkdir b
   - cd b
-  - ../configure --enable-gcc-warnings
-  - make check V=1 VERBOSE=t
+  - ../configure --enable-gcc-warnings=error
+  - make -j$(nproc) -k check V=1 VERBOSE=t
 
 Debian10:
   image: debian:buster
@@ -454,8 +464,8 @@ Debian10:
   - cd `ls -d libidn2-* | grep -v tar.gz`
   - mkdir b
   - cd b
-  - ../configure --enable-gcc-warnings
-  - make check V=1 VERBOSE=t
+  - ../configure --enable-gcc-warnings=error
+  - make -j$(nproc) -k check V=1 VERBOSE=t
 
 Debian-testing:
   image: debian:testing
@@ -469,14 +479,14 @@ Debian-testing:
   - cd `ls -d libidn2-* | grep -v tar.gz`
   - mkdir b
   - cd b
-  - ../configure --enable-gcc-warnings
+  - ../configure --enable-gcc-warnings=error
   - grep am_cv_func_iconv_summary config.log
   - cd ..
   - apt-get install -y -qq autoconf autopoint libtool gtk-doc-tools
   - AUTOPOINT=true autoreconf -fvi
-  - ./configure --enable-gcc-warnings
+  - ./configure --enable-gcc-warnings=error
   - grep am_cv_func_iconv_summary config.log
-  - make check V=1 VERBOSE=t
+  - make -j$(nproc) -k check V=1 VERBOSE=t
 
 Alpine:
   image: alpine:latest
@@ -486,11 +496,13 @@ Alpine:
   - echo "ipv6" >> /etc/modules
   - apk update
   - apk add build-base
+  variables:
+    WERROR_CFLAGS: "-Wno-error=unused-value -Wno-error=format-nonliteral"
   script:
   - tar xfz libidn2-*.tar.gz
   - cd `ls -d libidn2-* | grep -v tar.gz`
-  - ./configure --enable-gcc-warnings
-  - make check V=1 VERBOSE=t
+  - ./configure --enable-gcc-warnings=error
+  - make -j$(nproc) -k check V=1 VERBOSE=t
 
 ArchLinux:
   image: archlinux:latest
@@ -503,8 +515,8 @@ ArchLinux:
   - cd `ls -d libidn2-* | grep -v tar.gz`
   - mkdir b
   - cd b
-  - ../configure --enable-gcc-warnings
-  - make check V=1 VERBOSE=t
+  - ../configure --enable-gcc-warnings=error
+  - make -j$(nproc) -k check V=1 VERBOSE=t
 
 CentOS7:
   image: centos:7
@@ -515,8 +527,8 @@ CentOS7:
   script:
   - tar xfa libidn2-*.tar.gz
   - cd `ls -d libidn2-* | grep -v tar.gz`
-  - ./configure --enable-gcc-warnings
-  - make check V=1 VERBOSE=t
+  - ./configure --enable-gcc-warnings=error
+  - make -j$(nproc) -k check V=1 VERBOSE=t
 
 AlmaLinux8:
   image: almalinux:8
@@ -527,8 +539,8 @@ AlmaLinux8:
   script:
   - tar xfa libidn2-*.tar.gz
   - cd `ls -d libidn2-* | grep -v tar.gz`
-  - ./configure --enable-gcc-warnings
-  - make check V=1 VERBOSE=t
+  - ./configure --enable-gcc-warnings=error
+  - make -j$(nproc) -k check V=1 VERBOSE=t
 
 RockyLinux9-ppc64:
   rules:
@@ -543,7 +555,7 @@ RockyLinux9-ppc64:
   script:
   - tar xfa libidn2-*.tar.gz
   - cd `ls -d libidn2-* | grep -v tar.gz`
-  - time ./configure --enable-gcc-warnings
+  - time ./configure --enable-gcc-warnings=error
   - time make -j$(nproc) check V=1 VERBOSE=t
 
 Ubuntu14.04:
@@ -556,8 +568,8 @@ Ubuntu14.04:
   script:
   - tar xfa libidn2-*.tar.gz
   - cd `ls -d libidn2-* | grep -v tar.gz`
-  - ./configure --enable-gcc-warnings
-  - make check V=1 VERBOSE=t
+  - ./configure --enable-gcc-warnings=error
+  - make -j$(nproc) -k check V=1 VERBOSE=t
 
 Trisquel11:
   image: kpengboy/trisquel:11.0
@@ -569,8 +581,8 @@ Trisquel11:
   script:
   - tar xfa libidn2-*.tar.gz
   - cd `ls -d libidn2-* | grep -v tar.gz`
-  - ./configure --enable-gcc-warnings
-  - make check V=1 VERBOSE=t
+  - ./configure --enable-gcc-warnings=error
+  - make -j$(nproc) -k check V=1 VERBOSE=t
 
 Ubuntu-rolling:
   image: ubuntu:rolling
@@ -582,12 +594,12 @@ Ubuntu-rolling:
   script:
   - tar xfa libidn2-*.tar.gz
   - cd `ls -d libidn2-* | grep -v tar.gz`
-  - ./configure --enable-gcc-warnings
-  - make check V=1 VERBOSE=t
-  - make distcheck
+  - ./configure --enable-gcc-warnings=error
+  - make -j$(nproc) -k check V=1 VERBOSE=t
+  - make -j$(nproc) -k distcheck
   # check if essential files are accidentally cleaned
   - make clean
-  - make
+  - make -j$(nproc) -k
 
 armcross:
   image: debian:latest
@@ -602,11 +614,11 @@ armcross:
   - cd `ls -d libidn2-* | grep -v tar.gz`
   - mkdir b
   - cd b
-  - ../configure --host=arm-linux-gnueabi --enable-gcc-warnings
-  - make V=1
+  - ../configure --host=arm-linux-gnueabi --enable-gcc-warnings=error
+  - make -j$(nproc) -k V=1
   - arm-linux-gnueabi-readelf -h lib/.libs/libidn2.so
   - arm-linux-gnueabi-readelf -h src/.libs/idn2
-  - make check VERBOSE=t
+  - make -j$(nproc) -k check VERBOSE=t
 
 Mingw32:
   image: debian:latest
@@ -617,13 +629,15 @@ Mingw32:
   - apt-get update -qq
   - apt-get install -y -qq make mingw-w64 wine wine32 libwine libwine:i386 binfmt-support wine-binfmt
   - update-binfmts --enable wine
+  variables:
+    WERROR_CFLAGS: "-Wno-error=unused-value -Wno-error=format-nonliteral"
   script:
   - tar xfz libidn2-*.tar.gz
   - cd `ls -d libidn2-* | grep -v tar.gz`
   - mkdir b
   - cd b
-  - ../configure --host=i686-w64-mingw32 CC='i686-w64-mingw32-gcc -static-libgcc' --enable-gcc-warnings
-  - make check V=1 VERBOSE=t
+  - ../configure --host=i686-w64-mingw32 CC='i686-w64-mingw32-gcc -static-libgcc' --enable-gcc-warnings=error
+  - make -j$(nproc) -k check V=1 VERBOSE=t
 
 Mingw64:
   image: debian:latest
@@ -634,13 +648,15 @@ Mingw64:
   - apt-get update -qq
   - apt-get install -y -qq make mingw-w64 wine wine32 wine64 binfmt-support wine-binfmt
   - update-binfmts --enable wine
+  variables:
+    WERROR_CFLAGS: "-Wno-error=unused-value -Wno-error=format-nonliteral"
   script:
   - tar xfz libidn2-*.tar.gz
   - cd `ls -d libidn2-* | grep -v tar.gz`
   - mkdir b
   - cd b
-  - ../configure --host=x86_64-w64-mingw32 --enable-gcc-warnings
-  - make check V=1 VERBOSE=t
+  - ../configure --host=x86_64-w64-mingw32 --enable-gcc-warnings=error
+  - make -j$(nproc) -k check V=1 VERBOSE=t
 
 .pages:
   stage: build

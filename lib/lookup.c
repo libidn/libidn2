@@ -551,7 +551,7 @@ idn2_lookup_u8 (const uint8_t *src, uint8_t **lookupname, int flags)
 
   if (!(flags & IDN2_NO_TR46))
     {
-      uint8_t *out;
+      uint8_t *out = NULL;
 
       rc = _tr46 (src, &out, flags);
       if (rc != IDN2_OK)

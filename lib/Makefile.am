@@ -13,12 +13,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-AM_CPPFLAGS =
-
-AM_CPPFLAGS += -DIDN2_BUILDING -DSRCDIR=\"$(srcdir)\"
+AM_CPPFLAGS = -DIDN2_BUILDING -DSRCDIR=\"$(srcdir)\"
 AM_CPPFLAGS += -I$(top_builddir)/gl -I$(top_srcdir)/gl
 AM_CPPFLAGS += -I$(top_srcdir)/unistring/ -I$(top_builddir)/unistring/
-AM_CFLAGS = $(WARN_CFLAGS)
+
+AM_CFLAGS = $(WERROR_CFLAGS) $(WARN_CFLAGS)
 AM_CFLAGS += $(CFLAG_VISIBILITY) $(CODE_COVERAGE_CFLAGS)
 
 lib_LTLIBRARIES = libidn2.la
