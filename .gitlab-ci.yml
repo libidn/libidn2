@@ -13,10 +13,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-stages:
-  - quick
-  - build
-  - test
+workflow:
+  rules:
+  - if: $CI_COMMIT_BRANCH
 
 # The "quick" stage should complete as quickly as possible but still
 # excercise some useful internal self-tests.  Primarily this is
@@ -32,6 +31,11 @@ stages:
 # The "test" stage attempt to build the tarball on all platforms we
 # support building the project on, with as many combinations of
 # pre-depencencies as useful.
+
+stages:
+  - quick
+  - build
+  - test
 
 default:
   interruptible: true
@@ -103,15 +107,22 @@ B-clang:
   - time make check VERBOSE=t
   - git diff --exit-code # nothing should change version controlled files
 
-B-Alpine:
-  image: $CI_REGISTRY/libidn/build-images:libidn2-Alpine
+B-Alpine-arm64:
+  rules:
+  - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  - when: manual
+  image: alpine:latest
+  tags: [ arm64 ]
   stage: build
+  before_script:
+  - apk update # XXX coreutils only needed for /usr/bin/join used by gnulib-tool
+  - apk add gcc make libc-dev git autoconf automake libtool gettext-dev gperf gengetopt patch coreutils
   script:
   - time ./bootstrap --skip-po
-  - time ./configure --enable-gcc-warnings --disable-doc
-  - time make V=1
-  - time make syntax-check
-  - time make check VERBOSE=t
+  - time ./configure --disable-doc --enable-gcc-warnings
+  - time make -j$(nproc) syntax-check
+  - time make -j$(nproc) V=1
+  - time make -j$(nproc) check V=1 VERBOSE=t
   - git diff --exit-code # nothing should change version controlled files
 
 B-AlmaLinux8:
@@ -247,12 +258,11 @@ include:
 
 # https://www.synopsys.com/blogs/software-security/integrating-coverity-scan-with-gitlab-ci/
 Coverity:
+  rules:
+  - if: $CI_COMMIT_REF_PROTECTED == "true"
+  - when: manual
   image: $CI_REGISTRY/libidn/build-images:libidn2-mini-Debian-testing
   stage: build
-  only:
-    refs:
-      - master
-      - coverity
   allow_failure: true
   before_script:
   - apt-get update -qq -y
@@ -278,6 +288,9 @@ Coverity:
 
 # https://docs.gitlab.com/ee/ci/runners/saas/macos/environment.html
 B-macOS14Xcode15:
+  rules:
+  - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  - when: manual
   stage: build
   image: macos-14-xcode-15
   tags: [ saas-macos-medium-m1 ]
@@ -296,6 +309,9 @@ B-macOS14Xcode15:
   - git diff --exit-code # nothing should change version controlled files
 
 macOS13Xcode14:
+  rules:
+  - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  - when: manual
   image: macos-13-xcode-14
   tags: [ saas-macos-medium-m1 ]
   stage: test
@@ -321,7 +337,9 @@ B-MinGW64:
 
 # https://docs.gitlab.com/ee/ci/runners/saas/windows_saas_runner.html
 B-Windows-UCRT64:
-  when: manual
+  rules:
+  - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  - when: manual
   tags: [ shared-windows, windows-1809 ]
   stage: build
   script: # https://www.msys2.org/docs/ci/#other-systems
@@ -334,7 +352,7 @@ B-Windows-UCRT64:
   - C:\msys64\usr\bin\bash -lc 'pacman --noconfirm -Syuu'
   - C:\msys64\usr\bin\bash -lc 'pacman --noconfirm -Syuu'
   - |
-    C:\msys64\usr\bin\bash -lc '
+    C:\msys64\usr\bin\bash -lcx '
     pacman --noconfirm -Syu git autoconf automake libtool make mingw-w64-ucrt-x86_64-gcc help2man gengetopt gperf patch gettext-devel texinfo
     # https://docs.github.com/en/get-started/getting-started-with-git/configuring-git-to-handle-line-endings
     # ' is already registered with AC_CONFIG_FILES.
@@ -347,10 +365,12 @@ B-Windows-UCRT64:
     file configure.ac
     ./bootstrap --skip-po
     ./configure --enable-gcc-warnings
-    make V=1 -k check VERBOSE=t'
+    make -j$(nproc) V=1 -k check VERBOSE=t'
 
 Windows-MSYS:
-  when: manual
+  rules:
+  - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  - when: manual
   tags: [ shared-windows, windows-1809 ]
   stage: test
   needs: [B-Trisquel11]
@@ -369,10 +389,12 @@ Windows-MSYS:
     tar xfa libidn2-*.tar.gz
     cd `ls -d libidn2-* | grep -v tar.gz`
     ./configure --enable-gcc-warnings
-    make V=1 -k check VERBOSE=t'
+    make -j$(nproc) V=1 -k check VERBOSE=t'
 
 Windows-MINGW64:
-  when: manual
+  rules:
+  - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  - when: manual
   tags: [ shared-windows, windows-1809 ]
   stage: test
   needs: [B-Trisquel11]
@@ -391,9 +413,9 @@ Windows-MINGW64:
     tar xfa libidn2-*.tar.gz
     cd `ls -d libidn2-* | grep -v tar.gz`
     ./configure --enable-gcc-warnings
-    make V=1 -k check VERBOSE=t'
+    make -j$(nproc) V=1 -k check VERBOSE=t'
 
-T-Debian5:
+Debian5:
   image: debian/eol:lenny
   stage: test
   needs: [B-Trisquel11]
@@ -406,7 +428,7 @@ T-Debian5:
   - ./configure --enable-gcc-warnings
   - make check V=1 VERBOSE=t
 
-T-Debian9:
+Debian9:
   image: debian:stretch
   stage: test
   needs: [B-Trisquel11]
@@ -422,7 +444,7 @@ T-Debian9:
   - ../configure --enable-gcc-warnings
   - make check V=1 VERBOSE=t
 
-T-Debian10:
+Debian10:
   image: debian:buster
   stage: test
   needs: [B-Trisquel11]
@@ -437,7 +459,7 @@ T-Debian10:
   - ../configure --enable-gcc-warnings
   - make check V=1 VERBOSE=t
 
-T-Debian-testing:
+Debian-testing:
   image: debian:testing
   stage: test
   needs: [B-Trisquel11]
@@ -458,7 +480,7 @@ T-Debian-testing:
   - grep am_cv_func_iconv_summary config.log
   - make check V=1 VERBOSE=t
 
-T-Alpine:
+Alpine:
   image: alpine:latest
   stage: test
   needs: [B-Debian-testing]
@@ -472,7 +494,7 @@ T-Alpine:
   - ./configure --enable-gcc-warnings
   - make check V=1 VERBOSE=t
 
-T-ArchLinux:
+ArchLinux:
   image: archlinux:latest
   stage: test
   needs: [B-Trisquel11]
@@ -486,7 +508,7 @@ T-ArchLinux:
   - ../configure --enable-gcc-warnings
   - make check V=1 VERBOSE=t
 
-T-CentOS7:
+CentOS7:
   image: centos:7
   stage: test
   needs: [B-Trisquel11]
@@ -498,7 +520,7 @@ T-CentOS7:
   - ./configure --enable-gcc-warnings
   - make check V=1 VERBOSE=t
 
-T-AlmaLinux8:
+AlmaLinux8:
   image: almalinux:8
   stage: test
   needs: [B-Trisquel11]
@@ -510,7 +532,23 @@ T-AlmaLinux8:
   - ./configure --enable-gcc-warnings
   - make check V=1 VERBOSE=t
 
-T-Ubuntu14.04:
+RockyLinux9-ppc64:
+  rules:
+  - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  - when: manual
+  image: rockylinux:9
+  tags: [ ppc64 ]
+  stage: test
+  needs: [B-Trisquel11]
+  before_script:
+  - dnf --enablerepo=crb -y install make gcc diffutils valgrind libunistring-devel
+  script:
+  - tar xfa libidn2-*.tar.gz
+  - cd `ls -d libidn2-* | grep -v tar.gz`
+  - time ./configure --enable-gcc-warnings
+  - time make -j$(nproc) check V=1 VERBOSE=t
+
+Ubuntu14.04:
   image: ubuntu:14.04
   stage: test
   needs: [B-Trisquel11]
@@ -523,7 +561,7 @@ T-Ubuntu14.04:
   - ./configure --enable-gcc-warnings
   - make check V=1 VERBOSE=t
 
-T-Trisquel11:
+Trisquel11:
   image: kpengboy/trisquel:11.0
   stage: test
   needs: [B-Trisquel11]
@@ -536,7 +574,7 @@ T-Trisquel11:
   - ./configure --enable-gcc-warnings
   - make check V=1 VERBOSE=t
 
-T-Ubuntu-rolling:
+Ubuntu-rolling:
   image: ubuntu:rolling
   stage: test
   needs: [B-Trisquel11]
@@ -553,7 +591,7 @@ T-Ubuntu-rolling:
   - make clean
   - make
 
-T-armcross:
+armcross:
   image: debian:latest
   stage: test
   needs: [B-Trisquel11]
@@ -572,7 +610,7 @@ T-armcross:
   - arm-linux-gnueabi-readelf -h src/.libs/idn2
   - make check VERBOSE=t
 
-T-Mingw32:
+Mingw32:
   image: debian:latest
   stage: test
   needs: [B-Trisquel11]
@@ -589,7 +627,7 @@ T-Mingw32:
   - ../configure --host=i686-w64-mingw32 CC='i686-w64-mingw32-gcc -static-libgcc' --enable-gcc-warnings
   - make check V=1 VERBOSE=t
 
-T-Mingw64:
+Mingw64:
   image: debian:latest
   stage: test
   needs: [B-Trisquel11]
@@ -638,10 +676,10 @@ T-Mingw64:
 
 pages:
   extends: .pages
-  only:
-    - master
+  rules:
+  - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 pages-test:
   extends: .pages
-  except:
-    - master
+  rules:
+  - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
