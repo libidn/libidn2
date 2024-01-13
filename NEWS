@@ -6,6 +6,22 @@ Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
 Reported by Helmut Grohne in
 <https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=999510>.
 
+** Un-deprecate idn2_to_ascii_4i and make it NUL terminate output.
+The API idn2_to_ascii_4i was deprecated in version 2.1.1 released in
+2019-02-08.  In that release, the API was also modified to not
+NUL-terminate the output.  That is contrary to the old libidn2
+behaviour, the behaviour of libidn's API idna_to_ascii_4i, and the API
+documentation for the function.  Since we are not likely to ever break
+backwards API/ABI compatibility in libidn2, and the deprecated gaurds
+leads to some trouble (see report in
+<https://gitlab.com/libidn/libidn2/-/merge_requests/93>) we decided to
+un-deprecate this function, as supporting it is not costly and the
+majority of code that cares about conformance has likely been
+modified.  This will fix the error code and NUL termination report by
+Yegor Bychin in <https://gitlab.com/libidn/libidn2/-/issues/100>.  We
+still encourage you to use the replacement API/ABI idn2_to_ascii_4i2
+instead, when appropriate.
+
 ** Various minor build fixes and translation updates.
 
 * Noteworthy changes in release 2.3.4 (2022-10-23) [stable]

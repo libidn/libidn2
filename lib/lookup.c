@@ -687,10 +687,9 @@ idn2_lookup_ul (const char *src, char **lookupname, int flags)
  * idn2_to_ascii_4i:
  * @input: zero terminated input Unicode (UCS-4) string.
  * @inlen: number of elements in @input.
- * @output: output zero terminated string that must have room for at least 63 characters plus the terminating zero.
+ * @output: output zero terminated string that must have room for at
+ *       least 63 characters plus the terminating zero.
  * @flags: optional #idn2_flags to modify behaviour.
- *
- * THIS FUNCTION HAS BEEN DEPRECATED DUE TO A DESIGN FLAW. USE idn2_to_ascii_4i2() INSTEAD !
  *
  * The ToASCII operation takes a sequence of Unicode code points that make
  * up one domain label and transforms it into a sequence of code points in
@@ -715,11 +714,15 @@ idn2_lookup_ul (const char *src, char **lookupname, int flags)
  * recommended to call this function with the %IDN2_NONTRANSITIONAL
  * and the %IDN2_NFC_INPUT flags for compatibility with other software.
  *
- * Return value: Returns %IDN2_OK on success, or error code.
+ * Returns: On successful conversion %IDN2_OK is returned; if the
+ *   output label would have been too long %IDN2_TOO_BIG_LABEL is
+ *   returned, or another error code is returned.
  *
  * Since: 2.0.0
  *
- * Deprecated: 2.1.1: Use idn2_to_ascii_4i2().
+ * Warning: With version 2.1.1 until before version 2.3.5 this
+ * function was deprecated in favor idn2_to_ascii_4i2().  We still
+ * encourage you to use idn2_to_ascii_4i2() when appropriate.
  **/
 int
 idn2_to_ascii_4i (const uint32_t *input, size_t inlen, char *output,
@@ -740,10 +743,10 @@ idn2_to_ascii_4i (const uint32_t *input, size_t inlen, char *output,
     {
       size_t len = strlen (out);
 
-      if (len > 63)
+      if (len > IDN2_LABEL_MAX_LENGTH)
 	rc = IDN2_TOO_BIG_LABEL;
       else if (output)
-	memcpy (output, out, len);
+	strcpy (output, out);
 
       free (out);
     }
@@ -781,7 +784,9 @@ idn2_to_ascii_4i (const uint32_t *input, size_t inlen, char *output,
  * recommended to call this function with the %IDN2_NONTRANSITIONAL
  * and the %IDN2_NFC_INPUT flags for compatibility with other software.
  *
- * Return value: Returns %IDN2_OK on success, or error code.
+ * Returns: On successful conversion %IDN2_OK is returned; if the
+ *   output label would have been too long %IDN2_TOO_BIG_LABEL is
+ *   returned, or another error code is returned.
  *
  * Since: 2.1.1
  **/

@@ -98,19 +98,6 @@ extern "C"
 # endif
 
 /**
- * G_GNUC_DEPRECATED
- *
- * Function attribute: Function is deprecated.
- */
-# if GCC_VERSION_AT_LEAST(3,1)
-#  define G_GNUC_DEPRECATED __attribute__((deprecated))
-# elif defined(_MSC_VER)
-#  define G_GNUC_DEPRECATED __declspec(deprecated)
-# else
-#  define G_GNUC_DEPRECATED	/* empty */
-# endif
-
-/**
  * G_GNUC_UNUSED
  *
  * Parameter attribute: Parameter is not used.
@@ -305,9 +292,8 @@ extern "C"
 
 /* Auxiliary functions. */
 
-  extern _IDN2_API int
-    idn2_to_ascii_4i (const uint32_t * input, size_t inlen, char *output,
-		      int flags) G_GNUC_DEPRECATED;
+  extern _IDN2_API int idn2_to_ascii_4i (const uint32_t * input, size_t inlen,
+					 char *output, int flags);
   extern _IDN2_API int idn2_to_ascii_4i2 (const uint32_t * input,
 					  size_t inlen, char **output,
 					  int flags);
