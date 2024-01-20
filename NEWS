@@ -2,6 +2,25 @@ Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
 
 * Noteworthy changes in release ?.? (????-??-??) [?]
 
+** Declaration of future API/ABI backwards compatibility stability.
+GNU libc dlopen libidn2 and use the name libidn2.so.0 for this.  We
+believe that it will be too challenging to ever do hard ABI break that
+for normal libraries is justified to remove deprecated APIs.  Thus we
+decided that we will support the current ABI for a long time.  Of
+course, if really convincing arguments for doing a ABI break appears
+in the future we may re-consider, but take this as a declaration of
+intent of will and that future ABI breaks should be discussed and
+co-ordinated with the glibc team first.
+
+** Add public APIs for raw Punycode encoding/decoding.
+Normal applications rarely need this, but it cleans up the code and
+allow for external testing of the APIs, and resolve
+<https://gitlab.com/libidn/libidn2/-/issues/80> due to earlier use of
+weak symbols for internal symbols _idn2_punycode_encode and
+_idn2_punycode_decode.  We will support these internal symbols for
+backwards compatibility.  This allows a clean migration path for code
+that is still using the internal names.
+
 ** Bump required gettext version to 0.19.8 for musl-libc.
 Reported by Helmut Grohne in
 <https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=999510>.
@@ -30,6 +49,10 @@ and sensible -Wno-error='s.  Based on gnulib's manywarnings, see
 <https://www.gnu.org/software/gnulib//manual/html_node/manywarnings.html>.
 
 ** Various minor build fixes and translation updates.
+
+** API and ABI is backwards compatible with the previous version.
+idn2_punycode_decode: ADD.
+idn2_punycode_encode: ADD.
 
 * Noteworthy changes in release 2.3.4 (2022-10-23) [stable]
 

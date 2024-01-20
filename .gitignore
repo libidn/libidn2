@@ -138,6 +138,7 @@
 /tests/IdnaTest.inc
 /tests/repro-to-ascii-8z
 /tests/repro-to-unicode-8z8z
+/tests/test-compat-punycode
 /tests/test-glibc
 /tests/test-locale
 /tests/test-lookup
@@ -149,3 +150,4 @@
 /unistring/
 Makefile
 Makefile.in
+TAGS

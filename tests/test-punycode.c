@@ -17,7 +17,9 @@
 
 /* Based on GNU Libidn tst_punycode.c */
 
-#include <config.h>
+#ifdef HAVE_CONFIG_H
+# include <config.h>
+#endif
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,7 +27,6 @@
 #include <string.h>
 
 #include <idn2.h>
-#include "punycode.h"
 
 struct punycode
 {
@@ -200,8 +201,6 @@ ucs4print (const uint32_t *str, size_t len)
   puts ("");
 }
 
-#include "punycode.h"
-
 int
 main (void)
 {
@@ -230,8 +229,8 @@ main (void)
 	}
 
       outlen = BUFSIZ;
-      rc = _idn2_punycode_encode_internal (punycode[i].inlen, punycode[i].in,
-					   &outlen, p);
+      rc = idn2_punycode_encode (punycode[i].in, punycode[i].inlen,
+				 p, &outlen);
       if (rc != punycode[i].rc)
 	{
 	  fail ("punycode_encode() entry %d failed: %d\n", (int) i, rc);
@@ -272,8 +271,8 @@ main (void)
 	}
 
       outlen = BUFSIZ;
-      rc = _idn2_punycode_decode_internal (strlen (punycode[i].out),
-					   punycode[i].out, &outlen, q);
+      rc = idn2_punycode_decode (punycode[i].out, strlen (punycode[i].out),
+				 q, &outlen);
       if (rc != punycode[i].rc)
 	{
 	  fail ("punycode() entry %d failed: %d\n", (int) i, rc);

@@ -53,3 +53,9 @@ IDN2_2.1.0 {
   global:
     idn2_to_ascii_4i2;
 } IDN2_0.0.0;
+
+IDN2_2.3.5 {
+  global:
+    idn2_punycode_encode;
+    idn2_punycode_decode;
+} IDN2_2.1.0;

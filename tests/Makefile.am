@@ -27,7 +27,7 @@ LDADD += ../unistring/libunistring.la $(LTLIBUNISTRING)
 LDADD += ../gl/libgnu.la
 
 ctests = test-version test-strerror test-locale test-tounicode
-ctests += test-punycode test-lookup test-register
+ctests += test-punycode test-compat-punycode test-lookup test-register
 if TEST_GLIBC
 ctests += test-glibc
 endif
@@ -42,11 +42,8 @@ SH_LOG_COMPILER= $(SHELL) -x
 
 AM_TESTS_ENVIRONMENT = EXEEXT="$(EXEEXT)" LOG_VALGRIND="$(LOG_VALGRIND)" LIBTOOL="$(LIBTOOL)"
 
-test_punycode_LDADD = ../lib/puny_decode.o ../lib/puny_encode.o $(LDADD) $(CODE_COVERAGE_LIBS)
-
 IDNA_TXT = IdnaTest.txt
 IDNA_INC = IdnaTest.inc
-test_lookup_SOURCES = test-lookup.c
 
 BUILT_SOURCES = $(IDNA_TXT) $(IDNA_INC)
 MAINTAINERCLEANFILES = $(BUILT_SOURCES)

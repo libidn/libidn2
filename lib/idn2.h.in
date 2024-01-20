@@ -304,9 +304,9 @@ extern "C"
   extern _IDN2_API int idn2_to_ascii_lz (const char *input, char **output,
 					 int flags);
 
-  extern _IDN2_API int
-    idn2_to_unicode_8z4z (const char *input, uint32_t ** output,
-			  int flags G_GNUC_UNUSED);
+  extern _IDN2_API int idn2_to_unicode_8z4z (const char *input,
+					     uint32_t ** output,
+					     int flags G_GNUC_UNUSED);
   extern _IDN2_API int idn2_to_unicode_4z4z (const uint32_t * input,
 					     uint32_t ** output, int flags);
   extern _IDN2_API int idn2_to_unicode_44i (const uint32_t * in, size_t inlen,
@@ -318,6 +318,15 @@ extern "C"
 					     int flags);
   extern _IDN2_API int idn2_to_unicode_lzlz (const char *input, char **output,
 					     int flags);
+
+  extern _IDN2_API int idn2_punycode_encode (const uint32_t * input,
+					     size_t input_length,
+					     char *output,
+					     size_t *output_length);
+  extern _IDN2_API int idn2_punycode_decode (const char *input,
+					     size_t input_length,
+					     uint32_t * output,
+					     size_t *output_length);
 
   extern _IDN2_API const char *idn2_strerror (int rc)
     G_GNUC_IDN2_ATTRIBUTE_CONST;

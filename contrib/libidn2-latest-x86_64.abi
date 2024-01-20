@@ -4,12 +4,14 @@
     <dependency name='libc.so.6'/>
   </elf-needed>
   <elf-function-symbols>
-    <elf-symbol name='_idn2_punycode_decode' version='IDN2_0.0.0' is-default-version='no' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
-    <elf-symbol name='_idn2_punycode_encode' version='IDN2_0.0.0' is-default-version='no' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='_idn2_punycode_decode' version='IDN2_0.0.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='_idn2_punycode_encode' version='IDN2_0.0.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
     <elf-symbol name='idn2_check_version' version='IDN2_0.0.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
     <elf-symbol name='idn2_free' version='IDN2_0.0.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
     <elf-symbol name='idn2_lookup_u8' version='IDN2_0.0.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
     <elf-symbol name='idn2_lookup_ul' version='IDN2_0.0.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='idn2_punycode_decode' version='IDN2_2.3.5' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='idn2_punycode_encode' version='IDN2_2.3.5' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
     <elf-symbol name='idn2_register_u8' version='IDN2_0.0.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
     <elf-symbol name='idn2_register_ul' version='IDN2_0.0.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
     <elf-symbol name='idn2_strerror' version='IDN2_0.0.0' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
@@ -581,6 +583,20 @@
       <parameter type-id='type-id-51'/>
       <return type-id='type-id-4'/>
     </function-decl>
+    <function-decl name='idn2_punycode_encode' mangled-name='idn2_punycode_encode' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='idn2_punycode_encode@@IDN2_2.3.5'>
+      <parameter type-id='type-id-51'/>
+      <parameter type-id='type-id-4'/>
+      <parameter type-id='type-id-5'/>
+      <parameter type-id='type-id-54'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='idn2_punycode_decode' mangled-name='idn2_punycode_decode' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='idn2_punycode_decode@@IDN2_2.3.5'>
+      <parameter type-id='type-id-3'/>
+      <parameter type-id='type-id-4'/>
+      <parameter type-id='type-id-52'/>
+      <parameter type-id='type-id-54'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
     <function-decl name='_idn2_u8_to_u32_nfc' visibility='default' binding='global' size-in-bits='64'>
       <parameter type-id='type-id-56'/>
       <parameter type-id='type-id-4'/>
@@ -644,20 +660,6 @@
       <parameter type-id='type-id-2' name='flags'/>
       <return type-id='type-id-2'/>
     </function-decl>
-    <function-decl name='_idn2_punycode_encode_internal' mangled-name='_idn2_punycode_encode' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='_idn2_punycode_encode@IDN2_0.0.0'>
-      <parameter type-id='type-id-4'/>
-      <parameter type-id='type-id-51'/>
-      <parameter type-id='type-id-54'/>
-      <parameter type-id='type-id-5'/>
-      <return type-id='type-id-2'/>
-    </function-decl>
-    <function-decl name='_idn2_punycode_decode_internal' mangled-name='_idn2_punycode_decode' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='_idn2_punycode_decode@IDN2_0.0.0'>
-      <parameter type-id='type-id-4'/>
-      <parameter type-id='type-id-3'/>
-      <parameter type-id='type-id-54'/>
-      <parameter type-id='type-id-52'/>
-      <return type-id='type-id-2'/>
-    </function-decl>
     <function-decl name='get_map_data' visibility='default' binding='global' size-in-bits='64'>
       <parameter type-id='type-id-52'/>
       <parameter type-id='type-id-83'/>
@@ -677,6 +679,22 @@
       <parameter type-id='type-id-3'/>
       <parameter type-id='type-id-57'/>
       <return type-id='type-id-90'/>
+    </function-decl>
+  </abi-instr>
+  <abi-instr address-size='64' path='punycode.c' comp-dir-path='/home/jas/src/libidn2/lib' language='LANG_C11'>
+    <function-decl name='_idn2_punycode_decode' mangled-name='_idn2_punycode_decode' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='_idn2_punycode_decode@@IDN2_0.0.0'>
+      <parameter type-id='type-id-4' name='input_length'/>
+      <parameter type-id='type-id-3' name='input'/>
+      <parameter type-id='type-id-54' name='output_length'/>
+      <parameter type-id='type-id-52' name='output'/>
+      <return type-id='type-id-2'/>
+    </function-decl>
+    <function-decl name='_idn2_punycode_encode' mangled-name='_idn2_punycode_encode' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='_idn2_punycode_encode@@IDN2_0.0.0'>
+      <parameter type-id='type-id-4' name='input_length'/>
+      <parameter type-id='type-id-51' name='input'/>
+      <parameter type-id='type-id-54' name='output_length'/>
+      <parameter type-id='type-id-5' name='output'/>
+      <return type-id='type-id-2'/>
     </function-decl>
   </abi-instr>
   <abi-instr address-size='64' path='register.c' comp-dir-path='/home/jas/src/libidn2/lib' language='LANG_C11'>

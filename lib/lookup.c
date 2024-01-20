@@ -34,8 +34,6 @@
 #include <errno.h>		/* errno */
 #include <stdlib.h>		/* malloc, free */
 
-#include "punycode.h"
-
 #include <unitypes.h>
 #include <uniconv.h>		/* u8_strconv_from_locale */
 #include <uninorm.h>		/* u32_normalize */
@@ -149,9 +147,8 @@ label (const uint8_t *src, size_t srclen, uint8_t *dst, size_t *dstlen,
 	     entirely in lowercase (converting it to lowercase if
 	     necessary), and apply the tests of Section 5.4 and the
 	     conversion of Section 5.5 to that form. */
-	  rc =
-	    _idn2_punycode_decode_internal (srclen - 4, (char *) src + 4,
-					    &label32_len, label_u32);
+	  rc = idn2_punycode_decode ((char *) src + 4, srclen - 4,
+				     label_u32, &label32_len);
 	  if (rc)
 	    return rc;
 
@@ -212,7 +209,7 @@ label (const uint8_t *src, size_t srclen, uint8_t *dst, size_t *dstlen,
   dst[3] = '-';
 
   tmpl = *dstlen - 4;
-  rc = _idn2_punycode_encode_internal (plen, p, &tmpl, (char *) dst + 4);
+  rc = idn2_punycode_encode (p, plen, (char *) dst + 4, &tmpl);
   if (rc != IDN2_OK)
     goto out;
 
@@ -230,9 +227,8 @@ label (const uint8_t *src, size_t srclen, uint8_t *dst, size_t *dstlen,
     }
   else if (!(flags & IDN2_NO_ALABEL_ROUNDTRIP))
     {
-      rc =
-	_idn2_punycode_decode_internal (*dstlen - 4, (char *) dst + 4,
-					&label32_len, label_u32);
+      rc = idn2_punycode_decode ((char *) dst + 4, *dstlen - 4,
+				 label_u32, &label32_len);
       if (rc)
 	{
 	  rc = IDN2_ALABEL_ROUNDTRIP_FAILED;
@@ -432,8 +428,8 @@ _tr46 (const uint8_t *domain_u8, uint8_t **out, int flags)
 	      return IDN2_ENCODING_ERROR;
 	    }
 
-	  rc = _idn2_punycode_decode_internal (ace_len, (char *) ace,
-					       &name_len, name_u32);
+	  rc = idn2_punycode_decode ((char *) ace, ace_len,
+				     name_u32, &name_len);
 
 	  free (ace);
 
@@ -714,15 +710,15 @@ idn2_lookup_ul (const char *src, char **lookupname, int flags)
  * recommended to call this function with the %IDN2_NONTRANSITIONAL
  * and the %IDN2_NFC_INPUT flags for compatibility with other software.
  *
+ * Warning: With version 2.1.1 until before version 2.3.5 this
+ * function was deprecated in favor idn2_to_ascii_4i2().  We still
+ * encourage you to use idn2_to_ascii_4i2() when appropriate.
+ *
  * Returns: On successful conversion %IDN2_OK is returned; if the
  *   output label would have been too long %IDN2_TOO_BIG_LABEL is
  *   returned, or another error code is returned.
  *
  * Since: 2.0.0
- *
- * Warning: With version 2.1.1 until before version 2.3.5 this
- * function was deprecated in favor idn2_to_ascii_4i2().  We still
- * encourage you to use idn2_to_ascii_4i2() when appropriate.
  **/
 int
 idn2_to_ascii_4i (const uint32_t *input, size_t inlen, char *output,

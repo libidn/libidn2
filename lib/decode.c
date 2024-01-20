@@ -33,8 +33,6 @@
 #include <errno.h>		/* errno */
 #include <stdlib.h>		/* malloc, free */
 
-#include "punycode.h"
-
 #include <unitypes.h>
 #include <uniconv.h>		/* u8_strconv_from_locale */
 #include <unistr.h>		/* u8_to_u32, u32_cpy, ... */
@@ -92,8 +90,8 @@ idn2_to_unicode_8z4z (const char *input, uint32_t **output,
 	{
 	  s += 4;
 
-	  rc = _idn2_punycode_decode_internal (e - s, (char *) s,
-					       &label_len, label_u32);
+	  rc = idn2_punycode_decode ((char *) s, e - s,
+				     label_u32, &label_len);
 	  if (rc)
 	    return rc;
 
