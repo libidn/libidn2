@@ -16,6 +16,7 @@
 /GNUmakefile
 /INSTALL
 /README-release
+/TAGS
 /aclocal.m4
 /aminclude_static.am
 /autom4te.cache/
@@ -138,6 +139,8 @@
 /tests/IdnaTest.inc
 /tests/repro-to-ascii-8z
 /tests/repro-to-unicode-8z8z
+/tests/test-IdnaTest-inc
+/tests/test-IdnaTest-txt
 /tests/test-compat-punycode
 /tests/test-glibc
 /tests/test-locale

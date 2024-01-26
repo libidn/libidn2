@@ -20,7 +20,9 @@
    changes are benign and will not lead to glibc test suite failures.
    Thanks.  */
 
-#include <config.h>
+#ifdef HAVE_CONFIG_H
+# include <config.h>
+#endif
 
 #include <locale.h>
 #include <stddef.h>

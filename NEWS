@@ -48,6 +48,27 @@ errors using ./configure --enable-gcc-warnings=error to add -Werror
 and sensible -Wno-error='s.  Based on gnulib's manywarnings, see
 <https://www.gnu.org/software/gnulib//manual/html_node/manywarnings.html>.
 
+** tests: Added script tests/standalone.sh suitable for integrators.
+The main purpose is to test a system-installed libidn2 library and
+idn2 tool, suitable for distributor checking (a'la Debian's
+autopkgtest/debci).  It may also be used to test a newly built libidn2
+outside the usual 'make check' infrastructure.  To check that your
+system libidn2 library and idn2 tool is working, invoke the script
+with `srcdir` as an environment variable indicating where it can be
+find the source code for libidn2's tests/ directory (it will use the
+directory name where the script is by default):
+
+tests/standalone.sh
+
+If your system libidn2 is too old to pass certain tests, disable them
+using STANDALONE_DISABLE like this:
+
+STANDALONE_DISABLE='*punycode*' tests/standalone.sh
+
+See the script for more parameters.  If the libidn2 under testing is
+too old and has known bugs, that should cause tests to fail, which is
+intentional.
+
 ** Various minor build fixes and translation updates.
 
 ** API and ABI is backwards compatible with the previous version.

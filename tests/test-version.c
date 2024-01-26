@@ -52,6 +52,16 @@ main (void)
     }
   printf ("idn2_check_version (NULL): %s\n", check_version_null);
 
+#ifdef PACKAGE_VERSION
+  printf ("PACKAGE_VERSION %s\n", PACKAGE_VERSION);
+
+  if (!idn2_check_version (PACKAGE_VERSION))
+    {
+      printf ("FAIL: idn2_check_version (PACKAGE_VERSION)\n");
+      return EXIT_FAILURE;
+    }
+#endif
+
   j = snprintf (buf, sizeof buf, "%d.%d.%d", IDN2_VERSION_MAJOR,
 		IDN2_VERSION_MINOR, IDN2_VERSION_PATCH);
   if (j < 0 || j == sizeof buf)

@@ -73,9 +73,6 @@ static const struct idna idna[] = {
   {"\xe3\x8b\xbf", "xn--nnqt1l", IDN2_OK,
    IDN2_TRANSITIONAL | IDN2_USE_STD3_ASCII_RULES | IDN2_ALABEL_ROUNDTRIP},
 
-  /* UTC's test vectors. */
-#include "IdnaTest.inc"
-
   /* Start of contribution from "Abdulrahman I. ALGhadir" <aghadir@citc.gov.sa>. */
   {"\xd8\xa7\xd9\x84\xd9\x85\xd8\xb1\xd9\x83\xd8\xb2\x2d\xd8\xa7\xd9\x84\xd8\xb3\xd8\xb9\xd9\x88\xd8\xaf\xd9\x8a\x2d\xd9\x84\xd9\x85\xd8\xb9\xd9\x84\xd9\x88\xd9\x85\xd8\xa7\xd8\xaa\x2d\xd8\xa7\xd9\x84\xd8\xb4\xd8\xa8\xd9\x83\xd8\xa9", "xn------nzebbbijg6cvanqv7ec6ooadfebehlc1fg8c"},
   {"\xd8\xb5\xd8\xad\xd8\xa7\xd8\xb1\xd9\x89\x2d\xd9\x86\xd8\xaa",
@@ -903,72 +900,6 @@ static const struct idna idna[] = {
 static int ok = 0, failed = 0;
 static int break_on_error = 0;
 
-static const char *
-_nextField (char **line)
-{
-  char *s = *line, *e;
-
-  if (!*s)
-    return "";
-
-  if (!(e = strpbrk (s, ";#")))
-    {
-      e = *line += strlen (s);
-    }
-  else
-    {
-      *line = e + (*e == ';');
-      *e = 0;
-    }
-
-  // trim leading and trailing whitespace
-  while (isspace (*s))
-    s++;
-  while (e > s && isspace (e[-1]))
-    *--e = 0;
-
-  return s;
-}
-
-static int
-_scan_file (const char *fname, int (*scan) (char *))
-{
-  FILE *fp = fopen (fname, "r");
-  char *buf = NULL, *linep;
-  size_t bufsize = 0;
-  ssize_t buflen;
-  int ret = 0;
-
-  if (!fp)
-    {
-      fprintf (stderr, "Failed to open %s (%d)\n", fname, errno);
-      return -1;
-    }
-
-  while ((buflen = getline (&buf, &bufsize, fp)) >= 0)
-    {
-      linep = buf;
-
-      while (isspace (*linep))
-	linep++;		// ignore leading whitespace
-
-      // strip off \r\n
-      while (buflen > 0 && (buf[buflen] == '\n' || buf[buflen] == '\r'))
-	buf[--buflen] = 0;
-
-      if (!*linep || *linep == '#')
-	continue;		// skip empty lines and comments
-
-      if ((ret = scan (linep)))
-	break;
-    }
-
-  free (buf);
-  fclose (fp);
-
-  return ret;
-}
-
 static void
 test_homebrewed (void)
 {
@@ -1157,199 +1088,6 @@ test_homebrewed (void)
     }
 }
 
-// decode embedded UTF-16/32 sequences
-static uint8_t *
-_decodeIdnaTest (const uint8_t *src_u8)
-{
-  size_t it2 = 0, len;
-  uint32_t *src;
-
-  // convert UTF-8 to UCS-4 (Unicode))
-  if (!(src = u8_to_u32 (src_u8, u8_strlen (src_u8) + 1, NULL, &len)))
-    {
-      printf ("u8_to_u32(%s) failed (%d)\n", src_u8, errno);
-      return NULL;
-    }
-
-  // replace escaped UTF-16 incl. surrogates
-  for (size_t it = 0; it < len;)
-    {
-      if (src[it] == '\\' && src[it + 1] == 'u')
-	{
-	  src[it2] =
-	    ((src[it + 2] >=
-	      'A' ? src[it + 2] - 'A' + 10 : src[it + 2] - '0') << 12) +
-	    ((src[it + 3] >=
-	      'A' ? src[it + 3] - 'A' + 10 : src[it + 3] - '0') << 8) +
-	    ((src[it + 4] >=
-	      'A' ? src[it + 4] - 'A' + 10 : src[it + 4] - '0') << 4) +
-	    (src[it + 5] >= 'A' ? src[it + 5] - 'A' + 10 : src[it + 5] - '0');
-	  it += 6;
-
-	  if (src[it2] >= 0xD800 && src[it2] <= 0xDBFF)
-	    {
-	      // high surrogate followed by low surrogate
-	      if (src[it] == '\\' && src[it + 1] == 'u')
-		{
-		  uint32_t low =
-		    ((src[it + 2] >=
-		      'A' ? src[it + 2] - 'A' + 10 : src[it + 2] -
-		      '0') << 12) + ((src[it + 3] >=
-				      'A' ? src[it + 3] - 'A' + 10 : src[it +
-									 3] -
-				      '0') << 8) + ((src[it + 4] >=
-						     'A' ? src[it + 4] - 'A' +
-						     10 : src[it + 4] -
-						     '0') << 4) + (src[it +
-								       5] >=
-								   'A' ?
-								   src[it +
-								       5] -
-								   'A' +
-								   10 : src[it
-									    +
-									    5]
-								   - '0');
-		  if (low >= 0xDC00 && low <= 0xDFFF)
-		    src[it2] =
-		      0x10000 + (src[it2] - 0xD800) * 0x400 + (low - 0xDC00);
-		  else
-		    printf ("Missing low surrogate\n");
-		  it += 6;
-		}
-	      else
-		{
-		  it++;
-		  printf ("Missing low surrogate\n");
-		}
-	    }
-	  it2++;
-	}
-      else
-	src[it2++] = src[it++];
-    }
-
-  // convert UTF-32 to UTF-8
-  uint8_t *dst_u8 = u32_to_u8 (src, it2, NULL, &len);
-  if (!dst_u8)
-    printf ("u32_to_u8(%s) failed (%d)\n", src_u8, errno);
-
-  free (src);
-  return dst_u8;
-}
-
-static void
-_check_toASCII (const char *source, const char *expected, int transitional,
-		int expected_toASCII_failure)
-{
-  int rc;
-  char *ace = NULL;
-
-  rc =
-    idn2_lookup_u8 ((uint8_t *) source, (uint8_t **) & ace,
-		    transitional ? IDN2_TRANSITIONAL : IDN2_NONTRANSITIONAL);
-
-  // printf("n=%d expected=%s t=%d got=%s, expected_failure=%d\n", n, expected, transitional, ace ? ace : "", expected_toASCII_failure);
-  if (rc && expected_toASCII_failure)
-    {
-      printf ("OK\n");
-      ok++;
-    }
-  else if (rc && !transitional && *expected != '[')
-    {
-      failed++;
-      printf ("Failed: _check_toASCII(%s) -> %d (expected 0) %p\n", source,
-	      rc, ace);
-    }
-  else if (rc == 0 && !transitional && *expected != '['
-	   && strcmp (expected, ace))
-    {
-      failed++;
-      printf ("Failed: _check_toASCII(%s) -> %s (expected %s) %p\n", source,
-	      ace, expected, ace);
-    }
-  else
-    {
-      printf ("OK\n");
-      ok++;
-    }
-
-  if (rc == IDN2_OK)
-    idn2_free (ace);
-}
-
-#if HAVE_LIBUNISTRING
-extern int _libunistring_version;
-#endif
-
-static int
-test_IdnaTest (char *linep)
-{
-  char *source;
-  const char *type, *toUnicode, *toASCII, *NV8, *org_source;
-  int expected_toASCII_failure;
-
-  type = _nextField (&linep);
-  org_source = _nextField (&linep);
-  toUnicode = _nextField (&linep);
-  toASCII = _nextField (&linep);
-  NV8 = _nextField (&linep);	// if set, the input should be disallowed for IDNA2008
-
-  // sigh, these Unicode people really mix UTF-8 and UCS-2/4
-  // quick and dirty translation of '\uXXXX' found in IdnaTest.txt including surrogate handling
-  source = (char *) _decodeIdnaTest ((uint8_t *) org_source);
-  if (!source)
-    return 0;			// some Unicode sequences can't be encoded into UTF-8, skip them
-
-  if (!*toUnicode)
-    toUnicode = source;
-  if (!*toASCII)
-    toASCII = toUnicode;
-  expected_toASCII_failure = NV8 && *NV8;
-
-  printf ("##########%s#%s#%s#%s#%s#\n", type, org_source, toUnicode, toASCII,
-	  NV8);
-
-#if HAVE_LIBUNISTRING
-  /* 3 tests fail with libunicode <= 0.9.3 - just skip them until we have a newer version installed */
-  /* watch out, libunicode changed versioning scheme up from 0.9.4 */
-  /* If !HAVE_LIBUNISTRING, we use internal gnulib code which works. */
-  if (_libunistring_version <= 9)
-    {
-      if (!strcmp (toASCII, "xn--8jb.xn--etb875g"))
-	{
-	  free (source);
-	  return 0;
-	}
-    }
-#endif
-
-  if (*type == 'B')
-    {
-      _check_toASCII (source, toASCII, 1, expected_toASCII_failure);
-      _check_toASCII (source, toASCII, 0, expected_toASCII_failure);
-    }
-  else if (*type == 'T')
-    {
-      _check_toASCII (source, toASCII, 1, expected_toASCII_failure);
-    }
-  else if (*type == 'N')
-    {
-      _check_toASCII (source, toASCII, 0, expected_toASCII_failure);
-    }
-  else
-    {
-      printf ("Failed: Unknown type '%s'\n", type);
-    }
-
-  free (source);
-
-  if (failed && break_on_error)
-    return 1;
-
-  return 0;
-}
-
 static void
 separator (void)
 {
@@ -1397,14 +1135,8 @@ test_unicode_range (void)
     }
 }
 
-#ifdef SRCDIR
-# define IDNATEST_TXT SRCDIR "/IdnaTest.txt"
-#else
-# define IDNATEST_TXT "IdnaTest.txt"
-#endif
-
 int
-main (int argc, const char *argv[])
+main (void)
 {
   separator ();
   puts ("                                          IDNA2008 Lookup\n");
@@ -1413,12 +1145,6 @@ main (int argc, const char *argv[])
   separator ();
 
   test_homebrewed ();
-
-  separator ();
-
-  // test all IDNA cases from Unicode 9.0.0
-  if (_scan_file (argc == 1 ? IDNATEST_TXT : argv[1], test_IdnaTest))
-    return EXIT_FAILURE;
 
   separator ();
 

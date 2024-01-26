@@ -53,25 +53,19 @@ Q-Debian-testing:
   stage: quick
   script:
   - echo GNULIB_REFDIR $GNULIB_REFDIR GNULIB_SRCDIR $GNULIB_SRCDIR
+  - apt-get install -y idn2 libidn2-dev libunistring-dev | tail
+  - env STANDALONE_DISABLE='*punycode* *test-IdnaTest-inc*' tests/standalone.sh
+  - apt-get remove -y --purge libidn2-dev libunistring-dev | tail
   - time ./bootstrap --skip-po
   - git diff --exit-code # catch changes resulting in *-dirty version number
-  - mkdir -p a/b/c
-  - cd a/b/c
-  - time ../../../configure CFLAGS=-O0 --enable-gcc-warnings=error --disable-doc
+  - mkdir -p q
+  - cd q
+  - time ../configure CFLAGS=-O0 --enable-gcc-warnings=error --disable-doc --with-included-libunistring
   - grep am_cv_func_iconv_summary config.log
   - time make -j$(nproc) -k syntax-check
   - time make -j$(nproc) -k V=1 check VERBOSE=t
-  - gcc -o foo -Ilib -Itests ../../../tests/test-lookup.c lib/.libs/libidn2.a gl/.libs/libgnu.a unistring/.libs/libunistring.a -lunistring
-  - ./foo ../../../tests/IdnaTest.txt | tail -1
-  - gcc -o foo -Ilib ../../../tests/test-register.c lib/.libs/libidn2.a gl/.libs/libgnu.a unistring/.libs/libunistring.a -lunistring
-  - ./foo
-  - gcc -o foo -Ilib ../../../tests/test-strerror.c lib/.libs/libidn2.a gl/.libs/libgnu.a unistring/.libs/libunistring.a -lunistring
-  - ./foo
-  - gcc -o foo -Ilib ../../../tests/test-tounicode.c lib/.libs/libidn2.a gl/.libs/libgnu.a unistring/.libs/libunistring.a -lunistring
-  - ./foo
-  - gcc -o foo -Ilib ../../../tests/test-locale.c lib/.libs/libidn2.a gl/.libs/libgnu.a unistring/.libs/libunistring.a -lunistring
-  - ./foo
-  - env LANG=C.UTF-8 IDN2=src/idn2 ../../../tests/test-idn2.sh
+  - env IDN2=src/idn2 STANDALONE_CFLAGS="-DHAVE_CONFIG_H -I. -Ilib -I../lib -Itests -Iunistring -I../unistring lib/.libs/libidn2.a unistring/.libs/libunistring.a gl/.libs/libgnu.a" ../tests/standalone.sh
+  - env IDN2=src/idn2 STANDALONE_CFLAGS="-DHAVE_CONFIG_H -I. -Ilib -I../lib -Itests -Iunistring -I../unistring -Wl,-rpath lib/.libs lib/.libs/libidn2.so unistring/.libs/libunistring.a gl/.libs/libgnu.a" ../tests/standalone.sh
   - git diff --exit-code # nothing should change version controlled files
 
 B-gcc:
@@ -155,8 +149,10 @@ B-Debian-testing:
   stage: build
   before_script:
   - apt-get update -qq -y
-  - apt-get install -qq -y make gcc git autoconf automake libtool gettext autopoint gperf libunistring-dev valgrind gengetopt help2man texinfo texlive gtk-doc-tools abi-compliance-checker abigail-tools
+  - apt-get install -qq -y make gcc git autoconf automake libtool gettext autopoint gperf libunistring-dev valgrind gengetopt help2man texinfo texlive gtk-doc-tools abi-compliance-checker abigail-tools libidn2-dev idn2
   script:
+  - env STANDALONE_DISABLE='*punycode* *IdnaTest-inc*' tests/standalone.sh
+  - apt-get remove -y --purge libidn2-dev idn2
   - ./bootstrap --skip-po
   - ./configure --enable-gcc-warnings=error --enable-valgrind-tests
   - make -j$(nproc) V=1
@@ -164,11 +160,12 @@ B-Debian-testing:
   - git diff --exit-code # nothing should change version controlled files
   - rm unistring/libunistring.la # FIXME XXX debug why this is needed...
   - make dist
+  - env IDN2=src/idn2 STANDALONE_CFLAGS="-Ilib lib/.libs/libidn2.a unistring/.libs/libunistring.a gl/.libs/libgnu.a -lunistring" tests/standalone.sh
+  - env IDN2=src/idn2 STANDALONE_CFLAGS="-Ilib -Wl,-rpath lib/.libs lib/.libs/libidn2.so unistring/.libs/libunistring.a gl/.libs/libgnu.a -lunistring" tests/standalone.sh
   - make install
   - apt-get install -y -qq man
-  - git clone --depth=1 https://salsa.debian.org/debian/libidn2.git debian-libidn2
-  - LC_ALL=C.UTF-8 debian-libidn2/debian/tests/idn2
-  - debian-libidn2/debian/tests/libidn2
+  - git clone --depth=1 https://salsa.debian.org/debian/libidn2.git debian-libidn2 -b wip
+  - for c in debian-libidn2/debian/tests/*; do test -x $c && $c; done
 
 B-Trisquel11:
   image: $CI_REGISTRY/libidn/build-images:libidn2-Trisquel11
@@ -180,6 +177,8 @@ B-Trisquel11:
   - make -j$(nproc) -k check VERBOSE=t
   - make -C doc compare-makefile
   - make -j$(nproc) -k syntax-check
+  - env IDN2=src/idn2 STANDALONE_CFLAGS="-Ilib -Itests lib/.libs/libidn2.a unistring/.libs/libunistring.a gl/.libs/libgnu.a -lunistring" tests/standalone.sh
+  - env IDN2=src/idn2 STANDALONE_CFLAGS="-Ilib -Itests -Wl,-rpath lib/.libs lib/.libs/libidn2.so unistring/.libs/libunistring.a gl/.libs/libgnu.a -lunistring" tests/standalone.sh
   - make abi-check
   - make dist
   - git diff --exit-code # nothing should change version controlled files

@@ -27,7 +27,8 @@ LDADD += ../unistring/libunistring.la $(LTLIBUNISTRING)
 LDADD += ../gl/libgnu.la
 
 ctests = test-version test-strerror test-locale test-tounicode
-ctests += test-punycode test-compat-punycode test-lookup test-register
+ctests += test-punycode test-compat-punycode
+ctests += test-IdnaTest-inc test-IdnaTest-txt test-lookup test-register
 if TEST_GLIBC
 ctests += test-glibc
 endif
