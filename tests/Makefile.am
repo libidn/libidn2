@@ -50,7 +50,7 @@ IDNA_INC = IdnaTest.inc
 
 BUILT_SOURCES = $(IDNA_TXT) $(IDNA_INC)
 MAINTAINERCLEANFILES = $(BUILT_SOURCES)
-EXTRA_DIST = gen-utc-test.pl $(IDNA_TXT) $(IDNA_INC)
+EXTRA_DIST += gen-utc-test.pl $(IDNA_TXT) $(IDNA_INC)
 
 $(IDNA_TXT):
 	rm -f $(IDNA_TXT)
