@@ -15,7 +15,7 @@
 
 manual_title = Internationalized Domain Names Library
 
-old_NEWS_hash = ebddc3fda86cbfd843c489fa5b30d104
+old_NEWS_hash = 0c20296b4846cf53d5222ce2e2c734fe
 
 bootstrap-tools = gnulib,autoconf,automake,libtoolize,make,makeinfo,help2man,gperf,gengetopt,gtkdocize,tar,gzip
 
