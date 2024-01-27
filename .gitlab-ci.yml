@@ -165,7 +165,7 @@ B-Debian-testing:
   - make install
   - apt-get install -y -qq man
   - git clone --depth=1 https://salsa.debian.org/debian/libidn2.git debian-libidn2 -b wip
-  - for c in debian-libidn2/debian/tests/*; do test -x $c && $c; done
+  - for c in debian-libidn2/debian/tests/*; do if test -x $c; then $c; echo rc $c is $?; fi; done
 
 B-Trisquel11:
   image: $CI_REGISTRY/libidn/build-images:libidn2-Trisquel11
