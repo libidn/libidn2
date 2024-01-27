@@ -217,7 +217,7 @@ WERROR_TESTS_CFLAGS:  $WERROR_TESTS_CFLAGS
 
   Documentation:      ${enable_doc}
 
-  nl_langinfo:        $gl_cv_header_langinfo_codeset
+  nl_langinfo:        $am_cv_langinfo_codeset
   Libiconv:           $am_cv_func_iconv_summary
          LTLIBICONV:  $LTLIBICONV
   Libunistring:       $ac_cv_libunistring
