@@ -164,7 +164,7 @@ B-Debian-testing:
   - env IDN2=src/idn2 STANDALONE_CFLAGS="-Ilib -Wl,-rpath lib/.libs lib/.libs/libidn2.so unistring/.libs/libunistring.a gl/.libs/libgnu.a -lunistring" tests/standalone.sh
   - make install
   - apt-get install -y -qq man
-  - git clone --depth=1 https://salsa.debian.org/debian/libidn2.git debian-libidn2 -b wip
+  - git clone --depth=1 https://salsa.debian.org/debian/libidn2.git debian-libidn2
   - for c in debian-libidn2/debian/tests/*; do if test -x $c; then $c; echo rc $c is $?; fi; done
 
 B-Trisquel11:
