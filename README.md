@@ -42,10 +42,26 @@ current fuzzing code coverage
 
 # License
 
-The installed C library libidn2 is dual-licensed under LGPLv3+|GPLv2+,
-while the rest of the package is GPLv3+.  See the file
-[COPYING](COPYING) for detailed information.
+The source code for the C library (libidn2.a or libidn.so) are
+dual-licensed under the terms of either the GNU General Public License
+version 2.0 or later - see the file [COPYINGv2](COPYINGv2) - or the
+GNU Lesser General Public License version 3.0 or later - see the file
+[COPYING.LESSERv3](COPYING.LESSERv3) - or both in parallel as here.
 
+The command line tool, self tests, examples, and other auxiliary
+files, are licensed under the GNU General Public License version 3.0
+or later - see the file [COPYING](COPYING).
+
+The license of the Unicode character data files (which are parsed into
+static storage in the library) are documented in
+[COPYING.unicode](COPYING.unicode).
+
+Other files are licensed as indicated in each file.  There may be
+exceptions to these general rules, see each file for precise
+information.
+
+For any copyright year range specified as YYYY-ZZZZ in this package
+note that the range specifies every single year in that closed interval.
 
 # Online docs
 
