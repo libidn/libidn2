@@ -14,7 +14,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 SUBDIRS = gl unistring lib src examples fuzz po
-ACLOCAL_AMFLAGS = -I m4 -I gl/m4 -I unistring/m4
 EXTRA_DIST = gl/m4/gnulib-cache.m4
 
 if ENABLE_DOC
