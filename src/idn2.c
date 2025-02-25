@@ -120,7 +120,7 @@ hexdump (const char *prefix, const char *str)
   if (u8 && strcmp (str, (char *) u8) != 0)
     for (i = 0; i < strlen ((char *) u8); i++)
       fprintf (stderr, "UTF-8 %s[%lu] = 0x%02x\n",
-	       prefix, (unsigned long) i, u8[i] & 0xFF);
+	       prefix, (unsigned long) i, (unsigned) u8[i] & 0xFF);
 
   if (u8 && u32)
     for (i = 0; i < u32len; i++)
