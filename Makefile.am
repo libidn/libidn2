@@ -96,6 +96,20 @@ dist-hook: gen-ChangeLog
 		$(MAKE) -C $(top_builddir) abi-check-latest; \
 	fi
 
+dist-hook: po-CreationDate-to-mtime-NEWS
+.PHONY: po-CreationDate-to-mtime-NEWS
+po-CreationDate-to-mtime-NEWS: mtime-NEWS-to-git-HEAD
+	$(AM_V_GEN)for p in $(distdir)/po/*.po $(distdir)/po/$(PACKAGE).pot; do \
+	  if test -f "$$p"; then \
+	    $(SED) -e 's,POT-Creation-Date: .*\\n",POT-Creation-Date: '"$$(env LC_ALL=C TZ=UTC0 stat --format=%y $(srcdir)/NEWS | cut -c1-16,31-)"'\\n",' < $$p > $$p.tmp && \
+	    if cmp $$p $$p.tmp > /dev/null; then \
+	      rm -f $$p.tmp; \
+	    else \
+	      mv $$p.tmp $$p; \
+	    fi \
+	  fi \
+	done
+
 dist-hook: srcdist
 .PHONY: srcdist
 srcdist:
