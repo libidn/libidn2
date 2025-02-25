@@ -40,7 +40,7 @@ AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_HEADERS([config.h])
 
-AM_INIT_AUTOMAKE([1.14 -Wall -Wno-portability subdir-objects])
+AM_INIT_AUTOMAKE([1.14 tar-ustar -Wall -Wno-portability subdir-objects])
 AM_SILENT_RULES([yes])
 
 AC_PROG_CC
