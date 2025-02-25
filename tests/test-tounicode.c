@@ -40,7 +40,7 @@ typedef struct
   int rc_expected;
 } test_t;
 
-const test_t test[] = {
+static const test_t test[] = {
   {
    "(A) Arabic (Egyptian)",
    "xn--egbpdaj6bu4bxfgehfvwxn",
