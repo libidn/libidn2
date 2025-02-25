@@ -97,6 +97,29 @@ dist-hook: gen-ChangeLog
 		$(MAKE) -C $(top_builddir) abi-check-latest; \
 	fi
 
+dist-hook: srcdist
+.PHONY: srcdist
+srcdist:
+	$(AM_V_GEN)if test -e $(srcdir)/.git \
+			&& command -v git > /dev/null; then \
+	 cd $(srcdir) && \
+	   git archive --prefix=$(PACKAGE)-v$(VERSION)/ \
+	       -o $(abs_builddir)/$(PACKAGE)-v$(VERSION)-src.tar.gz HEAD; \
+	fi
+
+dist-hook: mtime-NEWS-to-git-HEAD
+.PHONY: mtime-NEWS-to-git-HEAD
+mtime-NEWS-to-git-HEAD:
+	$(AM_V_GEN)if test -e $(srcdir)/.git \
+			&& command -v git > /dev/null; then \
+		touch -m -t "$$(git log -1 --format=%cd --date=format-local:%Y%m%d%H%M.%S)" $(srcdir)/NEWS; \
+	fi
+
+dist-hook: texi-stamps-to-mtime-NEWS
+.PHONY: texi-stamps-to-mtime-NEWS
+texi-stamps-to-mtime-NEWS: mtime-NEWS-to-git-HEAD
+	$(AM_V_GEN)touch -m -r $(srcdir)/NEWS $(srcdir)/doc/$(PACKAGE).texi
+
 .PHONY: gen-ChangeLog
 gen-ChangeLog:
 	$(AM_V_GEN)if test -d .git; then				\
