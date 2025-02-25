@@ -33,11 +33,11 @@
 #include <unistring/localcharset.h>
 
 /* Gnulib headers. */
-#include "error.h"
-#include "gettext.h"
+#include <error.h>
+#include <gettext.h>
 #define _(String) dgettext (PACKAGE, String)
-#include "progname.h"
-#include "version-etc.h"
+#include <progname.h>
+#include <version-etc.h>
 
 #include "idn2_cmd.h"
 
