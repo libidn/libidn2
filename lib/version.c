@@ -31,6 +31,7 @@
 #include "idn2.h"
 
 #include <string.h>		/* strverscmp */
+#include <version-etc.h>	/* version_etc_copyright */
 
 #ifdef __cplusplus
 extern				// define a global const variable in C++, C doesn't need it.
