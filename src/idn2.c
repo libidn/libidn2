@@ -184,6 +184,7 @@ main (int argc, char *argv[])
   setlocale (LC_ALL, "");
   set_program_name (argv[0]);
   bindtextdomain (PACKAGE, LOCALEDIR);
+  bindtextdomain ("gnulib", GNULIB_LOCALEDIR);
   textdomain (PACKAGE);
 
   if (cmdline_parser (argc, argv, &args_info) != 0)
