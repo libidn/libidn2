@@ -1,5 +1,5 @@
 /* idna.c - implementation of high-level IDNA processing function
-   Copyright (C) 2011-2024 Simon Josefsson
+   Copyright (C) 2011-2025 Simon Josefsson
 
    Libidn2 is free software: you can redistribute it and/or modify it
    under the terms of either:

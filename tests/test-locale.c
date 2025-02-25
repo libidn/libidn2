@@ -1,5 +1,5 @@
 /* test-locale.c --- Self tests for locale-related (iconv) IDNA processing
-   Copyright (C) 2011-2024 Simon Josefsson
+   Copyright (C) 2011-2025 Simon Josefsson
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by

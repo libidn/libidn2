@@ -1,6 +1,6 @@
 /* gendata.c - generate idna_table
    Copyright (C) 2019 Orivej Desh
-   Copyright (C) 2022-2024 Simon Josefsson
+   Copyright (C) 2022-2025 Simon Josefsson
 
    Libidn2 is free software: you can redistribute it and/or modify it
    under the terms of either:

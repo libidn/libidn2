@@ -1,4 +1,4 @@
-# Copyright (C) 2011-2024 Simon Josefsson
+# Copyright (C) 2011-2025 Simon Josefsson
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
 
 manual_title = Internationalized Domain Names Library
 
-old_NEWS_hash = 373230c0bc99fc782fc2b2316b4ef716
+old_NEWS_hash = 0202af5b41f5df95eabda4582471da31
 
 bootstrap-tools = gnulib,autoconf,automake,libtoolize,make,makeinfo,help2man,gperf,gengetopt,gtkdocize,tar,gzip
 
