@@ -13,8 +13,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-DISTCHECK_CONFIGURE_FLAGS ?= --enable-gtk-doc --enable-gtk-doc-pdf --disable-gcc-warnings
-
 SUBDIRS = gl unistring lib src examples fuzz po
 ACLOCAL_AMFLAGS = -I m4 -I gl/m4 -I unistring/m4
 EXTRA_DIST = gl/m4/gnulib-cache.m4
