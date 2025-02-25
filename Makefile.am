@@ -121,11 +121,15 @@ texi-stamps-to-mtime-NEWS: mtime-NEWS-to-git-HEAD
 
 .PHONY: gen-ChangeLog
 gen-ChangeLog:
-	$(AM_V_GEN)if test -d .git; then				\
-		$(top_srcdir)/build-aux/gitlog-to-changelog >		\
-			$(distdir)/cl-t &&				\
-		{ rm -f $(distdir)/ChangeLog &&				\
-		  mv $(distdir)/cl-t $(distdir)/ChangeLog; }		\
+	$(AM_V_GEN)if test -e $(srcdir)/.git; then			\
+	  LC_ALL=en_US.UTF-8 TZ=UTC0					\
+	    $(top_srcdir)/build-aux/gitlog-to-changelog			\
+	      --srcdir=$(srcdir) --					\
+	      v$(PREV_VERSION)~.. > $(distdir)/cl-t &&			\
+	    { printf '\n\nSee the source repo for older entries\n'	\
+	      >> $(distdir)/cl-t &&					\
+	      rm -f $(distdir)/ChangeLog &&				\
+	      mv $(distdir)/cl-t $(distdir)/ChangeLog; }		\
 	fi
 
 .PHONY: abi-dump abi-check
