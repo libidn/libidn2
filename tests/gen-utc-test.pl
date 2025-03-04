@@ -1,4 +1,5 @@
-#!/usr/bin/perl
+#!/bin/sh
+#! -*-perl-*-
 
 # Copyright (C) 2011-2025 Simon Josefsson
 
@@ -17,6 +18,9 @@
 
 # I consider the output of this program to be unrestricted.  Use it as
 # you will.
+
+eval 'exec perl -wSx "$0" "$@"'
+    if 0;
 
 use strict;
 
