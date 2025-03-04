@@ -92,7 +92,12 @@ $(top_srcdir)/.version:
 	echo $(VERSION) > $@-t && mv $@-t $@
 dist-hook: gen-ChangeLog
 	echo $(VERSION) > $(distdir)/.tarball-version
-	if test -d "$(top_srcdir)/contrib";then \
+
+dist-hook: maybe-abi-check
+.PHONY: maybe-abi-check
+maybe-abi-check:
+	if command -v abidiff > /dev/null && \
+		test -d "$(top_srcdir)/contrib"; then \
 		$(MAKE) -C $(top_builddir) abi-check-latest; \
 	fi
 
