@@ -13,29 +13,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-workflow:
-  rules:
-  - if: $CI_COMMIT_BRANCH
-
-# The "quick" stage should complete as quickly as possible but still
-# excercise some useful internal self-tests.  Primarily this is
-# achieved by --disable-doc and avoiding the 'make dist' step.  Having
-# an early stage like this avoids wasting build cycles attempting the
-# bootstrap builds on many platforms.
-#
-# The "build" stage should attempt to build from version controlled
-# sources on platforms we support development on, with the variety of
-# pre-dependencies that we want to support.  Typically these builds
-# results in a tarball artifact.
-#
-# The "test" stage attempt to build the tarball on all platforms we
-# support building the project on, with as many combinations of
-# pre-depencencies as useful.
+variables:
+  GIT_DEPTH: 250
+  GNULIB_URL: https://gitlab.com/libidn/gnulib-mirror.git
 
 stages:
-  - quick
-  - build
-  - test
+ - build # B-* jobs build from git for "make dist"
+ - repro # R-* jobs do "make release" from git, S-* jobs build from *-src.tar.gz
+ - test # tarball test builds
 
 default:
   interruptible: true
@@ -44,68 +29,83 @@ default:
     when: always
     paths:
     - "*.tar.gz"
+    - ./**/*.log
     - ./*.log
     - ./config.h
-    - ./**/*.log
+    - ./out/$CI_JOB_NAME_SLUG/**
 
-Q-Debian-testing:
-  image: $CI_REGISTRY/libidn/build-images:libidn2-mini-Debian-testing
-  stage: quick
+.gnulib-fetch:
   script:
-  - echo GNULIB_REFDIR $GNULIB_REFDIR GNULIB_SRCDIR $GNULIB_SRCDIR
-  - apt-get install -y idn2 libidn2-dev libunistring-dev | tail
-  - env STANDALONE_DISABLE='*punycode* *test-IdnaTest-inc*' tests/standalone.sh
-  - apt-get remove -y --purge libidn2-dev libunistring-dev | tail
-  - time ./bootstrap --skip-po
-  - git diff --exit-code # catch changes resulting in *-dirty version number
-  - mkdir -p q
-  - cd q
-  - time ../configure CFLAGS=-O0 --enable-gcc-warnings=error --disable-doc --with-included-libunistring
-  - grep am_cv_func_iconv_summary config.log
-  - time make -j$(nproc) -k syntax-check
-  - time make -j$(nproc) -k V=1 check VERBOSE=t
-  - env IDN2=src/idn2 STANDALONE_CFLAGS="-DHAVE_CONFIG_H -I. -Ilib -I../lib -Itests -Iunistring -I../unistring lib/.libs/libidn2.a unistring/.libs/libunistring.a gl/.libs/libgnu.a" ../tests/standalone.sh
-  - env IDN2=src/idn2 STANDALONE_CFLAGS="-DHAVE_CONFIG_H -I. -Ilib -I../lib -Itests -Iunistring -I../unistring -Wl,-rpath lib/.libs lib/.libs/libidn2.so unistring/.libs/libunistring.a gl/.libs/libgnu.a" ../tests/standalone.sh
-  - git diff --exit-code # nothing should change version controlled files
+  - GNULIB_REVISION=$(. bootstrap.conf; echo $GNULIB_REVISION)
+  - wget -nv https://gitlab.com/libidn/gnulib-mirror/-/archive/$GNULIB_REVISION/gnulib-mirror-$GNULIB_REVISION.tar.gz
+  - gzip -cd gnulib-mirror-$GNULIB_REVISION.tar.gz | tar xf -
+  - rm -fv gnulib-mirror-$GNULIB_REVISION.tar.gz
+  - export GNULIB_SRCDIR=$PWD/gnulib-mirror-$GNULIB_REVISION
+
+.save-artifacts:
+  script:
+  - (! command -v git > /dev/null) || git status
+  - (! command -v git > /dev/null) || git diff --exit-code # nothing should change version controlled files
+  - sha256sum *.tar.*
+  - mkdir -pv out/$CI_JOB_NAME_SLUG/{src,log}
+  - find config.h *.log tests/*.log -exec mv -v {} out/$CI_JOB_NAME_SLUG/log \;
+  - mv -v *-src.tar.* out/$CI_JOB_NAME_SLUG/src/ || true
+  - mv -v *.tar.* out/$CI_JOB_NAME_SLUG/
+
+B-Guix:
+  image: registry.gitlab.com/debdistutils/guix/container:extra
+  stage: build
+  before_script:
+  - cp -rL /gnu/store/*profile/etc/* /etc/
+  - echo 'root:x:0:0:root:/:/bin/sh' > /etc/passwd
+  - echo 'root:x:0:' > /etc/group
+  - export HOME=/
+  - guix describe
+  - echo time guix install --verbosity=0 wget python patch perl gperf gengetopt libtool gettext help2man texinfo libabigail indent pkg-config gtk-doc
+  script:
+  - !reference [.gnulib-fetch, script]
+  - time ./bootstrap --no-git
+  - time ./configure --enable-gcc-warnings=error
+  - time make -j$(nproc) syntax-check
+  - time make -j$(nproc) check V=1 VERBOSE=t
+  - time make V=1 dist
+  - !reference [.save-artifacts, script]
 
 B-gcc:
   image: gcc:latest
   stage: build
   before_script:
   - gcc --version
-  - apt-get update -qqy
-  - apt-get install -qqy --no-install-recommends git make autoconf automake libtool gettext autopoint gperf libunistring-dev gengetopt help2man texinfo texlive gtk-doc-tools
+  - apt-get update -qq
+  - apt-get install -y -qq --no-install-recommends git make autoconf automake libtool gettext autopoint gperf libunistring-dev gengetopt help2man texinfo texlive gtk-doc-tools
   script:
-  - gcc --version
   - time ./bootstrap --skip-po
-  - time ./configure CC="gcc -std=gnu2x" --enable-gcc-warnings=error --disable-doc
-  - time make -j$(nproc) -k V=1
-  - time make -j$(nproc) -k syntax-check
-  - time make -j$(nproc) -k check VERBOSE=t
-  - git diff --exit-code # nothing should change version controlled files
+  - time ./configure --enable-gcc-warnings=error CC="gcc -std=gnu2x" --disable-doc
+  - time make -k syntax-check
+  - time make V=1 VERBOSE=t check clean
+  - time ./configure --enable-gcc-warnings CC="gcc -std=c23"
+  - time make V=1 all check dist
+  - !reference [.save-artifacts, script]
 
 B-clang:
   image: silkeh/clang:latest
   stage: build
   before_script:
   - clang --version
-  - apt-get update -qqy
-  - apt-get install -qqy --no-install-recommends git make autoconf automake libtool gettext autopoint gperf libunistring-dev gengetopt help2man texinfo texlive gtk-doc-tools
+  - apt-get update -qq
+  - apt-get install -y -qq --no-install-recommends git make autoconf automake libtool gettext autopoint gperf libunistring-dev gengetopt help2man texinfo texlive gtk-doc-tools abi-compliance-checker abigail-tools
   script:
-  - clang --version
   - time ./bootstrap --skip-po
-  - time ./configure CC="clang -std=gnu2x" --enable-gcc-warnings=error --disable-doc
-  - time make -j$(nproc) -k syntax-check
-  - time make -j$(nproc) -k V=1
-  - time make -j$(nproc) -k check V=1 VERBOSE=t
-  - git diff --exit-code # nothing should change version controlled files
+  - time ./configure --enable-gcc-warnings=error CC="clang -std=gnu2x" --disable-doc
+  - time make -k syntax-check
+  - time make V=1 VERBOSE=t check clean
+  - time ./configure --enable-gcc-warnings=error CC="clang -std=c23"
+  - time make V=1 VERBOSE=t check dist
+  - !reference [.save-artifacts, script]
 
 B-Alpine-arm64:
-  rules:
-  - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-  - when: manual
   image: alpine:latest
-  tags: [ arm64 ]
+  tags: [ saas-linux-small-arm64 ]
   stage: build
   before_script:
   - apk update # XXX coreutils only needed for /usr/bin/join used by gnulib-tool
@@ -118,30 +118,138 @@ B-Alpine-arm64:
   - time make -j$(nproc) check V=1 VERBOSE=t
   - git diff --exit-code # nothing should change version controlled files
 
-B-AlmaLinux8:
-  image: $CI_REGISTRY/libidn/build-images:libidn2-AlmaLinux8
+.almarocky: &almarocky
   stage: build
+  tags: [ saas-linux-medium-amd64 ]
+  variables:
+    PKGS: wget git make diffutils patch autoconf automake libtool gettext-devel gperf libunistring-devel valgrind gengetopt help2man gtk-doc texinfo texinfo-tex texlive texlive-epstopdf dblatex libabigail
+  before_script:
+  - cat /etc/os-release
+  - dnf install -y epel-release
+  - dnf --enablerepo=$(dnf repolist --all | grep crb > /dev/null && echo crb || echo powertools) install -y ${PKGS}
+  - cc --version
   script:
-  - time ./bootstrap --skip-po
+  - !reference [.gnulib-fetch, script]
+  - time ./bootstrap --skip-po --no-git
   - time ./configure --enable-gcc-warnings=error
-  - time make -j$(nproc) -k V=1
-  - time make -j$(nproc) -k check VERBOSE=t
-  - make -j$(nproc) -k syntax-check
+  - time make syntax-check
+  - time make -j$(nproc) V=1 VERBOSE=t check
+  - time make abi-check
+  - time make -j$(nproc) V=1 VERBOSE=t distcheck
+  - !reference [.save-artifacts, script]
+
+B-AlmaLinux8:
+  image: almalinux:8
+  extends: .almarocky
+
+B-RockyLinux8:
+  image: rockylinux:8
+  extends: .almarocky
+
+B-AlmaLinux9:
+  image: almalinux:9
+  extends: .almarocky
+
+B-RockyLinux9:
+  image: rockylinux:9
+  extends: .almarocky
+
+.pureosdebian: &pureosdebian
+  tags: [ saas-linux-medium-amd64 ]
+  stage: build
+  variables:
+    DEBIAN_FRONTEND: noninteractive
+  before_script:
+  - cat /etc/os-release
+  - time apt-get update -qq
+  - time apt-get install -y -q eatmydata
+  - time eatmydata apt-get install -y -qq wget make gcc git autoconf automake libtool gettext autopoint gperf libunistring-dev valgrind gengetopt help2man texinfo texlive dblatex gtk-doc-tools abi-compliance-checker abigail-tools
+  script:
+  - !reference [.gnulib-fetch, script]
+  - time ./bootstrap --skip-po --no-git
+  - time ./configure --enable-gcc-warnings=error --enable-valgrind-tests
+  - time make syntax-check
+  - time make -j$(nproc) V=1 VERBOSE=t check
+  - make -C doc compare-makefile
   - make abi-check
-  - time make dist
-  - git diff --exit-code # nothing should change version controlled files
+  - time make -j$(nproc) V=1 VERBOSE=t distcheck
+  - !reference [.save-artifacts, script]
+
+B-PureOS10:
+  image: pureos/byzantium:latest
+  extends: .pureosdebian
+
+B-Debian11:
+  image: debian:11-slim
+  extends: .pureosdebian
+
+B-Devuan5:
+  image: devuan/devuan:daedalus
+  extends: .pureosdebian
 
 B-Debian12:
-  image: $CI_REGISTRY/libidn/build-images:libidn2-Debian12
+  image: debian:12-slim
+  extends: .pureosdebian
+
+.trisquelubuntu: &trisquelubuntu
+  tags: [ saas-linux-medium-amd64 ]
   stage: build
+  variables:
+    DEBIAN_FRONTEND: noninteractive
+  before_script:
+  - cat /etc/os-release
+  - sed -i 's,http://archive.trisquel.info/trisquel,http://ftp.acc.umu.se/mirror/trisquel/packages,' /etc/apt/sources.list
+  - time apt-get update -qq
+  - time apt-get install -y -q eatmydata
+  - time eatmydata apt-get install -y -qq wget make gcc git autoconf automake libtool gettext autopoint gperf libunistring-dev valgrind gengetopt help2man texinfo texlive dblatex gtk-doc-tools abi-compliance-checker abigail-tools
   script:
-  - ./bootstrap --skip-po
-  - ./configure --enable-gcc-warnings=error --enable-valgrind-tests
-  - make -j$(nproc) V=1 -k check VERBOSE=t
+  - !reference [.gnulib-fetch, script]
+  - time ./bootstrap --skip-po --no-git
+  - time ./configure --enable-gcc-warnings=error --enable-valgrind-tests
+  - time make syntax-check
+  - time make -j$(nproc) V=1 VERBOSE=t check
   - make -C doc compare-makefile
-  - make -j$(nproc) syntax-check
+  - time make -j$(nproc) V=1 VERBOSE=t distcheck
+  - env IDN2=src/idn2 STANDALONE_CFLAGS="-Ilib -Itests lib/.libs/libidn2.a unistring/.libs/libunistring.a gl/.libs/libgnu.a -lunistring" tests/standalone.sh
+  - env IDN2=src/idn2 STANDALONE_CFLAGS="-Ilib -Itests -Wl,-rpath lib/.libs lib/.libs/libidn2.so unistring/.libs/libunistring.a gl/.libs/libgnu.a -lunistring" tests/standalone.sh
   - make abi-check
   - make dist
+  - !reference [.save-artifacts, script]
+
+B-Ubuntu2204:
+  image: ubuntu:22.04
+  extends: .trisquelubuntu
+
+B-Trisquel11:
+  rules:
+  - when: always # this job is used by merge request jobs tagged with 'needs' on this job
+  image: kpengboy/trisquel:11.0
+  extends: .trisquelubuntu
+
+Q-Debian-testing:
+  image: debian:testing-slim
+  tags: [ saas-linux-medium-amd64 ]
+  stage: build
+  before_script:
+  - cat /etc/os-release
+  - apt-get update -q
+  - time apt-get install -y -q eatmydata
+  - time eatmydata apt-get install -y -q wget make gcc git autoconf automake libtool autopoint gperf libunistring-dev gengetopt indent
+  script:
+  - apt-get install -y idn2 libidn2-dev libunistring-dev | tail
+  - env STANDALONE_DISABLE='*punycode* *test-IdnaTest-inc*' tests/standalone.sh
+  - apt-get remove -y --purge libidn2-dev libunistring-dev | tail
+  - !reference [.gnulib-fetch, script]
+  - time ./bootstrap --no-git --skip-po
+  - git diff --exit-code # catch changes resulting in *-dirty version number
+  - mkdir -p q
+  - cd q
+  - time ../configure CFLAGS=-O0 --enable-gcc-warnings=error --disable-doc --with-included-libunistring
+  - grep am_cv_func_iconv_summary config.log
+  - time make -j$(nproc) -k syntax-check
+  - time make -j$(nproc) -k V=1 check VERBOSE=t
+  - env IDN2=src/idn2 STANDALONE_CFLAGS="-DHAVE_CONFIG_H -I. -Ilib -I../lib -Itests -Iunistring -I../unistring lib/.libs/libidn2.a unistring/.libs/libunistring.a gl/.libs/libgnu.a" ../tests/standalone.sh
+  - env IDN2=src/idn2 STANDALONE_CFLAGS="-DHAVE_CONFIG_H -I. -Ilib -I../lib -Itests -Iunistring -I../unistring -Wl,-rpath lib/.libs lib/.libs/libidn2.so unistring/.libs/libunistring.a gl/.libs/libgnu.a" ../tests/standalone.sh
   - git diff --exit-code # nothing should change version controlled files
 
 B-Debian-testing:
@@ -166,22 +274,6 @@ B-Debian-testing:
   - apt-get install -y -qq man
   - git clone --depth=1 https://salsa.debian.org/debian/libidn2.git debian-libidn2
   - for c in debian-libidn2/debian/tests/*; do if test -x $c; then $c; echo rc $c is $?; fi; done
-
-B-Trisquel11:
-  image: $CI_REGISTRY/libidn/build-images:libidn2-Trisquel11
-  stage: build
-  script:
-  - ./bootstrap --skip-po
-  - ./configure --enable-gcc-warnings=error --enable-valgrind-tests
-  - make -j$(nproc) V=1
-  - make -j$(nproc) -k check VERBOSE=t
-  - make -C doc compare-makefile
-  - make -j$(nproc) -k syntax-check
-  - env IDN2=src/idn2 STANDALONE_CFLAGS="-Ilib -Itests lib/.libs/libidn2.a unistring/.libs/libunistring.a gl/.libs/libgnu.a -lunistring" tests/standalone.sh
-  - env IDN2=src/idn2 STANDALONE_CFLAGS="-Ilib -Itests -Wl,-rpath lib/.libs lib/.libs/libidn2.so unistring/.libs/libunistring.a gl/.libs/libgnu.a -lunistring" tests/standalone.sh
-  - make abi-check
-  - make dist
-  - git diff --exit-code # nothing should change version controlled files
 
 B-armcross:
   image: $CI_REGISTRY/libidn/build-images:libidn2-Debian12
@@ -246,7 +338,7 @@ B-Fedora39-clang-analyzer:
     - clang-analyzer
 
 sast:
-  stage: quick
+  stage: build
   # SAST customization: https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
   variables:
     SAST_EXCLUDED_PATHS: examples, fuzz, tests, lib/gendata.c, lib/gentr46map.c
@@ -256,8 +348,9 @@ include:
 # https://www.synopsys.com/blogs/software-security/integrating-coverity-scan-with-gitlab-ci/
 Coverity:
   rules:
+  - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    when: never
   - if: $CI_COMMIT_REF_PROTECTED == "true"
-  - when: manual
   image: $CI_REGISTRY/libidn/build-images:libidn2-mini-Debian-testing
   stage: build
   allow_failure: true
@@ -283,11 +376,11 @@ Coverity:
     paths:
       - cov-int/*.txt
 
-# https://docs.gitlab.com/ee/ci/runners/saas/macos/environment.html
+# https://docs.gitlab.com/ci/runners/hosted_runners/macos/
 B-macOS14Xcode15:
   rules:
+  - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-  - when: manual
   stage: build
   image: macos-14-xcode-15
   tags: [ saas-macos-medium-m1 ]
@@ -300,17 +393,44 @@ B-macOS14Xcode15:
   before_script:
   - brew install autoconf automake libtool gengetopt help2man texinfo coreutils
   script:
+  - !reference [.gnulib-fetch, script]
   - PATH="$HOMEBREW_PREFIX/opt/coreutils/libexec/gnubin:$PATH"; export PATH
-  - time ./bootstrap --skip-po
+  - time ./bootstrap --no-git --skip-po
   - time ./configure --enable-gcc-warnings=error
   - make syntax-check
   - time make -j$(nproc) check -k V=1 VERBOSE=t
-  - git diff --exit-code # nothing should change version controlled files
+  - time make V=1 dist
+  - !reference [.save-artifacts, script]
+
+B-macOS15Xcode16:
+  rules:
+  - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  stage: build
+  image: macos-15-xcode-16
+  tags: [ saas-macos-large-m2pro ]
+  variables:
+    HOMEBREW_NO_AUTO_UPDATE: 1
+    HOMEBREW_NO_INSTALL_UPGRADE: 1
+    HOMEBREW_NO_INSTALL_CLEANUP: 1
+    HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: 1
+    WERROR_CFLAGS: "-Wno-error=format-nonliteral"
+  before_script:
+  - brew install autoconf automake libtool gengetopt help2man texinfo coreutils
+  script:
+  - !reference [.gnulib-fetch, script]
+  - PATH="$HOMEBREW_PREFIX/opt/coreutils/libexec/gnubin:$PATH"; export PATH
+  - time ./bootstrap --no-git --skip-po
+  - time ./configure --enable-gcc-warnings=error
+  - make syntax-check
+  - time make -j$(nproc) check -k V=1 VERBOSE=t
+  - time make V=1 dist
+  - !reference [.save-artifacts, script]
 
 macOS13Xcode14:
   rules:
+  - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-  - when: manual
   image: macos-13-xcode-14
   tags: [ saas-macos-medium-m1 ]
   stage: test
@@ -318,8 +438,8 @@ macOS13Xcode14:
   variables:
     WERROR_CFLAGS: "-Wno-error=format-nonliteral"
   script:
-  - tar xfz libidn2-*.tar.gz
-  - cd `ls -d libidn2-* | grep -v tar.gz`
+  - tar xfz out/b-trisquel11/*-*.tar.gz
+  - cd $(tar tfz out/b-trisquel11/*-*.tar.gz | head -n1)
   - ./configure --enable-gcc-warnings=error WERROR_CFLAGS="-Wno-error=unused-value -Wno-error=format-nonliteral -Wno-error=attributes -Wno-error=char-subscripts"
   - make syntax-check
   - time make -j$(nproc) check V=1 VERBOSE=t
@@ -339,9 +459,9 @@ B-MinGW64:
 # https://docs.gitlab.com/ee/ci/runners/saas/windows_saas_runner.html
 B-Windows-UCRT64:
   rules:
+  - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-  - when: manual
-  tags: [ shared-windows, windows-1809 ]
+  tags: [ saas-windows-medium-amd64 ]
   stage: build
   variables:
     WERROR_CFLAGS: "-Wno-error=format-nonliteral -Wno-error=unused-value"
@@ -369,11 +489,245 @@ B-Windows-UCRT64:
     make -j$(nproc) V=1 -k check VERBOSE=t'
   - C:\msys64\usr\bin\bash -lc 'grep ^PASS tests/test-register.log'
 
+0-compare:
+  image: alpine:latest
+  stage: repro
+  needs: [ B-AlmaLinux8, B-AlmaLinux9, B-RockyLinux8, B-RockyLinux9, B-Trisquel11, B-Ubuntu2204, B-PureOS10, B-Debian11, B-Devuan5, B-Debian12, B-gcc, B-clang, B-Guix, R-Guix, R-Debian12, R-Ubuntu2404, S-Trisquel10, S-Ubuntu2004 ]
+  script:
+  - cd out
+  - sha256sum */*.tar.* */*/*.tar.* | sort | grep    -- -src.tar.
+  - sha256sum */*.tar.* */*/*.tar.* | sort | grep -v -- -src.tar.
+  - sha256sum */*.tar.* */*/*.tar.* | sort | uniq -c -w64 | sort -rn
+  - sha256sum */*.tar.* */*/*.tar.* | grep    -- -src.tar. | sort | uniq -c -w64 | grep -v '^      1 '
+  - sha256sum */*.tar.* */*/*.tar.* | grep -v -- -src.tar. | sort | uniq -c -w64 | grep -v '^      1 '
+# Confirm modern git-archive tarball reproducibility
+  - cmp b-almalinux8/src/*.tar.gz b-almalinux9/src/*.tar.gz
+  - cmp b-almalinux8/src/*.tar.gz b-rockylinux8/src/*.tar.gz
+  - cmp b-almalinux8/src/*.tar.gz b-rockylinux9/src/*.tar.gz
+  - cmp b-almalinux8/src/*.tar.gz b-debian12/src/*.tar.gz
+  - cmp b-almalinux8/src/*.tar.gz b-devuan5/src/*.tar.gz
+  - cmp b-almalinux8/src/*.tar.gz r-guix/src/*.tar.gz
+  - cmp b-almalinux8/src/*.tar.gz r-debian12/src/*.tar.gz
+  - cmp b-almalinux8/src/*.tar.gz r-ubuntu2404/src/*v2.*.tar.gz
+# Confirm old git-archive (export-subst but long git describe) tarball reproducibility
+  - cmp b-trisquel11/src/*.tar.gz b-ubuntu2204/src/*.tar.gz
+# Confirm really old git-archive (no export-subst) tarball reproducibility
+  - cmp b-debian11/src/*.tar.gz b-pureos10/src/*.tar.gz
+# Confirm 'make dist' generated tarball reproducibility
+  - cmp b-almalinux8/*.tar.gz b-rockylinux8/*.tar.gz
+  - cmp b-almalinux9/*.tar.gz b-rockylinux9/*.tar.gz
+  - cmp b-pureos10/*.tar.gz b-debian11/*.tar.gz
+  - cmp b-devuan5/*.tar.gz b-debian12/*.tar.gz
+  - cmp b-trisquel11/*.tar.gz b-ubuntu2204/*.tar.gz
+  - cmp b-guix/*.tar.gz r-guix/*.tar.gz
+# Confirm 'make dist' from git-archive tarball reproducibility
+  - cmp s-trisquel10/*.tar.gz s-ubuntu2004/*.tar.gz
+  artifacts:
+    expire_in: 2 weeks
+    when: always
+    paths:
+    - ./out/**
+
+R-Guix:
+  tags: [ saas-linux-medium-amd64 ]
+  image: registry.gitlab.com/debdistutils/guix/container:extra
+  stage: repro
+  needs: []
+  before_script:
+  - cp -rL /gnu/store/*profile/etc/* /etc/
+  - echo 'root:x:0:0:root:/:/bin/sh' > /etc/passwd
+  - echo 'root:x:0:' > /etc/group
+  - export HOME=/
+  - guix describe
+  script:
+  - !reference [.gnulib-fetch, script]
+  - time ./bootstrap --no-git
+  - time ./configure
+  - time make V=1 syntax-check
+  - time make -j$(nproc) check V=1 VERBOSE=t
+  - time make -j$(nproc) dist V=1 VERBOSE=t
+  - git status
+  - git diff --exit-code
+  - gpg --batch --passphrase '' --quick-gen-key pipeline@example.org
+  - git checkout -B cibranch
+  - git config user.email "pipeline@example.org"
+  - git config user.name "Pipeline Builder"
+  - git config user.signingkey pipeline@example.org
+  - |
+    if test -z "$CI_COMMIT_TAG"; then
+      sed -i '3i * Noteworthy changes in release ?.? (????-??-??) [?]\n\n** WARNING This release was prepared automatically with no testing.\n' NEWS
+      git commit -m "Warn about automatic release." NEWS
+      relver='23.42.17'
+      reltyp='alpha'
+    else # maintainer ran release-commit
+      relver=$(cat NEWS | sed -n -e 's/.*release \([0-9.]\+\) (....-..-..) \[\(.*\)\].*/\1/p' | head -1)
+      reltyp=$(cat NEWS | sed -n -e 's/.*release \([0-9.]\+\) (....-..-..) \[\(.*\)\].*/\2/p' | head -1)
+    fi
+  - test -n "$CI_COMMIT_TAG" || make release-commit RELEASE="$relver $reltyp"
+  - make release RELEASE="$relver $reltyp" V=1 VERBOSE=t AM_DISTCHECK_DVI_TARGET=
+  - cat -n ~/announce-*
+  - git diff --exit-code # nothing should change version controlled files
+  - sha256sum *.tar.*
+  - mkdir -pv out/$CI_JOB_NAME_SLUG/{src,rel,log}
+  - find config.h *.log tests/*.log -exec mv -v {} out/$CI_JOB_NAME_SLUG/log \;
+  - test -n "$CI_COMMIT_TAG" || mv -v *23.42.17* out/$CI_JOB_NAME_SLUG/rel/
+  - mv -v *-src.tar.* out/$CI_JOB_NAME_SLUG/src/
+  - mv -v *.tar.* ~/announce-* out/$CI_JOB_NAME_SLUG/
+
+R-Debian12:
+  tags: [ saas-linux-medium-amd64 ]
+  image: debian:12-slim
+  stage: repro
+  needs: []
+  before_script:
+  - cat /etc/os-release
+  - time apt-get update -qq
+  - time apt-get install -y -q eatmydata
+  - time eatmydata apt-get install -y -q wget make gcc git autoconf automake libtool autopoint gperf libunistring-dev gengetopt help2man texinfo abi-compliance-checker abigail-tools gtk-doc-tools
+  script:
+  - !reference [.gnulib-fetch, script]
+  - time ./bootstrap --skip-po --no-git
+  - time ./configure --enable-gcc-warnings
+  - time make syntax-check
+  - time make -j$(nproc) check V=1 VERBOSE=t
+  - time make -j$(nproc) dist
+  - sha256sum *.tar.*
+  - git status
+  - git diff --exit-code
+  - time apt-get install -y -q --no-install-recommends gpg gpgv2 gpg-agent
+  - gpg --batch --passphrase '' --quick-gen-key pipeline@example.org
+  - git checkout -B cibranch
+  - git config user.email "pipeline@example.org"
+  - git config user.name "Pipeline Builder"
+  - git config user.signingkey pipeline@example.org
+  - |
+    if test -z "$CI_COMMIT_TAG"; then
+      sed -i '3i * Noteworthy changes in release ?.? (????-??-??) [?]\n\n** WARNING This release was prepared automatically with no testing.\n' NEWS
+      git commit -m "Warn about automatic release." NEWS
+      relver='23.42.17'
+      reltyp='alpha'
+    else # maintainer ran release-commit
+      relver=$(cat NEWS | sed -n -e 's/.*release \([0-9.]\+\) (....-..-..) \[\(.*\)\].*/\1/p' | head -1)
+      reltyp=$(cat NEWS | sed -n -e 's/.*release \([0-9.]\+\) (....-..-..) \[\(.*\)\].*/\2/p' | head -1)
+    fi
+  - test -n "$CI_COMMIT_TAG" || make release-commit RELEASE="$relver $reltyp"
+  - time make release RELEASE="$relver $reltyp" V=1 VERBOSE=t AM_DISTCHECK_DVI_TARGET=
+  - cat -n ~/announce-*
+  - git diff --exit-code # nothing should change version controlled files
+  - sha256sum *.tar.*
+  - mkdir -pv out/$CI_JOB_NAME_SLUG/{src,rel,log}
+  - find config.h *.log tests/*.log -exec mv -v {} out/$CI_JOB_NAME_SLUG/log \;
+  - test -n "$CI_COMMIT_TAG" || mv -v *23.42.17* out/$CI_JOB_NAME_SLUG/rel/
+  - mv -v *-src.tar.* out/$CI_JOB_NAME_SLUG/src/
+  - mv -v *.tar.* ~/announce-* out/$CI_JOB_NAME_SLUG/
+
+R-Ubuntu2404:
+  image: ubuntu:24.04
+  tags: [ saas-linux-medium-amd64 ]
+  stage: repro
+  needs: []
+  before_script:
+  - cat /etc/os-release
+  - time apt-get update -qq
+  - time apt-get install -y -q eatmydata
+  - time eatmydata apt-get install -y -q wget make gcc git autoconf automake libtool autopoint gperf libunistring-dev gengetopt indent help2man texinfo abi-compliance-checker abigail-tools gtk-doc-tools
+  script:
+  - !reference [.gnulib-fetch, script]
+  - time ./bootstrap --skip-po --no-git
+  - time ./configure --enable-gcc-warnings
+  - time make -j$(nproc) syntax-check
+  - time make -j$(nproc) check V=1 VERBOSE=t
+  - time make -j$(nproc) dist
+  - sha256sum *.tar.*
+  - git status
+  - git diff --exit-code # nothing should change version controlled files
+  - apt-get install -y -q gpg gpgv
+  - gpg --batch --passphrase '' --quick-gen-key pipeline@example.org
+  - git checkout $CI_COMMIT_BRANCH
+  - git config user.email "pipeline@example.org"
+  - git config user.name "Pipeline Builder"
+  - git config user.signingkey pipeline@example.org
+  - |
+    if test -z "$CI_COMMIT_TAG"; then
+      sed -i '3i * Noteworthy changes in release ?.? (????-??-??) [?]\n\n** WARNING This release was prepared automatically with no testing.\n' NEWS
+      git commit -m "Warn about automatic release." NEWS
+      relver='23.42.17'
+      reltyp='alpha'
+    else # maintainer ran release-commit
+      relver=$(cat NEWS | sed -n -e 's/.*release \([0-9.]\+\) (....-..-..) \[\(.*\)\].*/\1/p' | head -1)
+      reltyp=$(cat NEWS | sed -n -e 's/.*release \([0-9.]\+\) (....-..-..) \[\(.*\)\].*/\2/p' | head -1)
+    fi
+  - test -n "$CI_COMMIT_TAG" || make release-commit RELEASE="$relver $reltyp"
+  - make release RELEASE="$relver $reltyp" V=1 VERBOSE=t AM_DISTCHECK_DVI_TARGET=
+  - cat -n ~/announce-*
+  - git diff --exit-code # nothing should change version controlled files
+  - sha256sum *.tar.*
+  - mkdir -pv out/$CI_JOB_NAME_SLUG/{src,rel,log}
+  - find config.h *.log tests/*.log -exec mv -v {} out/$CI_JOB_NAME_SLUG/log \;
+  - test -n "$CI_COMMIT_TAG" || mv -v *23.42.17* out/$CI_JOB_NAME_SLUG/rel/
+  - mv -v *-src.tar.* out/$CI_JOB_NAME_SLUG/src/
+  - mv -v *.tar.* ~/announce-* out/$CI_JOB_NAME_SLUG/
+
+S-Trisquel10:
+  tags: [ saas-linux-medium-amd64 ]
+  image: docker.io/kpengboy/trisquel:10.0
+  stage: repro
+  needs: [B-Trisquel11]
+  before_script:
+  - cat /etc/os-release
+  - sed -i 's,http://archive.trisquel.info/trisquel,http://ftp.acc.umu.se/mirror/trisquel/packages,' /etc/apt/sources.list
+  - time apt-get update -qq
+  - time apt-get install -y -q eatmydata
+  - time eatmydata apt-get install -y -q wget make gcc git autoconf automake libtool autopoint gettext gperf libunistring-dev gengetopt help2man texinfo abi-compliance-checker abigail-tools
+  script:
+  - mkdir -pv ../b
+  - cd ../b
+  - tar xfz ../*/out/b-trisquel11/src/*-*.tar.gz
+  - cd $(tar tfa ../*/out/b-trisquel11/src/*-*.tar.gz | head -n1)
+  - !reference [.gnulib-fetch, script]
+  - time ./bootstrap --no-git
+  - time ./configure
+  - grep '^VERSION = ' Makefile | grep -v UNKNOWN
+  - time make -j$(nproc) check V=1 VERBOSE=t
+  - src/idn2 --version | head -1 | grep -v UNKNOWN
+  - time make -j$(nproc) dist AM_DISTCHECK_DVI_TARGET=
+  - sha256sum *.tar.*
+  - mkdir -pv $CI_PROJECT_DIR/out/$CI_JOB_NAME_SLUG/{src,log}
+  - find config.h *.log tests/*.log -exec mv -v {} $CI_PROJECT_DIR/out/$CI_JOB_NAME_SLUG/log \;
+  - mv -v *.tar.* $CI_PROJECT_DIR/out/$CI_JOB_NAME_SLUG/
+
+S-Ubuntu2004:
+  tags: [ saas-linux-medium-amd64 ]
+  image: ubuntu:20.04
+  stage: repro
+  needs: [B-Trisquel11]
+  variables:
+    DEBIAN_FRONTEND: noninteractive
+  before_script:
+  - cat /etc/os-release
+  - time apt-get update -qq
+  - time apt-get install -y -q eatmydata
+  - time eatmydata apt-get install -y -q wget make gcc git autoconf automake libtool autopoint gettext gperf libunistring-dev gengetopt help2man texinfo abi-compliance-checker abigail-tools
+  script:
+  - tar xfz out/b-trisquel11/src/*-*.tar.gz
+  - cd $(tar tfa out/b-trisquel11/src/*-*.tar.gz | head -n1)
+  - !reference [.gnulib-fetch, script]
+  - time ./bootstrap --no-git
+  - time ./configure
+  - grep '^VERSION = ' Makefile | grep -v UNKNOWN
+  - time make -j$(nproc) check V=1 VERBOSE=t
+  - src/idn2 --version | head -1 | grep -v UNKNOWN
+  - time make -j$(nproc) dist AM_DISTCHECK_DVI_TARGET=
+  - sha256sum *.tar.*
+  - mkdir -pv ../out/$CI_JOB_NAME_SLUG/{src,log}
+  - find config.h *.log tests/*.log -exec mv -v {} ../out/$CI_JOB_NAME_SLUG/log \;
+  - mv -v *.tar.* ../out/$CI_JOB_NAME_SLUG/
+
 Windows-MSYS:
   rules:
+  - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-  - when: manual
-  tags: [ shared-windows, windows-1809 ]
+  tags: [ saas-windows-medium-amd64 ]
   stage: test
   needs: [B-Trisquel11]
   variables:
@@ -390,17 +744,17 @@ Windows-MSYS:
   - |
     C:\msys64\usr\bin\bash -lcx '
     pacman --noconfirm -Syu make gcc libiconv-devel
-    tar xfa libidn2-*.tar.gz
-    cd `ls -d libidn2-* | grep -v tar.gz`
+    tar xfa out/b-trisquel11/*-*.tar.gz
+    cd $(tar tfa out/b-trisquel11/*-*.tar.gz | head -n1)
     ./configure --enable-gcc-warnings=error
     make -j$(nproc) V=1 -k check VERBOSE=t'
-  - C:\msys64\usr\bin\bash -lc 'grep ^PASS tests/test-register.log'
+  - C:\msys64\usr\bin\bash -lc 'grep ^PASS */tests/test-register.log'
 
 Windows-MINGW64:
   rules:
+  - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-  - when: manual
-  tags: [ shared-windows, windows-1809 ]
+  tags: [ saas-windows-medium-amd64 ]
   stage: test
   needs: [B-Trisquel11]
   variables:
@@ -417,11 +771,11 @@ Windows-MINGW64:
   - |
     C:\msys64\usr\bin\bash -lcx '
     pacman --noconfirm -Syu make mingw-w64-x86_64-gcc
-    tar xfa libidn2-*.tar.gz
-    cd `ls -d libidn2-* | grep -v tar.gz`
+    tar xfa out/b-trisquel11/*-*.tar.gz
+    cd $(tar tfa out/b-trisquel11/*-*.tar.gz | head -n1)
     ./configure --enable-gcc-warnings=error
     make -j$(nproc) V=1 -k check VERBOSE=t'
-  - C:\msys64\usr\bin\bash -lc 'grep ^PASS tests/test-register.log'
+  - C:\msys64\usr\bin\bash -lc 'grep ^PASS */tests/test-register.log'
 
 Debian5:
   image: debian/eol:lenny
@@ -431,8 +785,8 @@ Debian5:
   - apt-get update
   - apt-get install -y -qq make gcc locales-all
   script:
-  - tar xfz libidn2-*.tar.gz
-  - cd `ls -d libidn2-* | grep -v tar.gz`
+  - tar xfz out/b-trisquel11/*-*.tar.gz
+  - cd $(tar tfz out/b-trisquel11/*-*.tar.gz | head -n1)
   - ./configure --enable-gcc-warnings=error
   - make -j$(nproc) -k check V=1 VERBOSE=t
 
@@ -445,8 +799,8 @@ Debian9:
   - apt-get update || true
   - apt-get install -y -qq make gcc
   script:
-  - tar xfz libidn2-*.tar.gz
-  - cd `ls -d libidn2-* | grep -v tar.gz`
+  - tar xfa out/b-trisquel11/*-*.tar.gz
+  - cd $(tar tfa out/b-trisquel11/*-*.tar.gz | head -n1)
   - mkdir b
   - cd b
   - ../configure --enable-gcc-warnings=error
@@ -460,8 +814,8 @@ Debian10:
   - apt-get update
   - apt-get install -y -qq make gcc
   script:
-  - tar xfz libidn2-*.tar.gz
-  - cd `ls -d libidn2-* | grep -v tar.gz`
+  - tar xfa out/b-trisquel11/*-*.tar.gz
+  - cd $(tar tfa out/b-trisquel11/*-*.tar.gz | head -n1)
   - mkdir b
   - cd b
   - ../configure --enable-gcc-warnings=error
@@ -475,8 +829,8 @@ Debian-testing:
   - apt-get update
   - apt-get install -y -qq make gcc
   script:
-  - tar xfz libidn2-*.tar.gz
-  - cd `ls -d libidn2-* | grep -v tar.gz`
+  - tar xfa out/b-trisquel11/*-*.tar.gz
+  - cd $(tar tfa out/b-trisquel11/*-*.tar.gz | head -n1)
   - mkdir b
   - cd b
   - ../configure --enable-gcc-warnings=error
@@ -491,7 +845,7 @@ Debian-testing:
 Alpine:
   image: alpine:latest
   stage: test
-  needs: [B-Debian-testing]
+  needs: [B-Trisquel11]
   before_script:
   - echo "ipv6" >> /etc/modules
   - apk update
@@ -499,8 +853,8 @@ Alpine:
   variables:
     WERROR_CFLAGS: "-Wno-error=unused-value -Wno-error=format-nonliteral"
   script:
-  - tar xfz libidn2-*.tar.gz
-  - cd `ls -d libidn2-* | grep -v tar.gz`
+  - tar xfa out/b-trisquel11/*-*.tar.gz
+  - cd $(tar tfa out/b-trisquel11/*-*.tar.gz | head -n1)
   - ./configure --enable-gcc-warnings=error
   - make -j$(nproc) -k check V=1 VERBOSE=t
 
@@ -511,22 +865,22 @@ ArchLinux:
   before_script:
   - pacman -Syu --noconfirm make gcc diffutils
   script:
-  - tar xfz libidn2-*.tar.gz
-  - cd `ls -d libidn2-* | grep -v tar.gz`
+  - tar xfa out/b-trisquel11/*-*.tar.gz
+  - cd $(tar tfa out/b-trisquel11/*-*.tar.gz | head -n1)
   - mkdir b
   - cd b
   - ../configure --enable-gcc-warnings=error
   - make -j$(nproc) -k check V=1 VERBOSE=t
 
-CentOS7:
-  image: centos:7
+OracleLinux7:
+  image: oraclelinux:7
   stage: test
   needs: [B-Trisquel11]
   before_script:
   - yum -y install make gcc diffutils valgrind libunistring-devel
   script:
-  - tar xfa libidn2-*.tar.gz
-  - cd `ls -d libidn2-* | grep -v tar.gz`
+  - tar xfz out/b-trisquel11/*-*.tar.gz
+  - cd $(tar tfz out/b-trisquel11/*-*.tar.gz | head -n1)
   - ./configure --enable-gcc-warnings=error
   - make -j$(nproc) -k check V=1 VERBOSE=t
 
@@ -537,15 +891,15 @@ AlmaLinux8:
   before_script:
   - dnf --enablerepo=powertools -y install make gcc diffutils valgrind libunistring-devel
   script:
-  - tar xfa libidn2-*.tar.gz
-  - cd `ls -d libidn2-* | grep -v tar.gz`
+  - tar xfa out/b-trisquel11/*-*.tar.gz
+  - cd $(tar tfa out/b-trisquel11/*-*.tar.gz | head -n1)
   - ./configure --enable-gcc-warnings=error
   - make -j$(nproc) -k check V=1 VERBOSE=t
 
 RockyLinux9-ppc64:
   rules:
+  - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-  - when: manual
   image: rockylinux:9
   tags: [ ppc64 ]
   stage: test
@@ -553,8 +907,8 @@ RockyLinux9-ppc64:
   before_script:
   - dnf --enablerepo=crb -y install make gcc diffutils valgrind libunistring-devel
   script:
-  - tar xfa libidn2-*.tar.gz
-  - cd `ls -d libidn2-* | grep -v tar.gz`
+  - tar xfa out/b-trisquel11/*-*.tar.gz
+  - cd $(tar tfa out/b-trisquel11/*-*.tar.gz | head -n1)
   - time ./configure --enable-gcc-warnings=error
   - time make -j$(nproc) check V=1 VERBOSE=t
 
@@ -566,8 +920,8 @@ Ubuntu14.04:
   - apt-get update -qq
   - apt-get install -y -qq make gcc
   script:
-  - tar xfa libidn2-*.tar.gz
-  - cd `ls -d libidn2-* | grep -v tar.gz`
+  - tar xfa out/b-trisquel11/*-*.tar.gz
+  - cd $(tar tfa out/b-trisquel11/*-*.tar.gz | head -n1)
   - ./configure --enable-gcc-warnings=error
   - make -j$(nproc) -k check V=1 VERBOSE=t
 
@@ -579,8 +933,8 @@ Trisquel11:
   - apt-get update -qq
   - apt-get install -y -qq make gcc
   script:
-  - tar xfa libidn2-*.tar.gz
-  - cd `ls -d libidn2-* | grep -v tar.gz`
+  - tar xfa out/b-trisquel11/*-*.tar.gz
+  - cd $(tar tfa out/b-trisquel11/*-*.tar.gz | head -n1)
   - ./configure --enable-gcc-warnings=error
   - make -j$(nproc) -k check V=1 VERBOSE=t
 
@@ -592,8 +946,8 @@ Ubuntu-rolling:
   - apt-get update -qq
   - apt-get install -y -qq git make gcc gtk-doc-tools texinfo texlive texlive-plain-generic dblatex
   script:
-  - tar xfa libidn2-*.tar.gz
-  - cd `ls -d libidn2-* | grep -v tar.gz`
+  - tar xfa out/b-trisquel11/*-*.tar.gz
+  - cd $(tar tfa out/b-trisquel11/*-*.tar.gz | head -n1)
   - ./configure --enable-gcc-warnings=error
   - make -j$(nproc) -k check V=1 VERBOSE=t
   - make -j$(nproc) -k distcheck
@@ -610,8 +964,8 @@ armcross:
   - apt-get update -qq
   - apt-get install -y -qq make gcc-arm-linux-gnueabi libstdc++6:armel
   script:
-  - tar xfz libidn2-*.tar.gz
-  - cd `ls -d libidn2-* | grep -v tar.gz`
+  - tar xfa out/b-trisquel11/*-*.tar.gz
+  - cd $(tar tfa out/b-trisquel11/*-*.tar.gz | head -n1)
   - mkdir b
   - cd b
   - ../configure --host=arm-linux-gnueabi --enable-gcc-warnings=error
@@ -632,8 +986,8 @@ Mingw32:
   variables:
     WERROR_CFLAGS: "-Wno-error=unused-value -Wno-error=format-nonliteral"
   script:
-  - tar xfz libidn2-*.tar.gz
-  - cd `ls -d libidn2-* | grep -v tar.gz`
+  - tar xfa out/b-trisquel11/*-*.tar.gz
+  - cd $(tar tfa out/b-trisquel11/*-*.tar.gz | head -n1)
   - mkdir b
   - cd b
   - ../configure --host=i686-w64-mingw32 CC='i686-w64-mingw32-gcc -static-libgcc' --enable-gcc-warnings=error
@@ -651,8 +1005,8 @@ Mingw64:
   variables:
     WERROR_CFLAGS: "-Wno-error=unused-value -Wno-error=format-nonliteral"
   script:
-  - tar xfz libidn2-*.tar.gz
-  - cd `ls -d libidn2-* | grep -v tar.gz`
+  - tar xfa out/b-trisquel11/*-*.tar.gz
+  - cd $(tar tfa out/b-trisquel11/*-*.tar.gz | head -n1)
   - mkdir b
   - cd b
   - ../configure --host=x86_64-w64-mingw32 --enable-gcc-warnings=error
@@ -690,10 +1044,10 @@ Mingw64:
 
 pages:
   extends: .pages
-  rules:
-  - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  only:
+    - master
 
 pages-test:
   extends: .pages
-  rules:
-  - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+  except:
+    - master
