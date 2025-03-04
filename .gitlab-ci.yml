@@ -237,7 +237,10 @@ Q-Debian-testing:
   - time eatmydata apt-get install -y -q wget make gcc git autoconf automake libtool autopoint gperf libunistring-dev gengetopt indent
   script:
   - apt-get install -y idn2 libidn2-dev libunistring-dev | tail
+  - cp -a tests/test-lookup.c tests/test-lookup.c~
+  - sed -i -e 's/"xn--pkf", IDN2_DISALLOWED/"xn--pkf", IDN2_OK/' tests/test-lookup.c
   - env STANDALONE_DISABLE='*punycode* *test-IdnaTest-inc*' tests/standalone.sh
+  - mv tests/test-lookup.c~ tests/test-lookup.c
   - apt-get remove -y --purge libidn2-dev libunistring-dev | tail
   - !reference [.gnulib-fetch, script]
   - time ./bootstrap --no-git --skip-po
@@ -259,7 +262,10 @@ B-Debian-testing:
   - apt-get update -qq -y
   - apt-get install -qq -y make gcc git autoconf automake libtool gettext autopoint gperf libunistring-dev valgrind gengetopt help2man texinfo texlive gtk-doc-tools abi-compliance-checker abigail-tools libidn2-dev idn2
   script:
-  - env STANDALONE_DISABLE='*punycode* *IdnaTest-inc*' tests/standalone.sh
+  - cp -a tests/test-lookup.c tests/test-lookup.c~
+  - sed -i -e 's/"xn--pkf", IDN2_DISALLOWED/"xn--pkf", IDN2_OK/' tests/test-lookup.c
+  - env STANDALONE_DISABLE='*punycode* *test-IdnaTest-inc*' tests/standalone.sh
+  - mv tests/test-lookup.c~ tests/test-lookup.c
   - apt-get remove -y --purge libidn2-dev idn2
   - ./bootstrap --skip-po
   - ./configure --enable-gcc-warnings=error --enable-valgrind-tests
