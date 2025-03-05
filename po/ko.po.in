@@ -1,0 +1,234 @@
+# Korean translation of the libidn2.
+# Copyright (C) 2022 Free Software Foundation, Inc.
+# This file is distributed under the same license as the libidn2 package.
+# Seong-ho Cho <darkcircle.0426@gmail.com>, 2022.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: libidn2 2.3.3\n"
+"Report-Msgid-Bugs-To: bug-libidn2@gnu.org\n"
+"POT-Creation-Date: 2022-07-11 21:43+0200\n"
+"PO-Revision-Date: 2022-07-12 17:49+0900\n"
+"Last-Translator: Seong-ho Cho <darkcircle.0426@gmail.com>\n"
+"Language-Team: Korean <translation-team-ko@googlegroups.com>\n"
+"Language: ko\n"
+"X-Bugs: Report translation errors to the Language-Team address.\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.1.1\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+#: lib/error.c:54
+msgid "success"
+msgstr "성공"
+
+#: lib/error.c:56
+msgid "out of memory"
+msgstr "메모리 부족"
+
+#: lib/error.c:58
+msgid "could not determine locale encoding format"
+msgstr "로캘 인코딩 형식을 확인할 수 없습니다"
+
+#: lib/error.c:60
+msgid "could not convert string to UTF-8"
+msgstr "문자열을 UTF-8로 변환할 수 없습니다"
+
+#: lib/error.c:62
+msgid "string encoding error"
+msgstr "문자열 인코딩 오류"
+
+#: lib/error.c:64
+msgid "string could not be NFC normalized"
+msgstr "문자열을 NFC 정규화 처리할 수 없습니다"
+
+#: lib/error.c:66
+msgid "string contains invalid punycode data"
+msgstr "문자열에 부적절한 퓨니코드 데이터가 있습니다"
+
+#: lib/error.c:68
+msgid "punycode encoded data will be too large"
+msgstr "퓨니코드 인코딩 데이터가 상당히 커질 수 있습니다"
+
+#: lib/error.c:70
+msgid "punycode conversion resulted in overflow"
+msgstr "퓨니코드 변환시 오버플로우가 발생했습니다"
+
+#: lib/error.c:72
+msgid "domain name longer than 255 characters"
+msgstr "도메인 이름 문자 갯수가 255보다 많습니다"
+
+#: lib/error.c:74
+msgid "domain label longer than 63 characters"
+msgstr "도메인 레이블 문자 갯수가 63보다 많습니다"
+
+#: lib/error.c:76
+msgid "input A-label is not valid"
+msgstr "입력 A-레이블이 적절하지 않습니다"
+
+#: lib/error.c:78
+msgid "input A-label and U-label does not match"
+msgstr "입력 A-레이블과 U-레이블이 일치하지 않습니다"
+
+#: lib/error.c:80
+msgid "string is not in Unicode NFC format"
+msgstr "문자열이 유니코드 NFC 형식이 아닙니다"
+
+#: lib/error.c:82
+msgid "string contains forbidden two hyphens pattern"
+msgstr "문자열에 금지하는 이중 하이픈 패턴이 들어있습니다"
+
+#: lib/error.c:84
+msgid "string start/ends with forbidden hyphen"
+msgstr "문자열이 금지하는 하이픈으로 시작하거나 끝납니다"
+
+#: lib/error.c:86
+msgid "string contains a forbidden leading combining character"
+msgstr "문자열에 금지하는 행간 결합 문자가 있습니다"
+
+#: lib/error.c:88
+msgid "string contains a disallowed character"
+msgstr "문자열에 허용하지 않는 문자가 있습니다"
+
+#: lib/error.c:90
+msgid "string contains a forbidden context-j character"
+msgstr "문자열에 금지하는 컨텍스트-j 문자가 들어있습니다"
+
+#: lib/error.c:92
+msgid "string contains a context-j character with null rule"
+msgstr "문자열에 널 규칙이 들어간 컨텍스트-j 문자가 들어있습니다"
+
+#: lib/error.c:94
+msgid "string contains a forbidden context-o character"
+msgstr "문자열에 금지하는 컨택스트-o 문자가 들어있습니다"
+
+#: lib/error.c:96
+msgid "string contains a context-o character with null rule"
+msgstr "문자열에 널 규칙이 들어간 컨텍스트-o 문자가 들어있습니다"
+
+#: lib/error.c:98
+msgid "string contains unassigned code point"
+msgstr "문자열에 할당하지 않은 코드 포인트가 있습니다"
+
+#: lib/error.c:100
+msgid "string has forbidden bi-directional properties"
+msgstr "문자열에 금지하는 양방향 속성이 들어있습니다"
+
+#: lib/error.c:102
+msgid "domain label has forbidden dot (TR46)"
+msgstr "도메인 레이블에 금지하는 점 문자가 있습니다 (TR46)"
+
+#: lib/error.c:105
+msgid "domain label has character forbidden in transitional mode (TR46)"
+msgstr "도메인 레이블에 변환 모드에서 금지하는 문자가 있습니다 (TR46)"
+
+#: lib/error.c:109
+msgid "domain label has character forbidden in non-transitional mode (TR46)"
+msgstr "도메인 레이블에 비변환 모드에서 금지하는 문자가 있습니다 (TR46)"
+
+#: lib/error.c:111
+msgid "A-label roundtrip failed"
+msgstr "A-레이블 라운드트리핑 실패"
+
+#: lib/error.c:113
+msgid "Unknown error"
+msgstr "알 수 없는 오류"
+
+#: src/idn2.c:57
+#, c-format
+msgid "Try `%s --help' for more information.\n"
+msgstr "자세한 정보는 `%s --help'를 입력하십시오.\n"
+
+#: src/idn2.c:61
+#, c-format
+msgid "Usage: %s [OPTION]... [STRINGS]...\n"
+msgstr "사용법: %s [<옵션>]... [<문자열>]...\n"
+
+#: src/idn2.c:64
+msgid ""
+"Internationalized Domain Name (IDNA2008) convert STRINGS, or standard input.\n"
+"\n"
+msgstr ""
+"<문자열> 또는 표준 입력으로부터 입력을 받아 처리하는 국제화 도메인 이름 (IDNA2008) 구현체입니다.\n"
+"\n"
+
+#: src/idn2.c:68
+msgid ""
+"Command line interface to the Libidn2 implementation of IDNA2008.\n"
+"\n"
+"All strings are expected to be encoded in the locale charset.\n"
+"\n"
+"To process a string that starts with `-', for example `-foo', use `--'\n"
+"to signal the end of parameters, as in `idn2 --quiet -- -foo'.\n"
+"\n"
+"Mandatory arguments to long options are mandatory for short options too.\n"
+msgstr ""
+"IDNA2008의 libidn2 구현체 명령행 인터페이스입니다.\n"
+"\n"
+"모든 문자열은 로캘 문자세트로 변환한 상태임을 가정합니다.\n"
+"\n"
+"예를 들어 `-foo' 처럼 `-'으로 시작하는 문자열을 처리하려면,\n"
+"매개변수 끝을 알리는 `--' 옵션을, `idn2 --quiet -- -foo'처럼\n"
+"사용하십시오.\n"
+"\n"
+"긴 옵션의 필수 인자는 짧은 옵션에 대해서도 마찬가지입니다.\n"
+
+#: src/idn2.c:78
+msgid ""
+"  -h, --help                Print help and exit\n"
+"  -V, --version             Print version and exit\n"
+msgstr ""
+"  -h, --help                도움말을 출력하고 나갑니다\n"
+"  -V, --version             버전을 출력하고 나갑니다\n"
+
+#: src/idn2.c:82
+msgid ""
+"  -d, --decode              Decode (punycode) domain name\n"
+"  -l, --lookup              Lookup domain name (default)\n"
+"  -r, --register            Register label\n"
+msgstr ""
+"  -d, --decode              도메인 이름 디코딩 (퓨니코드)\n"
+"  -l, --lookup              도메인 이름 검색 (기본 동작)\n"
+"  -r, --register            레이블 등록\n"
+
+#: src/idn2.c:87
+msgid ""
+"  -T, --tr46t               Enable TR46 transitional processing\n"
+"  -N, --tr46nt              Enable TR46 non-transitional processing\n"
+"      --no-tr46             Disable TR46 processing\n"
+msgstr ""
+"  -T, --tr46t               TR46 변환 처리 활성\n"
+"  -N, --tr46nt              TR46 비변환 처리 활성\n"
+"      --no-tr46             TR46 처리 비활성\n"
+
+#: src/idn2.c:92
+msgid ""
+"      --usestd3asciirules   Enable STD3 ASCII rules\n"
+"      --no-alabelroundtrip  Disable A-label roundtrip for lookups\n"
+"      --debug               Print debugging information\n"
+"      --quiet               Silent operation\n"
+msgstr ""
+"      --usestd3asciirules   STD3 ASCII 규칙 활성\n"
+"      --no-alabelroundtrip  검색 목적 A-레이블 라운드트리핑 비활성\n"
+"      --debug               디버깅 정보 출력\n"
+"      --quiet               조용하게 처리\n"
+
+#: src/idn2.c:207
+#, c-format
+msgid "Charset: %s\n"
+msgstr "문자세트: %s\n"
+
+#: src/idn2.c:211
+#, c-format
+msgid "libiconv required for non-UTF-8 character encoding: %s"
+msgstr "비 UTF-8 문자 인코딩을 수행하려면 libiconv가 필요합니다: %s"
+
+#: src/idn2.c:217
+msgid "Type each input string on a line by itself, terminated by a newline character.\n"
+msgstr "개행 문자로 끝나는 문자열을 각 줄 별로 입력하십시오.\n"
+
+#: src/idn2.c:248
+msgid "input error"
+msgstr "입력 오류"

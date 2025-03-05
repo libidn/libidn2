@@ -1,0 +1,381 @@
+# Spanish translation for libidn2 2.3.3
+# Copyright (C) 2017, 2018, 2019, 2020, 2021, 2022 Free Software Foundation, Inc.
+# This file is distributed under the same license as the libidn2 package.
+# Francisco Javier Serrador <fserrador@gmail.com>, 2018.
+# Cristian Othón Martínez Vera <cfuga@cfuga.mx>, 2022.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: libidn2 2.3.3\n"
+"Report-Msgid-Bugs-To: bug-libidn2@gnu.org\n"
+"POT-Creation-Date: 2022-07-11 21:43+0200\n"
+"PO-Revision-Date: 2022-07-18 09:07-0500\n"
+"Last-Translator: Cristian Othón Martínez Vera <cfuga@cfuga.mx>\n"
+"Language-Team: Spanish <es@tp.org.es>\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Bugs: Report translation errors to the Language-Team address.\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/error.c:54
+msgid "success"
+msgstr "éxito"
+
+#: lib/error.c:56
+msgid "out of memory"
+msgstr "memoria agotada"
+
+#: lib/error.c:58
+msgid "could not determine locale encoding format"
+msgstr "no se puede determinar el formato de codificación local"
+
+#: lib/error.c:60
+msgid "could not convert string to UTF-8"
+msgstr "no se puede la cadena a a UTF-8"
+
+#: lib/error.c:62
+msgid "string encoding error"
+msgstr "error de codificación de cadena"
+
+#: lib/error.c:64
+msgid "string could not be NFC normalized"
+msgstr "no se puede normalizar la cadena con NFC"
+
+#: lib/error.c:66
+msgid "string contains invalid punycode data"
+msgstr "la cadena contiene datos de código puny inválidos"
+
+#: lib/error.c:68
+msgid "punycode encoded data will be too large"
+msgstr "los datos codificados con código puny serían demasiado grandes"
+
+#: lib/error.c:70
+msgid "punycode conversion resulted in overflow"
+msgstr "la conversión de código puny resulta en desbordamiento"
+
+#: lib/error.c:72
+msgid "domain name longer than 255 characters"
+msgstr "nombre de dominio más largo que 255 caracteres"
+
+#: lib/error.c:74
+msgid "domain label longer than 63 characters"
+msgstr "etiqueta de dominio más largo que 63 caracteres"
+
+#: lib/error.c:76
+msgid "input A-label is not valid"
+msgstr "la entrada con etiqueta-A no es válida"
+
+#: lib/error.c:78
+msgid "input A-label and U-label does not match"
+msgstr "no coinciden las entradas con etiqueta-A y etiqueta-U"
+
+#: lib/error.c:80
+msgid "string is not in Unicode NFC format"
+msgstr "la cadena no está en el formato NFC de Unicode"
+
+#: lib/error.c:82
+msgid "string contains forbidden two hyphens pattern"
+msgstr "la cadena contiene un patrón prohibido de dos guiones"
+
+#: lib/error.c:84
+msgid "string start/ends with forbidden hyphen"
+msgstr "la cadena inicia/termina con un guión prohibido"
+
+#: lib/error.c:86
+msgid "string contains a forbidden leading combining character"
+msgstr "la cadena contiene una combinación inicial de caracteres prohibida"
+
+#: lib/error.c:88
+msgid "string contains a disallowed character"
+msgstr "la cadena contiene un carácter no permitido"
+
+#: lib/error.c:90
+msgid "string contains a forbidden context-j character"
+msgstr "la cadena contiene un carácter de contexto-j prohibido"
+
+#: lib/error.c:92
+msgid "string contains a context-j character with null rule"
+msgstr "la cadena contiene un carácter de contexto-j con una regla nula"
+
+#: lib/error.c:94
+msgid "string contains a forbidden context-o character"
+msgstr "la cadena contiene un carácter de contexto-o prohibido"
+
+#: lib/error.c:96
+msgid "string contains a context-o character with null rule"
+msgstr "la cadena contiene on carácter de contexto-o con una regla nula"
+
+#: lib/error.c:98
+msgid "string contains unassigned code point"
+msgstr "la cadena contiene un punto de código sin asignar"
+
+#: lib/error.c:100
+msgid "string has forbidden bi-directional properties"
+msgstr "la cadena tiene propiedades bi-direccionales prohibidas"
+
+#: lib/error.c:102
+msgid "domain label has forbidden dot (TR46)"
+msgstr "la etiqueta de dominio tiene un punto prohibido (TR46)"
+
+#: lib/error.c:105
+msgid "domain label has character forbidden in transitional mode (TR46)"
+msgstr "la etiqueta de dominio tiene un carácter prohibido en modo transicional (TR46)"
+
+#: lib/error.c:109
+msgid "domain label has character forbidden in non-transitional mode (TR46)"
+msgstr "la etiqueta de dominio tiene un carácter prohibido en modo que no es transicional (TR46)"
+
+#: lib/error.c:111
+msgid "A-label roundtrip failed"
+msgstr "falló la vuelta de etiqueta-A"
+
+#: lib/error.c:113
+msgid "Unknown error"
+msgstr "Error desconocido"
+
+#: src/idn2.c:57
+#, c-format
+msgid "Try `%s --help' for more information.\n"
+msgstr "Pruebe `%s --help' para más información.\n"
+
+#: src/idn2.c:61
+#, c-format
+msgid "Usage: %s [OPTION]... [STRINGS]...\n"
+msgstr "Uso: %s [OPCIÓN]... [CADENAS]...\n"
+
+#: src/idn2.c:64
+msgid ""
+"Internationalized Domain Name (IDNA2008) convert STRINGS, or standard input.\n"
+"\n"
+msgstr ""
+"Nombres de Dominio Internacionalizados (IDNA2008) convierte CADENAS, o la entrada estándard.\n"
+"\n"
+
+#: src/idn2.c:68
+msgid ""
+"Command line interface to the Libidn2 implementation of IDNA2008.\n"
+"\n"
+"All strings are expected to be encoded in the locale charset.\n"
+"\n"
+"To process a string that starts with `-', for example `-foo', use `--'\n"
+"to signal the end of parameters, as in `idn2 --quiet -- -foo'.\n"
+"\n"
+"Mandatory arguments to long options are mandatory for short options too.\n"
+msgstr ""
+"Interfaz de línea de órdenes para la implementación Libidn2 de IDNA2008.\n"
+"\n"
+"Se espera que todas las cadenas estén codificadas en el conjunto de\n"
+"caracteres local.\n"
+"\n"
+"Para procesar una cadena que inicia con '-', por ejemplo '-foo', use '--'\n"
+"para indicar el final de los parámetros, como en `idn2 --quiet -a -- -foo'.\n"
+"\n"
+"Los argumentos obligatorios para las opciones largas son también obligatorias\n"
+"para las opciones cortas.\n"
+
+#: src/idn2.c:78
+msgid ""
+"  -h, --help                Print help and exit\n"
+"  -V, --version             Print version and exit\n"
+msgstr ""
+"  -h, --help                Muestra la ayuda y termina\n"
+"  -V, --version             Muestra la versión y termina\n"
+
+#: src/idn2.c:82
+msgid ""
+"  -d, --decode              Decode (punycode) domain name\n"
+"  -l, --lookup              Lookup domain name (default)\n"
+"  -r, --register            Register label\n"
+msgstr ""
+"  -d, --decode              Decodifica el nombre de dominio (código puny)\n"
+"  -l, --lookup              Busca el nombre de dominio (por defecto)\n"
+"  -r, --register            Etiqueta de registro\n"
+
+#: src/idn2.c:87
+msgid ""
+"  -T, --tr46t               Enable TR46 transitional processing\n"
+"  -N, --tr46nt              Enable TR46 non-transitional processing\n"
+"      --no-tr46             Disable TR46 processing\n"
+msgstr ""
+"  -T, --tr46t               Activa el procesamiento TR46 transicional\n"
+"  -N, --tr46nt              Activa el procesamiento TR46 que no es transicional\n"
+"      --no-tr46             Desactiva el procesamiento TR46\n"
+
+#: src/idn2.c:92
+msgid ""
+"      --usestd3asciirules   Enable STD3 ASCII rules\n"
+"      --no-alabelroundtrip  Disable A-label roundtrip for lookups\n"
+"      --debug               Print debugging information\n"
+"      --quiet               Silent operation\n"
+msgstr ""
+"      --usestd3asciirules   Activa las reglas ASCII STD3\n"
+"      --no-alabelroundtip   Desactiva la vuelta de etiqueta-A para las búsquedas\n"
+"      --debug               Muestra información de depuración\n"
+"      --quiet               Operación silenciosa\n"
+
+#: src/idn2.c:207
+#, c-format
+msgid "Charset: %s\n"
+msgstr "Conjunto de caracteres: %s\n"
+
+#: src/idn2.c:211
+#, c-format
+msgid "libiconv required for non-UTF-8 character encoding: %s"
+msgstr "Se requiere libiconv para la codificación de caractér que no es UTF-8: %s"
+
+#: src/idn2.c:217
+msgid "Type each input string on a line by itself, terminated by a newline character.\n"
+msgstr "Escriba cada cadena de entrada en una línea para cada uno, terminando con carácter de línea nueva.\n"
+
+#: src/idn2.c:248
+msgid "input error"
+msgstr "error de entrada"
+
+#~ msgid "String preparation failed"
+#~ msgstr "Falló la preparación de cadena"
+
+#~ msgid "Punycode failed"
+#~ msgstr "Falló código puny"
+
+#~ msgid "Non-digit/letter/hyphen in input"
+#~ msgstr "No hay un dígito/letra/guión en la entrada"
+
+#~ msgid "Forbidden leading or trailing minus sign ('-')"
+#~ msgstr "Se prohibe un signo menos al inicio o al final ('-')"
+
+#~ msgid "Output would be too large or too small"
+#~ msgstr "La salida sería muy grande o muy pequeña"
+
+#~ msgid "Input does not start with ACE prefix ('xn--')"
+#~ msgstr "La entrada no inicia con el prefijo ACE ('xn--')"
+
+#~ msgid "String not idempotent under ToASCII"
+#~ msgstr "La cadena no es idempotente bajo ToASCII"
+
+#~ msgid "Input already contain ACE prefix ('xn--')"
+#~ msgstr "La entrada ya contiene el prefijo ACE ('xn--')"
+
+#~ msgid "System dlopen failed"
+#~ msgstr "Falló el dlopen del sistema"
+
+#~ msgid "Invalid input"
+#~ msgstr "Entrada inválida"
+
+#~ msgid "Output would exceed the buffer space provided"
+#~ msgstr "La salida excedería el espacio de almacenamiento previsto"
+
+#~ msgid "String size limit exceeded"
+#~ msgstr "Se excede el límite de tamaño de la cadena"
+
+#~ msgid "Prohibited code points in input"
+#~ msgstr "Puntos de código prohibidos en la entrada"
+
+#~ msgid "Malformed bidirectional string"
+#~ msgstr "Cadena bidireccional malformada"
+
+#~ msgid "Prohibited bidirectional code points in input"
+#~ msgstr "Puntos de código bidireccionales prohibidos en la entrada"
+
+#~ msgid "Error in stringprep profile definition"
+#~ msgstr "Error en la definición de perfil de stringprep"
+
+#~ msgid "Flag conflict with profile"
+#~ msgstr "Conflicto opción con perfil"
+
+#~ msgid "Unknown profile"
+#~ msgstr "Perfil desconocido"
+
+#~ msgid "Unicode normalization failed (internal error)"
+#~ msgstr "Falló la normalización Unicode (error interno)"
+
+#~ msgid "Code points prohibited by top-level domain"
+#~ msgstr "Puntos de código prohibidos por el dominio de nivel principal"
+
+#~ msgid "Missing input"
+#~ msgstr "Falta la entrada"
+
+#~ msgid "No top-level domain found in input"
+#~ msgstr "No se encontró un dominio de nivel principal en la entrada"
+
+#~ msgid ""
+#~ "  -s, --stringprep         Prepare string according to nameprep profile\n"
+#~ "  -d, --punycode-decode    Decode Punycode\n"
+#~ "  -e, --punycode-encode    Encode Punycode\n"
+#~ "  -a, --idna-to-ascii      Convert to ACE according to IDNA (default mode)\n"
+#~ "  -u, --idna-to-unicode    Convert from ACE according to IDNA\n"
+#~ msgstr ""
+#~ "  -s, --stringprep         Prepara la cadena de acuerdo al perfil nameprep\n"
+#~ "  -d, --punycode-decode    Decodifica código puny\n"
+#~ "  -e, --punycode-encode    Codifica código puny\n"
+#~ "  -a, --idna-to-ascii      Convierte a ACE de acuerdo a IDNA (modo por defecto)\n"
+#~ "  -u, --idna-to-unicode    Convierde de ACE de acuerdo a IDNA\n"
+
+#~ msgid ""
+#~ "      --allow-unassigned   Toggle IDNA AllowUnassigned flag (default off)\n"
+#~ "      --usestd3asciirules  Toggle IDNA UseSTD3ASCIIRules flag (default off)\n"
+#~ msgstr ""
+#~ "      --allow-unassigned   Activa/desactiva la opción IDNA AllowUnassigned (desctivado por defecto)\n"
+#~ "      --usestd3asciirules  Activa/desactiva la opción IDNA UseSTD3ASCIIRules (desactivado por defecto)\n"
+
+#~ msgid ""
+#~ "      --no-tld             Don't check string for TLD specific rules\n"
+#~ "                             Only for --idna-to-ascii and --idna-to-unicode\n"
+#~ msgstr ""
+#~ "      --no-tld             No verifica la cadena por reglas específicas para el TLD\n"
+#~ "                             Solamente para --idna-to-ascii y --idna-to-unicode\n"
+
+#~ msgid "  -n, --nfkc               Normalize string according to Unicode v3.2 NFKC\n"
+#~ msgstr "  -n, --nfkc               Normaliza la cadena de acuerdo a NFKC de Unicode v3.2\n"
+
+#~ msgid ""
+#~ "  -p, --profile=STRING     Use specified stringprep profile instead\n"
+#~ "                             Valid stringprep profiles: Nameprep\n"
+#~ "                             iSCSI Nodeprep Resourceprep trace SASLprep\n"
+#~ msgstr ""
+#~ "  -p, --profile=CADENA     Usa el perfil stringprep especificado\n"
+#~ "                             Perfiles stringprep válidos: Nameprep\n"
+#~ "                             iSCSI Nodeprep Resourceprep trace SASLprep\n"
+
+#~ msgid "only one of -s, -e, -d, -a, -u or -n can be specified"
+#~ msgstr "solamente se puede especificar uno de -s, -e, -d, -a, -u o -n"
+
+#~ msgid "could not convert from UTF-8 to UCS-4"
+#~ msgstr "no se puede convertir de UTF-8 a UCS-4"
+
+#~ msgid "stringprep_profile: %s"
+#~ msgstr "stringprep_profile: %s"
+
+#~ msgid "could not convert from UTF-8 to %s"
+#~ msgstr "no se puede convertir de UTF-8 a %s"
+
+#~ msgid "punycode_encode: %s"
+#~ msgstr "punycode_encode: %s"
+
+#~ msgid "malloc"
+#~ msgstr "malloc"
+
+#~ msgid "punycode_decode: %s"
+#~ msgstr "punycode_decode: %s"
+
+#~ msgid "could not convert from UCS-4 to UTF-8"
+#~ msgstr "no se puede convertir de UCS-4 a UTF-8"
+
+#~ msgid "idna_to_ascii_4z: %s"
+#~ msgstr "idna_to_ascii_4z: %s"
+
+#~ msgid "idna_to_unicode_8z4z (TLD): %s"
+#~ msgstr "idna_to_unicode_8z4z (TLD): %s"
+
+#~ msgid "tld_check_4z (position %lu): %s"
+#~ msgstr "tld_check_4z (posición %lu): %s"
+
+#~ msgid "tld_check_4z: %s"
+#~ msgstr "tld_check_4z: %s"
+
+#~ msgid "idna_to_unicode_8z4z: %s"
+#~ msgstr "idna_to_unicode_8z4z: %s"
+
+#~ msgid "System iconv failed"
+#~ msgstr "Falló el iconv del sistema"

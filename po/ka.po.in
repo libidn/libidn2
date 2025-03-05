@@ -1,0 +1,226 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022 Free Software Foundation, Inc.
+# This file is distributed under the same license as the libidn2 package.
+# Temuri Doghonadze <temuri.doghonadze@gmail.com>, 2022.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: libidn2 2.3.1\n"
+"Report-Msgid-Bugs-To: bug-libidn2@gnu.org\n"
+"POT-Creation-Date: 2021-05-12 19:43+0200\n"
+"PO-Revision-Date: 2022-04-16 10:17+0200\n"
+"Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
+"Language-Team: Georgian <(nothing)>\n"
+"Language: ka\n"
+"X-Bugs: Report translation errors to the Language-Team address.\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.0.1\n"
+
+#: lib/error.c:53
+msgid "success"
+msgstr "წარმატება"
+
+#: lib/error.c:54
+msgid "out of memory"
+msgstr "არასაკმარისი მეხსიერება"
+
+#: lib/error.c:55
+msgid "could not determine locale encoding format"
+msgstr "ენის კოდირების ფორმატის დადგენა შეუძლებელია"
+
+#: lib/error.c:56
+msgid "could not convert string to UTF-8"
+msgstr "სტრიქონის UTF-8-სი გადაყვანა შეუძლებელია"
+
+#: lib/error.c:57
+msgid "string encoding error"
+msgstr "სტრიქონის კოდირების შეცდომა"
+
+#: lib/error.c:58
+msgid "string could not be NFC normalized"
+msgstr "სტრიქონის NFC ნორმალიზება შეუძლებელია"
+
+#: lib/error.c:59
+msgid "string contains invalid punycode data"
+msgstr "სტრიქონი არასწორ punycode-ის მონაცემებს შეიცავს"
+
+#: lib/error.c:60
+msgid "punycode encoded data will be too large"
+msgstr "punycode-ით დაშიფრული მონაცემები ძალიან დიდი იქნება"
+
+#: lib/error.c:61
+msgid "punycode conversion resulted in overflow"
+msgstr "punycode-ში გადაყვანამ გადავსება გამოიწვია"
+
+#: lib/error.c:62
+msgid "domain name longer than 255 characters"
+msgstr "დომენის სახელი 255 სიმბოლოზე გრძელი ვერ იქნება"
+
+#: lib/error.c:63
+msgid "domain label longer than 63 characters"
+msgstr "დომენის ჭდე 63 სიმბოლოზე გრძელი ვერ იქნება"
+
+#: lib/error.c:64
+msgid "input A-label is not valid"
+msgstr "შეყვანილი A-label-ი არასწორია"
+
+#: lib/error.c:65
+msgid "input A-label and U-label does not match"
+msgstr "შეყვანილი A-label-ი და U-label-ი არ ემთხვევა"
+
+#: lib/error.c:66
+msgid "string is not in Unicode NFC format"
+msgstr "სტრიქონი Unicode NFC ფორმატში არაა"
+
+#: lib/error.c:67
+msgid "string contains forbidden two hyphens pattern"
+msgstr "სტრიქონი აკრძალულ ორ-ჰარეიან შაბლონს შეიცავს"
+
+#: lib/error.c:68
+msgid "string start/ends with forbidden hyphen"
+msgstr "სტრიქონი იწყება და მთავრდება აკრძალული ჰარეთი"
+
+#: lib/error.c:69
+msgid "string contains a forbidden leading combining character"
+msgstr "სტრიქონი აკრძალულ საწყის შემაერთებელ სიმბოლოს შეიცავს"
+
+#: lib/error.c:70
+msgid "string contains a disallowed character"
+msgstr "სტრიქონი აკრძალულ სიმბოლოს შეიცავს"
+
+#: lib/error.c:71
+msgid "string contains a forbidden context-j character"
+msgstr "სტრიქონი აკრძალულ context-j სიმბოლოს შეიცავს"
+
+#: lib/error.c:72
+msgid "string contains a context-j character with null rule"
+msgstr "სტრიქონი აკრძალულ context-j სიმბოლოს შეიცავს ნულოვანი წესით"
+
+#: lib/error.c:73
+msgid "string contains a forbidden context-o character"
+msgstr "სტრიქონი აკრძალულ context-o სიმბოლოს შეიცავს"
+
+#: lib/error.c:74
+msgid "string contains a context-o character with null rule"
+msgstr "სტრიქონი აკრძალულ context-o სიმბოლოს შეიცავს ნულოვანი წესით"
+
+#: lib/error.c:75
+msgid "string contains unassigned code point"
+msgstr "სტრიქონი მიუნიჭებელ კოდის წერტილებს შეიცავს"
+
+#: lib/error.c:76
+msgid "string has forbidden bi-directional properties"
+msgstr "სტრიქონს გააჩნია აკრძალული ორმხრივი თვისებები"
+
+#: lib/error.c:77
+msgid "domain label has forbidden dot (TR46)"
+msgstr "დომენის ჭდე აკრძალულ წერტილს შეიცავს (TR46)"
+
+#: lib/error.c:78
+msgid "domain label has character forbidden in transitional mode (TR46)"
+msgstr "დომენის ჭდე გადასვლად აკრძალულ სიმბოლოებს შეიცავს (TR46)"
+
+#: lib/error.c:79
+msgid "domain label has character forbidden in non-transitional mode (TR46)"
+msgstr "დომენის ჭდე არატრანზაქციული რეჟიმისთვის აკრძალულ სმბოლოებს შეიცავს (TR46)"
+
+#: lib/error.c:80
+msgid "A-label roundtrip failed"
+msgstr "A-label-ის შემობრუნების შეცდომა"
+
+#: lib/error.c:81
+msgid "Unknown error"
+msgstr "უცნობი შეცდომა"
+
+#: src/idn2.c:59
+#, c-format
+msgid "Try `%s --help' for more information.\n"
+msgstr "მეტი ინფორმაციისთვის სცადეთ '%s --help'\n"
+
+#: src/idn2.c:63
+#, c-format
+msgid "Usage: %s [OPTION]... [STRINGS]...\n"
+msgstr "გამოყენება: %s [პარამეტრი] ... [სტრიქონები]...\n"
+
+#: src/idn2.c:66
+msgid ""
+"Internationalized Domain Name (IDNA2008) convert STRINGS, or standard input.\n"
+"\n"
+msgstr ""
+"ინტერნაციონალური დომენის სახელები (IDNA2008). გადაიყვანეთ სტრიქონები ან სტანდარტული შეტანა.\n"
+"\n"
+
+#: src/idn2.c:70
+msgid ""
+"Command line interface to the Libidn2 implementation of IDNA2008.\n"
+"\n"
+"All strings are expected to be encoded in the locale charset.\n"
+"\n"
+"To process a string that starts with `-', for example `-foo', use `--'\n"
+"to signal the end of parameters, as in `idn2 --quiet -- -foo'.\n"
+"\n"
+"Mandatory arguments to long options are mandatory for short options too.\n"
+msgstr ""
+"ბრძანების ხაზი IDNA2008-ის Libidn2 განხორციელებისთვის.\n"
+"\n"
+"მოსალოდნელია, რომ ყველა სტრიქონი დაშიფრული იქნება ლოკალური სიმბოლოების სიმრავლეში.\n"
+"\n"
+"სტრიქონის დასამუშავებლად, რომელიც იწყება `-'-ით, მაგალითად, `-foo', გამოიყენეთ `--'\n"
+"პარამეტრების დასრულების სიგნალი, როგორც `idn2 --quiet -- -foo'.\n"
+"\n"
+"გრძელი ვარიანტების სავალდებულო არგუმენტები სავალდებულოა მოკლე ვარიანტებისთვისაც.\n"
+
+#: src/idn2.c:80
+msgid ""
+"  -h, --help                Print help and exit\n"
+"  -V, --version             Print version and exit\n"
+msgstr ""
+" -h, --help           დახმარების გამოტანა და გამოსვლა\n"
+"  -V, --version      ვერსიის გამოტანა და გამოსვლა\n"
+
+#: src/idn2.c:84
+msgid ""
+"  -d, --decode              Decode (punycode) domain name\n"
+"  -l, --lookup              Lookup domain name (default)\n"
+"  -r, --register            Register label\n"
+msgstr ""
+"  -d, --decode         დომენის სახელის გაშიფვრა\n"
+"  -l, --lookup           დომენის სახელის გადაწყვეტა (ნაგულისხმები)\n"
+"  -r, --register          ჭდის რეგისტრაცია\n"
+
+#: src/idn2.c:89
+msgid ""
+"  -T, --tr46t               Enable TR46 transitional processing\n"
+"  -N, --tr46nt              Enable TR46 non-transitional processing\n"
+"      --no-tr46             Disable TR46 processing\n"
+msgstr ""
+"  -T, --tr46t           TR46 ტრანზაქციული დამუშავების ჩართვა\n"
+"  -N, --tr46nt        TR46 არატრანზაქციული დამუშავების ჩართვა\n"
+"         --no-tr46    TR46-ის დამუშავების გამორთვა\n"
+
+#: src/idn2.c:94
+msgid ""
+"      --usestd3asciirules   Enable STD3 ASCII rules\n"
+"      --no-alabelroundtrip  Disable A-label roundtrip for lookups\n"
+"      --debug               Print debugging information\n"
+"      --quiet               Silent operation\n"
+msgstr ""
+"      --usestd3asciirules   STD3 ASCII წესების ჩართვა\n"
+"      -no-alabelroundtrip  გადასაწყვეტად A-label-ის შემობრუნების გამორთვა\n"
+"      --debug                     დამატებითი ინფორმაციის გამოტანა\n"
+
+#: src/idn2.c:217
+#, c-format
+msgid "Charset: %s\n"
+msgstr "კოდირება: %s\n"
+
+#: src/idn2.c:221
+msgid "Type each input string on a line by itself, terminated by a newline character.\n"
+msgstr "შეიყვანეთ თითოეული სტრიქონი ცალკე ხაზზე, რომელიც ახალი ხაზს სიმბოლოთი სრულდება.\n"
+
+#: src/idn2.c:252
+msgid "input error"
+msgstr "შეყვანის შეცდომა"

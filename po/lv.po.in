@@ -1,0 +1,232 @@
+# Latvian translation of libidn2.
+# Copyright (C) 2024 Free Software Foundation, Inc.
+# This file is distributed under the same license as the libidn2 package.
+# Rihards Priedītis <rprieditis@gmail.com>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: libidn2 2.3.3\n"
+"Report-Msgid-Bugs-To: bug-libidn2@gnu.org\n"
+"POT-Creation-Date: 2022-07-11 21:43+0200\n"
+"PO-Revision-Date: 2024-12-22 09:42+0000\n"
+"Last-Translator: Rihards Priedītis <rprieditis@gmail.com>\n"
+"Language-Team: Latvian <translation-team-lv@lists.sourceforge.net>\n"
+"Language: lv\n"
+"X-Bugs: Report translation errors to the Language-Team address.\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.5\n"
+
+#: lib/error.c:54
+msgid "success"
+msgstr "veiksmīgs iznākums"
+
+#: lib/error.c:56
+msgid "out of memory"
+msgstr "atmiņas trūkums"
+
+#: lib/error.c:58
+msgid "could not determine locale encoding format"
+msgstr "nevarēja noteikt lokāles kodēšanas formātu"
+
+#: lib/error.c:60
+msgid "could not convert string to UTF-8"
+msgstr "nevarēja konvertēt virkni uz UTF-8"
+
+#: lib/error.c:62
+msgid "string encoding error"
+msgstr "virknes kodēšanas kļūda"
+
+#: lib/error.c:64
+msgid "string could not be NFC normalized"
+msgstr "virkni nevarēja normalizēt NFC"
+
+#: lib/error.c:66
+msgid "string contains invalid punycode data"
+msgstr "virkne satur nederīgus punycode datus"
+
+#: lib/error.c:68
+msgid "punycode encoded data will be too large"
+msgstr "punycode kodēti dati būs pārāk lieli"
+
+#: lib/error.c:70
+msgid "punycode conversion resulted in overflow"
+msgstr "punycode konversijas rezultātā radās pārplūšana"
+
+#: lib/error.c:72
+msgid "domain name longer than 255 characters"
+msgstr "domēna vārds garāks par 255 rakstzīmēm"
+
+#: lib/error.c:74
+msgid "domain label longer than 63 characters"
+msgstr "domēna etiķete garāka par 63 rakstzīmēm"
+
+#: lib/error.c:76
+msgid "input A-label is not valid"
+msgstr "ievades A-marķējums nav derīgs"
+
+#: lib/error.c:78
+msgid "input A-label and U-label does not match"
+msgstr "ievades A-marķējums un U-marķējums nesakrīt"
+
+#: lib/error.c:80
+msgid "string is not in Unicode NFC format"
+msgstr "virkne nav Unicode NFC formātā"
+
+#: lib/error.c:82
+msgid "string contains forbidden two hyphens pattern"
+msgstr "rindā sastopami divi aizliegti defisi paraugi"
+
+#: lib/error.c:84
+msgid "string start/ends with forbidden hyphen"
+msgstr "virknes sākums/gals ar aizliegtu defisi"
+
+#: lib/error.c:86
+msgid "string contains a forbidden leading combining character"
+msgstr "virkne satur aizliegtu ievada kombinēšanas rakstzīmi"
+
+#: lib/error.c:88
+msgid "string contains a disallowed character"
+msgstr "virkne satur neatļautu rakstzīmi"
+
+#: lib/error.c:90
+msgid "string contains a forbidden context-j character"
+msgstr "virkne satur aizliegtu konteksta-j rakstzīmi"
+
+#: lib/error.c:92
+msgid "string contains a context-j character with null rule"
+msgstr "virkne satur konteksta-j rakstzīmi ar nulles noteikumu"
+
+#: lib/error.c:94
+msgid "string contains a forbidden context-o character"
+msgstr "virkne satur aizliegtu konteksta-o rakstzīmi"
+
+#: lib/error.c:96
+msgid "string contains a context-o character with null rule"
+msgstr "virkne satur konteksta-o rakstzīmi ar nulles noteikumu"
+
+#: lib/error.c:98
+msgid "string contains unassigned code point"
+msgstr "virkne satur nepiešķirtu koda punktu"
+
+#: lib/error.c:100
+msgid "string has forbidden bi-directional properties"
+msgstr "virknei ir aizliegtas div-virzienu īpašības"
+
+#: lib/error.c:102
+msgid "domain label has forbidden dot (TR46)"
+msgstr "domēna etiķetei ir aizliegts punkts (TR46)"
+
+#: lib/error.c:105
+msgid "domain label has character forbidden in transitional mode (TR46)"
+msgstr "domēna etiķetē ir rakstzīme, kas ir aizliegta pārejas režīmā (TR46)"
+
+#: lib/error.c:109
+msgid "domain label has character forbidden in non-transitional mode (TR46)"
+msgstr "domēna etiķetei ir rakstzīme, kas ir aizliegta ne-pārejas režīmā (TR46)"
+
+#: lib/error.c:111
+msgid "A-label roundtrip failed"
+msgstr "A-label atpakaļgaita neizdevās"
+
+#: lib/error.c:113
+msgid "Unknown error"
+msgstr "Nepazīstama kļūda"
+
+#: src/idn2.c:57
+#, c-format
+msgid "Try `%s --help' for more information.\n"
+msgstr "Lai iegūtu vairāk informācijas, mēģiniet `%s --help'.\n"
+
+#: src/idn2.c:61
+#, c-format
+msgid "Usage: %s [OPTION]... [STRINGS]...\n"
+msgstr "Lietošana: %s [OPCIJA]... [VIRKNES]...\n"
+
+#: src/idn2.c:64
+msgid ""
+"Internationalized Domain Name (IDNA2008) convert STRINGS, or standard input.\n"
+"\n"
+msgstr ""
+"Internacionalizētā Domēna Vārda (IDNA2008) konvertēt VIRKNES vai standarta ievadi.\n"
+"\n"
+
+#: src/idn2.c:68
+msgid ""
+"Command line interface to the Libidn2 implementation of IDNA2008.\n"
+"\n"
+"All strings are expected to be encoded in the locale charset.\n"
+"\n"
+"To process a string that starts with `-', for example `-foo', use `--'\n"
+"to signal the end of parameters, as in `idn2 --quiet -- -foo'.\n"
+"\n"
+"Mandatory arguments to long options are mandatory for short options too.\n"
+msgstr ""
+"Komandrindas saskarne ar Libidn2 implementāciju IDNA2008.\n"
+"\n"
+"Paredzams, ka visas virknes ir kodētas ar vietējās valodas rakstzīmju kopu.\n"
+"\n"
+"Lai apstrādātu virkni, kas sākas ar `-', piemēram, `-foo', izmantojiet `--',\n"
+"lai signalizētu parametru beigas, piemēram, `idn2 --quiet -- -foo'.\n"
+"\n"
+"Garajām opcijām obligātie argumenti ir obligāti arī īsajām opcijām.\n"
+
+#: src/idn2.c:78
+msgid ""
+"  -h, --help                Print help and exit\n"
+"  -V, --version             Print version and exit\n"
+msgstr ""
+"  -h, --help Izdrukāt palīdzību un iziet\n"
+"  -V, --versija Izdrukāt versiju un iziet\n"
+
+#: src/idn2.c:82
+msgid ""
+"  -d, --decode              Decode (punycode) domain name\n"
+"  -l, --lookup              Lookup domain name (default)\n"
+"  -r, --register            Register label\n"
+msgstr ""
+"  -d, --decode Dekodēt (punycode) domēna vārdu\n"
+"  -l, --lookup Pārlūkot domēna nosaukumu (noklusējuma iestatījums)\n"
+"  -r, --register Reģistrēt etiķeti\n"
+
+#: src/idn2.c:87
+msgid ""
+"  -T, --tr46t               Enable TR46 transitional processing\n"
+"  -N, --tr46nt              Enable TR46 non-transitional processing\n"
+"      --no-tr46             Disable TR46 processing\n"
+msgstr ""
+"  -T, --tr46t Ieslēgt TR46 pārejas apstrādi\n"
+"  -N, --tr46nt Ieslēgt TR46 ne-pārejas apstrādi\n"
+"      --no-tr46 Izslēgt TR46 apstrādi\n"
+
+#: src/idn2.c:92
+msgid ""
+"      --usestd3asciirules   Enable STD3 ASCII rules\n"
+"      --no-alabelroundtrip  Disable A-label roundtrip for lookups\n"
+"      --debug               Print debugging information\n"
+"      --quiet               Silent operation\n"
+msgstr ""
+"      --usestd3asciirules Ieslēgt STD3 ASCII noteikumus\n"
+"      --no-alabelroundtrip Izslēgt A-label atpakaļgaitas meklēšanai\n"
+"      --debug Izdrukāt atkļūdošanas informāciju\n"
+"      --quiet Klusā darbība\n"
+
+#: src/idn2.c:207
+#, c-format
+msgid "Charset: %s\n"
+msgstr "Rakstzīmes kopas: %s\n"
+
+#: src/idn2.c:211
+#, c-format
+msgid "libiconv required for non-UTF-8 character encoding: %s"
+msgstr "libiconv nepieciešama rakstzīmju kodēšanai, kas nav UTF-8: %s"
+
+#: src/idn2.c:217
+msgid "Type each input string on a line by itself, terminated by a newline character.\n"
+msgstr "Ievadiet katru ievades virkni atsevišķi vienā rindā, kas tiek pabeigta ar jaunas rindas rakstzīmi.\n"
+
+#: src/idn2.c:248
+msgid "input error"
+msgstr "ievades kļūda"
