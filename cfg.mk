@@ -49,6 +49,8 @@ exclude_file_name_regexp--sc_prohibit_have_config_h = ^tests/.*.c$$
 TAR_OPTIONS += --mode=go+u,go-w --mtime=$(abs_top_srcdir)/NEWS
 
 announce_gen_args = --cksum-checksums
+url_dir_list = https://ftp.gnu.org/gnu/libidn
+
 DIST_ARCHIVES += $(shell \
 	if test -e $(srcdir)/.git && command -v git > /dev/null; then \
 		echo $(PACKAGE)-v$(VERSION)-src.tar.gz; \
