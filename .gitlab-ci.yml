@@ -76,8 +76,8 @@ B-gcc:
   stage: build
   before_script:
   - gcc --version
-  - apt-get update -qq
-  - apt-get install -y -qq --no-install-recommends git make autoconf automake libtool gettext autopoint gperf libunistring-dev gengetopt help2man texinfo texlive gtk-doc-tools
+  - apt-get update -q
+  - apt-get install -y -q --no-install-recommends git make autoconf automake libtool gettext autopoint gperf libunistring-dev gengetopt help2man texinfo gtk-doc-tools
   script:
   - time ./bootstrap --skip-po
   - time ./configure --enable-gcc-warnings=error CC="gcc -std=gnu2x" --disable-doc
@@ -92,8 +92,8 @@ B-clang:
   stage: build
   before_script:
   - clang --version
-  - apt-get update -qq
-  - apt-get install -y -qq --no-install-recommends git make autoconf automake libtool gettext autopoint gperf libunistring-dev gengetopt help2man texinfo texlive gtk-doc-tools abi-compliance-checker abigail-tools
+  - apt-get update -q
+  - apt-get install -y -q --no-install-recommends git make autoconf automake libtool gettext autopoint gperf libunistring-dev gengetopt help2man texinfo gtk-doc-tools abi-compliance-checker abigail-tools
   script:
   - time ./bootstrap --skip-po
   - time ./configure --enable-gcc-warnings=error CC="clang -std=gnu2x" --disable-doc
@@ -108,8 +108,8 @@ B-Alpine-arm64:
   tags: [ saas-linux-small-arm64 ]
   stage: build
   before_script:
-  - apk update # XXX coreutils only needed for /usr/bin/join used by gnulib-tool
-  - apk add gcc make libc-dev git autoconf automake libtool gettext-dev gperf gengetopt patch coreutils
+  - time apk update
+  - time apk add gcc python3 make libc-dev git autoconf automake libtool gettext-dev gperf gengetopt patch
   script:
   - time ./bootstrap --skip-po
   - time ./configure --disable-doc --enable-gcc-warnings=error
@@ -122,11 +122,11 @@ B-Alpine-arm64:
   stage: build
   tags: [ saas-linux-medium-amd64 ]
   variables:
-    PKGS: wget git make diffutils patch autoconf automake libtool gettext-devel gperf libunistring-devel valgrind gengetopt help2man gtk-doc texinfo texinfo-tex texlive texlive-epstopdf dblatex libabigail
+    PKGS: wget git make diffutils patch autoconf automake libtool gettext-devel gperf libunistring-devel valgrind gengetopt help2man gtk-doc texinfo texinfo-tex libabigail
   before_script:
   - cat /etc/os-release
-  - dnf install -y epel-release
-  - dnf --enablerepo=$(dnf repolist --all | grep crb > /dev/null && echo crb || echo powertools) install -y ${PKGS}
+  - time dnf install -y epel-release
+  - time dnf --enablerepo=$(dnf repolist --all | grep crb > /dev/null && echo crb || echo powertools) install -y ${PKGS}
   - cc --version
   script:
   - !reference [.gnulib-fetch, script]
@@ -161,9 +161,9 @@ B-RockyLinux9:
     DEBIAN_FRONTEND: noninteractive
   before_script:
   - cat /etc/os-release
-  - time apt-get update -qq
+  - time apt-get update -q
   - time apt-get install -y -q eatmydata
-  - time eatmydata apt-get install -y -qq wget make gcc git autoconf automake libtool gettext autopoint gperf libunistring-dev valgrind gengetopt help2man texinfo texlive dblatex gtk-doc-tools abi-compliance-checker abigail-tools
+  - time eatmydata apt-get install -y -q wget make gcc git autoconf automake libtool gettext autopoint gperf libunistring-dev valgrind gengetopt help2man texinfo gtk-doc-tools abi-compliance-checker abigail-tools
   script:
   - !reference [.gnulib-fetch, script]
   - time ./bootstrap --skip-po --no-git
@@ -172,7 +172,7 @@ B-RockyLinux9:
   - time make -j$(nproc) V=1 VERBOSE=t check
   - make -C doc compare-makefile
   - make abi-check
-  - time make -j$(nproc) V=1 VERBOSE=t distcheck
+  - time make -j$(nproc) V=1 VERBOSE=t distcheck AM_DISTCHECK_DVI_TARGET=
   - !reference [.save-artifacts, script]
 
 B-PureOS10:
@@ -199,9 +199,9 @@ B-Debian12:
   before_script:
   - cat /etc/os-release
   - sed -i 's,http://archive.trisquel.info/trisquel,http://ftp.acc.umu.se/mirror/trisquel/packages,' /etc/apt/sources.list
-  - time apt-get update -qq
+  - time apt-get update -q
   - time apt-get install -y -q eatmydata
-  - time eatmydata apt-get install -y -qq wget make gcc git autoconf automake libtool gettext autopoint gperf libunistring-dev valgrind gengetopt help2man texinfo texlive dblatex gtk-doc-tools abi-compliance-checker abigail-tools
+  - time eatmydata apt-get install -y -q wget make gcc git autoconf automake libtool gettext autopoint gperf libunistring-dev valgrind gengetopt help2man texinfo gtk-doc-tools abi-compliance-checker abigail-tools
   script:
   - !reference [.gnulib-fetch, script]
   - time ./bootstrap --skip-po --no-git
@@ -209,7 +209,7 @@ B-Debian12:
   - time make syntax-check
   - time make -j$(nproc) V=1 VERBOSE=t check
   - make -C doc compare-makefile
-  - time make -j$(nproc) V=1 VERBOSE=t distcheck
+  - time make -j$(nproc) V=1 VERBOSE=t distcheck AM_DISTCHECK_DVI_TARGET=
   - env IDN2=src/idn2 STANDALONE_CFLAGS="-Ilib -Itests lib/.libs/libidn2.a unistring/.libs/libunistring.a gl/.libs/libgnu.a -lunistring" tests/standalone.sh
   - env IDN2=src/idn2 STANDALONE_CFLAGS="-Ilib -Itests -Wl,-rpath lib/.libs lib/.libs/libidn2.so unistring/.libs/libunistring.a gl/.libs/libgnu.a -lunistring" tests/standalone.sh
   - make abi-check
@@ -259,8 +259,8 @@ B-Debian-testing:
   image: debian:testing
   stage: build
   before_script:
-  - apt-get update -qq -y
-  - apt-get install -qq -y make gcc git autoconf automake libtool gettext autopoint gperf libunistring-dev valgrind gengetopt help2man texinfo texlive gtk-doc-tools abi-compliance-checker abigail-tools libidn2-dev idn2
+  - apt-get update -q -y
+  - apt-get install -q -y make gcc git autoconf automake libtool gettext autopoint gperf libunistring-dev valgrind gengetopt help2man texinfo texlive gtk-doc-tools abi-compliance-checker abigail-tools libidn2-dev idn2
   script:
   - cp -a tests/test-lookup.c tests/test-lookup.c~
   - sed -i -e 's/"xn--pkf", IDN2_DISALLOWED/"xn--pkf", IDN2_OK/' tests/test-lookup.c
@@ -269,15 +269,15 @@ B-Debian-testing:
   - apt-get remove -y --purge libidn2-dev idn2
   - ./bootstrap --skip-po
   - ./configure --enable-gcc-warnings=error --enable-valgrind-tests
-  - make -j$(nproc) V=1
-  - make -j$(nproc) -k check VERBOSE=t
+  - time make -j$(nproc) V=1
+  - time make -j$(nproc) -k check VERBOSE=t
   - git diff --exit-code # nothing should change version controlled files
   - rm unistring/libunistring.la # FIXME XXX debug why this is needed...
-  - make dist
+  - time make -j$(nproc) distcheck
   - env IDN2=src/idn2 STANDALONE_CFLAGS="-Ilib lib/.libs/libidn2.a unistring/.libs/libunistring.a gl/.libs/libgnu.a -lunistring" tests/standalone.sh
   - env IDN2=src/idn2 STANDALONE_CFLAGS="-Ilib -Wl,-rpath lib/.libs lib/.libs/libidn2.so unistring/.libs/libunistring.a gl/.libs/libgnu.a -lunistring" tests/standalone.sh
   - make install
-  - apt-get install -y -qq man
+  - apt-get install -y -q man
   - git clone --depth=1 https://salsa.debian.org/debian/libidn2.git debian-libidn2
   - for c in debian-libidn2/debian/tests/*; do if test -x $c; then $c; echo rc $c is $?; fi; done
 
@@ -285,7 +285,7 @@ B-armcross:
   image: $CI_REGISTRY/libidn/build-images:libidn2-Debian12
   stage: build
   before_script:
-  - apt-get update -qq -y
+  - apt-get update -q -y
   - apt-get install -y -q gcc-arm-linux-gnueabi qemu-user qemu-user-binfmt file binfmt-support
   - update-binfmts --enable qemu-arm
   script:
@@ -298,6 +298,20 @@ B-armcross:
   - LANG=C.UTF-8 qemu-arm src/idn2 --debug foo
   - LANG=C.UTF-8 src/idn2 --debug räksmörgås
   - LANG=C.UTF-8 make -j$(nproc) -k check VERBOSE=t
+
+B-Fedora41:
+  stage: build
+  image: fedora:41
+  before_script:
+  - time dnf install -y wget make gcc git autoconf automake libtool gettext-devel glibc-gconv-extra patch gperf libunistring-devel valgrind gengetopt help2man texinfo texinfo-tex texlive gtk-doc dblatex libabigail
+  script:
+  - !reference [.gnulib-fetch, script]
+  - time ./bootstrap --no-git
+  - time ./configure --enable-gcc-warnings=error
+  - time make -j$(nproc) syntax-check
+  - time make -j$(nproc) check
+  - time make -j$(nproc) distcheck V=1 VERBOSE=t
+  - !reference [.save-artifacts, script]
 
 # https://releases.llvm.org/13.0.0/tools/clang/docs/AddressSanitizer.html
 # https://releases.llvm.org/13.0.0/tools/clang/docs/UndefinedBehaviorSanitizer.html
@@ -357,11 +371,12 @@ Coverity:
   - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     when: never
   - if: $CI_COMMIT_REF_PROTECTED == "true"
+  - if: $LIBIDN2_CI_RUN_COVERITY_JOBS
   image: $CI_REGISTRY/libidn/build-images:libidn2-mini-Debian-testing
   stage: build
   allow_failure: true
   before_script:
-  - apt-get update -qq -y
+  - apt-get update -q -y
   - apt-get install -y -q curl
   script:
   - test -n "$COVERITY_SCAN_TOKEN" && test -n "$COVERITY_SCAN_PROJECT_NAME"
@@ -387,6 +402,7 @@ B-macOS14Xcode15:
   rules:
   - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  - if: $LIBIDN2_CI_RUN_MACOS_JOBS
   stage: build
   image: macos-14-xcode-15
   tags: [ saas-macos-medium-m1 ]
@@ -412,6 +428,7 @@ B-macOS15Xcode16:
   rules:
   - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  - if: $LIBIDN2_CI_RUN_MACOS_JOBS
   stage: build
   image: macos-15-xcode-16
   tags: [ saas-macos-large-m2pro ]
@@ -437,6 +454,7 @@ macOS13Xcode14:
   rules:
   - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  - if: $LIBIDN2_CI_RUN_MACOS_JOBS
   image: macos-13-xcode-14
   tags: [ saas-macos-medium-m1 ]
   stage: test
@@ -449,6 +467,23 @@ macOS13Xcode14:
   - ./configure --enable-gcc-warnings=error WERROR_CFLAGS="-Wno-error=unused-value -Wno-error=format-nonliteral -Wno-error=attributes -Wno-error=char-subscripts"
   - make syntax-check
   - time make -j$(nproc) check V=1 VERBOSE=t
+
+OpenBSD:
+  rules:
+  - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  - if: $LIBIDN2_CI_RUN_OPENBSD_JOBS
+  tags: [ openbsd ]
+  needs: [B-Trisquel11]
+  stage: test
+  before_script:
+  - uname -a
+  - sysctl hw
+  script:
+  - gzip -cd out/b-trisquel11/*-*.tar.gz | tar xf -
+  - cd $(gzip -cd out/b-trisquel11/*-*.tar.gz | tar tf - | head -n1)
+  - time ./configure --enable-gcc-warnings
+  - time make check V=1 VERBOSE=t
 
 B-MinGW64:
   stage: build
@@ -467,6 +502,7 @@ B-Windows-UCRT64:
   rules:
   - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  - if: $LIBIDN2_CI_RUN_WINDOWS_JOBS
   tags: [ saas-windows-medium-amd64 ]
   stage: build
   variables:
@@ -482,7 +518,7 @@ B-Windows-UCRT64:
   - C:\msys64\usr\bin\bash -lc 'pacman --noconfirm -Syuu'
   - |
     C:\msys64\usr\bin\bash -lcx '
-    pacman --noconfirm -Syu git autoconf automake libtool make mingw-w64-ucrt-x86_64-gcc help2man gengetopt gperf patch gettext-devel texinfo
+    time pacman --noconfirm -Syu git autoconf automake libtool make mingw-w64-ucrt-x86_64-gcc python help2man gengetopt gperf patch gettext-devel texinfo
     # https://docs.github.com/en/get-started/getting-started-with-git/configuring-git-to-handle-line-endings
     file configure.ac
     git config --global core.autocrlf false
@@ -490,9 +526,9 @@ B-Windows-UCRT64:
     git rm -rf --cached . | tail
     git reset --hard HEAD
     file configure.ac
-    ./bootstrap --skip-po
-    ./configure --enable-gcc-warnings=error
-    make -j$(nproc) V=1 -k check VERBOSE=t'
+    time ./bootstrap --skip-po
+    time ./configure --enable-gcc-warnings=error
+    time make -j$(nproc) V=1 -k check VERBOSE=t'
   - C:\msys64\usr\bin\bash -lc 'grep ^PASS tests/test-register.log'
 
 0-compare:
@@ -587,7 +623,7 @@ R-Debian12:
   needs: []
   before_script:
   - cat /etc/os-release
-  - time apt-get update -qq
+  - time apt-get update -q
   - time apt-get install -y -q eatmydata
   - time eatmydata apt-get install -y -q wget make gcc git autoconf automake libtool autopoint gperf libunistring-dev gengetopt help2man texinfo abi-compliance-checker abigail-tools gtk-doc-tools
   script:
@@ -634,7 +670,7 @@ R-Ubuntu2404:
   needs: []
   before_script:
   - cat /etc/os-release
-  - time apt-get update -qq
+  - time apt-get update -q
   - time apt-get install -y -q eatmydata
   - time eatmydata apt-get install -y -q wget make gcc git autoconf automake libtool autopoint gperf libunistring-dev gengetopt indent help2man texinfo abi-compliance-checker abigail-tools gtk-doc-tools
   script:
@@ -682,7 +718,7 @@ S-Trisquel10:
   before_script:
   - cat /etc/os-release
   - sed -i 's,http://archive.trisquel.info/trisquel,http://ftp.acc.umu.se/mirror/trisquel/packages,' /etc/apt/sources.list
-  - time apt-get update -qq
+  - time apt-get update -q
   - time apt-get install -y -q eatmydata
   - time eatmydata apt-get install -y -q wget make gcc git autoconf automake libtool autopoint gettext gperf libunistring-dev gengetopt help2man texinfo abi-compliance-checker abigail-tools
   script:
@@ -711,7 +747,7 @@ S-Ubuntu2004:
     DEBIAN_FRONTEND: noninteractive
   before_script:
   - cat /etc/os-release
-  - time apt-get update -qq
+  - time apt-get update -q
   - time apt-get install -y -q eatmydata
   - time eatmydata apt-get install -y -q wget make gcc git autoconf automake libtool autopoint gettext gperf libunistring-dev gengetopt help2man texinfo abi-compliance-checker abigail-tools
   script:
@@ -733,6 +769,7 @@ Windows-MSYS:
   rules:
   - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  - if: $LIBIDN2_CI_RUN_WINDOWS_JOBS
   tags: [ saas-windows-medium-amd64 ]
   stage: test
   needs: [B-Trisquel11]
@@ -749,17 +786,18 @@ Windows-MSYS:
   - C:\msys64\usr\bin\bash -lc 'pacman --noconfirm -Syuu'
   - |
     C:\msys64\usr\bin\bash -lcx '
-    pacman --noconfirm -Syu make gcc libiconv-devel
+    time pacman --noconfirm -Syu make gcc libiconv-devel
     tar xfa out/b-trisquel11/*-*.tar.gz
     cd $(tar tfa out/b-trisquel11/*-*.tar.gz | head -n1)
-    ./configure --enable-gcc-warnings=error
-    make -j$(nproc) V=1 -k check VERBOSE=t'
+    time ./configure --enable-gcc-warnings=error
+    time make -j$(nproc) V=1 -k check VERBOSE=t'
   - C:\msys64\usr\bin\bash -lc 'grep ^PASS */tests/test-register.log'
 
 Windows-MINGW64:
   rules:
   - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  - if: $LIBIDN2_CI_RUN_WINDOWS_JOBS
   tags: [ saas-windows-medium-amd64 ]
   stage: test
   needs: [B-Trisquel11]
@@ -776,11 +814,11 @@ Windows-MINGW64:
   - C:\msys64\usr\bin\bash -lc 'pacman --noconfirm -Syuu'
   - |
     C:\msys64\usr\bin\bash -lcx '
-    pacman --noconfirm -Syu make mingw-w64-x86_64-gcc
+    time pacman --noconfirm -Syu make mingw-w64-x86_64-gcc
     tar xfa out/b-trisquel11/*-*.tar.gz
     cd $(tar tfa out/b-trisquel11/*-*.tar.gz | head -n1)
-    ./configure --enable-gcc-warnings=error
-    make -j$(nproc) V=1 -k check VERBOSE=t'
+    time ./configure --enable-gcc-warnings=error
+    time make -j$(nproc) V=1 -k check VERBOSE=t'
   - C:\msys64\usr\bin\bash -lc 'grep ^PASS */tests/test-register.log'
 
 Debian5:
@@ -789,7 +827,7 @@ Debian5:
   needs: [B-Trisquel11]
   before_script:
   - apt-get update
-  - apt-get install -y -qq make gcc locales-all
+  - apt-get install -y -q make gcc locales-all
   script:
   - tar xfz out/b-trisquel11/*-*.tar.gz
   - cd $(tar tfz out/b-trisquel11/*-*.tar.gz | head -n1)
@@ -803,7 +841,7 @@ Debian9:
   before_script:
   - sed -i 's/deb.debian.org/archive.debian.org/g' /etc/apt/sources.list
   - apt-get update || true
-  - apt-get install -y -qq make gcc
+  - apt-get install -y -q make gcc
   script:
   - tar xfa out/b-trisquel11/*-*.tar.gz
   - cd $(tar tfa out/b-trisquel11/*-*.tar.gz | head -n1)
@@ -818,7 +856,7 @@ Debian10:
   needs: [B-Trisquel11]
   before_script:
   - apt-get update
-  - apt-get install -y -qq make gcc
+  - apt-get install -y -q make gcc
   script:
   - tar xfa out/b-trisquel11/*-*.tar.gz
   - cd $(tar tfa out/b-trisquel11/*-*.tar.gz | head -n1)
@@ -833,7 +871,7 @@ Debian-testing:
   needs: [B-Trisquel11]
   before_script:
   - apt-get update
-  - apt-get install -y -qq make gcc
+  - apt-get install -y -q make gcc
   script:
   - tar xfa out/b-trisquel11/*-*.tar.gz
   - cd $(tar tfa out/b-trisquel11/*-*.tar.gz | head -n1)
@@ -842,7 +880,7 @@ Debian-testing:
   - ../configure --enable-gcc-warnings=error
   - grep am_cv_func_iconv_summary config.log
   - cd ..
-  - apt-get install -y -qq autoconf autopoint libtool gtk-doc-tools
+  - apt-get install -y -q autoconf autopoint libtool gtk-doc-tools
   - AUTOPOINT=true autoreconf -fvi
   - ./configure --enable-gcc-warnings=error
   - grep am_cv_func_iconv_summary config.log
@@ -895,7 +933,7 @@ AlmaLinux8:
   stage: test
   needs: [B-Trisquel11]
   before_script:
-  - dnf --enablerepo=powertools -y install make gcc diffutils valgrind libunistring-devel
+  - time dnf --enablerepo=powertools -y install make gcc diffutils valgrind libunistring-devel
   script:
   - tar xfa out/b-trisquel11/*-*.tar.gz
   - cd $(tar tfa out/b-trisquel11/*-*.tar.gz | head -n1)
@@ -906,12 +944,13 @@ RockyLinux9-ppc64:
   rules:
   - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  - if: $LIBIDN2_CI_RUN_PPC64_JOBS
   image: rockylinux:9
   tags: [ ppc64 ]
   stage: test
   needs: [B-Trisquel11]
   before_script:
-  - dnf --enablerepo=crb -y install make gcc diffutils valgrind libunistring-devel
+  - time dnf --enablerepo=crb -y install make gcc diffutils valgrind libunistring-devel
   script:
   - tar xfa out/b-trisquel11/*-*.tar.gz
   - cd $(tar tfa out/b-trisquel11/*-*.tar.gz | head -n1)
@@ -923,8 +962,8 @@ Ubuntu14.04:
   stage: test
   needs: [B-Trisquel11]
   before_script:
-  - apt-get update -qq
-  - apt-get install -y -qq make gcc
+  - apt-get update -q
+  - apt-get install -y -q make gcc
   script:
   - tar xfa out/b-trisquel11/*-*.tar.gz
   - cd $(tar tfa out/b-trisquel11/*-*.tar.gz | head -n1)
@@ -936,8 +975,8 @@ Trisquel11:
   stage: test
   needs: [B-Trisquel11]
   before_script:
-  - apt-get update -qq
-  - apt-get install -y -qq make gcc
+  - apt-get update -q
+  - apt-get install -y -q make gcc
   script:
   - tar xfa out/b-trisquel11/*-*.tar.gz
   - cd $(tar tfa out/b-trisquel11/*-*.tar.gz | head -n1)
@@ -949,8 +988,8 @@ Ubuntu-rolling:
   stage: test
   needs: [B-Trisquel11]
   before_script:
-  - apt-get update -qq
-  - apt-get install -y -qq git make gcc gtk-doc-tools texinfo texlive texlive-plain-generic dblatex
+  - apt-get update -q
+  - apt-get install -y -q git make gcc gtk-doc-tools texinfo texlive texlive-plain-generic dblatex
   script:
   - tar xfa out/b-trisquel11/*-*.tar.gz
   - cd $(tar tfa out/b-trisquel11/*-*.tar.gz | head -n1)
@@ -967,8 +1006,8 @@ armcross:
   needs: [B-Trisquel11]
   before_script:
   - dpkg --add-architecture armel
-  - apt-get update -qq
-  - apt-get install -y -qq make gcc-arm-linux-gnueabi libstdc++6:armel
+  - apt-get update -q
+  - apt-get install -y -q make gcc-arm-linux-gnueabi libstdc++6:armel
   script:
   - tar xfa out/b-trisquel11/*-*.tar.gz
   - cd $(tar tfa out/b-trisquel11/*-*.tar.gz | head -n1)
@@ -986,8 +1025,8 @@ Mingw32:
   needs: [B-Trisquel11]
   before_script:
   - dpkg --add-architecture i386
-  - apt-get update -qq
-  - apt-get install -y -qq make mingw-w64 wine wine32 libwine libwine:i386 binfmt-support wine-binfmt
+  - apt-get update -q
+  - apt-get install -y -q make mingw-w64 wine wine32 libwine libwine:i386 binfmt-support wine-binfmt
   - update-binfmts --enable wine
   variables:
     WERROR_CFLAGS: "-Wno-error=unused-value -Wno-error=format-nonliteral"
@@ -1005,8 +1044,8 @@ Mingw64:
   needs: [B-Trisquel11]
   before_script:
   - dpkg --add-architecture i386
-  - apt-get update -qq
-  - apt-get install -y -qq make mingw-w64 wine wine32 wine64 binfmt-support wine-binfmt
+  - apt-get update -q
+  - apt-get install -y -q make mingw-w64 wine wine32 wine64 binfmt-support wine-binfmt
   - update-binfmts --enable wine
   variables:
     WERROR_CFLAGS: "-Wno-error=unused-value -Wno-error=format-nonliteral"
