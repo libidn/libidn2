@@ -59,7 +59,7 @@ while (<>) {
 	$ustr = $1.'" "'.$escstr.'" "'.$3;
     }
 
-    next if ($ustr eq $last);
+    next if ($last && $ustr eq $last);
 
     print "/* lineno $lineno ctr $ctr source $source uni $ustr ace $astr nv8 $nv8 line $line */\n";
 
