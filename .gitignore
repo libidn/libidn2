@@ -1,5 +1,4 @@
 !/unistring/Makefile.am
-!po/POTFILES.in
 *.exe
 *.gcda
 *.gcno
@@ -112,6 +111,7 @@
 /fuzz/*_fuzzer
 /fuzz/*_fuzzer.new/
 /gl/
+/gnulib/
 /gtk-doc.make
 /lib/data.c
 /lib/gendata
@@ -127,7 +127,18 @@
 /libtool
 /m4/
 /maint.mk
-/po/
+/po/*.gmo
+/po/*.po
+/po/.gitignore
+/po/.reference/
+/po/LINGUAS
+/po/Makevars
+/po/POTFILES
+/po/en@boldquot.insert-header
+/po/en@quot.insert-header
+/po/libidn2.pot
+/po/remove-potcdate.sed
+/po/stamp-po
 /scan.tmp/
 /src/idn2
 /src/idn2_cmd.c

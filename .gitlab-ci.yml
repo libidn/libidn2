@@ -36,7 +36,7 @@ default:
 
 .gnulib-fetch:
   script:
-  - GNULIB_REVISION=$(. bootstrap.conf; echo $GNULIB_REVISION)
+  - GNULIB_REVISION=$(. bootstrap.conf >&2; echo $GNULIB_REVISION)
   - wget -nv https://gitlab.com/libidn/gnulib-mirror/-/archive/$GNULIB_REVISION/gnulib-mirror-$GNULIB_REVISION.tar.gz
   - gzip -cd gnulib-mirror-$GNULIB_REVISION.tar.gz | tar xf -
   - rm -fv gnulib-mirror-$GNULIB_REVISION.tar.gz
