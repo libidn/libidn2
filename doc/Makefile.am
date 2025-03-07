@@ -45,7 +45,8 @@ dist_man_MANS = $(gdoc_MANS)
 dist_man_MANS += idn2.1
 
 idn2.1: idn2.h2m $(top_srcdir)/src/idn2.c $(top_srcdir)/src/idn2.ggo \
-		$(top_srcdir)/configure.ac
+		$(top_srcdir)/configure.ac $(top_srcdir)/.version
+	$(MAKE) -C ../src idn2$(EXEEXT)
 	$(HELP2MAN) --include=$(srcdir)/idn2.h2m \
 		--output=$@ $(top_builddir)/src/idn2$(EXEEXT)
 

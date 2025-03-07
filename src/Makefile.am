@@ -24,6 +24,8 @@ bin_PROGRAMS = idn2
 idn2_SOURCES = idn2.c
 idn2_LDADD = libidn2_cmd.la ../lib/libidn2.la ../gl/libgnu.la ../unistring/libunistring.la $(LTLIBUNISTRING) $(LIBS)
 
+EXTRA_idn2_DEPENDENCIES = $(top_srcdir)/.version
+
 idn2.c: $(BUILT_SOURCES)
 
 noinst_LTLIBRARIES = libidn2_cmd.la
