@@ -193,6 +193,7 @@ AC_CONFIG_FILES([
   tests/Makefile
   fuzz/Makefile
 ])
+gl_CONFIG_VERSION_STAMP
 AC_OUTPUT
 
 AC_MSG_NOTICE([summary of main build options:

@@ -14,7 +14,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 SUBDIRS = gl unistring lib src examples fuzz po
-EXTRA_DIST = gl/m4/gnulib-cache.m4
 
 if ENABLE_DOC
 SUBDIRS += doc
@@ -22,7 +21,7 @@ endif
 
 SUBDIRS += tests
 
-EXTRA_DIST += cfg.mk maint.mk CONTRIBUTING.md README.md
+EXTRA_DIST = cfg.mk maint.mk CONTRIBUTING.md README.md
 EXTRA_DIST += COPYING COPYING.LESSERv3 COPYING.unicode COPYINGv2
 
 check-valgrind:
@@ -70,6 +69,7 @@ abi-check-latest: lib/libidn2.la
 
 # Checks the ABI stability between current git version and the previous tagged release.
 ABICHECK_COMMON = --no-added-syms
+.PHONY: abi-check
 abi-check: lib/libidn2.la
 	@for file in $$(eval echo $(srcdir)/contrib/libidn2-*-$$(uname -m).abi);do \
 		echo "Comparing libidn2 with $$file"; \
@@ -85,13 +85,15 @@ abi-check: lib/libidn2.la
 	@echo "ABI checks completed"
 	@echo "********************"
 
-# git-version-gen
+# version-stamp
 EXTRA_DIST += $(top_srcdir)/.version
 BUILT_SOURCES = $(top_srcdir)/.version
-$(top_srcdir)/.version:
-	echo $(VERSION) > $@-t && mv $@-t $@
-dist-hook: gen-ChangeLog
-	echo $(VERSION) > $(distdir)/.tarball-version
+
+# git-version-gen
+dist-hook: dist-tarball-version
+.PHONY: dist-tarball-version
+dist-tarball-version:
+	echo '$(VERSION)' > $(distdir)/.tarball-version
 
 dist-hook: maybe-abi-check
 .PHONY: maybe-abi-check
@@ -138,6 +140,7 @@ dist-hook: texi-stamps-to-mtime-NEWS
 texi-stamps-to-mtime-NEWS: mtime-NEWS-to-git-HEAD
 	$(AM_V_GEN)touch -m -r $(srcdir)/NEWS $(srcdir)/doc/$(PACKAGE).texi
 
+dist-hook: gen-ChangeLog
 .PHONY: gen-ChangeLog
 gen-ChangeLog:
 	$(AM_V_GEN)if test -e $(srcdir)/.git; then			\
@@ -150,8 +153,6 @@ gen-ChangeLog:
 	      rm -f $(distdir)/ChangeLog &&				\
 	      mv $(distdir)/cl-t $(distdir)/ChangeLog; }		\
 	fi
-
-.PHONY: abi-dump abi-check
 
 LCOV_INFO=libidn2.info
 fuzz-coverage: clean
