@@ -36,7 +36,7 @@ You can check the current test code coverage
 [here](https://libidn.gitlab.io/libidn2/coverage/index.html) and the
 current fuzzing code coverage
 [here](https://libidn.gitlab.io/libidn2/fuzz-coverage/index.html) that
-is part of the continous fuzzing project
+is part of the continuous fuzzing project
 [OSS-Fuzz](https://issues.oss-fuzz.com/issues?q=is:open%20libidn2).
 
 

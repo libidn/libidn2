@@ -24,27 +24,24 @@ upload_dest_dir_ = libidn
 
 GNUPLOADFLAGS = --symlink-regex
 
-local-checks-to-skip += sc_unmarked_diagnostics sc_bindtextdomain # Re-add when we have translation
+# make syntax-check
+local-checks-to-skip += sc_bindtextdomain
 local-checks-to-skip += sc_prohibit_strcmp
 local-checks-to-skip += sc_prohibit_gnu_make_extensions
-
-# Ignore gnulib files.
-VC_LIST_ALWAYS_EXCLUDE_REGEX = \
-  ^(bootstrap|maint.mk|build-aux/gnupload|src/gl/.*|gl/.*|m4/.*|^fuzz/.*.in/.*|^fuzz/.*.repro/.*)$$
-
-# Explicit syntax-check exceptions.
+VC_LIST_ALWAYS_EXCLUDE_REGEX = ^(fuzz/.*.(in|repro)/.*)$$
 exclude_file_name_regexp--sc_program_name = ^(tests|examples)/.*\.c$$
 exclude_file_name_regexp--sc_prohibit_empty_lines_at_EOF = ^doc/reference/version.xml.in$$
-exclude_file_name_regexp--sc_trailing_blank = ^(tests/IdnaTest.(txt|inc))|(doc/gdoc)|(unistring/lib/uni.*diff)$$
-exclude_file_name_regexp--sc_require_config_h = ^examples/.*\.c|lib/gen.*\.c|^fuzz/main.c$$
-exclude_file_name_regexp--sc_require_config_h_first = ^examples/.*\.c|lib/gen.*\.c|^fuzz/main.c$$
-exclude_file_name_regexp--sc_prohibit_strncpy = ^src/idn2.c$$
-exclude_file_name_regexp--sc_GPL_version = ^COPYINGv2|[^/]*.[ch](.in)?$$
+exclude_file_name_regexp--sc_trailing_blank = ^(m4/pkg.m4|gl/build-aux/gnu-web-doc-update.diff|gl/top/README-release.diff|tests/IdnaTest.(txt|inc))|(doc/gdoc)|(unistring/lib/uni.*diff)$$
+exclude_file_name_regexp--sc_require_config_h = ^examples/.*\.c|^fuzz/main.c$$
+exclude_file_name_regexp--sc_require_config_h_first = ^examples/.*\.c|^fuzz/main.c$$
+exclude_file_name_regexp--sc_GPL_version = ^m4/ax_code_coverage.m4|m4/pkg.m4|COPYINGv2|lib/.*.(c|h|h.in)$$
 exclude_file_name_regexp--sc_prohibit_atoi_atof = ^lib/gentr46map\.c$$
 exclude_file_name_regexp--sc_makefile_at_at_check = ^Makefile.am|src/Makefile\.am|tests/Makefile.am$$
 exclude_file_name_regexp--sc_prohibit_empty_lines_at_EOF = ^lib/IdnaMappingTable.txt|doc/reference/version.xml.in$$
 exclude_file_name_regexp--sc_prohibit_undesirable_word_seq = ^lib/idna-tables-properties.csv$$
+exclude_file_name_regexp--sc_fsf_postal = ^m4/pkg.m4$$
 exclude_file_name_regexp--sc_prohibit_have_config_h = ^tests/.*.c$$
+exclude_file_name_regexp--sc_unportable_grep_q = ^gl/top/README-release.diff$$
 
 TAR_OPTIONS += --mode=go+u,go-w --mtime=$(abs_top_srcdir)/NEWS
 
