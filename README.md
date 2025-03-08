@@ -29,15 +29,15 @@ library](https://www.gnu.org/software/libidn/).  Replacing the
 the application from IDNA2003 to IDNA2008 as supported by this
 library.
 
-Libidn2 is believed to be a complete IDNA2008 and TR46 implementation,
-it contains an extensive test-suite, and is included in the continuous
-fuzzing project
-[OSS-Fuzz](https://bugs.chromium.org/p/oss-fuzz/issues/list?q=libidn2).
+Libidn2 is believed to be a complete IDNA2008 and TR46 implementation
+and contains an extensive test-suite.
 
 You can check the current test code coverage
 [here](https://libidn.gitlab.io/libidn2/coverage/index.html) and the
 current fuzzing code coverage
-[here](https://libidn.gitlab.io/libidn2/fuzz-coverage/index.html).
+[here](https://libidn.gitlab.io/libidn2/fuzz-coverage/index.html) that
+is part of the continous fuzzing project
+[OSS-Fuzz](https://issues.oss-fuzz.com/issues?q=is:open%20libidn2).
 
 
 # License
@@ -82,40 +82,16 @@ tracker for reporting bugs](https://gitlab.com/libidn/libidn2/issues).
 
 # Building & Dependencies
 
-To build Libidn2 you will need a POSIX shell, the Unix "make" tool,
-and a C compiler.
+Before building you should consider installing the
+[dependencies](DEPENDENCIES.md).
 
- * [Bash](https://www.gnu.org/software/bash/)
- * [Make](https://www.gnu.org/software/make/)
- * [C compiler](https://www.gnu.org/software/gcc/)
-
-When building from a released *.tar.* archive, after unpacking you
+When building from a release tarball archive, after unpacking you
 build the package like this:
 
 ```
 ./configure
 make
 make check
-```
-
-The Libidn2 library may use GNU libunistring for Unicode processing
-and GNU libiconv for character set conversion.  It is recommended to
-install them before building and installing libidn2.  See the
-following links for more information on these packages:
-
- * [Unistring](https://www.gnu.org/software/libunistring/)
- * [iconv](https://www.gnu.org/software/libiconv/)
-
-The iconv dependency is optional -- it is required for the functions
-involving locale to UTF8 conversions -- but is recommended.
-
-When the recommended libunistring is not available, libidn2 uses
-internal replacement functionality which increases the size of the
-library.  To use the internal libunistring-replacement rather than the
-system libunistring (even when deemed to be sufficient) you may use:
-
-```
-./configure --with-included-libunistring
 ```
 
 # Contributing
@@ -125,10 +101,10 @@ See [the contributing document](CONTRIBUTING.md).
 
 # Estimating code coverage
 
-Dependencies:
- * [lcov](https://github.com/linux-test-project/lcov) (for code coverage)
+You need [LCOV](https://github.com/linux-test-project/lcov) installed.
 
 To test the code coverage of the test suite use the following:
+
 ```
 ./configure --enable-code-coverage
 make && make check && make code-coverage-capture

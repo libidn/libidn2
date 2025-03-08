@@ -21,7 +21,7 @@ endif
 
 SUBDIRS += tests
 
-EXTRA_DIST = cfg.mk maint.mk CONTRIBUTING.md README.md
+EXTRA_DIST = cfg.mk maint.mk CONTRIBUTING.md DEPENDENCIES.md README.md
 EXTRA_DIST += COPYING COPYING.LESSERv3 COPYING.unicode COPYINGv2
 
 check-valgrind:

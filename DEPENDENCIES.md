@@ -1,10 +1,12 @@
-The following packages should be installed before GNU libidn2 is installed
-(runtime dependencies that are also build dependencies):
+# Libidn2 DEPENDENCIES -- Related packages
+
+The following packages should be installed before GNU Libidn2 is
+installed (runtime dependencies that are also build dependencies):
 
 * GNU libiconv
   + Not needed on systems with glibc and on NetBSD.
-    But highly recommended on all other systems.
-    Needed for <...>.
+    But recommended on all other systems.
+    Needed for locale to UTF8 string conversions.
   + Homepage:
     https://www.gnu.org/software/libiconv/
   + Download:
@@ -20,9 +22,9 @@ The following packages should be installed before GNU libidn2 is installed
 
 * GNU libunistring
   + Optional.
-    Needed for <...>.
+    Needed for general Unicode code point string handling.
     If not present, a subset of libunistring (included in this package) will
-    be compiled into libidn2.
+    be compiled into libidn2.  This increase the size of the library.
   + Homepage:
     https://www.gnu.org/software/libunistring/
   + Download:
@@ -73,7 +75,7 @@ dependencies):
   + Mandatory.
     Either the platform's native 'cc', or GCC 3.1 or newer.
   + GCC Homepage:
-    https://gcc.gnu.org/
+    https://www.gnu.org/software/gcc/
   + Download:
     https://ftp.gnu.org/gnu/gcc/
 
