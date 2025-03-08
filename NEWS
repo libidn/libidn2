@@ -1,6 +1,6 @@
 Libidn2 NEWS -- History of user-visible changes.                -*- outline -*-
 
-* Noteworthy changes in release ?.? (????-??-??) [?]
+* Noteworthy changes in release 2.3.8 (2025-03-08) [stable]
 
 ** Unicode 15.1.0 table updates.
 Now U+19DA is DISALLOWED again (see version 2.3.4 release notes).
