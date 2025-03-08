@@ -318,11 +318,17 @@ B-Fedora41:
 # https://lists.gnu.org/archive/html/bug-gnulib/2022-03/msg00016.html
 B-Fedora39-ASAN/UBSan:
   stage: build
-  image: $CI_REGISTRY/libidn/build-images:libidn2-Fedora39
+  image: fedora:39
   before_script:
-  - dnf install -y clang
+  - dnf install -y wget make
+  - dnf install -y git autoconf automake libtool gettext-devel patch gperf
+  - dnf install -y libunistring-devel valgrind gengetopt help2man
+  - dnf install -y texinfo gtk-doc
+  - dnf install -y libabigail
+  - dnf install -y glibc-gconv-extra clang
   script:
-  - ./bootstrap --skip-po
+  - !reference [.gnulib-fetch, script]
+  - time ./bootstrap --skip-po --no-git
   - export CC=clang
   - export CFLAGS="-fsanitize=address -g -O0"
   - ASAN_OPTIONS=detect_leaks=0 ./configure --disable-doc --disable-gcc-warnings
@@ -338,11 +344,17 @@ B-Fedora39-ASAN/UBSan:
 
 B-Fedora39-clang-analyzer:
   stage: build
-  image: $CI_REGISTRY/libidn/build-images:libidn2-Fedora39
+  image: fedora:39
   before_script:
-  - dnf install -y clang-analyzer
+  - dnf install -y wget make gcc
+  - dnf install -y git autoconf automake libtool gettext-devel patch gperf
+  - dnf install -y libunistring-devel valgrind gengetopt help2man
+  - dnf install -y texinfo texinfo-tex texlive gtk-doc dblatex
+  - dnf install -y libabigail
+  - dnf install -y glibc-gconv-extra clang-analyzer
   script:
-  - ./bootstrap --skip-po
+  - !reference [.gnulib-fetch, script]
+  - time ./bootstrap --skip-po --no-git
   - scan-build ./configure --enable-gtk-doc --enable-gtk-doc-pdf
   - make -j$(nproc) -C unistring
   - make -j$(nproc) -C gl
@@ -625,7 +637,7 @@ R-Debian12:
   - cat /etc/os-release
   - time apt-get update -q
   - time apt-get install -y -q eatmydata
-  - time eatmydata apt-get install -y -q wget make gcc git autoconf automake libtool autopoint gperf libunistring-dev gengetopt help2man texinfo abi-compliance-checker abigail-tools gtk-doc-tools
+  - time eatmydata apt-get install -y -q wget make gcc git autoconf automake libtool gettext autopoint gperf libunistring-dev gengetopt help2man texinfo abi-compliance-checker abigail-tools gtk-doc-tools
   script:
   - !reference [.gnulib-fetch, script]
   - time ./bootstrap --skip-po --no-git
@@ -672,7 +684,7 @@ R-Ubuntu2404:
   - cat /etc/os-release
   - time apt-get update -q
   - time apt-get install -y -q eatmydata
-  - time eatmydata apt-get install -y -q wget make gcc git autoconf automake libtool autopoint gperf libunistring-dev gengetopt indent help2man texinfo abi-compliance-checker abigail-tools gtk-doc-tools
+  - time eatmydata apt-get install -y -q wget make gcc git autoconf automake libtool gettext autopoint gperf libunistring-dev gengetopt indent help2man texinfo abi-compliance-checker abigail-tools gtk-doc-tools
   script:
   - !reference [.gnulib-fetch, script]
   - time ./bootstrap --skip-po --no-git
