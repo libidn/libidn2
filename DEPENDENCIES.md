@@ -73,13 +73,13 @@ dependencies):
 
 * A C runtime, compiler, linker, etc.
   + Mandatory.
-    Either the platform's native 'cc', or GCC 3.1 or newer.
+    Either the platform's native 'cc', or GCC.
   + GCC Homepage:
     https://www.gnu.org/software/gcc/
   + Download:
     https://ftp.gnu.org/gnu/gcc/
 
-* A 'make' utility.
+* A POSIX-like 'make' utility.
   + Mandatory.
     Either the platform's native 'make' (for in-tree builds only),
     or GNU Make 3.79.1 or newer.
@@ -88,7 +88,7 @@ dependencies):
   + Download:
     https://ftp.gnu.org/gnu/make/
 
-* A shell
+* A POSIX-like shell
   + Mandatory.
     Either the platform's native 'sh', or Bash.
   + Homepage:
@@ -123,11 +123,3 @@ dependencies):
     https://www.gnu.org/software/grep/
   + Download:
     https://ftp.gnu.org/gnu/grep/
-
-* Awk.
-  + Mandatory.
-    Either the platform's native awk, mawk, or nawk, or GNU awk.
-  + Homepage:
-    https://www.gnu.org/software/gawk/
-  + Download:
-    https://ftp.gnu.org/gnu/gawk/
