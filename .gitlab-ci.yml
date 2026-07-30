@@ -1079,7 +1079,7 @@ Ubuntu-rolling:
   needs: [B-Trisquel11]
   before_script:
   - apt-get update -q
-  - apt-get install -y -q git make gcc gtk-doc-tools texinfo texlive texlive-plain-generic dblatex
+  - apt-get install -y -q git make gcc libc-dev gtk-doc-tools texinfo texlive texlive-plain-generic dblatex
   script:
   - tar xfa out/b-trisquel11/*-*.tar.gz
   - cd $(tar tfa out/b-trisquel11/*-*.tar.gz | head -n1)
