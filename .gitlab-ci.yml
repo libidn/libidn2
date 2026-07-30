@@ -441,13 +441,13 @@ Coverity:
       - cov-int/*.txt
 
 # https://docs.gitlab.com/ci/runners/hosted_runners/macos/
-B-macOS14Xcode15:
+B-macOS15Xcode16:
   rules:
   - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   - if: $LIBIDN2_CI_RUN_MACOS_JOBS
   stage: build
-  image: macos-14-xcode-15
+  image: macos-15-xcode-16
   tags: [ saas-macos-medium-m1 ]
   variables:
     HOMEBREW_NO_AUTO_UPDATE: 1
@@ -467,13 +467,13 @@ B-macOS14Xcode15:
   - time make V=1 dist
   - !reference [.save-artifacts, script]
 
-B-macOS15Xcode16:
+B-macOS26Xcode26:
   rules:
   - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   - if: $LIBIDN2_CI_RUN_MACOS_JOBS
   stage: build
-  image: macos-15-xcode-16
+  image: macos-26-xcode-26
   tags: [ saas-macos-large-m2pro ]
   variables:
     HOMEBREW_NO_AUTO_UPDATE: 1
@@ -493,12 +493,12 @@ B-macOS15Xcode16:
   - time make V=1 dist
   - !reference [.save-artifacts, script]
 
-macOS15Xcode16:
+macOS26Xcode26:
   rules:
   - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   - if: $LIBIDN2_CI_RUN_MACOS_JOBS
-  image: macos-15-xcode-16
+  image: macos-26-xcode-26
   tags: [ saas-macos-medium-m1 ]
   stage: test
   needs: [B-Trisquel11]
