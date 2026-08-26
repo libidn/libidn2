@@ -511,6 +511,23 @@ macOS26Xcode26:
   - make syntax-check
   - time make -j$(nproc) check V=1 VERBOSE=t
 
+FreeBSD:
+  rules:
+  - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  - if: $LIBIDN2_CI_RUN_FREEBSD_JOBS
+  tags: [ freebsd ]
+  needs: [B-Trisquel11]
+  stage: test
+  before_script:
+  - uname -a
+  - sysctl hw
+  script:
+  - gzip -cd out/b-trisquel11/*-*.tar.gz | tar xf -
+  - cd $(gzip -cd out/b-trisquel11/*-*.tar.gz | tar tf - | head -n1)
+  - time ./configure --enable-gcc-warnings
+  - time make check V=1 VERBOSE=t
+
 OpenBSD:
   rules:
   - if: $CI_PIPELINE_SOURCE == "merge_request_event"
