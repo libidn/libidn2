@@ -526,7 +526,7 @@ FreeBSD:
   - gzip -cd out/b-trisquel11/*-*.tar.gz | tar xf -
   - cd $(gzip -cd out/b-trisquel11/*-*.tar.gz | tar tf - | head -n1)
   - time ./configure --enable-gcc-warnings
-  - time make check V=1 VERBOSE=t
+  - time make -k -j$(sysctl hw.ncpu|sed 's/.*[:= ]//') check V=1 VERBOSE=t
 
 OpenBSD:
   rules:
@@ -543,7 +543,7 @@ OpenBSD:
   - gzip -cd out/b-trisquel11/*-*.tar.gz | tar xf -
   - cd $(gzip -cd out/b-trisquel11/*-*.tar.gz | tar tf - | head -n1)
   - time ./configure --enable-gcc-warnings
-  - time make check V=1 VERBOSE=t
+  - time make -k -j$(sysctl hw.ncpu|sed 's/.*[:= ]//') check V=1 VERBOSE=t
 
 B-MinGW64:
   stage: build
